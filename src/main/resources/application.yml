@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://101.201.254.63:3306/oaDB?serverTimezone=GMT%2B8&useAffectedRows=true
+    username: oasystem
+    password: tangliyi123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+## mybatis sql语句控制台打印执行sql语句
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
