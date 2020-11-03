@@ -1,29 +1,41 @@
-# office-automation-system
+# 前端多人协同架构设计
 
-## Project setup
-```
-yarn install
-```
++ ### 技术栈：Vue
+使用Vue全家桶进行开发，脚手架版本@vue/cli 4.1.2+，vue版本3+，包管理工具使用yarn
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
++ ### 应用模式
+单页应用 + node.js中间层：SEO(可选) 、API二次处理；以Vue和vue-router实现SPA，结合node中间层进行对API和资源的处理
 
-### Compiles and minifies for production
-```
-yarn build
-```
++ ### 统一开发工具
+VSCode
 
-### Run your unit tests
-```
-yarn test:unit
-```
++ ### 统一编码规范
+遵循ESLint规范
 
-### Lints and fixes files
-```
-yarn lint
-```
++ ### 统一UI框架
+使用ElementUI作为UI框架
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
++ ### 统一css预处理器
+使用less作为css预处理器，项目通用less配置，配置在less/style.less中，项目搭建中根据需求取用，对于单功能/单页面所需less配置，配置在style中
+
++ ### 公用组件和工具函数通过单元测试
+添加配置文件时必须在之前配置文件基础上添加
+
++ ### 统一路由编写规范
+向router中提交路由模块文件夹，路由设置与页面组件名称保持一致
+
++ ### 统一Vuex编写规范
+对于项目通用资源，由store/index.js管理，对于单功能所需通用资源，向store提交资源模块文件夹
+
++ ### 统一网络请求规范
+使用封装网络请求工具函数api.js处理网络请求，根据API类别封装同类别API，向service中提交相对应js文件，API书写必须添加注释
+
++ ### 统一组件编写规范
+根据页面作为逻辑向view提交页面文件夹，再在页面文件夹中书写页面组件以及可能使用的页面重用组件
+
++ ### 统一组件模板规范
+使用一套统一结构的vue文件模板
+
++ ### 统一Vue风格规范
+参考[风格指南](https://cn.vuejs.org/v2/style-guide/)
+
