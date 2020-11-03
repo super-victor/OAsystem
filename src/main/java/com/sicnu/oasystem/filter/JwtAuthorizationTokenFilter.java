@@ -35,6 +35,14 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Resource
     JwtTokenUtil jwtTokenUtil;
 
+    /**
+     *
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String[] passUrls = {"/login"};
