@@ -31,6 +31,7 @@ create table Department (
 -- 职工表
 create table Employee (
     employeeId int auto_increment comment '职工id',
+    username varchar(20) not null comment '登录用户名',
     name varchar(20) not null comment '职工姓名',
     password varchar(20) not null comment '职工密码',
     phone char(11) comment '职工电话',
@@ -45,6 +46,7 @@ create table Employee (
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_Employee_employeeId primary key(employeeId),
+    constraint unique_Employee_username unique key(username),
     constraint fk_Employee_departmentId foreign key(departmentId) references Department(departmentId)
 );
 
@@ -226,11 +228,11 @@ create table ReceiveFile(
 
 -- 角色表
 create table Role(
-    RoleId int not null comment '角色ID',
-    Name varchar(10) not null  comment '角色名称',
+    roleId int not null comment '角色ID',
+    name varchar(10) not null  comment '角色名称',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
-    constraint pk_Role_roleId primary key (RoleId)
+    constraint pk_Role_roleId primary key (roleId)
  );
 
 
@@ -238,13 +240,13 @@ create table Role(
 create table EmployeeRole(
     employeeRoleId int not null comment '职工角色ID',
     employeeId int not null comment '职工ID',
-    RoleId int not null comment '角色ID',
+    roleId int not null comment '角色ID',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_EmployeeRole_emplyeeRoleId primary key (employeeRoleId),
     constraint fk_EmployeeRole_employeeId foreign key (employeeId) references Employee(employeeId),
-    constraint fk_EmployeeRole_roleid foreign key (RoleId) references Role(RoleId),
-    constraint unique_EmployeeRole_employeeId_roleId unique key(employeeId,RoleId)
+    constraint fk_EmployeeRole_roleId foreign key (roleId) references Role(roleId),
+    constraint unique_EmployeeRole_employeeId_roleId unique key(employeeId,roleId)
 );
 
 
