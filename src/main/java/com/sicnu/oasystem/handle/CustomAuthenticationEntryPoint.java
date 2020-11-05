@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 
 /**
  * @ClassName CustomAuthenticationEntryPoint
- * @Description 添加描述
+ * @Description 未登录情况下的处理类
  * @Author JohnTang
  * @LastChangeDate 2020/7/8 21:01
  * @Version v1.0

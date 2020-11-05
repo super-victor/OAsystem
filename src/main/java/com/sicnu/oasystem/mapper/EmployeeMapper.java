@@ -21,7 +21,7 @@ public interface EmployeeMapper {
 
     /**
      * @MethodName findEmployeeByEmployeeId
-     * @Param username:String
+     * @Param String username
      * @Description 根据员工工号找员工
      * @Return Employee
      * @LastChangeDate 2020/11/5
@@ -30,10 +30,10 @@ public interface EmployeeMapper {
     Employee findEmployeeByUsername(String username);
 
     /**
-     * @MethodName
-     * @Param
-     * @Description 添加描述
-     * @Return
+     * @MethodName findRolesByEmployeeId
+     * @Param int employeeId
+     * @Description 根据员工id找出所有权限列表
+     * @Return List<Role>
      * @LastChangeDate 2020/11/5
      * @Version v1.0
      */

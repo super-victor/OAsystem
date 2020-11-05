@@ -18,9 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description web安全配置类，用于用户认证和拦截没有权限的网页
+ * @ClassName MyWebSecurityConfigurerAdapter
+ * @Description spring security配置类
  * @Author JohnTang
- * @LatestChangeDate 2020年2月1日
+ * @LastChangeDate 2020/2/1
+ * @Version v1.0
  */
 
 @Configuration

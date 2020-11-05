@@ -13,6 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * @ClassName JwtTokenUtil
+ * @Description jwt-token的工具类，用于签发token，验证token等
+ * @Author JohnTang
+ * @LastChangeDate 2020/11/4 22:54
+ * @Version v1.0
+ */
 
 @Component
 public class JwtTokenUtil implements Serializable {

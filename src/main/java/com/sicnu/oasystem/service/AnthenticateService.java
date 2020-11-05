@@ -25,6 +25,14 @@ public class AnthenticateService implements UserDetailsService {
     @Resource
     private EmployeeMapper employeeMapper;
 
+    /**
+     * @MethodName loadUserByUsername
+     * @Param String s
+     * @Description 根据用户名加载用户拿给springsecurity框架
+     * @Return UserDetails
+     * @LastChangeDate 2020/11/5
+     * @Version v1.0
+     */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Employee employee = employeeMapper.findEmployeeByUsername(s);
