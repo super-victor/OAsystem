@@ -1,6 +1,9 @@
 !<!-- Header -->
 <template>
   <div class='header'>
+    <div class="logoBox">
+      <img src="@/assets/logo.png" class="logo" alt="">
+    </div>
   </div>
 </template>
 
@@ -30,5 +33,16 @@
     transform: translate3d(0, 0, 0);
     display: flex;
     justify-content: space-between;
+    .logoBox{
+      height: 100%;
+      width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .logo{
+        height: 32px;
+        width: 37px;
+      }
+    }
   }
 </style>
