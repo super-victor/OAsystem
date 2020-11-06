@@ -1,11 +1,17 @@
 package com.sicnu.oasystem.config;
 
-import org.springframework.beans.factory.config.YamlProcessor;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.Operation;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -19,21 +25,28 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 
+    @Value("${swagger.title}")
+    private String title;
+
     @Bean
-    public Docket createRestApi(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .pathMapping("/")
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sicnu.oasystem.controller"))
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
-                .build()
-                .apiInfo(new ApiInfoBuilder()
-                        .title("协同办公系统Api接口")
-                        .description("")
-                        .version("1.0")
-                        .build() );
+                .build();
     }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title(title)
+                .description("")
+                .contact(new Contact("zhaohb", "#", "1457631561@qq.com"))
+                .version("1.0")
+                .build();
+    }
+
 }
