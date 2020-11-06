@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.CardHolderClassfyMapper">
+    <insert id="insertCardHolderClassfyByCardHolderClassfyId">
+        insert into CardHolderClassfy(name, ownerId) values(#{name}, #{employeeId})
+    </insert>
+
+    <insert id="insertCardHolderByOwnedId">
+        insert into CardHolder(ownerId, ownedId, cardHolderClassfyId) values(#{ownerId}, #{ownedId}, #{cardHolderClassfyId})
+    </insert>
+
+    <update id="updateCardHolderClassfyByCardHolderClassfyId">
+        update CardHolderClassfy set name = #{name} where CardHolderClassfyId = #{CardHolderClassfyId}
+    </update>
+
+    <update id="updateCardHolderByCardHolderId">
+        update CardHolder set cardHolderClassfyId = #{cardHolderClassfyId} where cardHolderId = #{cardHolderId}
+    </update>
+
+    <delete id="deleteCardHolderClassfyByCardHolderClassfyId">
+        delete from CardHolderClassfy where CardHolderClassfyId = #{CardHolderClassfyId}
+    </delete>
+
+    <delete id="deleteCardHolderByCardHolderId">
+        delete from CardHolder where CardHolderId = #{CardHolderId}
+    </delete>
+
+    <select id="findCardHolderClassfysByEmployeeId" resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">
+        select * from CardHolderClassfy where ownerId = #{employeeId}
+    </select>
+
+    <select id="findCardHolderByCardHolderClassfyId" resultType="com.sicnu.oasystem.pojo.CardHolder">
+        select * from CardHolder where CardHolderClassfyId = #{CardHolderClassfyId}
+    </select>
+
+    <select id="findCardHolderByEmployeeId" resultType="com.sicnu.oasystem.pojo.CardHolder">
+        select * from CardHolder where ownerId = #{employeeId}
+    </select>
+
+    <select id="findCardHolderByOwnedId" resultType="com.sicnu.oasystem.pojo.CardHolder">
+        select * from CardHolder where ownerId = #{ownerId} and ownedId = #{ownedId}
+    </select>
+</mapper>
