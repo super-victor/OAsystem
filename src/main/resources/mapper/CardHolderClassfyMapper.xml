@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.CardHolderClassfyMapper">
+    <insert id="insertCardHolderClassfyByCardHolderClassfyId">
+        insert into CardHolderClassfy(name, ownerId) values(#{name}, #{employeeId})
+    </insert>
+
+    <update id="updateCardHolderClassfyByCardHolderClassfyId">
+        update CardHolderClassfy set name = #{name} where CardHolderClassfyId = #{CardHolderClassfyId}
+    </update>
+
+    <delete id="deleteCardHolderClassfyByCardHolderClassfyId">
+        delete from CardHolderClassfy where CardHolderClassfyId = #{CardHolderClassfyId}
+    </delete>
+
+    <select id="findCardHolderClassfysByEmployeeId" resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">
+        select * from CardHolderClassfy where ownerId = #{employeeId}
+    </select>
+</mapper>
