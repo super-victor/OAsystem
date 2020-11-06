@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.EmployeeMapper">
+    <update id="updatePartlyEmployeeByEmployeeId">
+        update employee set email = #{email}, phone = #{phone}, homeaddress = #{homeAddress} where employeeid = #{employeeid}
+    </update>
 
     <select id="findEmployeeByUsername" resultType="com.sicnu.oasystem.pojo.Employee">
         select * from employee where username = #{username}
@@ -8,5 +11,13 @@
 
     <select id="findRolesByEmployeeId" resultType="com.sicnu.oasystem.pojo.Role">
         select role.roleId,role.name,employeerole.createTime,employeerole.updateTime from employeerole,role where employeeId = #{employeeId} and employeerole.roleId = role.roleId
+    </select>
+
+    <select id="findEmployeeByEmployeeId" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where employeeId = #{employeeId}
+    </select>
+
+    <select id="findDepartmentByDepartmentId" resultType="com.sicnu.oasystem.pojo.Department">
+        select * from department where departmentid = #{departmentId}
     </select>
 </mapper>

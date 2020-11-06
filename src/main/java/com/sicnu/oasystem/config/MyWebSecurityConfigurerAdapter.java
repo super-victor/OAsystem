@@ -77,8 +77,8 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers("/register**", "/static/**", "/mail/**", "/openApi/**", "/changePassword**", "/login.html", "/css/**", "/img/**", "/js/**", "/custom/**", "/restaurant.html")
-//                .permitAll()
+                  .antMatchers("/swagger*")
+                  .permitAll()
 //                .antMatchers("/user/**")
 //                .hasRole("User")
 //                .antMatchers("/merchant/**")

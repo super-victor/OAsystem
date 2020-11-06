@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,11 @@ import java.util.List;
 
 @Data
 public class Employee implements UserDetails {
+    @JsonIgnore
     private Integer employeeId;
     private String username;
     private String name;
+    @JsonIgnore
     private String password;
     private String phone;
     private String email;
@@ -31,7 +34,9 @@ public class Employee implements UserDetails {
     private int departmentId;
     private String position;
     private String homeAddress;
+    @JsonIgnore
     private Date createTime;
+    @JsonIgnore
     private Date updateTime;
     private List<Role> authorities;
 
