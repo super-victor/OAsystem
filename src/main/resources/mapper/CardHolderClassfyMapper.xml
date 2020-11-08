@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.CardHolderClassfyMapper">
-    <insert id="insertCardHolderClassfyByCardHolderClassfyId">
-        insert into CardHolderClassfy(name, ownerId) values(#{name}, #{employeeId})
-    </insert>
 
-    <insert id="insertCardHolderByOwnedId">
+    <insert id="insertCardHolderByOwnedId" useGeneratedKeys="true" keyProperty="id">
         insert into CardHolder(ownerId, ownedId, cardHolderClassfyId) values(#{ownerId}, #{ownedId}, #{cardHolderClassfyId})
+    </insert>
+    <insert id="insertCardHolderClassfyByCardHolderClassfyId" useGeneratedKeys="true" keyProperty="cardHolderClassfyId">
+        insert into CardHolderClassfy(name, ownerId) values(#{name}, #{ownerId})
     </insert>
 
     <update id="updateCardHolderClassfyByCardHolderClassfyId">
@@ -39,5 +39,9 @@
 
     <select id="findCardHolderByOwnedId" resultType="com.sicnu.oasystem.pojo.CardHolder">
         select * from CardHolder where ownerId = #{ownerId} and ownedId = #{ownedId}
+    </select>
+
+    <select id="findCardHolderClassfyByName" resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">
+        select * from CardHolderClassfy where name = #{name} and ownerId = #{ownerId}
     </select>
 </mapper>

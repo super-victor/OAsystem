@@ -30,6 +30,17 @@ public interface CardHolderClassfyMapper {
     List<CardHolderClassfy> findCardHolderClassfysByEmployeeId(int employeeId);
 
     /**
+     * @MethodName findCardHolderClassfyByName
+     * @param name
+     * @param ownerId
+     * @Description 查找文件夹分类by文件夹名称
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.pojo.CardHolderClassfy
+     * @LastChangeDate 2020/11/8
+     */
+    CardHolderClassfy findCardHolderClassfyByName(String name, int ownerId);
+
+    /**
      * @MethodName deleteCardHolderClassfyByCardHolderClassfyId
      * @param CardHolderClassfyId
      * @Description 删除名片夹分类by名片夹id
@@ -52,14 +63,13 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName insertCardHolderClassfyByCardHolderClassfyId
-     * @param employeeId
-     * @param name
+     * @param cardHolderClassfy
      * @Description 增加名片夹分类
      * @Author Waynejwei
      * @Return int
-     * @LastChangeDate 2020/11/6
+     * @LastChangeDate 2020/11/8
      */
-    int insertCardHolderClassfyByCardHolderClassfyId(int employeeId, String name);
+    int insertCardHolderClassfyByCardHolderClassfyId(CardHolderClassfy cardHolderClassfy);
 
     /**
      * @MethodName findCardHolderByCardHolderClassfyId

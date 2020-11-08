@@ -21,4 +21,6 @@ public class CardHolderClassfy {
     private Integer ownerId;
     private Date createTime;
     private Date updateTime;
+
+    public CardHolderClassfy(){}
 }

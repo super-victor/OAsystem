@@ -20,3 +20,11 @@ jwt:
   secret: tangliyi123fddsafasgkahgjdhgkjfhago9gjoasjglkkdsanglkjnfadlkgjnlfkangl;afdngafdng;
   # 过期时间
   expiration: 3600
+
+##swagger
+swagger:
+  title: "协同办公系统api接口"
+
+
+# 生产环节启用
+# springfox.documentation.swagger-ui.enabled=false
