@@ -35,7 +35,7 @@ public class CardHolderController {
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "添加名片夹")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @PostMapping("/CardHolder")
     public BackFrontMessage insertCardHolder(@RequestParam int ownedId, @RequestParam int cardHolderClassfyId){
         return cardHolderService.insertCardHolder(ownedId, cardHolderClassfyId);
@@ -51,7 +51,7 @@ public class CardHolderController {
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "修改名片夹的分类")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @PutMapping("/CardHolder")
     public BackFrontMessage updateCardHolderAboutClassfy(@RequestParam int cardHolderId, @RequestParam int cardHolderClassfyId){
         return cardHolderService.updateCardHolderAboutClassfy(cardHolderId,cardHolderClassfyId);
@@ -66,7 +66,7 @@ public class CardHolderController {
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "删除名片夹")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @DeleteMapping("/CardHolder")
     public BackFrontMessage deleteCardHolder(@RequestParam int cardHolderId){
         return cardHolderService.deleteCardHolder(cardHolderId);

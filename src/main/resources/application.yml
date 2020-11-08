@@ -22,7 +22,7 @@ jwt:
   expiration: 3600
 
 ##swagger
-swagger:
+myswagger:
   title: "协同办公系统api接口"
 
 
