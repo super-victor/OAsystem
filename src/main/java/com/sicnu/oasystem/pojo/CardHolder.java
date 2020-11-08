@@ -23,4 +23,6 @@ public class CardHolder {
     private Integer cardHolderClassfyId;
     private Date createTime;
     private Date updateTime;
+
+    public CardHolder(){}
 }

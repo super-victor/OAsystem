@@ -3,8 +3,6 @@ package com.sicnu.oasystem.controller;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.CardHolderClassfyService;
 import io.swagger.annotations.*;
-import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
