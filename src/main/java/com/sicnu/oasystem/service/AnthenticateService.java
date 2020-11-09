@@ -46,10 +46,10 @@ public class AnthenticateService implements UserDetailsService {
         return employee;
     }
 
-    /*
+    /**
      * @MethodName getSelfProfile 
-     * @param  
-     * @Description 添加描述
+     * @param
+     * @Description 获取用户个人资料
      * @Author JohnTang
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/6
@@ -68,7 +68,7 @@ public class AnthenticateService implements UserDetailsService {
      */
     public BackFrontMessage changeSelfPorfile(String phone, String email, String homeAddress){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
-        if( employeeMapper.updatePartlyEmployeeByEmployeeId(currentEmployee.getEmployeeId(), phone, email, homeAddress) != 0) {
+        if ( employeeMapper.updatePartlyEmployeeByEmployeeId(currentEmployee.getEmployeeId(), phone, email, homeAddress) != 0) {
             return new BackFrontMessage(200, "更新成功", null);
         }else {
             return new BackFrontMessage(500, "更新失败", null);

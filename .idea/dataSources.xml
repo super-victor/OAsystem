@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="oasytem" uuid="8ea5c9e1-07cf-4000-af91-d4b38d57047d">
+    <data-source source="LOCAL" name="oasytem" uuid="ea0c7aab-86cf-4b38-a0a2-a590bcfb74bf">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <remarks>协同办公系统数据库</remarks>
