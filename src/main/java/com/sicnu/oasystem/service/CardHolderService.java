@@ -12,15 +12,17 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 
 public interface CardHolderService {
 
-    public BackFrontMessage insertCardHolder(int ownedId, int cardHolderClassfyId);
+    BackFrontMessage insertCardHolder(int ownedId, int cardHolderClassfyId);
 
-    public BackFrontMessage findCardHolderByOwnerId();
+    BackFrontMessage findCardHolderByOwnerId();
 
-    public BackFrontMessage findCardHolderByOwnedId(int ownedId);
+    BackFrontMessage findCardHolderByOwnedId(int ownedId);
 
-    public BackFrontMessage findCardHolderByCardHolderClassfyId(int cardHolderClassfyId);
+    BackFrontMessage findCardHolderByCardHolderClassfyId(int cardHolderClassfyId);
 
-    public BackFrontMessage deleteCardHolder(int cardHolderId);
+    BackFrontMessage findSelfCardHolder();
 
-    public BackFrontMessage updateCardHolderAboutClassfy(int cardHolderId, int cardHolderClassfyId);
+    BackFrontMessage deleteCardHolder(int cardHolderId);
+
+    BackFrontMessage updateCardHolderAboutClassfy(int cardHolderId, int cardHolderClassfyId);
 }

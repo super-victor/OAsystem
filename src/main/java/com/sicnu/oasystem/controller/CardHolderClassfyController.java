@@ -24,7 +24,6 @@ public class CardHolderClassfyController {
 
     /**
      * @MethodName findCardHolderClassfysByEmployeeId
-     * @param
      * @Description 获取职工所拥有的名片夹分类
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage

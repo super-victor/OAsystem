@@ -3,6 +3,7 @@ package com.sicnu.oasystem.service;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
 import com.sicnu.oasystem.mapper.CardHolderMapper;
+import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
@@ -10,7 +11,10 @@ import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName CardHolderService
@@ -29,10 +33,13 @@ public class CardHolderServiceImpl implements CardHolderService{
     @Resource
     CardHolderClassfyMapper cardHolderClassfyMapper;
 
+    @Resource
+    EmployeeMapper employeeMapper;
+
     /**
      * @MethodName insertCardHolder
-     * @param ownedId
-     * @param cardHolderClassfyId
+     * @param ownedId 被拥有者id
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 添加名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -63,8 +70,8 @@ public class CardHolderServiceImpl implements CardHolderService{
 
     /**
      * @MethodName hasOwnedCardHolder
-     * @param ownerId
-     * @param ownedId
+     * @param ownerId 拥有者id
+     * @param ownedId 被拥有者id
      * @Description 判断是否已经拥有某一职工的名片夹
      * @Author Waynejwei
      * @Return int
@@ -82,7 +89,6 @@ public class CardHolderServiceImpl implements CardHolderService{
 
     /**
      * @MethodName findCardHolderByOwnerId
-     * @param
      * @Description 查找职工所拥有的全部名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -92,12 +98,46 @@ public class CardHolderServiceImpl implements CardHolderService{
     public BackFrontMessage findCardHolderByOwnerId() {
         Employee currentEmployeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         List<CardHolder> cardHolderList = cardHolderMapper.findCardHolderByEmployeeId(currentEmployeeId.getEmployeeId());
-        return null;
+        return new BackFrontMessage(200,"查找成功",getCardListContent(cardHolderList));
+    }
+
+    /**
+     * @MethodName getCardContent
+     * @param employee 职工
+     * @Description 返回名片夹中的值
+     * @Author Waynejwei
+     * @Return java.util.Map<java.lang.String,java.lang.Object>
+     * @LastChangeDate 2020/11/8
+     */
+    public Map<String,Object> getCardContent(Employee employee){
+        Map<String,Object> map = new HashMap<>();
+        map.put("name",employee.getName());
+        map.put("homeAddress",employee.getHomeAddress());
+        map.put("phone",employee.getPhone());
+        map.put("emial",employee.getEmail());
+        return map;
+    }
+
+    /**
+     * @MethodName getCardListContent
+     * @param cardHolderList 名片夹列表
+     * @Description 返回名片夹列表中的值
+     * @Author Waynejwei
+     * @Return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @LastChangeDate 2020/11/8
+     */
+    public List<Map<String,Object>> getCardListContent(List<CardHolder> cardHolderList){
+        List<Map<String,Object>> result_list = new ArrayList<>();
+        for (CardHolder cardHolder : cardHolderList) {
+            Employee employee = employeeMapper.findEmployeeByEmployeeId(cardHolder.getOwnedId());
+            result_list.add(getCardContent(employee));
+        }
+        return result_list;
     }
 
     /**
      * @MethodName findCardHolderByOwnedId
-     * @param ownedId
+     * @param ownedId 被拥有者id
      * @Description 查找职工拥有的另一个职工的名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -105,12 +145,13 @@ public class CardHolderServiceImpl implements CardHolderService{
      */
     @Override
     public BackFrontMessage findCardHolderByOwnedId(int ownedId) {
-        return null;
+        Employee employee = employeeMapper.findEmployeeByEmployeeId(ownedId);
+        return new BackFrontMessage(200,"查找成功",getCardContent(employee));
     }
 
     /**
      * @MethodName findCardHolderByCardHolderClassfyId
-     * @param cardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 查找职工某一分类下的所有名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -118,12 +159,26 @@ public class CardHolderServiceImpl implements CardHolderService{
      */
     @Override
     public BackFrontMessage findCardHolderByCardHolderClassfyId(int cardHolderClassfyId) {
-        return null;
+        List<CardHolder> cardHolderList = cardHolderMapper.findCardHolderByCardHolderClassfyId(cardHolderClassfyId);
+        return new BackFrontMessage(200,"查找成功",getCardListContent(cardHolderList));
+    }
+
+    /**
+     * @MethodName findSelfCardHolder
+     * @Description 获取自己的名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    @Override
+    public BackFrontMessage findSelfCardHolder() {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        return new BackFrontMessage(200,"查找成功",getCardContent(currentEmployee));
     }
 
     /**
      * @MethodName deleteCardHolder
-     * @param cardHolderId
+     * @param cardHolderId 名片夹id
      * @Description 删除名片夹by名片夹id
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -142,7 +197,7 @@ public class CardHolderServiceImpl implements CardHolderService{
 
     /**
      * @MethodName updateCardHolderAboutClassfy
-     * @param cardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 修改名片夹所在分类
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -165,8 +220,8 @@ public class CardHolderServiceImpl implements CardHolderService{
 
     /**
      * @MethodName hasOwnedCardHolderClassfy
-     * @param employeeId
-     * @param cardHolderClassfyId
+     * @param employeeId 职工id
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 查找该职工是否拥有此名片夹分类
      * @Author Waynejwei
      * @Return boolean
