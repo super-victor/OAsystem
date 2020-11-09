@@ -4,7 +4,6 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.Role;
-import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +14,7 @@ import java.util.List;
 
 /**
  * @ClassName AnthenticationService
- * @Description 认证服务
+ * @Description 认证有关服务
  * @Author JohnTang
  * @LastChangeDate 2020/11/5 18:45
  * @Version v1.0
@@ -44,34 +43,5 @@ public class AnthenticateService implements UserDetailsService {
         List<Role> roles = employeeMapper.findRolesByEmployeeId(employee.getEmployeeId());
         employee.setAuthorities(roles);
         return employee;
-    }
-
-    /**
-     * @MethodName getSelfProfile 
-     * @param
-     * @Description 获取用户个人资料
-     * @Author JohnTang
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/6
-     */
-    public BackFrontMessage getSelfProfile(){
-        return new BackFrontMessage(200, "获取成功", UserAuthenticationUtils.getCurrentUserFromSecurityContext());
-    }
-
-    /**
-     * @MethodName changeUserPorfile
-     * @Param String phone, String email, String homeAddress
-     * @Description 修改用户个人资料
-     * @Author JohnTang
-     * @Return BackFrontMessage
-     * @LastChangeDate 2020/11/6
-     */
-    public BackFrontMessage changeSelfPorfile(String phone, String email, String homeAddress){
-        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
-        if ( employeeMapper.updatePartlyEmployeeByEmployeeId(currentEmployee.getEmployeeId(), phone, email, homeAddress) != 0) {
-            return new BackFrontMessage(200, "更新成功", null);
-        }else {
-            return new BackFrontMessage(500, "更新失败", null);
-        }
     }
 }
