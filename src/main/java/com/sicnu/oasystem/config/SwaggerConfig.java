@@ -1,7 +1,6 @@
 package com.sicnu.oasystem.config;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.AuthorizationScope;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +21,11 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @Version v1.0
  */
 
+
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${swagger.title}")
+    @Value("${myswagger.title}")
     private String title;
 
     @Bean
@@ -41,8 +41,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(title)
-                .description("")
-                .contact(new Contact("zhaohb", "#", "1457631561@qq.com"))
+                .description("协同办公系统的后台api接口")
+                .contact(new Contact("panyong", "www.baidu.com", "1358844623@qq.com"))
                 .version("1.0")
                 .build();
     }

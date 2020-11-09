@@ -30,12 +30,13 @@ public interface EmployeeMapper {
      */
     Employee findEmployeeByUsername(String username);
 
-    /**
-     * @MethodName ${name}
-     * @Param ${param}
-     * @Description 添加描述
-     * @Return ${return}
-     * @LastChangeDate ${DATE} ${TIME}
+    /***
+     * @MethodName findDepartmentByDepartmentId
+     * @param departmentId
+     * @Description 根据部门id找部门
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.pojo.Department
+     * @LastChangeDate 2020/11/8
      */
     Department findDepartmentByDepartmentId(int departmentId);
 
