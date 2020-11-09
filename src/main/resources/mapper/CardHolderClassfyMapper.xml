@@ -11,7 +11,7 @@
     </update>
 
     <delete id="deleteCardHolderClassfyByCardHolderClassfyId">
-        delete from CardHolderClassfy where CardHolderClassfyId = #{CardHolderClassfyId}
+        delete from CardHolderClassfy where CardHolderClassfyId = #{cardHolderClassfyId}
     </delete>
 
     <select id="findCardHolderClassfysByEmployeeId" resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">

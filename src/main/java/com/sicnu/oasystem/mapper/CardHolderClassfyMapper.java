@@ -20,7 +20,7 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName findCardHolderClassfysByEmployeeId
-     * @param employeeId
+     * @param employeeId  职工id
      * @Description 查找名片夹by职工id
      * @Author Waynejwei
      * @Return java.util.List<com.sicnu.oasystem.pojo.CardHolderClassfy>
@@ -30,8 +30,8 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName findCardHolderClassfyByName
-     * @param name
-     * @param ownerId
+     * @param name 名片夹分类名称
+     * @param ownerId 名片夹分类拥有者id
      * @Description 查找名片夹分类by名片夹分类名称
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.pojo.CardHolderClassfy
@@ -41,7 +41,7 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName findCardHolderClassfyByCardHolderClassfyId
-     * @param cardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 查找名片夹分类通过名片夹分类id
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.pojo.CardHolderClassfy
@@ -51,18 +51,18 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName deleteCardHolderClassfyByCardHolderClassfyId
-     * @param CardHolderClassfyId
-     * @Description 删除名片夹分类by名片夹id
+     * @param cardHolderClassfyId 名片夹分类id
+     * @Description 删除名片夹分类by名片夹id,并将原本属于他的划分到"他人名片夹"
      * @Author Waynejwei
      * @Return int
      * @LastChangeDate 2020/11/6
      */
-    int deleteCardHolderClassfyByCardHolderClassfyId(int CardHolderClassfyId);
+    int deleteCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId);
 
     /**
      * @MethodName updateCardHolderClassfyByCardHolderClassfyId
-     * @param CardHolderClassfyId
-     * @param name
+     * @param CardHolderClassfyId 名片夹分类id
+     * @param name 名片夹分类名称
      * @Description 修改名片夹名称by名片夹id
      * @Author Waynejwei
      * @Return int
@@ -72,7 +72,7 @@ public interface CardHolderClassfyMapper {
 
     /**
      * @MethodName insertCardHolderClassfyByCardHolderClassfyId
-     * @param cardHolderClassfy
+     * @param cardHolderClassfy 名片夹分类
      * @Description 增加名片夹分类
      * @Author Waynejwei
      * @Return int

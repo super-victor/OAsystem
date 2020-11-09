@@ -14,7 +14,7 @@ import java.sql.Date;
  */
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Department {
     private Integer departmentId;
     private String name;

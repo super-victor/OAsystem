@@ -10,6 +10,10 @@
         update CardHolder set cardHolderClassfyId = #{cardHolderClassfyId} where cardHolderId = #{cardHolderId}
     </update>
 
+    <update id="updateCardHoldersByCardHolderId">
+        update CardHolder set cardHolderClassfyId = #{newCardHolderClassfyId} where cardHolderClassfyId = #{oldCardHolderClassfyId}
+    </update>
+
     <delete id="deleteCardHolderByCardHolderId">
         delete from CardHolder where CardHolderId = #{CardHolderId}
     </delete>

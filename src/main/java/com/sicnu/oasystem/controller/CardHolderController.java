@@ -71,4 +71,64 @@ public class CardHolderController {
     public BackFrontMessage deleteCardHolder(@RequestParam int cardHolderId){
         return cardHolderService.deleteCardHolder(cardHolderId);
     }
+
+    /**
+     * @MethodName findCardHolderByOwnerId
+     * @param
+     * @Description 获取职工他人所有的名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    @ApiOperation(value = "获取职工所有的名片夹")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @GetMapping("/CardHolderByOwnerId")
+    public BackFrontMessage findCardHolderByOwnerId(){
+        return cardHolderService.findCardHolderByOwnerId();
+    }
+
+    /**
+     * @MethodName findCardHolderByOwnedId
+     * @param ownedId
+     * @Description 获取某一个名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    @ApiOperation(value = "获取某一职工的名片夹")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @GetMapping("/CardHolderByOwnedId")
+    public BackFrontMessage findCardHolderByOwnedId(@RequestParam int ownedId){
+        return cardHolderService.findCardHolderByOwnedId(ownedId);
+    }
+
+    /**
+     * @MethodName findCardHolderByCardHolderClassfyId
+     * @param cardHolderClassfyId
+     * @Description 获取某一分类下的所有名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    @ApiOperation(value = "获取某一分类下的所有名片夹")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @GetMapping("/CardHolderByCardHolderClassfyId")
+    public BackFrontMessage findCardHolderByCardHolderClassfyId(@RequestParam int cardHolderClassfyId){
+        return cardHolderService.findCardHolderByCardHolderClassfyId(cardHolderClassfyId);
+    }
+
+    /**
+     * @MethodName findSelfCardHolder
+     * @param
+     * @Description 获取职工个人的名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    @ApiOperation(value = "获取职工个人的名片夹")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", name = "token", value = "token标记", required = true) })
+    @GetMapping("/SelfCardHolder")
+    public BackFrontMessage findSelfCardHolder(){
+        return cardHolderService.findSelfCardHolder();
+    }
 }

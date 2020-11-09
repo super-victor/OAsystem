@@ -1,7 +1,6 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.pojo.Employee;
 
 /**
  * @InterfaceName CardHolderClassfyService
@@ -13,11 +12,11 @@ import com.sicnu.oasystem.pojo.Employee;
 
 public interface CardHolderClassfyService {
 
-    public BackFrontMessage findCardHolderClassfyByEmployeeId();
+    BackFrontMessage findCardHolderClassfyByEmployeeId();
 
-    public BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId);
+    BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId);
 
-    public BackFrontMessage insertCardHolderClassfy(String name);
+    BackFrontMessage insertCardHolderClassfy(String name);
 
-    public BackFrontMessage updateCardHolderClassfyName(int cardHolderClassfyId, String name);
+    BackFrontMessage updateCardHolderClassfyName(int cardHolderClassfyId, String name);
 }

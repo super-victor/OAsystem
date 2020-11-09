@@ -69,4 +69,47 @@ public interface EmployeeMapper {
      * @LastChangeDate 2020/11/6
      */
     int updatePartlyEmployeeByEmployeeId(int employeeId, String phone, String email, String homeAddress);
+
+    /**
+     * @MethodName getAllEmployee
+     * @param
+     * @Description 获取所有员工的通讯录
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/9
+     */
+    List<Employee> getAllEmployee();
+
+    /**
+     * @MethodName getEmployeeBypage
+     * @param currentPageNum
+     * @param pageSize
+     * @Description 按页获取员工数据
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/9
+     */
+    List<Employee> getEmployeeBypage(Integer currentPageNum,Integer pageSize);
+
+    /**
+     * @MethodName getemployeenumbers
+     * @param
+     * @Description 获取所有员工的数量
+     * @Author pan
+     * @Return java.lang.Integer
+     * @LastChangeDate 2020/11/9
+     */
+
+    Integer getemployeenumbers();
+
+    /**
+     * @MethodName getEmployeeBycondition
+     * @param name
+     * @param sex
+     * @Description 通过名字和性别获取员工
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/9
+     */
+    List<Employee>getEmployeeBycondition(String name,String sex);
 }
