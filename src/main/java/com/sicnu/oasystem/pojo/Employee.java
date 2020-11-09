@@ -39,6 +39,7 @@ public class Employee implements UserDetails {
     @JsonIgnore
     private Date updateTime;
     private List<Role> authorities;
+    private Department department;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

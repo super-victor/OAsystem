@@ -54,5 +54,4 @@ public class BackFrontPage {
         this.pageSize = pageSize;
     }
 
-
 }

@@ -7,13 +7,16 @@ spring:
     username: oasystem
     password: tangliyi123
     driver-class-name: com.mysql.cj.jdbc.Driver
-## mybatis sql语句控制台打印执行sql语句
+## mybatis
+# sql语句控制台打印执行sql语句
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+
 ## token jwt
 jwt:
   # 密钥
-  secret: tangliyi123.
+  secret: tangliyi123fddsafasgkahgjdhgkjfhago9gjoasjglkkdsanglkjnfadlkgjnlfkangl;afdngafdng;
   # 过期时间
-  expiration: 3600
+  expiration: 604800

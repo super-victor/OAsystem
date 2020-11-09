@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.EmployeeMapper">
+
+    <resultMap id="ems" type="com.sicnu.oasystem.pojo.Employee">
+        <id property="employeeId" column="employeeId"></id>
+        <result property="username" column="username"></result>
+        <result property="name" column="name"></result>
+        <result property="phone" column="phone"></result>
+        <result property="email" column="email"></result>
+        <result property="entryTime" column="entryTime"></result>
+        <association property="department" javaType="com.sicnu.oasystem.pojo.Department">
+            <id property="departmentId" column="departmentId"></id>
+            <result property="name" column="dname"></result>
+        </association>
+    </resultMap>
+
     <update id="updatePartlyEmployeeByEmployeeId">
         update employee set email = #{email}, phone = #{phone}, homeaddress = #{homeAddress} where employeeid = #{employeeid}
     </update>
@@ -20,4 +34,31 @@
     <select id="findDepartmentByDepartmentId" resultType="com.sicnu.oasystem.pojo.Department">
         select * from department where departmentid = #{departmentId}
     </select>
+
+    <select id="getAllEmployee" resultMap="ems">
+         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentId=department.departmentId
+    </select>
+
+    <select id="getEmployeeBypage" resultMap="ems">
+         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,department.departmentId,department.name as dname
+         from employee,department where employee.departmentId=department.departmentId
+         LIMIT
+		 ${(currentPageNum-1)*pageSize}, ${pageSize}
+    </select>
+
+    <select id="getemployeenumbers" resultType="java.lang.Integer">
+        select count(*) from employee
+    </select>
+
+    <select id="getEmployeeBycondition" resultMap="ems">
+        select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.entryTime,department.departmentId,department.name as dname
+        from employee,department where employee.departmentId=department.departmentId
+        <if test="sex !=null">
+            and employee.sex=#{sex}
+        </if>
+        <if test="name !=null">
+            and employee.name like #{name}
+        </if>
+    </select>
+
 </mapper>
