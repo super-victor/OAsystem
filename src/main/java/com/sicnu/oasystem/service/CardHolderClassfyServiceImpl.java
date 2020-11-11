@@ -3,6 +3,7 @@ package com.sicnu.oasystem.service;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
 import com.sicnu.oasystem.mapper.CardHolderMapper;
+import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName CardHolderClassfyService
@@ -61,20 +63,24 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         CardHolderClassfy defaultClassfy = cardHolderClassfyMapper
                 .findCardHolderClassfyByName("他人名片夹", currentEmployee.getEmployeeId());
+        //转移前判断是否需要转移
+        List<CardHolder> hasCardHoder = cardHolderMapper.findCardHolderByCardHolderClassfyId(cardHolderClassfyId);
+        boolean updateCardHolder = false;   //默认不需要转移
+        if ( hasCardHoder.size() != 0 ) {  //有需要转移的名片夹
+            updateCardHolder = true;
+        }
         //删除前先将此名片夹分类下的名片夹转移到“他人名片夹”下
-        int transferCount = cardHolderMapper.updateCardHoldersByCardHolderId(
+        int transferCount = cardHolderMapper.updateCardHolderClassfyIdByOldCardHolderClassfyId(
                 cardHolderClassfyId, defaultClassfy.getCardHolderClassfyId());
-        if (transferCount > 0){
+        if (transferCount > 0 || !updateCardHolder){  //转移行数大于0，或者不需要转移
             int result = cardHolderClassfyMapper
                     .deleteCardHolderClassfyByCardHolderClassfyId(cardHolderClassfyId);
             if (result > 0){
                 return new BackFrontMessage(200,"删除成功,该分类下的名片夹已转移至‘他人名片夹‘下",null);
-            }
-            else{
+            } else {
                 return new BackFrontMessage(500,"删除失败",null);
             }
-        }
-        else{
+        } else {
             return new BackFrontMessage(500,"删除失败",null);
         }
     }
@@ -101,8 +107,7 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
                 .insertCardHolderClassfyByCardHolderClassfyId(cardHolderClassfy);
         if (counter > 0){
             return new BackFrontMessage(200,"添加成功",cardHolderClassfy.getCardHolderClassfyId());
-        }
-        else{
+        } else {
             return new BackFrontMessage(500,"添加失败",null);
         }
     }
@@ -122,11 +127,10 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
         if(hasSameName(currentEmployee, name)){
             return new BackFrontMessage(500,"修改失败，您已经此名字的名片夹分类!",null);
         }
-        int result = cardHolderClassfyMapper.updateCardHolderClassfyByCardHolderClassfyId(cardHolderClassfyId, name);
+        int result = cardHolderClassfyMapper.updateCardHolderClassfyNameByCardHolderClassfyId(cardHolderClassfyId, name);
         if (result == 1){
             return new BackFrontMessage(200,"修改成功",null);
-        }
-        else{
+        } else {
             return new BackFrontMessage(500,"修改失败",null);
         }
     }

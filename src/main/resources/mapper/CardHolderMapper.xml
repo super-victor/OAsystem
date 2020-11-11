@@ -6,16 +6,16 @@
         insert into CardHolder(ownerId, ownedId, cardHolderClassfyId) values(#{ownerId}, #{ownedId}, #{cardHolderClassfyId})
     </insert>
 
-    <update id="updateCardHolderByCardHolderId">
+    <update id="updateCardHolderClassfyIdByCardHolderId">
         update CardHolder set cardHolderClassfyId = #{cardHolderClassfyId} where cardHolderId = #{cardHolderId}
     </update>
 
-    <update id="updateCardHoldersByCardHolderId">
+    <update id="updateCardHolderClassfyIdByOldCardHolderClassfyId">
         update CardHolder set cardHolderClassfyId = #{newCardHolderClassfyId} where cardHolderClassfyId = #{oldCardHolderClassfyId}
     </update>
 
-    <delete id="deleteCardHolderByCardHolderId">
-        delete from CardHolder where CardHolderId = #{CardHolderId}
+    <delete id="deleteCardHolderByCardHolderIdAndOwnerId">
+        delete from CardHolder where CardHolderId = #{CardHolderId} and ownerId = #{ownerId}
     </delete>
 
     <select id="findCardHolderByCardHolderClassfyId" resultType="com.sicnu.oasystem.pojo.CardHolder">
@@ -26,7 +26,7 @@
         select * from CardHolder where ownerId = #{employeeId}
     </select>
 
-    <select id="findCardHolderByOwnedId" resultType="com.sicnu.oasystem.pojo.CardHolder">
+    <select id="findCardHolderByOwnerIdAndOwnedId" resultType="com.sicnu.oasystem.pojo.CardHolder">
         select * from CardHolder where ownerId = #{ownerId} and ownedId = #{ownedId}
     </select>
 </mapper>
