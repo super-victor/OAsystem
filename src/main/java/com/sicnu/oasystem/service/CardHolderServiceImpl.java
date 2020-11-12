@@ -56,8 +56,8 @@ public class CardHolderServiceImpl implements CardHolderService{
         }
         //新增
         CardHolder cardHolder = new CardHolder();
-        cardHolder.setOwnedId(ownedId);
-        cardHolder.setOwnerId(currentEmployee.getEmployeeId());
+        //cardHolder.setOwnedId(ownedId);
+        //cardHolder.setOwnerId(currentEmployee.getEmployeeId());
         cardHolder.setCardHolderClassfyId(cardHolderClassfyId);
         int counter = cardHolderMapper.insertCardHolderByOwnedId(cardHolder);
         if (counter > 0){
@@ -127,8 +127,8 @@ public class CardHolderServiceImpl implements CardHolderService{
     public List<Map<String,Object>> getCardListContent(List<CardHolder> cardHolderList){
         List<Map<String,Object>> resultList = new ArrayList<>();
         for (CardHolder cardHolder : cardHolderList) {
-            Employee employee = employeeMapper.findEmployeeByEmployeeId(cardHolder.getOwnedId());
-            resultList.add(getCardContent(employee));
+           // Employee employee = employeeMapper.findEmployeeByEmployeeId(cardHolder.getOwnedId());
+           // resultList.add(getCardContent(employee));
         }
         return resultList;
     }

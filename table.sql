@@ -39,10 +39,11 @@ create table Employee (
     birthday timestamp comment '职工生日',
     idCard char(18) not null comment '职工身份证号码',
     sex char(2) comment '职工性别',
-    entryTime timestamp not null comment '职工入职时间',
+    entryTime timestamp default current_timestamp not null comment '职工入职时间',
     departmentId int not null comment '职工所在部门id',
     position varchar(10) not null comment '职工职位',
-    homeAddress varchar(20) comment '职工家庭地址',
+    homeAddress varchar(50) comment '职工家庭地址',
+    passwordChangeDate timestamp default current_timestamp comment'密码最后修改时间',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_Employee_employeeId primary key(employeeId),
@@ -91,19 +92,37 @@ create table CardHolderClassfy(
 );
 
 
+
 -- 名片夹表
 create table CardHolder(
     cardHolderId int not null auto_increment comment '名片id',
-    ownerId int not null comment '拥有者id',
-    ownedId int not null comment '名片被拥有者id',
     cardHolderClassfyId int not null comment '名片夹分类id',
+    name varchar(20) not null comment '姓名',
+    phone char(11) not null comment '电话',
+    email varchar(20) comment '邮箱',
+    address varchar(50) not null comment '联系地址',
+    qq varchar(20) comment 'qq号',
+    company varchar(20) not null  comment '公司',
+    department varchar(20) comment '部门',
+    position varchar(20) comment '职位',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_cardHolder_cardHolderId primary key(cardHolderId),
-    constraint fk_cardHolder_ownerId foreign key(ownerId) references Employee(employeeId),
-    constraint fk_cardHolder_ownedId foreign key(ownedId) references Employee(employeeId),
-    constraint fk_cardHolder_cardHolderClassfyId foreign key(cardHolderClassfyId) references CardHolderClassfy(cardHolderClassfyId)
+    constraint pk_CardHolder_cardHolderId primary key(cardHolderId),
+    constraint fk_CardHolder_cardHoledrClassfyId foreign key(cardHolderClassfyId) references CardHolderClassfy(cardHolderClassfyId)
 );
+
+-- 名片夹员工对应表
+create table EmployeeCardHolder(
+    employeeCardHolderId int not null auto_increment comment '职工名片夹对应id',
+    employeeId int not null comment '职工id',
+    cardHolderId int not null comment '名片id',
+    createTime timestamp default current_timestamp comment '字段创建时间',
+    updateTime timestamp on update current_timestamp comment '字段修改时间',
+    constraint pk_EmployeeCardHolder_employeeCardHolderId primary key(employeeCardHolderId),
+    constraint fk_EmployeeCardHolder_employeeId foreign key(employeeId) references Employee(employeeId),
+    constraint fk_EmployeeCardHolder_cardHolderId foreign key(cardHolderId) references CardHolder(cardHolderId)
+);
+
 
 
 -- 待办事项表
@@ -199,7 +218,7 @@ create table SendFile(
     annexUrl varchar(20) comment '附件URL',
     context text not null comment '正文',
     sendPsrsonNum int not null comment '分发人数',
-    isUergent int not null comment '发文缓急',
+    isUrgent int not null comment '发文缓急',
     remark text comment '备注',
     senderId int not null comment '发件人ID',
     censorId int comment '审查人ID',
@@ -269,4 +288,12 @@ create table Meeting(
     constraint fk_Meeting_employeeId foreign key (employeeId) references Employee(employeeId),
     constraint fk_Meeting_meetingRoomId foreign key (meetingRoomId) references MeetingRoom(meetingRoomId)
 );
+
+
+-- 数据
+insert into department (name, phone) values ('后勤部', '10001');
+insert into department (name, phone) values ('财务部', '10002');
+
+insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', 1, '普通员工', '四川师范大学');
+insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', 2, '普通员工', '四川师范大学');
 

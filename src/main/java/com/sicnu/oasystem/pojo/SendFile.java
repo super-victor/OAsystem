@@ -11,6 +11,7 @@ import java.util.Date;
  * @Date: 2020/11/05/20:23
  * @Description:发文表实体类
  */
+
 @Data
 public class SendFile {
     private Integer sendfileId;   //发文ID
@@ -19,7 +20,7 @@ public class SendFile {
     private String annexUrl; //附件URL
     private String context;  //正文 
     private Integer sendPsrsonNum;  //分发人数
-    private Integer isUergent;  //是否紧急
+    private Integer isUrgent;  //是否紧急
     private String remark; //备注
     private Integer senderId; //发件人ID
     private Integer censorId; //审查人ID

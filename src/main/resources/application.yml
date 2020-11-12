@@ -25,6 +25,8 @@ jwt:
 myswagger:
   title: "协同办公系统api接口"
 
+document:
+  path: C:\Users\JohnTang\Desktop\oasystem
 
 # 生产环节启用
 # springfox.documentation.swagger-ui.enabled=false

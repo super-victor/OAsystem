@@ -16,8 +16,8 @@ import java.util.List;
  * @Version v1.0
  */
 
+
 @Mapper
-@Component
 public interface EmployeeMapper {
 
     /**
