@@ -48,6 +48,7 @@ export const NetworkRequest = options => {
               confirmButtonText: '确定',
               cancelButtonText: '取消'
             }).then(()=>{
+              Store.commit('GET_TOKEN',null);
               //router.replace('/login');
             })
           }
