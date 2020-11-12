@@ -2,10 +2,11 @@
 <template>
   <div class='theDrawer' @mousewheel.prevent :style="{'width':showDrawer?'220px':'0px'}">
     <div v-show="showDrawer">
-      <p class="title">{{$store.state.asideItem.title}}</p>
+      <p class="title">{{asideItem.title}}</p>
       <p class="item"
-      v-for="(item,index) in $store.state.asideItem.children"
-      :key="index">{{item.name}}</p>
+      v-for="(item,index) in asideItem.children"
+      :key="index"
+      @click="routeChange(asideItem.route,item.route)">{{item.name}}</p>
     </div>
   </div>
 </template>
@@ -31,7 +32,9 @@
       
     },
     methods: {
-      
+      routeChange(firstRoute,secondRoute){
+        this.$router.push(`/${firstRoute}/${secondRoute}`);
+      }
     },
     created() {
       

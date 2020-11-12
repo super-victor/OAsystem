@@ -9,14 +9,15 @@ export default{
       img:'card_holder',
       title:'名片夹',
       clickMark:1,
+      route:'business-card-holder',
       children:[
         {
           name:'我的名片夹',
-          route:''
+          route:'mine'
         },
         {
           name:'共享名片夹',
-          route:''
+          route:'shared'
         }
       ]
     },
@@ -24,22 +25,23 @@ export default{
       img:'schedule',
       title:'日程安排',
       clickMark:2,
+      route:'schedule',
       children:[
         {
           name:'我的日程',
-          route:''
+          route:'mine'
         },
         {
           name:'查找日程',
-          route:''
+          route:'inquiry'
         },
         {
           name:'日程代办',
-          route:''
+          route:'agent'
         },
         {
           name:'创建日程',
-          route:''
+          route:'create'
         }
       ]
     },
@@ -47,10 +49,11 @@ export default{
       img:'address_book',
       title:'通讯录',
       clickMark:3,
+      route:'address-book',
       children:[
         {
           name:'通讯录查询',
-          route:''
+          route:'inquiry'
         }
       ]
     },
@@ -58,22 +61,23 @@ export default{
       img:'todo',
       title:'代办事项',
       clickMark:4,
+      route:'to-do',
       children:[
         {
           name:'代办清单',
-          route:''
+          route:'to-do-list'
         },
         {
           name:'添加代办',
-          route:''
+          route:'addition'
         },
         {
           name:'留言清单',
-          route:''
+          route:'message-list'
         },
         {
           name:'发送留言',
-          route:''
+          route:'send'
         }
       ]
     },
@@ -81,18 +85,19 @@ export default{
       img:'meetingroom',
       title:'会议室管理',
       clickMark:5,
+      route:'meetingroom-management',
       children:[
         {
           name:'设施管理',
-          route:''
+          route:'equipment'
         },
         {
           name:'房间管理',
-          route:''
+          route:'room'
         },
         {
           name:'预约审批',
-          route:''
+          route:'appointment-approval'
         }
       ]
     },
@@ -100,10 +105,11 @@ export default{
       img:'meeting',
       title:'会议管理',
       clickMark:6,
+      route:'meeting-management',
       children:[
         {
           name:'会议信息',
-          route:''
+          route:'information'
         }
       ]
     },
@@ -111,18 +117,19 @@ export default{
       img:'send_file',
       title:'发文管理',
       clickMark:8,
+      route:'send-file-management',
       children:[
         {
           name:'查询拟稿',
-          route:''
+          route:'query-draft'
         },
         {
           name:'发送拟稿',
-          route:''
+          route:'send-draft'
         },
         {
           name:'文件分发',
-          route:''
+          route:'distribution'
         }
       ]
     },
@@ -130,22 +137,23 @@ export default{
       img:'receive_file',
       title:'收文管理',
       clickMark:9,
+      route:'receive-file-management',
       children:[
         {
           name:'公文签收',
-          route:''
+          route:'sign-for-official-document'
         },
         {
           name:'收文记录',
-          route:''
+          route:'official-document-record'
         },
         {
           name:'领导批示',
-          route:''
+          route:'leader-instructions'
         },
         {
           name:'收文监控',
-          route:''
+          route:'collection-monitoring'
         }
       ]
     },
@@ -153,22 +161,23 @@ export default{
       img:'backstage_management',
       title:'后台管理',
       clickMark:7,
+      route:'backstage-management',
       children:[
         {
           name:'部门管理',
-          route:''
+          route:'department'
         },
         {
           name:'员工管理',
-          route:''
+          route:'staff'
         },
         {
           name:'角色管理',
-          route:''
+          route:'role'
         },
         {
           name:'权限管理',
-          route:''
+          route:'authority'
         }
       ]
     }
