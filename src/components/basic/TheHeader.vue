@@ -1,6 +1,6 @@
 !<!-- Header -->
 <template>
-  <div class='header'>
+  <div class='header' @mousewheel.prevent>
     <div class="logoBox">
       <img src="@/assets/logo.png" class="logo" alt="">
     </div>

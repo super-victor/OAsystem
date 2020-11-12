@@ -11,7 +11,11 @@ import {
   Main,
   Footer,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Input,
+  Link,
+  Button,
+  Message
 } from 'element-ui';
 
 Vue.use(Container);
@@ -21,8 +25,13 @@ Vue.use(Main);
 Vue.use(Footer);
 Vue.use(Breadcrumb);
 Vue.use(BreadcrumbItem);
+Vue.use(Input);
+Vue.use(Link);
+Vue.use(Button);
 
 Vue.config.productionTip = false
+
+Vue.prototype.$message = Message;
 
 new Vue({
   router,

@@ -5,37 +5,41 @@
     class='asideMenu'
     v-for="item in asideMenu"
     :key="item.clickMark"
-    :style="{'backgroundColor':mouseClick==item.clickMark?'#5383EC':'#FFFFFF'}"
+    :style="{'backgroundColor':($store.state.allowShowItem && $store.state.mouseClickIndex==item.clickMark)?'#5383EC':'#FFFFFF'}"
     @mouseenter="mouseIndex=item.clickMark"
     @mouseleave="mouseIndex=0"
-    @click="click(item.clickMark)">
-      <img :src="mouseClick==item.clickMark?require(`@/assets/aside/${item.img}_click.png`):mouseIndex==item.clickMark?require(`@/assets/aside/${item.img}_opt.png`):require(`@/assets/aside/${item.img}.png`)" alt="" class="img">
-      <p class="title" :style="{'color':mouseClick==item.clickMark?'#FFFFFF':mouseIndex==item.clickMark?'#5383EC':'#868B8E'}">{{item.title}}</p>
+    @click="click(item)">
+      <img :src="($store.state.allowShowItem && $store.state.mouseClickIndex==item.clickMark)?require(`@/assets/aside/${item.img}_click.png`):mouseIndex==item.clickMark?require(`@/assets/aside/${item.img}_opt.png`):require(`@/assets/aside/${item.img}.png`)" alt="" class="img">
+      <p class="title" :style="{'color':($store.state.allowShowItem && $store.state.mouseClickIndex==item.clickMark)?'#FFFFFF':mouseIndex==item.clickMark?'#5383EC':'#868B8E'}">{{item.title}}</p>
     </div>
   </div>
 </template>
 
 <script>
-  
+  import {mapState,mapMutations} from 'vuex';
   export default {
-    props:{
-      asideMenu:{
-        type:Array,
-        required:true
-      }
-    },
     components: {},
     data() {
       return {
-        mouseIndex:0,
-        mouseClick:0
+        mouseIndex:0
       };
     },
-    computed: {},
+    computed: {
+      ...mapState([
+        'asideMenu'
+      ])
+    },
     watch: {},
     methods: {
-      click(index){
-        this.mouseClick=index;
+      ...mapMutations([
+        'ITEM_CLICK',
+        'MAIN_CLICK',
+        'ASIDE_CLICK'
+      ]),
+      click(item){
+        this.ITEM_CLICK(item.clickMark);
+        this.MAIN_CLICK(true);
+        this.ASIDE_CLICK(item);
       }
     },
     created() {

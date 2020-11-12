@@ -1,30 +1,47 @@
 <template>
   <div id="app">
-    <el-container class="container">
-      <el-header>
-        <the-header></the-header>
-      </el-header>
-      <el-container>
-        <el-aside>
-          <the-aside></the-aside>
-        </el-aside>
+    <div v-if="$store.state.userToken!==null">
+      <el-container class="container">
+        <el-header>
+          <the-header></the-header>
+        </el-header>
         <el-container>
-          <el-main>
-            <router-view/>
-          </el-main>
+          <el-aside>
+            <the-aside></the-aside>
+          </el-aside>
+          <the-drawer></the-drawer>
+          <el-container>
+            <el-main>
+              <router-view/>
+            </el-main>
+          </el-container>
         </el-container>
       </el-container>
-    </el-container>
+    </div>
+    <div v-else>
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
+import UserLogin from '@/views/Login/UserLogin';
 import TheHeader from '@/components/basic/TheHeader';
 import TheAside from '@/components/basic/TheAside';
+import TheDrawer from '@/components/control/TheDrawer';
 export default {
+  data() {
+    return {
+      asideItem:{}
+    };
+  },
   components:{
     TheHeader,
-    TheAside
+    TheAside,
+    TheDrawer,
+    UserLogin
+  },
+  methods: {
   }
 }
 </script>
@@ -39,7 +56,7 @@ export default {
   min-width: 1200px;
 }
 .el-aside{
-  box-shadow: 1px 0 1px 0 #E7EBF2;
+  box-shadow: 1px 0 4px 0 #E7EBF2;
   transform: translate3d(0, 0, 0);
   width: 120px !important;
 }
