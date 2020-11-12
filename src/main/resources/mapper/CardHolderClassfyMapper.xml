@@ -6,7 +6,7 @@
         insert into CardHolderClassfy(name, ownerId) values(#{name}, #{ownerId})
     </insert>
 
-    <update id="updateCardHolderClassfyByCardHolderClassfyId">
+    <update id="updateCardHolderClassfyNameByCardHolderClassfyId">
         update CardHolderClassfy set name = #{name} where CardHolderClassfyId = #{CardHolderClassfyId}
     </update>
 

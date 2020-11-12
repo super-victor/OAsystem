@@ -47,17 +47,18 @@ public interface CardHolderMapper {
      * @Return com.sicnu.oasystem.pojo.CardHolder
      * @LastChangeDate 2020/11/6
      */
-    CardHolder findCardHolderByOwnedId(int ownerId, int ownedId);
+    CardHolder findCardHolderByOwnerIdAndOwnedId(int ownerId, int ownedId);
 
     /**
-     * @MethodName deleteCardHolderByCardHolderId
+     * @MethodName deleteCardHolderByCardHolderIdAndOwnerId
      * @param CardHolderId 名片夹id
-     * @Description 删除名片夹by他人的职工id
+     * @param ownerId 拥有者id
+     * @Description 删除名片夹by他人的职工id和职工名
      * @Author Waynejwei
      * @Return int
      * @LastChangeDate 2020/11/6
      */
-    int deleteCardHolderByCardHolderId(int CardHolderId);
+    int deleteCardHolderByCardHolderIdAndOwnerId(int CardHolderId, int ownerId);
 
     /**
      * @MethodName insertCardHolderByOwnedId
@@ -70,18 +71,18 @@ public interface CardHolderMapper {
     int insertCardHolderByOwnedId(CardHolder cardHolder);
 
     /**
-     * @MethodName updateCardHolderByCardHolderId
+     * @MethodName updateCardHolderClassfyIdByCardHolderId
      * @param CardHolderId 名片夹id
-     * @param cardHolderClassfyId 名片夹分类id
+     * @param newCardHolderClassfyId 名片夹分类id
      * @Description 修改名片夹分类by名片夹id
      * @Author Waynejwei
      * @Return int
      * @LastChangeDate 2020/11/6
      */
-    int updateCardHolderByCardHolderId(int CardHolderId, int cardHolderClassfyId);
+    int updateCardHolderClassfyIdByCardHolderId(int CardHolderId, int newCardHolderClassfyId);
 
     /**
-     * @MethodName updateCardHoldersByCardHolderId
+     * @MethodName updateCardHolderClassfyIdByOldCardHolderClassfyId
      * @param oldCardHolderClassfyId 原本名片夹分类id
      * @param newCardHolderClassfyId 新的名片夹分类id
      * @Description 将某一分类下的所有名片夹转移到另一分类中
@@ -89,5 +90,5 @@ public interface CardHolderMapper {
      * @Return int
      * @LastChangeDate 2020/11/9
      */
-    int updateCardHoldersByCardHolderId(int oldCardHolderClassfyId, int newCardHolderClassfyId);
+    int updateCardHolderClassfyIdByOldCardHolderClassfyId(int oldCardHolderClassfyId, int newCardHolderClassfyId);
 }
