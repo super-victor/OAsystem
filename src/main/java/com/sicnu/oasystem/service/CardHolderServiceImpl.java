@@ -62,8 +62,7 @@ public class CardHolderServiceImpl implements CardHolderService{
         int counter = cardHolderMapper.insertCardHolderByOwnedId(cardHolder);
         if (counter > 0){
             return new BackFrontMessage(200,"添加成功",cardHolder.getCardHolderId());
-        }
-        else{
+        } else {
             return new BackFrontMessage(500,"添加失败",cardHolder.getCardHolderId());
         }
     }
@@ -78,11 +77,10 @@ public class CardHolderServiceImpl implements CardHolderService{
      * @LastChangeDate 2020/11/8
      */
     public int hasOwnedCardHolder(int ownerId, int ownedId){
-        CardHolder cardHolder = cardHolderMapper.findCardHolderByOwnedId(ownerId, ownedId);
+        CardHolder cardHolder = cardHolderMapper.findCardHolderByOwnerIdAndOwnedId(ownerId, ownedId);
         if (cardHolder != null) {
             return cardHolder.getCardHolderClassfyId();
-        }
-        else{
+        } else {
             return 0;
         }
     }
@@ -110,7 +108,7 @@ public class CardHolderServiceImpl implements CardHolderService{
      * @LastChangeDate 2020/11/8
      */
     public Map<String,Object> getCardContent(Employee employee){
-        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>(16);
         map.put("name",employee.getName());
         map.put("homeAddress",employee.getHomeAddress());
         map.put("phone",employee.getPhone());
@@ -127,12 +125,12 @@ public class CardHolderServiceImpl implements CardHolderService{
      * @LastChangeDate 2020/11/8
      */
     public List<Map<String,Object>> getCardListContent(List<CardHolder> cardHolderList){
-        List<Map<String,Object>> result_list = new ArrayList<>();
+        List<Map<String,Object>> resultList = new ArrayList<>();
         for (CardHolder cardHolder : cardHolderList) {
             Employee employee = employeeMapper.findEmployeeByEmployeeId(cardHolder.getOwnedId());
-            result_list.add(getCardContent(employee));
+            resultList.add(getCardContent(employee));
         }
-        return result_list;
+        return resultList;
     }
 
     /**
@@ -186,11 +184,11 @@ public class CardHolderServiceImpl implements CardHolderService{
      */
     @Override
     public BackFrontMessage deleteCardHolder(int cardHolderId) {
-        int result = cardHolderMapper.deleteCardHolderByCardHolderId(cardHolderId);
+        Employee currrentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        int result = cardHolderMapper.deleteCardHolderByCardHolderIdAndOwnerId(cardHolderId, currrentEmployee.getEmployeeId());
         if (result > 0){
             return new BackFrontMessage(200,"删除成功",null);
-        }
-        else{
+        } else {
             return new BackFrontMessage(500,"删除失败",null);
         }
     }
@@ -207,11 +205,10 @@ public class CardHolderServiceImpl implements CardHolderService{
     public BackFrontMessage updateCardHolderAboutClassfy(int cardHolderId, int cardHolderClassfyId) {
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         if (hasOwnedCardHolderClassfy(currentEmployee.getEmployeeId(), cardHolderClassfyId)) {
-            int counter = cardHolderMapper.updateCardHolderByCardHolderId(cardHolderId, cardHolderClassfyId);
+            int counter = cardHolderMapper.updateCardHolderClassfyIdByCardHolderId(cardHolderId, cardHolderClassfyId);
             if (counter > 0){
                 return new BackFrontMessage(200,"修改成功",null);
-            }
-            else{
+            } else {
                 return new BackFrontMessage(500,"修改失败",null);
             }
         }
@@ -231,8 +228,7 @@ public class CardHolderServiceImpl implements CardHolderService{
         CardHolderClassfy cardHolderClassfy = cardHolderClassfyMapper.findCardHolderClassfyByCardHolderClassfyId(cardHolderClassfyId);
         if (cardHolderClassfy != null) {
             return cardHolderClassfy.getOwnerId() == employeeId;
-        }
-        else{
+        } else {
             return false;
         }
     }

@@ -1,12 +1,13 @@
 package com.sicnu.oasystem.config;
 
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Value;
+import com.fasterxml.classmate.TypeResolver;
+import com.google.common.collect.Sets;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import springfox.documentation.builders.*;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.ApiListingScannerPlugin;
@@ -14,63 +15,60 @@ import springfox.documentation.spi.service.contexts.DocumentationContext;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @ClassName SwaggerConfig
- * @Description Swagger配置类
+ * @Description 添加描述
  * @Author JohnTang
- * @LastChangeDate 2020/11/6 15:09
+ * @LastChangeDate 2020/11/12 10:07
  * @Version v1.0
  */
 
-
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig implements ApiListingScannerPlugin {
-
-    @Value("${myswagger.title}")
-    private String title;
 
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2)
+                .pathMapping("/")
                 .select()
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.basePackage("com.sicnu.oasystem.controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .apiInfo(
+                         new ApiInfoBuilder()
+                        .title("协同办公系统后端api")
+                        .description("协同办公系统后端api")
+                        .version("1.0")
+                        .contact(new Contact("潘勇","www.baidu.com","aaa@gmail.com"))
+                        .license("The Apache License")
+                        .licenseUrl("http://www.baidu.com")
+                        .build()
+                )
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts());
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title(title)
-                .description("协同办公系统的后台api接口")
-                .contact(new Contact("panyong", "www.baidu.com", "1358844623@qq.com"))
-                .version("1.0")
-                .build();
+    private List<ApiKey> securitySchemes() {
+        List<ApiKey> apiKeyList= new ArrayList<>();
+        apiKeyList.add(new ApiKey("token", "token", "header"));
+        return apiKeyList;
     }
-
-    private List<SecurityScheme> securitySchemes() {
-        List<SecurityScheme> securitySchemes = new ArrayList<>();
-        securitySchemes.add(new ApiKey("token", "Authorization", "header"));
-        return securitySchemes;
-    }
-
-//    private List<ApiKey> securitySchemes() {
-//        List<ApiKey> apiKeys = new ArrayList<>();
-//        apiKeys.add(new ApiKey("Authorization", "Authorization", "header"));
-//        return apiKeys;
-//    }
 
     private List<SecurityContext> securityContexts() {
-        List<SecurityContext> securityContexts = new ArrayList<>();
-        securityContexts.add(SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex("^(?!auth).*$")).build());
+        List<SecurityContext> securityContexts=new ArrayList<>();
+        securityContexts.add(
+                SecurityContext.builder()
+                        .securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.regex("^(?!auth).*$"))
+                        .build());
         return securityContexts;
     }
 
@@ -78,52 +76,56 @@ public class SwaggerConfig implements ApiListingScannerPlugin {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
+        List<SecurityReference> securityReferences=new ArrayList<>();
+        securityReferences.add(new SecurityReference("token", authorizationScopes));
         return securityReferences;
     }
 
-
     @Override
-    public List<ApiDescription> apply(DocumentationContext context) {
-        HashSet<String> hashSet1 = new HashSet<>();
-        hashSet1.add(MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        HashSet<String> hashSet2 = new HashSet<>();
-        hashSet2.add(MediaType.APPLICATION_JSON_VALUE);
-        HashSet<String> hashSet3 = new HashSet<>();
-        hashSet3.add("登录");
-
+    public List<ApiDescription> apply(DocumentationContext documentationContext) {
         Operation usernamePasswordOperation = new OperationBuilder(new CachingOperationNameGenerator())
                 .method(HttpMethod.POST)
                 .summary("登录")
-                .notes("登录")
-                .consumes(hashSet1) // 接收参数格式
-                .produces(hashSet2) // 返回参数格式
-                .tags(hashSet3)
-                .requestParameters(Arrays.asList(
-                        new RequestParameterBuilder()
+                .notes("用户名密码登录")
+                .consumes(Sets.newHashSet(MediaType.APPLICATION_FORM_URLENCODED_VALUE)) // 接收参数格式
+                .produces(Sets.newHashSet(MediaType.APPLICATION_JSON_VALUE)) // 返回参数格式
+                .tags(Sets.newHashSet("登录"))
+                .parameters(Arrays.asList(
+                        new ParameterBuilder()
                                 .description("用户名")
+                                .type(new TypeResolver().resolve(String.class))
                                 .name("username")
+                                .defaultValue("2238192070@qq.com")
+                                .parameterType("query")
+                                .parameterAccess("access")
                                 .required(true)
-                                .parameterIndex(0)
+                                .modelRef(new ModelRef("string"))
                                 .build(),
-                        new RequestParameterBuilder()
+                        new ParameterBuilder()
                                 .description("密码")
+                                .type(new TypeResolver().resolve(String.class))
                                 .name("password")
+                                .defaultValue("tangliyi123")
+                                .parameterType("query")
+                                .parameterAccess("access")
                                 .required(true)
-                                .parameterIndex(1)
+                                .modelRef(new ModelRef("string"))
                                 .build()
                 ))
+                .responseMessages(Collections.singleton(
+                        new ResponseMessageBuilder().code(200).message("登录成功")
+                                .responseModel(null
+                                ).build()))
                 .build();
 
-        ApiDescription loginApiDescription = new ApiDescription("login", "/login", "登录接口","登录", Arrays.asList(usernamePasswordOperation), false);
+        ApiDescription loginApiDescription = new ApiDescription("login", "/login", "登录接口",
+                Arrays.asList(usernamePasswordOperation), false);
 
         return Arrays.asList(loginApiDescription);
     }
 
-    //是否使用此插件
     @Override
     public boolean supports(DocumentationType documentationType) {
-        return true;
+        return DocumentationType.SWAGGER_2.equals(documentationType);
     }
 }

@@ -27,8 +27,8 @@ public class CardHolderController {
 
     /**
      * @MethodName insertCardHolder
-     * @param ownedId
-     * @param cardHolderClassfyId
+     * @param ownedId 被拥有者id
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 新增名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -43,8 +43,8 @@ public class CardHolderController {
 
     /**
      * @MethodName updateCardHolderAboutCardHolderClassfy
-     * @param cardHolderId
-     * @param cardHolderClassfyId
+     * @param cardHolderId 名片夹id
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 修改名片夹所在分类
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -59,7 +59,7 @@ public class CardHolderController {
 
     /**
      * @MethodName deleteCardHolder
-     * @param cardHolderId
+     * @param cardHolderId 名片夹id
      * @Description 删除名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -74,7 +74,6 @@ public class CardHolderController {
 
     /**
      * @MethodName findCardHolderByOwnerId
-     * @param
      * @Description 获取职工他人所有的名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -89,7 +88,7 @@ public class CardHolderController {
 
     /**
      * @MethodName findCardHolderByOwnedId
-     * @param ownedId
+     * @param ownedId 被拥有者id
      * @Description 获取某一个名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -104,7 +103,7 @@ public class CardHolderController {
 
     /**
      * @MethodName findCardHolderByCardHolderClassfyId
-     * @param cardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 获取某一分类下的所有名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -119,7 +118,6 @@ public class CardHolderController {
 
     /**
      * @MethodName findSelfCardHolder
-     * @param
      * @Description 获取职工个人的名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage

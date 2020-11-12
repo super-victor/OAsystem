@@ -24,7 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public BackFrontMessage getSelfProfile() {
-        return new BackFrontMessage(200, "获取成功", UserAuthenticationUtils.getCurrentUserFromSecurityContext());
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        return new BackFrontMessage(200, "获取成功", currentEmployee);
     }
 
     @Override

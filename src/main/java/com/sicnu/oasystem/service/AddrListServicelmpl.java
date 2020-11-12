@@ -35,7 +35,7 @@ public class AddrListServicelmpl implements AddrListService {
      * @LastChangeDate 2020/11/8
      */
     public BackFrontMessage getAllEmplyeAddr(){
-         return new BackFrontMessage(200,"success",employeeMapper.getAllEmployee());
+         return new BackFrontMessage(200,"获取成功",employeeMapper.getAllEmployee());
     }
     /**
      * @MethodName getDeparmentName

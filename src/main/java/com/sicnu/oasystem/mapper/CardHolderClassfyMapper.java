@@ -60,7 +60,7 @@ public interface CardHolderClassfyMapper {
     int deleteCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId);
 
     /**
-     * @MethodName updateCardHolderClassfyByCardHolderClassfyId
+     * @MethodName updateCardHolderClassfyNameByCardHolderClassfyId
      * @param CardHolderClassfyId 名片夹分类id
      * @param name 名片夹分类名称
      * @Description 修改名片夹名称by名片夹id
@@ -68,7 +68,7 @@ public interface CardHolderClassfyMapper {
      * @Return int
      * @LastChangeDate 2020/11/6
      */
-    int updateCardHolderClassfyByCardHolderClassfyId(int CardHolderClassfyId, String name);
+    int updateCardHolderClassfyNameByCardHolderClassfyId(int CardHolderClassfyId, String name);
 
     /**
      * @MethodName insertCardHolderClassfyByCardHolderClassfyId
