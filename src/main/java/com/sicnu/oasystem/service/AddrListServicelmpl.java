@@ -46,7 +46,7 @@ public class AddrListServicelmpl implements AddrListService {
      * @LastChangeDate 2020/11/8
      */
     public BackFrontMessage getDeparmentName(){
-        return new BackFrontMessage(200,"success",departmentMapper.getAlldeaprtmentname());
+        return new BackFrontMessage(200,"success",departmentMapper.getAllDeaprtmentName());
     }
 
     /**
@@ -73,7 +73,7 @@ public class AddrListServicelmpl implements AddrListService {
      */
     @Override
     public BackFrontMessage getEmployeeByCondition(String name, String sex) {
-        return new BackFrontMessage(200,"success",employeeMapper.getEmployeeBycondition(name,sex));
+        return new BackFrontMessage(200,"success",employeeMapper.getEmployeeByCondition(name,sex));
     }
 }
 

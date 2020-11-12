@@ -21,7 +21,7 @@ class OasystemApplicationTests {
     void contextLoads() {
 //        List<Employee>employees=employeeMapper.getAllEmployee();
 //        List<Employee>employees=employeeMapper.getEmployeeBypage(1,1);
-        List<Employee>employees=employeeMapper.getEmployeeBycondition(null,"f");
+        List<Employee>employees=employeeMapper.getEmployeeByCondition(null,"f");
         for (Employee e:employees){
             System.out.println(e);
         }

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.sicnu.oasystem.mapper.DepartmentMapper">
 
-    <select id="getAlldeaprtmentname" resultType="com.sicnu.oasystem.pojo.Department">
+    <select id="getAllDeaprtmentName" resultType="com.sicnu.oasystem.pojo.Department">
         select name from department
     </select>
 </mapper>

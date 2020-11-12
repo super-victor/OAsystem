@@ -203,7 +203,7 @@ create table SendFile(
     remark text comment '备注',
     senderId int not null comment '发件人ID',
     censorId int comment '审查人ID',
-    isCensored int comment '是否通过审查',
+    isCensored int comment '是否通过审查 0未审查，1审查通过 -1审查未通过',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_SendFile_sendfileId primary key (sendfileid),
