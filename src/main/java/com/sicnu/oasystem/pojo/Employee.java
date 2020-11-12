@@ -35,6 +35,8 @@ public class Employee implements UserDetails {
     private String position;
     private String homeAddress;
     @JsonIgnore
+    private Date passwordChangeDate;
+    @JsonIgnore
     private Date createTime;
     @JsonIgnore
     private Date updateTime;
