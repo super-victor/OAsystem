@@ -15,7 +15,6 @@ import java.util.List;
  */
 
 @Mapper
-@Component
 public interface CardHolderClassfyMapper {
 
     /**

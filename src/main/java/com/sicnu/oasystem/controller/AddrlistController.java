@@ -18,8 +18,6 @@ import javax.annotation.Resource;
 @RestController
 public class AddrlistController {
 
-//    @Resource
-//    AddrListServicelmpl addrListService;
       @Resource
       AddrListService addrListService;
 

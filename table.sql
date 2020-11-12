@@ -43,6 +43,7 @@ create table Employee (
     departmentId int not null comment '职工所在部门id',
     position varchar(10) not null comment '职工职位',
     homeAddress varchar(20) comment '职工家庭地址',
+    passwordChangeDate timestamp default current_timestamp comment'密码最后修改时间',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_Employee_employeeId primary key(employeeId),
@@ -199,7 +200,7 @@ create table SendFile(
     annexUrl varchar(20) comment '附件URL',
     context text not null comment '正文',
     sendPsrsonNum int not null comment '分发人数',
-    isUergent int not null comment '发文缓急',
+    isUrgent int not null comment '发文缓急',
     remark text comment '备注',
     senderId int not null comment '发件人ID',
     censorId int comment '审查人ID',
@@ -269,4 +270,12 @@ create table Meeting(
     constraint fk_Meeting_employeeId foreign key (employeeId) references Employee(employeeId),
     constraint fk_Meeting_meetingRoomId foreign key (meetingRoomId) references MeetingRoom(meetingRoomId)
 );
+
+
+-- 数据
+insert into department (name, phone) values ('后勤部', '10001');
+insert into department (name, phone) values ('财务部', '10002');
+
+insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', 1, '普通员工', '四川师范大学');
+insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', 2, '普通员工', '四川师范大学');
 
