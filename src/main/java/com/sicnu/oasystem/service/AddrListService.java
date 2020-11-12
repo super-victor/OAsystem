@@ -16,6 +16,8 @@ public interface AddrListService {
 
     BackFrontMessage getDeparmentName();
 
+//    BackFrontMessage getDeparmentname();
+
     BackFrontMessage getEmployeeBypage(Integer currentPageNum,Integer pageSize);
 
     BackFrontMessage getEmployeeByCondition(String name,String sex);

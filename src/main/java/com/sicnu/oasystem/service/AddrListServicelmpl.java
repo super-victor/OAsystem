@@ -35,7 +35,13 @@ public class AddrListServicelmpl implements AddrListService {
      * @LastChangeDate 2020/11/8
      */
     public BackFrontMessage getAllEmplyeAddr(){
-         return new BackFrontMessage(200,"获取成功",employeeMapper.getAllEmployee());
+        List<Employee> AllEmplyeAddr=employeeMapper.getAllEmployee();
+        if(AllEmplyeAddr!=null){
+            return new BackFrontMessage(200,"获取成功",AllEmplyeAddr);
+        }
+        else{
+            return new BackFrontMessage(500,"获取失败",null);
+        }
     }
     /**
      * @MethodName getDeparmentName
@@ -46,8 +52,14 @@ public class AddrListServicelmpl implements AddrListService {
      * @LastChangeDate 2020/11/8
      */
     public BackFrontMessage getDeparmentName(){
-        return new BackFrontMessage(200,"success",departmentMapper.getAllDeaprtmentName());
+        List<String> DepartmentName=departmentMapper.getAllDepartmentName();
+        if (DepartmentName!=null){
+            return new BackFrontMessage(200,"获取成功",departmentMapper.getAllDepartmentName());
+        }else {
+            return new BackFrontMessage(500,"获取失败",null);
+        }
     }
+
 
     /**
      * @MethodName getEmployeeBypage
@@ -59,7 +71,13 @@ public class AddrListServicelmpl implements AddrListService {
      * @LastChangeDate 2020/11/8
      */
     public BackFrontMessage getEmployeeBypage(Integer currentPageNum,Integer pageSize){
-        return new BackFrontMessage(200,"success",new BackFrontPage(pageSize,employeeMapper.getemployeenumbers(),currentPageNum,employeeMapper.getEmployeeBypage(currentPageNum,pageSize)));
+        int employeenums=employeeMapper.getemployeenumbers();
+        List<Employee> employees=employeeMapper.getEmployeeBypage(currentPageNum,pageSize);
+        if(employeenums!=0 && employees!=null){
+            return new BackFrontMessage(200,"获取成功",new BackFrontPage(pageSize,employeenums,currentPageNum,employees));
+        }else {
+            return new BackFrontMessage(500,"获取失败",null);
+        }
     }
 
     /**
@@ -73,7 +91,12 @@ public class AddrListServicelmpl implements AddrListService {
      */
     @Override
     public BackFrontMessage getEmployeeByCondition(String name, String sex) {
-        return new BackFrontMessage(200,"success",employeeMapper.getEmployeeByCondition(name,sex));
+        List<Employee> employees=employeeMapper.getEmployeeByCondition(name,sex);
+        if (employees!=null){
+            return new BackFrontMessage(200,"success",employeeMapper.getEmployeeByCondition(name,sex));
+        }else{
+            return new BackFrontMessage(500,"获取失败",null);
+        }
     }
 }
 
