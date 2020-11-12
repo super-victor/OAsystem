@@ -18,11 +18,16 @@ import java.util.Date;
 @AllArgsConstructor
 public class CardHolder {
     private Integer cardHolderId;
-    private Integer ownerId;
-    private Integer ownedId;
     private Integer cardHolderClassfyId;
+    private String name;
+    private String phone;
+    private String email;
+    private String address;
+    private String qq;
+    private String company;
+    private String department;
+    private String position;
     private Date createTime;
     private Date updateTime;
-
     public CardHolder(){}
 }
