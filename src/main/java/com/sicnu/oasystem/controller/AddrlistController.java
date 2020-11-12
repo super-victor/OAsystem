@@ -31,7 +31,7 @@ public class AddrlistController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
      */
-    @GetMapping("/addr")
+    @GetMapping("/addressbook")
     public BackFrontMessage getaddrlist(){
         return addrListService.getAllEmplyeAddr();
     }
@@ -56,7 +56,7 @@ public class AddrlistController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
      */
-    @GetMapping("/getBypage")
+    @GetMapping("/addressbookbypage")
     public  BackFrontMessage getemplBypage(Integer currentPageNum,Integer pageSize){
         return addrListService.getEmployeeBypage(currentPageNum,pageSize);
     }

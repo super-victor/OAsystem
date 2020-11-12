@@ -110,7 +110,7 @@ public class CardHolderServiceImpl implements CardHolderService{
      * @LastChangeDate 2020/11/8
      */
     public Map<String,Object> getCardContent(Employee employee){
-        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> map = new HashMap<>(16);
         map.put("name",employee.getName());
         map.put("homeAddress",employee.getHomeAddress());
         map.put("phone",employee.getPhone());

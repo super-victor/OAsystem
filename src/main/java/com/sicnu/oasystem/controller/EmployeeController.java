@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName EmployeeController
@@ -37,8 +38,8 @@ public class EmployeeController {
      * @LastChangeDate 2020/11/6
      */
     @ApiOperation(value = "获取个人资料")
-    @GetMapping("/profile")
-    public BackFrontMessage getSelfProfile(){
+    @GetMapping("/selfprofile")
+    public BackFrontMessage getSelfProfile(HttpServletRequest httpServletRequest){
         return employeeService.getSelfProfile();
     }
 
@@ -51,7 +52,7 @@ public class EmployeeController {
      * @LastChangeDate 2020/11/6
      */
     @ApiOperation(value = "修改个人资料")
-    @PutMapping("/profile")
+    @PutMapping("/selfprofile")
     public BackFrontMessage changeSelfProfile(@RequestParam String phone,@RequestParam String email,@RequestParam String homeAddress){
         return employeeService.changeSelfPorfile(phone, email, homeAddress);
     }
