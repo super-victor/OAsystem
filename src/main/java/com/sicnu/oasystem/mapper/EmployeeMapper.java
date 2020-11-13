@@ -111,5 +111,5 @@ public interface EmployeeMapper {
      * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
      * @LastChangeDate 2020/11/9
      */
-    List<Employee>getEmployeeBycondition(String name,String sex);
+    List<Employee>getEmployeeByCondition(String name,String sex);
 }
