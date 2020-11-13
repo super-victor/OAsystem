@@ -2,7 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.DocumentMapper">
 
-    <insert id="insertSendFile">
-        insert into sendfile
+    <insert id="insertSendFile" useGeneratedKeys="true" keyProperty="sendfileid">
+        insert into sendfile (type, title,
+        <if test="sendFile.annexUrl != null">
+            annexUrl,
+        </if>
+        content,sendPersonNum,isUrgent
+        <if test="sendFile.remark != null">
+            remark,
+        </if>
+        senderId,censorId,status)
+        values (#{type}, #{title},
+        <if test="sendFile.annexUrl != null">
+            #{annexUrl},
+        </if>
+        #{content},#{sendPersonNum},#{isUrgent}
+        <if test="sendFile.remark != null">
+            #{remark},
+        </if>
+        #{senderId},#{censorId},#{status})
     </insert>
+    <insert id="insertReceiveFile" useGeneratedKeys="true" keyProperty="receivefileid">
+        insert into receivefile (sendfileId, receiverId, isReceived) values (#{sendfileId}, #{receiverId}, #{isReceived})
+    </insert>
+
+
 </mapper>

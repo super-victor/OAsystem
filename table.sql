@@ -212,7 +212,7 @@ create table Equipment (
 
 -- 发文表
 create table SendFile(
-    sendfileId int not null auto_increment comment '发文id',
+    sendFileId int not null auto_increment comment '发文id',
     type int not null comment '发文类别',
     title varchar(20) not null comment '标题',
     annexUrl varchar(20) comment '附件URL',
@@ -221,11 +221,11 @@ create table SendFile(
     isUrgent int not null comment '发文缓急',
     remark text comment '备注',
     senderId int not null comment '发件人ID',
-    censorId int comment '审查人ID',
-    isCensored int comment '是否通过审查',
+    censorId int not null comment '审查人ID',
+    status int not null comment '状态 -1未通过审查 0待审查 1通过审查 2收文结束',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
-    constraint pk_SendFile_sendfileId primary key (sendfileid),
+    constraint pk_SendFile_sendfileId primary key (sendFileId),
     constraint fk_SendFile_senderId foreign key (senderId) references Employee(employeeId),
     constraint fk_SendFile_censorId foreign key (censorId) references Employee(employeeId)
 );
@@ -233,14 +233,14 @@ create table SendFile(
 
 -- 收文表
 create table ReceiveFile(
-    receiveId int not null comment '收文ID',
+    receiveFileId int not null comment '收文ID',
     sendFileId int not null comment '发文ID',
     receiverId int not null comment '收件人ID',
     isRecceived int not null comment '是否收到',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
-    constraint pk_ReceiveFile_receiveId primary key (receiveId),
-    constraint fk_ReceiveFile_sendFileId foreign key (sendFileId) references SendFile(sendfileId),
+    constraint pk_ReceiveFile_receiveId primary key (receiveFileId),
+    constraint fk_ReceiveFile_sendFileId foreign key (sendFileId) references SendFile(sendFileId),
     constraint fk_ReceiveFile_receiverId foreign key (receiverId) references Employee(employeeId)
 );
 
