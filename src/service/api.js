@@ -71,7 +71,7 @@ export const NetworkRequest = options => {
         }
       }
       if(headers.token) Store.commit('GET_TOKEN',headers.token);
-      return data;
+      return response;
     },error=>{
       return Promise.reject(error);
     })

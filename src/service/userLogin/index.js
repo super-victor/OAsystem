@@ -14,6 +14,6 @@ export default{
       throttle:true,
       data
     })
-    return res;
+    return res.data;
   }
 }

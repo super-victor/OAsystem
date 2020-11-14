@@ -23,7 +23,7 @@ module.exports = {
       https: false,
       proxy: {
           '/api': {//代理字段设置
-              target: 'http://192.168.31.116:8080/',//填写后台接口
+              target: 'http://121.196.40.164:8080/',//填写后台接口
               ws: true,
               changOrigin: true,//设置允许跨域
               pathRewrite: {
