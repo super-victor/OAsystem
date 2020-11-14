@@ -29,7 +29,6 @@
     },
     computed: {
       inputStatus(){
-        console.log(this.userName!='' && this.passWord!='')
         return this.userName!='' && this.passWord!='';
       }
     },
