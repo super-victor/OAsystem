@@ -8,9 +8,9 @@
     <div class="loginBox">
       <p class="title">登录</p>
       <el-input class="input" v-model="userName" placeholder="请输入用户名"></el-input>
-      <el-input class="input" v-model="passWord" placeholder="请输入密码" show-password></el-input>
+      <el-input class="input" v-model="passWord" placeholder="请输入密码" show-password @keyup.enter.native="login"></el-input>
       <el-link class="forgetPwd" type="primary">忘记密码</el-link>
-      <el-button class="submit" type="primary" round @click="login">提交</el-button>
+      <el-button :disabled="!flag" class="submit" type="primary" round @click="login">提交</el-button>
     </div>
   </div>
 </template>
@@ -23,14 +23,31 @@
     data() {
       return {
         userName:'',
-        passWord:''
+        passWord:'',
+        flag:false
       };
     },
-    computed: {},
-    watch: {},
+    computed: {
+      inputStatus(){
+        console.log(this.userName!='' && this.passWord!='')
+        return this.userName!='' && this.passWord!='';
+      }
+    },
+    watch: {
+      inputStatus(val){
+        this.flag = val;
+      }
+    },
     methods: {
       ...mapMutations(['GET_USERINFO']),
       login(){
+        if(!this.flag){
+          this.$message({
+            message: '请补全登录信息',
+            type: 'warning'
+          });
+          return;
+        }
         loginAPI.loginRequest({
           username:this.userName,
           password:this.passWord
