@@ -11,6 +11,7 @@ export default{
       url:'/login',
       method:'post',
       postHeaderType:'multipart/form-data',
+      throttle:true,
       data
     })
     return res;

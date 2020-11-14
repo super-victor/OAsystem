@@ -1,6 +1,6 @@
 import Store from '@/store/index';
 // import router from '@/router';
-import {Message,MessageBox} from 'element-ui';
+import {Message,MessageBox,Loading} from 'element-ui';
 import axios from 'axios';
 import qs from 'qs';
 axios.defaults.baseURL = '/api/';
@@ -8,7 +8,8 @@ axios.defaults.baseURL = '/api/';
 /**
   * @param {Object} options 网络请求用户配置   timeout:超时时间{number}<可选>
   *                                         postHeaderType:post方式时的请求头{String}<可选>
-  *                                         url:API地址{String}
+  *                                         throttle:是否需要loading节流{Boolean}<可选>
+  *                                         url:API地址{String}<可选>
   *                                         method:请求方式{String}
   *                                         data:请求时携带的参数{Object}<可选>
   * @returns {Promise<Object>} 
@@ -18,13 +19,22 @@ axios.defaults.baseURL = '/api/';
 export const NetworkRequest = options => {
   return new Promise((resolve,reject)=>{
 
-    let {timeout,postHeaderType,url,method,data} = options;
+    let loading = null;
+    let {timeout,postHeaderType,throttle,url,method,data} = options;
 
     axios.defaults.timeout = timeout || 30000;//设置超时时间
     axios.defaults.headers.post['Content-Type'] = postHeaderType || 'application/json;charset=UTF-8';//设置post方式时的请求头
 
     //请求拦截
     axios.interceptors.request.use(config=>{
+      if(throttle){
+        loading = Loading.service({
+          lock: true,
+          text: '请稍等',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+      }
       if(Store.state.userToken!==null){
         config.headers['token'] = Store.state.userToken;
       }
@@ -36,6 +46,9 @@ export const NetworkRequest = options => {
     //响应拦截
     axios.interceptors.response.use(response=>{
       let {data,headers} = response;
+      if(throttle){
+        loading.close();
+      }
       //这里判断自定义错误，进行页面跳转等，抛出异常
       if(data.status===301){
         Message.error({message: '权限认证错误'});
@@ -54,7 +67,7 @@ export const NetworkRequest = options => {
           }
           throw new Error('登录信息错误');
         }else{
-          throw new Error('网络请求错误');
+          throw new Error(`网络请求错误:${data.msg}`);
         }
       }
       if(headers.token) Store.commit('GET_TOKEN',headers.token);

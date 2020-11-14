@@ -67,4 +67,13 @@ export default {
 .container{
   height: 100%;
 }
+[class*=" el-icon-"], [class^=el-icon-]{
+  font-size: 20px;
+}
+.el-loading-mask.is-fullscreen .el-loading-spinner{
+  font-size: 15px;
+}
+.el-loading-spinner .el-loading-text{
+  font-size: 10px;
+}
 </style>
