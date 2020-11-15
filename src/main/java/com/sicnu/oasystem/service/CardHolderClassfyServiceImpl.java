@@ -31,27 +31,12 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
     @Resource
     CardHolderMapper cardHolderMapper;
 
-    /**
-     * @MethodName findCardHolderClassfyServiceByEmployeeId
-     * @Description 获取某一职工的所用名片夹分类
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/6
-     */
     @Override
     public BackFrontMessage findCardHolderClassfyByEmployeeId(){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         return new BackFrontMessage(200,"获取成功",cardHolderClassfyMapper.findCardHolderClassfysByEmployeeId(currentEmployee.getEmployeeId()));
     }
 
-    /**
-     * @MethodName deleteCardHolderClassfyByCardHolderClassfyId
-     * @param cardHolderClassfyId 名片夹分类id
-     * @Description 通过名片夹分类id删除名片夹分类
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/7
-     */
     @Override
     public BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId){
         CardHolderClassfy cardHolderClassfy = cardHolderClassfyMapper
@@ -85,14 +70,6 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
         }
     }
 
-    /**
-     * @MethodName insertCardHolderClassfy
-     * @param name  名片夹分类名称
-     * @Description 增加名片夹分类
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/7
-     */
     @Override
     public BackFrontMessage insertCardHolderClassfy(String name){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
@@ -112,15 +89,6 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
         }
     }
 
-    /**
-     * @MethodName updateCardHolderClassfyName
-     * @param cardHolderClassfyId 名片夹分类id
-     * @param name 名片夹分类名称
-     * @Description 修改名片夹分类名称
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/8
-     */
     @Override
     public BackFrontMessage updateCardHolderClassfyName(int cardHolderClassfyId, String name){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();

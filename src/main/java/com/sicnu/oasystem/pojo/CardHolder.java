@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class CardHolder {
+    @JsonIgnore
     private Integer cardHolderId;
     private Integer cardHolderClassfyId;
     private String name;
@@ -27,7 +29,9 @@ public class CardHolder {
     private String company;
     private String department;
     private String position;
+    @JsonIgnore
     private Date createTime;
+    @JsonIgnore
     private Date updateTime;
     public CardHolder(){}
 }

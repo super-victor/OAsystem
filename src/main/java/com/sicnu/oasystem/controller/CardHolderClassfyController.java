@@ -2,7 +2,8 @@ package com.sicnu.oasystem.controller;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.CardHolderClassfyService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +31,6 @@ public class CardHolderClassfyController {
      * @LastChangeDate 2020/11/6
      */
     @ApiOperation(value = "获取职工所拥有的名片夹分类")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @GetMapping("/CardHolderClassfy")
     public BackFrontMessage findCardHolderClassfysByEmployeeId(){
         return cardHolderClassfyService.findCardHolderClassfyByEmployeeId();
@@ -45,7 +45,6 @@ public class CardHolderClassfyController {
      * @LastChangeDate 2020/11/7
      */
     @ApiOperation(value = "通过名片夹分类id删除名片夹分类")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @DeleteMapping("/CardHolderClassfy")
     public BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(@RequestParam int cardHolderClassfyId){
         return cardHolderClassfyService.deleteCardHolderClassfyByCardHolderClassfyId(cardHolderClassfyId);
@@ -60,7 +59,6 @@ public class CardHolderClassfyController {
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "增加名片夹分类")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @PostMapping("/CardHolderClassfy")
     public BackFrontMessage insertCardHolderClassfy(@RequestParam String name){
         return cardHolderClassfyService.insertCardHolderClassfy(name);
@@ -76,7 +74,7 @@ public class CardHolderClassfyController {
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "修改名片夹分类名称")
-    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
+//    @ApiImplicitParams({ @ApiImplicitParam(paramType = "header", dataType = "String", dataTypeClass = String.class, name = "token", value = "token标记", required = true) })
     @PutMapping("/CardHolderClassfy")
     public BackFrontMessage updateCardHolderClassfyName(@RequestParam int cardHolderClassfyId, @RequestParam String name){
         return cardHolderClassfyService.updateCardHolderClassfyName(cardHolderClassfyId, name);
