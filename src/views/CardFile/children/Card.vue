@@ -2,23 +2,27 @@
   <div class='card'>
     <div class="box flex-col">
       <div class="share">
-        <img src="@/assets/Card/Share.png" alt="">
+        <img src="@/assets/Card/Share.png" alt="" @click="shareCard">
       </div>
       <div class="row flex-row">
         <p class="name">{{ msg.name }}</p>
-        <p class="depart">/{{ position }}</p>
+        <p class="depart">/{{ msg.department }}{{ msg.position }}</p>
       </div>
       <div class="info_row flex-row">
         <p class="rlabel">电话</p>
-        <p class="llabel">{{ msg.tel }}</p>
+        <p class="llabel">{{ msg.phone }}</p>
       </div>
       <div class="info_row flex-row">
         <p class="rlabel">邮箱</p>
         <p class="llabel">{{ msg.email }}</p>
       </div>
       <div class="info_row flex-row">
+        <p class="rlabel">公司</p>
+        <p class="llabel">{{ msg.company }}</p>
+      </div>
+      <div class="info_row flex-row">
         <p class="rlabel">地址</p>
-        <p class="llabel">{{ msg.location }}</p>
+        <p class="llabel">{{ msg.address }}</p>
       </div>
     </div>
   </div>
@@ -29,17 +33,13 @@
     props: ["msg"],
     data() {
       return {
-        name: '张菲燕',
-        position: '人事部部门经理',
-        tel: '028-82601686',
-        email: 'Paranoid_ZH@163.com',
-        location: '成龙大道二段1819号'
+
       };
     },
     computed: {},
     watch: {},
     methods: {
-      
+      shareCard() {}
     },
     created() {
 
@@ -58,15 +58,16 @@
     background-color: @white;
     background: url(../../../assets/Card/cardBackground.jpg);
     border: 1px solid @baseBorder;
+    padding: 10px;
     .box {
       width: 90%;
       height: 100%;
       float: right;
       background-color: @white;
       .share {
+        height: 0.4rem;
         text-align: right;
         img {
-          margin-right: 15px;
           width: 0.3rem;
           cursor: pointer;
         }
@@ -75,10 +76,12 @@
         font-size: 0.18rem;
       }
       .row {
+        height: 0.7rem;
         margin-left: 0.5rem;
       }
       .info_row {
-        margin: 0.3rem 0 -0.2rem 0.5rem;
+        height: 0.4rem;
+        margin-left: 0.5rem;
       }
       p.name {
         font-size: 0.4rem;

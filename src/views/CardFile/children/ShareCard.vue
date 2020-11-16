@@ -2,36 +2,46 @@
 <template>
   <div class='ShareCard'>
     <div class="msgBox flex-row">
+      <!-- 左侧名片夹分类 -->
       <div class="left">
         <div class="row flex-row"
-        @click="SelectClassfy(item.name)"
+        @click="selectClassfy(item)"
         v-for="item in classifyNames"
-        :key="item.name"
-        :class="{active: select === item.name,normal: select !== item.name}">
-          <i class="el-icon-caret-right"></i><p>{{ item.name }}</p>
+        :key="item.id"
+        :class="{active: select.id === item.id,normal: select.id !== item.id}">
+          <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
+          <p>{{ item.name }}</p>
         </div>
-        <div class="row flex-row" @click="dialogVisible1 = true">
-          <i class="el-icon-circle-plus-outline"></i><p>新建分类</p>
+        <div class="flex-row add_row" @click="dialogVisible1 = true">
+          <img src="@/assets/Card/add.png" alt=""><p>新建分类</p>
         </div>
       </div>
       <el-divider direction="vertical"></el-divider>
-      <div class="center flex-col">
+      <!-- 中间名片部分 -->
+      <div
+        v-if="cards.length !== 0"
+        class="center flex-col">
         <div class="card"
         v-for="(item, index) in cards"
         :key="item.position">
           <Card :msg="cards[index]"></Card>
         </div>
       </div>
+      <div v-else>
+        <p class="tip_info">该分类下暂无名片，请进行新建或导入名片操作！</p>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <!-- 新建button -->
       <div class="right flex-col">
         <el-button class="submit" round type="primary" @click="dialogVisible2 = true">新建</el-button>
       </div>
     </div>
-    <!-- 新建名片夹分类 -->
+    <!-- dialog-新建名片夹分类 -->
     <el-dialog title="新建分类" :visible.sync="dialogVisible1">
-      <el-input v-model="newName"></el-input>
+      <el-input v-model="newName" placeholder="请输入名片夹分类名"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="AddClassify">确 定</el-button>
+        <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 新建/导入名片 -->
@@ -43,47 +53,41 @@
             <el-option label="导入" value="导入"></el-option>
           </el-select>
       </div>
-      <el-dialog
-        width="30%"
-        title="输入信息"
-        :visible.sync="innerVisible"
-        class="newCard"
-        append-to-body>
-        <div
-          class="flex-col"
-          v-if="optionType === '新建'">
-          <p>姓名</p>
-          <el-input v-model="newInfo.name"></el-input>
-          <p>电话</p>
-          <el-input v-model="newInfo.tel"></el-input>
-          <p>职位</p>
-          <el-input v-model="newInfo.location"></el-input>
-          <p>邮箱</p>
-          <el-input v-model="newInfo.email"></el-input>
-          <p>地址</p>
-          <el-input v-model="newInfo.position"></el-input>
-        </div>
-        <div v-else>
-          <div class="flex-col">
-            <p>名片共享码</p>
-            <el-input v-model="cardCode"></el-input>
-          </div>
-        </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="innerVisible = false;optionType =''">取 消</el-button>
-          <el-button type="primary" @click="innerVisible = false;dialogVisible2 = false">确 定</el-button>
-        </div>
-      </el-dialog>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false;optionType = ''">取 消</el-button>
-        <el-button type="primary" @click="innerVisible = true" v-show="optionType !== ''">确 定</el-button>
+        <el-button type="primary" @click="innerVisible = true" v-show="optionType !== ''">下一步</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      width="40%"
+      title="输入信息"
+      :visible.sync="innerVisible"
+      class="innerCard">
+      <div v-if="optionType === '新建'">
+        <el-input v-model="newInfo.name" placeholder="请输入姓名"></el-input>
+        <el-input v-model="newInfo.phone" placeholder="请输入电话"></el-input>
+        <el-input v-model="newInfo.company" placeholder="请输入公司"></el-input>
+        <el-input v-model="newInfo.department" placeholder="请输入部门"></el-input>
+        <el-input v-model="newInfo.position" placeholder="请输入职位"></el-input>
+        <el-input v-model="newInfo.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="newInfo.address" placeholder="请输入地址"></el-input>
+      </div>
+      <div v-else>
+        <div class="flex-col">
+          <p>名片共享码</p>
+          <el-input v-model="cardCode"></el-input>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="innerVisible = false;optionType =''">取 消</el-button>
+        <el-button type="primary" @click="submitOption(optionType)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {mapState,mapMutations} from 'vuex'
+  import cardFileAPI from '@/service/cardFile'
   import Card from './Card'
   export default {
     components: {
@@ -91,11 +95,7 @@
     },
     data() {
       return {
-        classifyNames: [{
-          name: '我的名片夹'
-        },{
-          name: '部门同事'
-        }], // 名片夹分类名
+        classifyNames: [], // 名片夹分类名
         newName: '', // 添加的名片夹分类名
         select: '', // 选中的名片夹分类
         optionType: '', // 选择新建操作的类型
@@ -107,23 +107,13 @@
           name: '',
           tel: '',
           email: '',
+          company: '',
+          department: '',
           position: '',
-          location: '',
+          address: '',
         },
         cardCode: '', // 名片导入时的共享码
-        cards: [{
-          name: '张菲燕',
-          position: '人事部部门经理',
-          tel: '028-82601686',
-          email: 'Paranoid_ZH@163.com',
-          location: '成龙大道二段1819号'
-        }, {
-          name: '张静文',
-          position: '财务部部门经理',
-          tel: '028-82600562',
-          email: 'Fineven@163.com',
-          location: '成龙大道二段1819号'
-        }] // 名片信息
+        cards: [] // 名片信息
       };
     },
     computed: {
@@ -131,22 +121,66 @@
     watch: {},
     methods: {
     //   选择名片夹分类
-      SelectClassfy (name) {
-        this.select = name;
-        console.log(name);
-      },
-    //   添加分类
-      AddClassify () {
-        this.classifyNames.push({name: this.newName});
-        this.newName = '';
-        this.dialogVisible1 = false;
+      selectClassfy (select) {
+        this.select = select;
+        this.getCard(select.id);
       },
       next() {
         if (this.active++ > 2) this.active = 0;
+      },
+      // 请求名片夹分类
+      getFileName () {
+        cardFileAPI.requestCardFile()
+        .then(res=>{
+          res.object.forEach(element => {
+            this.classifyNames.push({'name':element.name, 'id':element.cardHolderClassfyId});
+          });
+        })
+        .catch(err=>{
+          // console.log(err);
+          this.$message.error('获取失败');
+        })
+      },
+      // 添加名片夹分类
+      addFile () {
+        cardFileAPI.addCardFile({
+          name: this.newName
+        })
+        .then(res=>{
+          this.$message.success('添加成功');
+          this.classifyNames.push({name: this.newName});
+          this.newName = '';
+          this.dialogVisible1 = false;
+        })
+        .catch(err=>{
+          console.log(err);
+          this.$message.error('添加失败');
+        })
+      },
+      // 获取名片
+      getCard(id) {
+        cardFileAPI.requestCard({
+          cardHolderClassfyId: id
+        })
+        .then(res=>{
+          this.cards = res.object;
+        })
+        .catch(err=>{
+          console.log(err);
+          this.$message.error('添加失败');
+        })
+      },
+      // 新建或导入名片
+      submitOption(type) {
+        innerVisible = false;
+        dialogVisible2 = false;
+        if(type === '新建') {
+        } else {
+        }
       }
     },
     created() {
-      
+      this.getFileName();
     },
     mounted() {
       this.$emit('childrenBread',['共享名片']);
@@ -164,23 +198,40 @@
       width: 100%;
       .left {
         width: 2.5rem;
+        .add_row {
+          padding: 0.15rem;
+          font-size: 0.2rem;  
+          cursor: pointer;
+          img {
+            width: 0.3rem;
+            height: 0.3rem;
+            color: @regularText;
+          }
+          color: @regularText;
+        }
       }
       .center {
-        margin-left: 2rem;
+        margin: 0 2rem;
         .card {
           margin-bottom: 0.2rem;
         }
       }
+      .tip_info {
+        margin-left: 0.5rem;
+        font-size: 0.35rem;
+        color: @warningColor;
+      }
       .right {
-        margin-left: 1.5rem;
+        margin-left: 0.5rem;
       }
       .row {
         padding: 0.15rem;
         font-size: 0.22rem;
         cursor: pointer;
-        i {
-          width: 0.4rem;
-          margin-top: 0.05rem;
+        img {
+          width: 0.3rem;
+          height: 0.3rem;
+          margin-right: 0.15rem;
         }
       }
       .el-divider--vertical {
@@ -192,8 +243,14 @@
         margin-bottom: 0.3rem;
       }
     }
-    .input.el-input__inner {
-      margin-top: 20px;
+    .innerCard .el-dialog__body{
+      padding: 0px;
+      .el-input {
+        margin-bottom: 0.2rem;
+      }
+      p {
+        margin-bottom: 0.3rem;
+      }
     }
     .normal {
       color: @primaryColor;

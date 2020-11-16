@@ -12,20 +12,22 @@
 </template>
 
 <script>
-  import {mapState,mapMutations} from 'vuex'
   import Card from './Card'
+  import cardFileAPI from '@/service/cardFile'
   export default {
     components: {
-        Card
+      Card
     },
     data() {
       return {
         cards: {
           name: '张菲燕',
+          department: '',
           position: '人事部部门经理',
-          tel: '028-82601686',
+          phone: '028-82601686',
           email: 'Paranoid_ZH@163.com',
-          location: '成龙大道二段1819号'
+          company: '四川师范大学',
+          address: '成龙大道二段1819号'
         }
       };
     },
@@ -33,9 +35,19 @@
     },
     watch: {},
     methods: {
+      getMine() {
+        cardFileAPI.requestMine()
+        .then(res=>{
+          this.cards = res.object;
+        })
+        .catch(err=>{
+          // console.log(err);
+          this.$message.error('获取失败');
+        })
+      }
     },
     created() {
-      
+      this.getMine();
     },
     mounted() {
       this.$emit('childrenBread',['我的名片']);
