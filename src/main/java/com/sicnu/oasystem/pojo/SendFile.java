@@ -24,7 +24,7 @@ public class SendFile {
     private String remark; //备注
     private Integer senderId; //发件人ID
     private Integer censorId; //审查人ID
-    private Integer isCensored; //是否通过审查
+    private Integer status; //是否通过审查
     private Date createTime; //创建时间
     private Date updateTime;  //修改时间
 }

@@ -4,6 +4,8 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @InterfaceName DocumentService
  * @Description 添加描述
@@ -28,6 +30,5 @@ public interface DocumentService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/12
      */
-    BackFrontMessage createDocument(String type, String title, String content, String sendPersonNum, String remark, int censorId, int isUrgent, MultipartFile file);
-
+    BackFrontMessage createDocument(Integer type, String title, String content, Integer sendPersonNum, String remark, Integer censorId, Integer isUrgent, MultipartFile file, List<Integer> receiverIdList);
 }

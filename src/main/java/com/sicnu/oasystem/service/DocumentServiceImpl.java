@@ -1,10 +1,17 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.DocumentMapper;
+import com.sicnu.oasystem.pojo.ReceiveFile;
+import com.sicnu.oasystem.pojo.SendFile;
+import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 import java.io.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -17,6 +24,9 @@ import java.util.UUID;
 
 @Service
 public class DocumentServiceImpl implements DocumentService{
+
+    @Resource
+    DocumentMapper documentMapper;
 
     @Value("${document.path}")
     private String path;
@@ -37,7 +47,7 @@ public class DocumentServiceImpl implements DocumentService{
      * @LastChangeDate 2020/11/12
      */
     @Override
-    public BackFrontMessage createDocument(String type, String title, String content, String sendPersonNum, String remark, int censorId, int isUrgent, MultipartFile file) {
+    public BackFrontMessage createDocument(Integer type, String title, String content, Integer sendPersonNum, String remark, Integer censorId, Integer isUrgent, MultipartFile file, List<Integer> receiverIdList) {
         if (file == null || file.isEmpty()) {
             return new BackFrontMessage(500,"上传失败",null);
         }
@@ -53,7 +63,30 @@ public class DocumentServiceImpl implements DocumentService{
             return new BackFrontMessage(500,"上传失败",null);
         }
 
-        return null;
+        SendFile sendFile = new SendFile();
+        sendFile.setType(type);
+        sendFile.setTitle(title);
+        sendFile.setAnnexUrl(filename);
+        sendFile.setContext(content);
+        sendFile.setSendPsrsonNum(sendPersonNum);
+        sendFile.setIsUrgent(isUrgent);
+        sendFile.setRemark(remark);
+        sendFile.setSenderId(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
+        sendFile.setCensorId(censorId);
+        sendFile.setStatus(0);
 
+        if (documentMapper.insertSendFile(sendFile) != 0) {
+            ReceiveFile receiveFile = new ReceiveFile();
+            receiveFile.setSendFileId(sendFile.getSendfileId());
+            receiveFile.setIsRecceived(0);
+            for (int i = 0;i < sendPersonNum; i++) {
+                receiveFile.setReceiverId(receiverIdList.get(i));
+                documentMapper.insertReceiveFile(receiveFile);
+            }
+            return new BackFrontMessage(200,"创建成功",null);
+        } else {
+            new File(path + filename).delete();
+            return new BackFrontMessage(500, "创建失败", null);
+        }
     }
 }

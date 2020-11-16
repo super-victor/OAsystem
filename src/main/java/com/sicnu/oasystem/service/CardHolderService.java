@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.CardHolder;
 
 /**
  * @InterfaceName CardHolderService
@@ -12,17 +13,44 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 
 public interface CardHolderService {
 
-    BackFrontMessage insertCardHolder(int ownedId, int cardHolderClassfyId);
+    /**
+     * @MethodName insertCardHolder
+     * @param cardHolder 名片夹
+     * @Description 添加名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    BackFrontMessage insertCardHolder(CardHolder cardHolder);
 
-    BackFrontMessage findCardHolderByOwnerId();
-
-    BackFrontMessage findCardHolderByOwnedId(int ownedId);
-
+    /**
+     * @MethodName findCardHolderByCardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
+     * @Description 查找职工某一分类下的所有名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
     BackFrontMessage findCardHolderByCardHolderClassfyId(int cardHolderClassfyId);
 
-    BackFrontMessage findSelfCardHolder();
-
+    /**
+     * @MethodName deleteCardHolder
+     * @param cardHolderId 名片夹id
+     * @Description 删除名片夹by名片夹id
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
     BackFrontMessage deleteCardHolder(int cardHolderId);
 
-    BackFrontMessage updateCardHolderAboutClassfy(int cardHolderId, int cardHolderClassfyId);
+    /**
+     * @MethodName updateCardHolderAboutClassfy
+     * @param cardHolder 名片夹
+     * @param cardHolderId 名片夹id
+     * @Description 修改名片夹所在分类
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/8
+     */
+    BackFrontMessage updateCardHolder(CardHolder cardHolder, int cardHolderId);
 }

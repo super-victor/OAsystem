@@ -22,8 +22,7 @@
         select * from CardHolderClassfy where name = #{name} and ownerId = #{ownerId}
     </select>
 
-    <select id="findCardHolderClassfyByCardHolderClassfyId"
-            resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">
+    <select id="findCardHolderClassfyByCardHolderClassfyId" resultType="com.sicnu.oasystem.pojo.CardHolderClassfy">
         select * from CardHolderClassfy where cardHolderClassfyId = #{cardHolderClassfyId}
     </select>
 </mapper>
