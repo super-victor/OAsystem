@@ -20,4 +20,6 @@ public class MeetingRoom {
     private Integer maxperson;
     private Date createTime;
     private Date updateTime;
+
+    private Meeting meeting;
 }

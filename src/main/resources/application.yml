@@ -19,7 +19,7 @@ jwt:
   # 密钥
   secret: tangliyi123fddsafasgkahgjdhgkjfhago9gjoasjglkkdsanglkjnfadlkgjnlfkangl;afdngafdng;
   # 过期时间
-  expiration: 3600
+  expiration: 604800
 
 ##swagger
 myswagger:

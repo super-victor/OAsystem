@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.EquipmentClassifyMapper">
+
+    <insert id="addEquipmentClassify">
+        insert into equipmentclassify(name) values(#{classifyName});
+    </insert>
+
+    <update id="updateEquipmentClassify">
+        update equipmentclassify set name=#{param2} where equipmentClassifyId=#{param1}
+    </update>
+
+    <delete id="deleteEquipmentClassify">
+        delete from equipmentClassify where equipmentClassifyId=#{ClassifyId}
+    </delete>
+    <select id="EquipmentClassifyIfExitByName" resultType="java.lang.Integer">
+        select equipmentClassifyId from equipmentClassify where name =#{ClassifyName}
+    </select>
+    <select id="getAllEquipmentClassify" resultType="com.sicnu.oasystem.pojo.EquipmentClassify">
+        select * from equipmentClassify
+    </select>
+</mapper>
