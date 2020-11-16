@@ -15,7 +15,11 @@ import {
   Input,
   Link,
   Button,
-  Message
+  Message,
+  Divider,
+  Dialog,
+  Select,
+  Option
 } from 'element-ui';
 
 Vue.use(Container);
@@ -28,6 +32,10 @@ Vue.use(BreadcrumbItem);
 Vue.use(Input);
 Vue.use(Link);
 Vue.use(Button);
+Vue.use(Divider);
+Vue.use(Dialog);
+Vue.use(Select);
+Vue.use(Option);
 
 Vue.config.productionTip = false
 
