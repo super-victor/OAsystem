@@ -60,6 +60,7 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 //	}
 
 
+
     @Bean
     PasswordEncoder passwordEncoder() {
         Map<String, PasswordEncoder> encoders = new HashMap<>();

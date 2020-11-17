@@ -5,13 +5,11 @@ import com.sicnu.oasystem.service.AnthenticateService;
 import com.sicnu.oasystem.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @ClassName EmployeeController
@@ -39,7 +37,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "获取个人资料")
     @GetMapping("/selfprofile")
-    public BackFrontMessage getSelfProfile(HttpServletRequest httpServletRequest){
+    public BackFrontMessage getSelfProfile(){
         return employeeService.getSelfProfile();
     }
 
@@ -53,8 +51,8 @@ public class EmployeeController {
      */
     @ApiOperation(value = "修改个人资料")
     @PutMapping("/selfprofile")
-    public BackFrontMessage changeSelfProfile(@RequestParam String phone,@RequestParam String email,@RequestParam String homeAddress){
-        return employeeService.changeSelfPorfile(phone, email, homeAddress);
+    public BackFrontMessage changeSelfProfile(@RequestBody Map<String,String> resultMap){
+        return employeeService.changeSelfPorfile(resultMap.get("phone"), resultMap.get("email"), resultMap.get("homeAddress"));
     }
 
 }
