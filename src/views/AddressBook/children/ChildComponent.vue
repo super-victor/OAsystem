@@ -12,7 +12,7 @@
             </el-input>
           </div>
           <el-card class="box-card" >
-            <div v-for="(data,index) in departmentfilterres" :key="index" class="text item" @click="handleClick(index)">
+            <div v-for="(data,index) in departmentfilterres" :key="index" class="text item" @click="handleClick(index)" style="cursor:pointer">
               {{data}}
             </div>
           </el-card>
@@ -184,17 +184,32 @@
         console.log(`每页 ${val} 条`);
         this.pageSize = val;
         console.log(this.pageSize)
+        pageAPI.paginationRequest({
+            currentPageNum:this.currentPage,
+            pageSize:this.pageSize,
+        }).then(res=>{
+            console.log(res.object)
+            this.tableData = res.object.currentPageList;
+            this.tablefilterData = this.tableData;
+            this.total = res.object.totalPageNum;
+            console.log(this.total)
+          }).catch(err => {
+            this.$message.error('读取失败');
+            console.log(err)
+            
+          })
       },
       //切换页数
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
         this.currentPage = val;
         pageAPI.paginationRequest({
-          currentPageNum:this.currentPage,
+            currentPageNum:this.currentPage,
             pageSize:this.pageSize,
         }).then(res=>{
             console.log(res.object)
-            this.tablefilterData = res.object.currentPageList;
+            this.tableData = res.object.currentPageList;
+            this.tablefilterData = this.tableData;
             this.total = res.object.totalPageNum;
             console.log(this.total)
           }).catch(err => {
