@@ -1,7 +1,6 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -15,7 +14,18 @@ import java.util.List;
  */
 
 public interface DocumentService {
-    /***
+
+    /**
+     * @MethodName getAllCensors
+     * @param
+     * @Description 获取所有的审查人
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/15
+     */
+    BackFrontMessage getAllCensors();
+
+    /**
      * @MethodName createDocument
      * @param type
      * @param title
@@ -31,4 +41,20 @@ public interface DocumentService {
      * @LastChangeDate 2020/11/12
      */
     BackFrontMessage createDocument(Integer type, String title, String content, Integer sendPersonNum, String remark, Integer censorId, Integer isUrgent, MultipartFile file, List<Integer> receiverIdList);
+
+    /**
+     * @MethodName updateDocument
+     * @param sendfileId
+     * @param title
+     * @param content
+     * @param annexUrl
+     * @param remark
+     * @param multipartFile
+     * @Description 修改发文
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/15
+     */
+    BackFrontMessage updateDocument(Integer sendfileId,String title, String content,String annexUrl,String remark,MultipartFile multipartFile);
+
 }

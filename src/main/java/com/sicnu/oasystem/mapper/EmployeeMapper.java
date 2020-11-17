@@ -30,15 +30,6 @@ public interface EmployeeMapper {
      */
     Employee findEmployeeByUsername(String username);
 
-    /***
-     * @MethodName findDepartmentByDepartmentId
-     * @param departmentId
-     * @Description 根据部门id找部门
-     * @Author JohnTang
-     * @Return com.sicnu.oasystem.pojo.Department
-     * @LastChangeDate 2020/11/8
-     */
-    Department findDepartmentByDepartmentId(int departmentId);
 
     /**
      * @MethodName findEmployeeByEmployeeId
@@ -73,7 +64,7 @@ public interface EmployeeMapper {
     /**
      * @MethodName getAllEmployee
      * @param
-     * @Description 获取所有员工的通讯录
+     * @Description 获取所有员工的数据
      * @Author pan
      * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
      * @LastChangeDate 2020/11/9
@@ -112,4 +103,14 @@ public interface EmployeeMapper {
      * @LastChangeDate 2020/11/9
      */
     List<Employee>getEmployeeByCondition(String name,String sex);
+
+    /**
+     * @MethodName findEmployeesByRoleId
+     * @param RoleId
+     * @Description 找出所有有roleid权限的人
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/15
+     */
+    List<Employee> findEmployeesByRoleId(Integer RoleId);
 }

@@ -19,7 +19,6 @@ import java.util.List;
 
 @Data
 public class Employee implements UserDetails {
-    @JsonIgnore
     private Integer employeeId;
     private String username;
     private String name;

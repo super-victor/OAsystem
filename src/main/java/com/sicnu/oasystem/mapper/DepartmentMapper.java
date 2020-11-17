@@ -19,4 +19,13 @@ public interface DepartmentMapper {
 
     List<String> getAllDepartmentName();
 
+    /***
+     * @MethodName findDepartmentByDepartmentId
+     * @param departmentId
+     * @Description 根据部门id找部门
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.pojo.Department
+     * @LastChangeDate 2020/11/8
+     */
+    Department findDepartmentByDepartmentId(int departmentId);
 }

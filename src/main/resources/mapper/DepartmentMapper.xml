@@ -6,4 +6,8 @@
     <select id="getAllDepartmentName" resultType="java.lang.String">
         select name from department
     </select>
+
+    <select id="findDepartmentByDepartmentId" resultType="com.sicnu.oasystem.pojo.Department">
+        select * from department where departmentid = #{departmentId}
+    </select>
 </mapper>

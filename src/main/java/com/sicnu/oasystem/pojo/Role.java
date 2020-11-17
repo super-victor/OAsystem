@@ -15,6 +15,9 @@ import java.util.Date;
 
 @Data
 public class Role implements GrantedAuthority {
+    // 权限列表
+    // 1 ROLE_Admin
+    // 2 ROLE_Censor
     private int roleId;
     private String name;
     private Date createTime;

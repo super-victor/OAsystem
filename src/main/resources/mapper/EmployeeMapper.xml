@@ -18,7 +18,7 @@
     </resultMap>
 
     <update id="updatePartlyEmployeeByEmployeeId">
-        update employee set email = #{email}, phone = #{phone}, homeaddress = #{homeAddress} where employeeid = #{employeeid}
+        update employee set email = #{email}, phone = #{phone}, homeaddress = #{homeAddress} where employeeid = #{employeeId}
     </update>
 
     <select id="findEmployeeByUsername" resultType="com.sicnu.oasystem.pojo.Employee">
@@ -33,9 +33,7 @@
         select * from employee where employeeId = #{employeeId}
     </select>
 
-    <select id="findDepartmentByDepartmentId" resultType="com.sicnu.oasystem.pojo.Department">
-        select * from department where departmentid = #{departmentId}
-    </select>
+
 
     <select id="getAllEmployee" resultMap="ems">
          select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentId=department.departmentId
@@ -61,6 +59,9 @@
         <if test="name !=null">
             and employee.name like #{name}
         </if>
+    </select>
+    <select id="findEmployeesByRoleId" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where employeeId in (select employeeId from employeerole where roleId = roleId)
     </select>
 
 </mapper>
