@@ -114,7 +114,15 @@
           address: '',
         },
         cardCode: '', // 名片导入时的共享码
-        cards: [] // 名片信息
+        cards: [{
+          name: '张静文',
+          tel: '028-92060989',
+          email: '2346273686@qq.com',
+          company: 'Sicnu',
+          department: '计科',
+          position: '学生',
+          address: '成龙大道二段1819号',
+        }] // 名片信息
       };
     },
     computed: {
@@ -165,7 +173,7 @@
           cardHolderClassfyId: id
         })
         .then(res=>{
-          this.cards = res.object;
+          // this.cards = res.object;
         })
         .catch(err=>{
           console.log(err);

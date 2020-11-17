@@ -28,7 +28,11 @@ import {
   Pagination,
   InputNumber,
   Autocomplete,
-  Card
+  Card,
+  Form,
+  FormItem,
+  Row,
+  Col,
 } from 'element-ui';
 
 Vue.use(Container);
@@ -58,6 +62,10 @@ Vue.use(Pagination);
 Vue.use(InputNumber);
 Vue.use(Autocomplete);
 Vue.use(Card);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Row);
+Vue.use(Col);
 
 Vue.config.productionTip = false
 

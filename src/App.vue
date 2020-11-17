@@ -53,7 +53,7 @@ export default {
 }
 .el-header{
   padding: 0;
-  min-width: 1200px;
+  min-width: 1000px;
 }
 .el-aside{
   box-shadow: 1px 0 4px 0 #E7EBF2;
@@ -67,7 +67,13 @@ export default {
 .container{
   height: 100%;
 }
-[class*=" el-icon-"], [class^=el-icon-]{
+.el-loading-spinner i{
+  font-size: 20px;
+}
+.el-message .el-icon-error{
+  font-size: 20px;
+}
+.el-message .el-icon-success{
   font-size: 20px;
 }
 .el-loading-mask.is-fullscreen .el-loading-spinner{

@@ -15,5 +15,15 @@ export default{
       data
     })
     return res.data;
+  },
+
+  async updateProfile(data){
+    const res = await NetworkRequest({
+      url:'/selfprofile',
+      method:'put',
+      throttle:true,
+      data
+    })
+    return res.data;
   }
 }
