@@ -4,6 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
 import com.sicnu.oasystem.mapper.CardHolderMapper;
 import com.sicnu.oasystem.mapper.EmployeeCardHolderMapper;
+import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeCardHolder;
@@ -11,7 +12,10 @@ import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName EmployeeCardHolderServiceImpl
@@ -97,14 +101,34 @@ public class EmployeeCardHolderServiceImpl implements EmployeeCardHolderService{
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         List<EmployeeCardHolder> list = employeeCardHolderMapper
                 .findEmployeeCardHolderByEmployeeId(currentEmployee.getEmployeeId());
-        return new BackFrontMessage(200,"查找该用户所拥有名片夹成功",list);
+        return new BackFrontMessage(200,"查找该用户所拥有名片夹成功",getCardHolderMapList(list));
     }
 
     @Override
     public BackFrontMessage findEmployeeCardHolderByCardHolderClassfyId(int cardHolderClassfyId) {
         List<EmployeeCardHolder> list = employeeCardHolderMapper
                 .findEmployeeCardHolderByCardHolderClassfyId(cardHolderClassfyId);
-        return new BackFrontMessage(200,"查找成功",list);
+        return new BackFrontMessage(200,"查找成功",getCardHolderMapList(list));
+    }
+
+    /**
+     * @MethodName getCardHolderMapList
+     * @param list
+     * @Description 获取名片夹的封装list
+     * @Author Waynejwei
+     * @Return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @LastChangeDate 2020/11/17
+     */
+    private List<Map<String, Object>> getCardHolderMapList(List<EmployeeCardHolder> list) {
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (EmployeeCardHolder employeeCardHolder : list) {
+            Map<String,Object> map = new HashMap<>(16);
+            CardHolder cardHolder = cardHolderMapper.findCardHolderByCardHolderId(employeeCardHolder.getCardHolderId());
+            map.put("cardHolderId",cardHolder.getCardHolderId());
+            map.put("cardHolder",cardHolder);
+            mapList.add(map);
+        }
+        return mapList;
     }
 
     @Override

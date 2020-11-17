@@ -32,5 +32,9 @@
         delete from CardHolder where cardHolderId = #{cardHolderId}
     </delete>
 
+    <select id="findCardHolderByCardHolderId" resultType="com.sicnu.oasystem.pojo.CardHolder">
+        select * from CardHolder where cardHolderId = #{cardHolderId}
+    </select>
+
 
 </mapper>
