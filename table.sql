@@ -279,7 +279,7 @@ create table Meeting(
     record text comment '会议记录',
     remark text comment '备注',
     name varchar(20) not null comment '会议名称',
-    appoinmentStatus int not null comment '会议预约状态',
+    appoinmentStatus int not null comment '会议预约状态 0预约中 -1 预约失败 1预约失败 2会议完成',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     startTime timestamp not null comment '会议开始时间',
@@ -298,3 +298,15 @@ insert into department (name, phone) values ('财务部', '10002');
 insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', 1, '普通员工', '四川师范大学');
 insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', 2, '普通员工', '四川师范大学');
 
+INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
+INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');
+INSERT INTO `meetingroom` VALUES ('3', '301会议室', '3楼', '0', '100', '2020-11-13 15:57:40', null);
+
+INSERT INTO `meeting` VALUES ('1', '1', '1', '1', null, null, '产品设计', '1', '2020-11-13 19:18:30', '2020-11-13 22:42:09', '2020-11-06 19:18:14', '2020-11-25 19:18:20', '20');
+INSERT INTO `meeting` VALUES ('2', '2', '0', '1', null, null, '部门会议', '1', '2020-11-13 19:55:49', '2020-11-13 20:02:44', '2020-11-19 19:55:02', '2020-11-27 19:55:06', '10');
+
+
+INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
+
+INSERT INTO `equipmentclassify` VALUES ('1', '显示器', '2020-11-15 22:15:39', null);
+INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', null);

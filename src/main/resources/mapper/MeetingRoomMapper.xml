@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.MeetingRoomMapper">
+    <resultMap id="meet" type="com.sicnu.oasystem.pojo.MeetingRoom">
+        <id property="meetingRoomId" column="meetingRoomId"></id>
+        <result property="place" column="place"></result>
+        <result property="name" column="name"></result>
+        <result property="isOccapy" column="isOccapy"></result>
+        <association property="meeting" javaType="com.sicnu.oasystem.pojo.Meeting">
+            <result property="name" column="meetingName"></result>
+            <result property="startTime" column="startTime"></result>
+            <result property="endTime" column="endTime"></result>
+        </association>
+    </resultMap>
+    <update id="updateMeetingRoomIsOccapy">
+        update meetingroom set isOccapy=1 where meetingroomId in(select meetingroomId
+        from meeting where CURRENT_DATE>startTime and endTime>CURRENT_DATE)
+    </update>
+    <update id="updateMettingRoomNotIsOccapy">
+        update meetingroom set isOccapy=0 where meetingroomId in(select meetingroomId
+        from meeting where startTime>CURRENT_DATE or CURRENT_DATE>endTime)
+    </update>
+
+
+    <select id="getAllMeetingRoom" resultMap="meet">
+        select meetingroom.place,meetingroom.name,meetingroom.isOccapy,meeting.name as meetingName,meeting.startTime,meeting.endTime
+        from meetingroom LEFT JOIN meeting on meetingroom.meetingRoomId=meeting.meetingRoomId and meeting.status=1
+        <where>
+            <if test="place !=null">
+                and meetingroom.place like #{place}
+            </if>
+            <if test="isOccapy !=null">
+                and meetingroom.isOccapy=#{isOccapy}
+            </if>
+            <if test="MeetingRoomName !=null">
+                and meetingroom.name like CONCAT('%',CONCAT(#{MeetingRoomName},'%'))
+            </if>
+        </where>
+    </select>
+    <select id="getMeetingRoomNum" resultType="java.lang.Integer">
+        select count(*) from meetingroom
+    </select>
+</mapper>

@@ -9,6 +9,7 @@
         <result property="phone" column="phone"></result>
         <result property="email" column="email"></result>
         <result property="position" column="position"></result>
+        <result property="sex" column="sex"></result>
         <result property="entryTime" column="entryTime"></result>
         <association property="department" javaType="com.sicnu.oasystem.pojo.Department">
             <id property="departmentId" column="departmentId"></id>
@@ -37,11 +38,11 @@
     </select>
 
     <select id="getAllEmployee" resultMap="ems">
-         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentId=department.departmentId
+         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentId=department.departmentId
     </select>
 
     <select id="getEmployeeBypage" resultMap="ems">
-         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,department.departmentId,department.name as dname
+         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,department.departmentId,department.name as dname
          from employee,department where employee.departmentId=department.departmentId
          LIMIT
 		 ${(currentPageNum-1)*pageSize}, ${pageSize}
@@ -52,7 +53,7 @@
     </select>
 
     <select id="getEmployeeByCondition" resultMap="ems">
-        select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.entryTime,department.departmentId,department.name as dname
+        select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname
         from employee,department where employee.departmentId=department.departmentId
         <if test="sex !=null">
             and employee.sex=#{sex}

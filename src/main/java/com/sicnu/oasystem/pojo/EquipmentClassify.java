@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 public class EquipmentClassify {
     private Integer equipmentClassifyId;
-    private Integer name;
+    private String name;
     private Date createTime;
     private Date updateTime;
 }
