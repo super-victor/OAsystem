@@ -23,8 +23,6 @@ public class EmployeeCardHolderController {
     @Resource
     EmployeeCardHolderService employeeCardHolderService;
 
-    //TODO:测试
-
     /**
      * @MethodName insertEmployeeCardHolder
      * @param cardHolderId 名片夹id
