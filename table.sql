@@ -24,7 +24,8 @@ create table Department (
     phone char(11) not null comment '部门电话',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_Department_departmentId primary key(departmentId)
+    constraint pk_Department_departmentId primary key(departmentId),
+    constraint unique_Department_name unique key(name)
 );
 
 

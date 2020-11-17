@@ -66,4 +66,14 @@ public interface EquipmentClassifyMapper {
      * @LastChangeDate 2020/11/15
      */
     List<EquipmentClassify> getAllEquipmentClassify();
+
+    /**
+     * @MethodName getEquipmentClassify
+     * @param ClassifyId
+     * @Description 通过Id查找EquipmentClassify
+     * @Author pan
+     * @Return com.sicnu.oasystem.pojo.EquipmentClassify
+     * @LastChangeDate 2020/11/16
+     */
+    EquipmentClassify getEquipmentClassifyById(Integer ClassifyId);
 }
