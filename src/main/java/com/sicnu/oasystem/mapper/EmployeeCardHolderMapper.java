@@ -27,7 +27,7 @@ public interface EmployeeCardHolderMapper {
     int insertEmployeeCardHolder(EmployeeCardHolder employeeCardHolder);
 
     /**
-     * @MethodName deleteEmployeeCardHolderByEmployeeCardHolderId
+     * @MethodName deleteEmployeeCardHolderByEmployeeCardHolderIdAndEmployeeId
      * @param employeeCardHolderId 职工名夹id
      * @param employeeId 职工id
      * @Description 删除职工名片夹by职工名片夹id
@@ -35,7 +35,7 @@ public interface EmployeeCardHolderMapper {
      * @Return int
      * @LastChangeDate 2020/11/14
      */
-    int deleteEmployeeCardHolderByEmployeeCardHolderId(int employeeCardHolderId, int employeeId);
+    int deleteEmployeeCardHolderByEmployeeCardHolderIdAndEmployeeId(int employeeCardHolderId, int employeeId);
 
     /**
      * @MethodName findEmployeeCardHolderByEmployeeIdAndCardHolderId
@@ -77,4 +77,36 @@ public interface EmployeeCardHolderMapper {
      * @LastChangeDate 2020/11/15
      */
     List<EmployeeCardHolder> findEmployeeCardHolderByEmployeeId(int employeeId);
+
+    /**
+     * @MethodName findEmployeeCardHolderByCardHolderClassfyId
+     * @param cardHolderClassfyId 名片夹分类id
+     * @Description 查找职工名片夹by名片夹分类id
+     * @Author Waynejwei
+     * @Return java.util.List<com.sicnu.oasystem.pojo.EmployeeCardHolder>
+     * @LastChangeDate 2020/11/16
+     */
+    List<EmployeeCardHolder> findEmployeeCardHolderByCardHolderClassfyId(int cardHolderClassfyId);
+
+    /**
+     * @MethodName updateEmployeeCardHolderClassfyByEmployeeCardHolderId
+     * @param employeeCardHolderId 职工名片夹id
+     * @param cardHolderClassfyId 名片夹分类id
+     * @Description 修改名片夹分类id by 职工名片夹id
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/11/16
+     */
+    int updateEmployeeCardHolderClassfyByEmployeeCardHolderId(int employeeCardHolderId, int cardHolderClassfyId);
+
+    /**
+     * @MethodName updateOldCardHolderClassfyIdByNewCardHolderClassfyId
+     * @param oldCardHolderClassfyId 旧的名片夹分类id
+     * @param newCardHolderClassfyId 新的名片夹分类id
+     * @Description 修改名片夹分类id by 名片夹分类id
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/11/16
+     */
+    int updateOldCardHolderClassfyIdByNewCardHolderClassfyId(int oldCardHolderClassfyId, int newCardHolderClassfyId);
 }

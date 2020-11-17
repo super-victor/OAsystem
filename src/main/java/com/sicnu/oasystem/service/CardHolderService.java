@@ -16,22 +16,13 @@ public interface CardHolderService {
     /**
      * @MethodName insertCardHolder
      * @param cardHolder 名片夹
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 添加名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
      */
-    BackFrontMessage insertCardHolder(CardHolder cardHolder);
-
-    /**
-     * @MethodName findCardHolderByCardHolderClassfyId
-     * @param cardHolderClassfyId 名片夹分类id
-     * @Description 查找职工某一分类下的所有名片夹
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/8
-     */
-    BackFrontMessage findCardHolderByCardHolderClassfyId(int cardHolderClassfyId);
+    BackFrontMessage insertCardHolder(CardHolder cardHolder, Integer cardHolderClassfyId);
 
     /**
      * @MethodName deleteCardHolder

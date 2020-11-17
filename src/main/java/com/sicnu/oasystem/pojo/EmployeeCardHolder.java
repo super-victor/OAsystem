@@ -17,6 +17,7 @@ public class EmployeeCardHolder {
     private Integer employeeCardHolderId;
     private Integer employeeId;
     private Integer cardHolderId;
+    private Integer cardHolderClassfyId;
     private Date createTime;
     private Date updateTime;
 }

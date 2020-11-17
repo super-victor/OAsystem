@@ -96,19 +96,18 @@ create table CardHolderClassfy(
 -- 名片夹表
 create table CardHolder(
     cardHolderId int not null auto_increment comment '名片id',
-    cardHolderClassfyId int not null comment '名片夹分类id',
+    employeeId int not null comment '名片夹的职工id',
     name varchar(20) not null comment '姓名',
     phone char(11) not null comment '电话',
     email varchar(20) comment '邮箱',
     address varchar(50) not null comment '联系地址',
-    qq varchar(20) comment 'qq号',
     company varchar(20) not null  comment '公司',
     department varchar(20) comment '部门',
     position varchar(20) comment '职位',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_CardHolder_cardHolderId primary key(cardHolderId),
-    constraint fk_CardHolder_cardHoledrClassfyId foreign key(cardHolderClassfyId) references CardHolderClassfy(cardHolderClassfyId)
+    constraint fk_CardHolder_employeeId foreign key(employeeId) references Employee(employeeId)
 );
 
 -- 名片夹员工对应表
@@ -116,11 +115,13 @@ create table EmployeeCardHolder(
     employeeCardHolderId int not null auto_increment comment '职工名片夹对应id',
     employeeId int not null comment '职工id',
     cardHolderId int not null comment '名片id',
+    cardHolderClassfyId int not null comment '名片夹分类id',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_EmployeeCardHolder_employeeCardHolderId primary key(employeeCardHolderId),
     constraint fk_EmployeeCardHolder_employeeId foreign key(employeeId) references Employee(employeeId),
-    constraint fk_EmployeeCardHolder_cardHolderId foreign key(cardHolderId) references CardHolder(cardHolderId)
+    constraint fk_EmployeeCardHolder_cardHolderId foreign key(cardHolderId) references CardHolder(cardHolderId),
+    constraint fk_CardHolder_cardHoledrClassfyId foreign key(cardHolderClassfyId) references CardHolderClassfy(cardHolderClassfyId)
 );
 
 

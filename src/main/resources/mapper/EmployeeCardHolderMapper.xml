@@ -3,10 +3,18 @@
 <mapper namespace="com.sicnu.oasystem.mapper.EmployeeCardHolderMapper">
 
     <insert id="insertEmployeeCardHolder" useGeneratedKeys="true" keyProperty="employeeCardHolderId">
-        insert into EmployeeCardHolder(employeeId, cardHolderId) values(#{employeeId}, #{cardHolderId})
+        insert into EmployeeCardHolder(employeeId, cardHolderId, cardHolderClassfyId) values(#{employeeId}, #{cardHolderId}, #{cardHolderClassfyId})
     </insert>
 
-    <delete id="deleteEmployeeCardHolderByEmployeeCardHolderId">
+    <update id="updateEmployeeCardHolderClassfyByEmployeeCardHolderId">
+        update EmployeeCardHolder set cardHolderClassfyId = #{cardHolderClassfyId} where employeeCardHolderId = #{employeeCardHolderId}
+    </update>
+
+    <update id="updateOldCardHolderClassfyIdByNewCardHolderClassfyId">
+        update EmployeeCardHolder set cardHolderClassfyId = #{newCardHolderClassfyId} where cardHolderClassfyId = #{oldCardHolderClassfyId}
+    </update>
+
+    <delete id="deleteEmployeeCardHolderByEmployeeCardHolderIdAndEmployeeId">
         delete from EmployeeCardHolder where employeeCardHolderId = #{employeeCardHolderId} and employeeId = #{employeeId}
     </delete>
 
@@ -26,5 +34,10 @@
 
     <select id="findEmployeeCardHolderByEmployeeId" resultType="com.sicnu.oasystem.pojo.EmployeeCardHolder">
         select * from EmployeeCardHolder where employeeId = #{employeeId}
+    </select>
+
+    <select id="findEmployeeCardHolderByCardHolderClassfyId"
+            resultType="com.sicnu.oasystem.pojo.EmployeeCardHolder">
+        select * from EmployeeCardHolder where cardHolderClassfyId = #{cardHolderClassfyId}
     </select>
 </mapper>
