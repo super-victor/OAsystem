@@ -45,4 +45,14 @@ public interface CardHolderMapper {
      * @LastChangeDate 2020/11/14
      */
     int updateCardHolderByCardHolderId(CardHolder cardHolder);
+
+    /**
+     * @MethodName findCardHolderByCardHolderId
+     * @param cardHolderId 名片夹id
+     * @Description 查找cardHolder by cardHolderId
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.pojo.CardHolder
+     * @LastChangeDate 2020/11/17
+     */
+    CardHolder findCardHolderByCardHolderId(int cardHolderId);
 }
