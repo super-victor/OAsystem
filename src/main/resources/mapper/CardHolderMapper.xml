@@ -3,35 +3,26 @@
 <mapper namespace="com.sicnu.oasystem.mapper.CardHolderMapper">
 
     <insert id="insertCardHolder" useGeneratedKeys="true" keyProperty="cardHolderId">
-        insert into CardHolder(cardHolderClassfyId, name, phone
+        insert into CardHolder(employeeId, name, phone
         <if test="email != null">,email</if>
-        ,address
-        <if test="qq !=null">,qq</if>
-        ,company
+        ,address,company
         <if test="department != null">,department</if>
         <if test="position != null">,position</if>)
-        values(#{cardHolderClassfyId}, #{name}, #{phone}
+        values(#{employeeId}, #{name}, #{phone}
         <if test="email != null">,#{email}</if>
-        ,#{address}
-        <if test="qq != null">,#{qq}</if>
-        ,#{company}
+        ,#{address},#{company}
         <if test="department != null">,#{department}</if>
         <if test="position != null">,#{position}</if>)
     </insert>
 
-    <update id="updateCardHolderClassfyIdByOldCardHolderClassfyId">
-        update CardHolder set cardHolderClassfyId = #{newCardHolderClassfyId} where cardHolderClassfyId = #{oldCardHolderClassfyId}
-    </update>
-
     <update id="updateCardHolderByCardHolderId">
         update CardHolder set cardHolderId = #{cardHolderId}
-        <if test="cardHolderClassfyId != null">,cardHolderClassfyId = #{cardHolderClassfyId}</if>
+        <if test="employeeId != null">,employeeId = #{employeeId}</if>
         <if test="name != null">,name = #{name}</if>
         <if test="phone != null">,phone = #{phone}</if>
         <if test="email != null">,email = #{email}</if>
         <if test="address != null">,address = #{address}</if>
         <if test="company != null">,company = #{company}</if>
-        <if test="qq != null">,qq = #{qq}</if>
         <if test="department != null">,department = #{department}</if>
         <if test="position != null">,position = #{position} </if>
         where cardHolderId = #{cardHolderId}
@@ -41,8 +32,5 @@
         delete from CardHolder where cardHolderId = #{cardHolderId}
     </delete>
 
-    <select id="findCardHolderByCardHolderClassfyId" resultType="com.sicnu.oasystem.pojo.CardHolder">
-        select * from CardHolder where CardHolderClassfyId = #{CardHolderClassfyId}
-    </select>
 
 </mapper>

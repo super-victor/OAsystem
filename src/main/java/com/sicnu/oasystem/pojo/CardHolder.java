@@ -20,12 +20,11 @@ import java.util.Date;
 public class CardHolder {
     @JsonIgnore
     private Integer cardHolderId;
-    private Integer cardHolderClassfyId;
+    private Integer employeeId;
     private String name;
     private String phone;
     private String email;
     private String address;
-    private String qq;
     private String company;
     private String department;
     private String position;

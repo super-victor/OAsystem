@@ -2,10 +2,10 @@ package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
-import com.sicnu.oasystem.mapper.CardHolderMapper;
-import com.sicnu.oasystem.pojo.CardHolder;
+import com.sicnu.oasystem.mapper.EmployeeCardHolderMapper;
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.pojo.EmployeeCardHolder;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,9 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
     @Resource
     CardHolderClassfyMapper cardHolderClassfyMapper;
 
+
     @Resource
-    CardHolderMapper cardHolderMapper;
+    EmployeeCardHolderMapper employeeCardHolderMapper;
 
     @Override
     public BackFrontMessage findCardHolderClassfyByEmployeeId(){
@@ -49,13 +50,13 @@ public class CardHolderClassfyServiceImpl implements CardHolderClassfyService{
         CardHolderClassfy defaultClassfy = cardHolderClassfyMapper
                 .findCardHolderClassfyByName("他人名片夹", currentEmployee.getEmployeeId());
         //转移前判断是否需要转移
-        List<CardHolder> hasCardHoder = cardHolderMapper.findCardHolderByCardHolderClassfyId(cardHolderClassfyId);
+        List<EmployeeCardHolder> hasEmployeeCardHolder = employeeCardHolderMapper.findEmployeeCardHolderByCardHolderClassfyId(cardHolderClassfyId);
         boolean updateCardHolder = false;   //默认不需要转移
-        if ( hasCardHoder.size() != 0 ) {  //有需要转移的名片夹
+        if ( hasEmployeeCardHolder.size() != 0 ) {  //有需要转移的名片夹
             updateCardHolder = true;
         }
         //删除前先将此名片夹分类下的名片夹转移到“他人名片夹”下
-        int transferCount = cardHolderMapper.updateCardHolderClassfyIdByOldCardHolderClassfyId(
+        int transferCount = employeeCardHolderMapper.updateOldCardHolderClassfyIdByNewCardHolderClassfyId(
                 cardHolderClassfyId, defaultClassfy.getCardHolderClassfyId());
         if (transferCount > 0 || !updateCardHolder){  //转移行数大于0，或者不需要转移
             int result = cardHolderClassfyMapper

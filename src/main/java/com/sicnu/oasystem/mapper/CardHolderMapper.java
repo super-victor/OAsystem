@@ -3,7 +3,6 @@ package com.sicnu.oasystem.mapper;
 import com.sicnu.oasystem.pojo.CardHolder;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 
 /**
  * @InterfaceName CardHolderMapper
@@ -16,15 +15,6 @@ import java.util.List;
 @Mapper
 public interface CardHolderMapper {
 
-    /**
-     * @MethodName findCardHolderByCardHolderClassfyId
-     * @param CardHolderClassfyId 名片夹分类id
-     * @Description 查找名片夹by名片夹分类id
-     * @Author Waynejwei
-     * @Return java.util.List<com.sicnu.oasystem.pojo.CardHolder>
-     * @LastChangeDate 2020/11/6
-     */
-    List<CardHolder> findCardHolderByCardHolderClassfyId(int CardHolderClassfyId);
 
     /**
      * @MethodName deleteCardHolderByCardHolderId
@@ -55,15 +45,4 @@ public interface CardHolderMapper {
      * @LastChangeDate 2020/11/14
      */
     int updateCardHolderByCardHolderId(CardHolder cardHolder);
-
-    /**
-     * @MethodName updateCardHolderClassfyIdByOldCardHolderClassfyId
-     * @param oldCardHolderClassfyId 原本名片夹分类id
-     * @param newCardHolderClassfyId 新的名片夹分类id
-     * @Description 将某一分类下的所有名片夹转移到另一分类中
-     * @Author Waynejwei
-     * @Return int
-     * @LastChangeDate 2020/11/9
-     */
-    int updateCardHolderClassfyIdByOldCardHolderClassfyId(int oldCardHolderClassfyId, int newCardHolderClassfyId);
 }

@@ -2,7 +2,6 @@ package com.sicnu.oasystem.mapper;
 
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -47,6 +46,17 @@ public interface CardHolderClassfyMapper {
      * @LastChangeDate 2020/11/8
      */
     CardHolderClassfy findCardHolderClassfyByCardHolderClassfyId(int cardHolderClassfyId);
+
+    /**
+     * @MethodName findCardHolderClassfyByCardHolderClassfyIdAndEmployeeId
+     * @param cardHolderClassfyId 名片夹分类id
+     * @param employeeId 职工id
+     * @Description 判断此人是否有此名片夹分类
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.pojo.CardHolderClassfy
+     * @LastChangeDate 2020/11/16
+     */
+    CardHolderClassfy findCardHolderClassfyByCardHolderClassfyIdAndEmployeeId(int cardHolderClassfyId, int employeeId);
 
     /**
      * @MethodName deleteCardHolderClassfyByCardHolderClassfyId

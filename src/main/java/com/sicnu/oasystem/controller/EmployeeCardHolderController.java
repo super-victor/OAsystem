@@ -4,10 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.EmployeeCardHolderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -26,18 +23,21 @@ public class EmployeeCardHolderController {
     @Resource
     EmployeeCardHolderService employeeCardHolderService;
 
+    //TODO:测试
+
     /**
      * @MethodName insertEmployeeCardHolder
      * @param cardHolderId 名片夹id
+     * @param cardHolderClassfyId 名片夹分类id
      * @Description 分享名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/14
      */
-    @ApiOperation(value = "分享名片夹")
+    @ApiOperation(value = "通过名片夹id添加职工名片夹(分享名片夹)")
     @PostMapping("/EmployeeCardHolder")
-    public BackFrontMessage insertEmployeeCardHolder(int cardHolderId){
-        return employeeCardHolderService.insertEmployeeCardHolder(cardHolderId);
+    public BackFrontMessage insertEmployeeCardHolder(@RequestParam int cardHolderId, @RequestParam int cardHolderClassfyId){
+        return employeeCardHolderService.insertEmployeeCardHolder(cardHolderId, cardHolderClassfyId);
     }
 
     /**
@@ -50,7 +50,7 @@ public class EmployeeCardHolderController {
      */
     @ApiOperation(value = "删除名片夹")
     @DeleteMapping("/EmployeeCardHolder")
-    public BackFrontMessage deleteEmployeeCardHolder(int employeeCardHolderId){
+    public BackFrontMessage deleteEmployeeCardHolder(@RequestParam int employeeCardHolderId){
         return employeeCardHolderService.deleteEmployeeCardHolderByEmployeeCardHolderId(employeeCardHolderId);
     }
 
@@ -62,8 +62,37 @@ public class EmployeeCardHolderController {
      * @LastChangeDate 2020/11/15
      */
     @ApiOperation(value = "查找职工所拥有的名片夹")
-    @GetMapping("/EmployeeCardHolder")
-    public BackFrontMessage findEmployeeCardHolder(){
+    @GetMapping("/findEmployeeCardHolderByEmployeeId")
+    public BackFrontMessage findEmployeeCardHolderByEmployeeId(){
         return employeeCardHolderService.findEmployeeCardHolderByEmployeeId();
+    }
+
+    /**
+     * @MethodName findEmployeeCardHolderByCardHolderClassfyId
+     * @param  cardHolderClassfyId 名片夹分类id
+     * @Description 查找某一分类下的名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/16
+     */
+    @ApiOperation(value = "查找某一分类下的名片夹")
+    @GetMapping("/findEmployeeCardHolderByCardHolderClassfyId")
+    public BackFrontMessage findEmployeeCardHolderByCardHolderClassfyId(@RequestParam int cardHolderClassfyId){
+        return employeeCardHolderService.findEmployeeCardHolderByCardHolderClassfyId(cardHolderClassfyId);
+    }
+
+    /**
+     * @MethodName updateEmployeeCardHolderClassfy
+     * @param employeeCardHolderId 职工名片夹id
+     * @param newCardHolderClassfyId 新的名片夹分类id
+     * @Description 修改名片夹分类
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/16
+     */
+    @ApiOperation(value = "修改名片夹的分类")
+    @PutMapping("/EmployeeCardHolder")
+    public BackFrontMessage updateEmployeeCardHolderClassfy(@RequestParam int employeeCardHolderId, @RequestParam int newCardHolderClassfyId){
+        return employeeCardHolderService.updateCardHolderClassfyIdBy(employeeCardHolderId, newCardHolderClassfyId);
     }
 }
