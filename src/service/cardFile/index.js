@@ -30,13 +30,35 @@ export default{
   // 请求某一名片夹分类的所有名片
   async requestCard(data) {
     const res = await NetworkRequest({
-        url:'/CardHolderByCardHolderClassfyId',
+        url:'/findEmployeeCardHolderByCardHolderClassfyId',
         method:'get',
         postHeaderType:'multipart/form-data',
         throttle:true,
         data
       })
       return res.data;
+  },
+  // 新建名片
+  async AddCard(data) {
+    const res = await NetworkRequest({
+      url:'/CardHolder',
+      method:'post',
+      postHeaderType:'multipart/form-data',
+      throttle:true,
+      data
+    })
+    return res.data;
+  },
+  // 导入名片
+  async importCard(data) {
+    const res = await NetworkRequest({
+      url:'/EmployeeCardHolder',
+      method:'post',
+      postHeaderType:'multipart/form-data',
+      throttle:true,
+      data
+    })
+    return res.data;
   },
   // 请求自己的名片
   async requestAnimationFrame() {
@@ -47,5 +69,14 @@ export default{
           throttle:true
       })
       return res.data;
+  },
+  async test() {
+    const res = await NetworkRequest({
+      url:'/findEmployeeCardHolderByEmployeeId',
+      method: 'get',
+      postHeaderType:'multipart/form-data',
+      throttle:true
+    })
+    return res.data;
   }
 }

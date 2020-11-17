@@ -87,6 +87,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import cardFileAPI from '@/service/cardFile'
   import Card from './Card'
   export default {
@@ -117,6 +118,7 @@
       };
     },
     computed: {
+      ...mapState['userInfo']
     },
     watch: {},
     methods: {
@@ -167,20 +169,38 @@
         })
         .catch(err=>{
           console.log(err);
-          this.$message.error('添加失败');
+          this.$message.error('获取失败');
         })
       },
       // 新建或导入名片
       submitOption(type) {
-        innerVisible = false;
-        dialogVisible2 = false;
         if(type === '新建') {
         } else {
+          cardFileAPI.importCard({
+            cardHolderClassfyId:this.select.id,
+            cardHolderId: this.cardCode
+          })
+          .then(res=>{
+            this.innerVisible = false;
+            this.dialogVisible2 = false;
+            console.log('a');
+          })
+          .catch(err=>{
+            this.$message.error('导入失败');
+          })
         }
       }
     },
     created() {
       this.getFileName();
+        cardFileAPI.test()
+        .then(res=>{
+          console.log(res);
+        })
+        .catch(err=>{
+          console.log(err);
+          this.$message.error('添加失败');
+        })
     },
     mounted() {
       this.$emit('childrenBread',['共享名片']);
@@ -211,13 +231,15 @@
         }
       }
       .center {
-        margin: 0 2rem;
+        width: 8rem;
+        padding-left: 2rem;
         .card {
           margin-bottom: 0.2rem;
         }
       }
       .tip_info {
-        margin-left: 0.5rem;
+        padding-left: 1rem;
+        width: 9rem;
         font-size: 0.35rem;
         color: @warningColor;
       }
