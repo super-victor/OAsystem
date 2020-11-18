@@ -32,7 +32,7 @@ import {
   Form,
   FormItem,
   Row,
-  Col,
+  Col
 } from 'element-ui';
 
 Vue.use(Container);

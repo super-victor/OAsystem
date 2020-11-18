@@ -12,10 +12,6 @@ export default{
       route:'business-card-holder',
       children:[
         {
-          name:'我的名片夹',
-          route:'mine'
-        },
-        {
           name:'共享名片夹',
           route:'shared'
         }

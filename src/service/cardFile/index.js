@@ -16,6 +16,11 @@ export default{
     })
     return res.data;
   },
+
+  /**
+   * @param {Object} data 名片夹分类   name:分类名
+   * @returns {Promise<Object>} 
+  */
   // 添加名片夹分类
   async addCardFile(data) {
     const res = await NetworkRequest({
@@ -27,6 +32,44 @@ export default{
     });
     return res.data;
   },
+
+  /**
+   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   * @returns {Promise<Object>} 
+  */
+  // 删除名片夹分类
+  async deleteCardFile(data) {
+    const res = await NetworkRequest({
+        url:'/CardHolderClassfy',
+        method:'delete',
+        postHeaderType:'multipart/form-data',
+        throttle:true,
+        data
+    });
+    return res.data;
+  },
+
+  /**
+   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   *                                   name:分类名
+   * @returns {Promise<Object>} 
+  */
+  // 修改名片夹分类
+  async updateCardFile(data) {
+    const res = await NetworkRequest({
+        url:'/CardHolderClassfy',
+        method:'put',
+        postHeaderType:'multipart/form-data',
+        throttle:true,
+        data
+    });
+    return res.data;
+  },
+
+  /**
+   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   * @returns {Promise<Object>} 
+  */
   // 请求某一名片夹分类的所有名片
   async requestCard(data) {
     const res = await NetworkRequest({
@@ -76,7 +119,7 @@ export default{
       method: 'get',
       postHeaderType:'multipart/form-data',
       throttle:true
-    })
+    }) 
     return res.data;
   }
 }
