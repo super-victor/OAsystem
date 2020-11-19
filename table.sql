@@ -57,6 +57,8 @@ create table Employee (
 create table Schedule (
     scheduleId int auto_increment comment '日程id',
     startTime timestamp not null comment '日程开始时间',
+    endTime timestamp not null comment '日程结束时间',
+    leader int not null comment '负责人的id',
     location varchar(50) not null comment '日程地点',
     content text not null comment '日程内容',
     remark text comment '日程备注',

@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @Version v1.0
  */
 
-@Api(tags = "名片夹管理")
+@Api(tags = "名片管理")
 @RestController
 public class CardHolderController {
 
