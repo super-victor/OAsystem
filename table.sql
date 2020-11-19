@@ -1,3 +1,5 @@
+drop table if exists RoleMenu;
+drop table if exists Menu;
 drop table if exists Meeting;
 drop table if exists EmployeeRole;
 drop table if exists Role;
@@ -9,6 +11,7 @@ drop table if exists EquipmentClassify;
 drop table if exists Message;
 drop table if exists EmployeeTodo;
 drop table if exists Todo;
+drop table if exists EmployeeCardHolder;
 drop table if exists CardHolder;
 drop table if exists CardHolderClassfy;
 drop table if exists EmployeeSchedule;
@@ -41,7 +44,7 @@ create table Employee (
     idCard char(18) not null comment '职工身份证号码',
     sex char(2) comment '职工性别',
     entryTime timestamp default current_timestamp not null comment '职工入职时间',
-    departmentId int not null comment '职工所在部门id',
+    departmentName varchar(10) not null comment '部门名称',
     position varchar(10) not null comment '职工职位',
     homeAddress varchar(50) comment '职工家庭地址',
     passwordChangeDate timestamp default current_timestamp comment'密码最后修改时间',
@@ -49,7 +52,7 @@ create table Employee (
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_Employee_employeeId primary key(employeeId),
     constraint unique_Employee_username unique key(username),
-    constraint fk_Employee_departmentId foreign key(departmentId) references Department(departmentId)
+    constraint fk_Employee_departmentName foreign key(departmentName) references Department(name)
 );
 
 
@@ -147,7 +150,7 @@ create table Todo (
 
 -- 职工待办事项对应表
 create table EmployeeTodo (
-    employeeTodoId int not null comment '职工和待办事项对应id',
+    employeeTodoId int not null auto_increment comment '职工和待办事项对应id',
     employeeId int not null comment '职工id',
     todoId int not null comment '待办事项id',
     createTime timestamp default current_timestamp comment '字段创建时间',
@@ -161,7 +164,7 @@ create table EmployeeTodo (
 
 -- 留言表
 create table Message (
-    messageId int not null comment '留言id',
+    messageId int not null auto_increment comment '留言id',
     senderId int not null comment '发送者id',
     receiverId int not null comment '接收者id',
     content text not null comment '留言内容',
@@ -176,7 +179,7 @@ create table Message (
 
 -- 设备分类表
 create table EquipmentClassify (
-    equipmentClassifyId int not null comment '设备分类id',
+    equipmentClassifyId int not null auto_increment comment '设备分类id',
     name varchar(20) not null comment '设备分类名称',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段更新时间',
@@ -186,7 +189,7 @@ create table EquipmentClassify (
 
 -- 会议室表
 create table MeetingRoom (
-    meetingRoomId int not null comment '会议室id',
+    meetingRoomId int not null auto_increment comment '会议室id',
     name varchar(20) not null comment '会议室名称',
     place varchar(20) comment '位置',
     isOccapy int not null comment '是否占用',
@@ -199,7 +202,7 @@ create table MeetingRoom (
 
 -- 设备表
 create table Equipment (
-    equipmentId int not null comment '设备id',
+    equipmentId int not null auto_increment comment '设备id',
     equipmentClassifyId int not null comment '设备分类id',
     meetingRoomId int not null comment '会议室id',
     name varchar(20) not null comment '设备名称',
@@ -237,7 +240,7 @@ create table SendFile(
 
 -- 收文表
 create table ReceiveFile(
-    receiveFileId int not null comment '收文ID',
+    receiveFileId int not null auto_increment comment '收文ID',
     sendFileId int not null comment '发文ID',
     receiverId int not null comment '收件人ID',
     isRecceived int not null comment '是否收到',
@@ -245,13 +248,14 @@ create table ReceiveFile(
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_ReceiveFile_receiveId primary key (receiveFileId),
     constraint fk_ReceiveFile_sendFileId foreign key (sendFileId) references SendFile(sendFileId),
-    constraint fk_ReceiveFile_receiverId foreign key (receiverId) references Employee(employeeId)
+    constraint fk_ReceiveFile_receiverId foreign key (receiverId) references Employee(employeeId),
+    constraint unique_ReceiveFile_sendFileId_receiverId unique key(sendFileId,receiverId)
 );
 
 
 -- 角色表
 create table Role(
-    roleId int not null comment '角色ID',
+    roleId int not null auto_increment comment '角色ID',
     name varchar(10) not null  comment '角色名称',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
@@ -261,7 +265,7 @@ create table Role(
 
 -- 职工角色对应表
 create table EmployeeRole(
-    employeeRoleId int not null comment '职工角色ID',
+    employeeRoleId int not null auto_increment comment '职工角色ID',
     employeeId int not null comment '职工ID',
     roleId int not null comment '角色ID',
     createTime timestamp default current_timestamp comment '创建时间',
@@ -272,10 +276,36 @@ create table EmployeeRole(
     constraint unique_EmployeeRole_employeeId_roleId unique key(employeeId,roleId)
 );
 
+-- 菜单表
+create table Menu(
+    menuId int not null auto_increment comment '菜单id',
+    name varchar(50) not null comment '菜单名称',
+    url varchar(50) not null comment 'url接口地址',
+    code varchar(50) not null comment '菜单码',
+    createTime timestamp default current_timestamp comment '创建时间',
+    updateTime timestamp on update current_timestamp comment '修改时间',
+    constraint pk_Menu_menuId primary key (menuId),
+    constraint unique_Menu_name unique key (name),
+    constraint unique_Menu_url unique key (url),
+    constraint unique_Menu_code unique key (code)
+);
+
+-- 角色菜单对应表
+create table RoleMenu (
+    roleMenuId int not null auto_increment comment '菜单角色对应id',
+    menuId int not null comment '菜单id',
+    roleId int not null comment '角色id',
+    createTime timestamp default current_timestamp comment '创建时间',
+    updateTime timestamp on update current_timestamp comment '修改时间',
+    constraint pk_RoleMenu_roleMenuId primary key (roleMenuId),
+    constraint fk_RoleMenu_menuId foreign key (menuId) references Menu(menuId),
+    constraint fk_RoleMenu_roleId foreign key (roleId) references Role(roleId),
+    constraint unique_RoleMenu_menuId_roleId unique key(menuId,roleId)
+);
 
 -- 会议表
 create table Meeting(
-    meetingId int not null comment '会议ID',
+    meetingId int not null auto_increment comment '会议ID',
     meetingRoomId int not null comment '会议室ID',
     status int not null comment '会议状态',
     employeeId int not null comment '主会人ID',
@@ -298,8 +328,20 @@ create table Meeting(
 insert into department (name, phone) values ('后勤部', '10001');
 insert into department (name, phone) values ('财务部', '10002');
 
-insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', 1, '普通员工', '四川师范大学');
-insert into employee (username, name, password, phone, email, idCard, sex, departmentId, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', 2, '普通员工', '四川师范大学');
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学');
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学');
+
+INSERT INTO `employeecardholder` VALUES ('1', '2', '1', '1', '2020-11-16 21:47:20', null);
+INSERT INTO `employeecardholder` VALUES ('2', '1', '1', '4', '2020-11-17 10:25:01', '2020-11-17 10:26:40');
+
+INSERT INTO `cardholder` VALUES ('1', '1', '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯', '后勤部', '普通员工', '2020-11-16 21:47:20', '2020-11-16 22:08:48');
+
+INSERT INTO `cardholderclassfy` VALUES ('1', '后端', '2', '2020-11-16 10:57:47', '2020-11-16 11:07:09');
+INSERT INTO `cardholderclassfy` VALUES ('2', '前端', '2', '2020-11-16 11:11:25', null);
+INSERT INTO `cardholderclassfy` VALUES ('3', '前端', '1', '2020-11-17 10:20:48', null);
+INSERT INTO `cardholderclassfy` VALUES ('4', '财务', '1', '2020-11-17 10:26:20', null);
+INSERT INTO `cardholderclassfy` VALUES ('5', '', '2', '2020-11-18 20:04:15', null);
+INSERT INTO `cardholderclassfy` VALUES ('6', '测试人员', '2', '2020-11-18 20:05:52', null);
 
 INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
 INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');
@@ -308,8 +350,8 @@ INSERT INTO `meetingroom` VALUES ('3', '301会议室', '3楼', '0', '100', '2020
 INSERT INTO `meeting` VALUES ('1', '1', '1', '1', null, null, '产品设计', '1', '2020-11-13 19:18:30', '2020-11-13 22:42:09', '2020-11-06 19:18:14', '2020-11-25 19:18:20', '20');
 INSERT INTO `meeting` VALUES ('2', '2', '0', '1', null, null, '部门会议', '1', '2020-11-13 19:55:49', '2020-11-13 20:02:44', '2020-11-19 19:55:02', '2020-11-27 19:55:06', '10');
 
-
 INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
 
 INSERT INTO `equipmentclassify` VALUES ('1', '显示器', '2020-11-15 22:15:39', null);
 INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', null);
+
