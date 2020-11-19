@@ -42,7 +42,7 @@ public class CardHolderController {
     /**
      * @MethodName updateCardHolderAboutCardHolderClassfy
      * @param cardHolder 名片夹
-     * @param cardHolderId 名片夹id
+     * @param cardHolderId 名片夹id123
      * @Description 修改名片夹所在分类
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage

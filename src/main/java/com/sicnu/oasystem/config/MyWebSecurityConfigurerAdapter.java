@@ -5,12 +5,14 @@ import com.sicnu.oasystem.filter.JwtAuthorizationTokenFilter;
 import com.sicnu.oasystem.service.AnthenticateService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -48,6 +50,12 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
     @Resource
     JwtAuthorizationTokenFilter jwtAuthorizationTokenFilter;
 
+    @Resource
+    CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+
+    @Resource
+    CustomAccessDecisionManager customAccessDecisionManager;
+
 //  启用密码加密
 //	@Bean
 //    PasswordEncoder passwordEncoder() {
@@ -77,12 +85,20 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
     //注意数据库中的权限表中的权限名称必须是ROLE_****的形式，不然无法自动匹配 !!!!
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                  .antMatchers("/v2/**",
+        http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+
+            @Override
+            public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                o.setSecurityMetadataSource(customFilterInvocationSecurityMetadataSource);
+                o.setAccessDecisionManager(customAccessDecisionManager);
+                return o;
+            }
+        })
+                .antMatchers("/v2/**",
                           "/swagger-resources/**",
                           "/swagger-resources",
                           "/swagger-ui**","/webjars/**")
-                  .permitAll()
+                .permitAll()
 //                .antMatchers("/user/**")
 //                .hasRole("User")
 //                .antMatchers("/merchant/**")

@@ -1,10 +1,9 @@
 package com.sicnu.oasystem.mapper;
 
-import com.sicnu.oasystem.pojo.Department;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.Role;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -105,12 +104,26 @@ public interface EmployeeMapper {
     List<Employee>getEmployeeByCondition(String name,String sex);
 
     /**
-     * @MethodName findEmployeesByRoleId
-     * @param RoleId
-     * @Description 找出所有有roleid权限的人
+     * @MethodName findRoleByEmployeeIdAndRoleId
+     * @param employeeId
+     * @param roleId
+     * @Description 判断用户是否拥有该角色
      * @Author JohnTang
      * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
-     * @LastChangeDate 2020/11/15
+     * @LastChangeDate 2020/11/18
+     * @return
      */
-    List<Employee> findEmployeesByRoleId(Integer RoleId);
+    Role findRoleByEmployeeIdAndRoleId(Integer employeeId, Integer roleId);
+
+    /**
+     * @MethodName findEmployeesByRoleId
+     * @param roleId
+     * @Description 找出所有拥有该角色的员工
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/18
+     */
+    List<Employee> findEmployeesByRoleId(Integer roleId);
+
+    List<String> findRoleIdsByUrlPattern(String urlPattern);
 }

@@ -25,6 +25,17 @@
     <insert id="insertReceiveFile" useGeneratedKeys="true" keyProperty="receivefileid">
         insert into receivefile (sendfileId, receiverId, isReceived) values (#{sendfileId}, #{receiverId}, #{isReceived})
     </insert>
+    <update id="updateSendFileBySendFile">
+        update sendfile set sender = #{sender}
+        <if test="sendFile.title != null">,title = #{title}</if>
+        <if test="sendFile.content != null">,content = #{content}</if>
+        <if test="sendFile.annexUrl != null">,annexUrl = #{annexUrl}</if>
+        <if test="sendFile.remark != null">,remark = #{remark}</if>
+        where senderId = #{senderId} and sendFileId = #{sendfileId}
+    </update>
+    <select id="findSendFileByEmployeeIdAndSendfileId" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where employeeId = #{employeeId} and sendfileId = #{sendfileId}
+    </select>
 
 
 </mapper>

@@ -26,7 +26,7 @@ public class AddrlistController {
     /**
      * @MethodName getaddrlist
      * @param
-     * @Description 获取所有员工通讯录
+     * @Descrip tion 获取所有员工通讯录
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
