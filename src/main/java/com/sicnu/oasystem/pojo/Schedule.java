@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,8 +18,11 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class Schedule {
+    @JsonIgnore
     private Integer scheduleId;
     private Date startTime;
+    private Date endTime;
+    private Integer leader;
     private String location;
     private String content;
     private String remark;

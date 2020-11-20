@@ -18,7 +18,11 @@
     </resultMap>
 
     <update id="updatePartlyEmployeeByEmployeeId">
-        update employee set email = #{email}, phone = #{phone}, homeaddress = #{homeAddress} where employeeid = #{employeeId}
+        update employee set employeeId = #{employeeId},
+        <if test="email != null">,email = #{email},</if>
+        <if test="phone != null">,phone = #{phone}</if>
+        <if test="homeAddress != null">,homeAddress = #{homeAddress}</if>
+        where employeeid = #{employeeId}
     </update>
 
     <select id="findEmployeeByUsername" resultType="com.sicnu.oasystem.pojo.Employee">
@@ -60,8 +64,18 @@
             and employee.name like #{name}
         </if>
     </select>
-    <select id="findEmployeesByRoleId" resultType="com.sicnu.oasystem.pojo.Employee">
-        select * from employee where employeeId in (select employeeId from employeerole where roleId = roleId)
+
+    <select id="findRoleByEmployeeIdAndRoleId" resultType="com.sicnu.oasystem.pojo.Role">
+        select * from role where employeeId = #{employeeId} and roleId = #{roleId}
     </select>
+
+    <select id="findEmployeesByRoleId" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where employeeId in (select employeeId from employeerole where roleid = #{roleId})
+    </select>
+
+    <select id="findRoleIdsByUrlPattern" resultType="java.lang.String">
+        select name from role where roleId in(select roleId from RoleMenu where menuId = (select menuId from menu where url = #{urlPattern}))
+    </select>
+
 
 </mapper>

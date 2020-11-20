@@ -3,9 +3,10 @@ package com.sicnu.oasystem.service;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.DocumentMapper;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
+import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.ReceiveFile;
-import com.sicnu.oasystem.pojo.Role;
 import com.sicnu.oasystem.pojo.SendFile;
+import com.sicnu.oasystem.util.FileUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -69,13 +70,10 @@ public class DocumentServiceImpl implements DocumentService{
         if (file == null || file.isEmpty()) {
             return new BackFrontMessage(500,"上传失败1",null);
         }
-        String filename = UUID.randomUUID().toString();
-        String[] items = file.getOriginalFilename().split(".");
-        String fileType = items[items.length - 1];
-        filename = filename + "." + fileType;
-        File newFile = new File(path, filename);
+
+        String filename;
         try {
-            file.transferTo(newFile);
+            filename = FileUtil.saveFileAtLocalDefaultPath(file,path);
         } catch (IOException e) {
             e.printStackTrace();
             return new BackFrontMessage(500,"上传失败2",null);
@@ -92,15 +90,7 @@ public class DocumentServiceImpl implements DocumentService{
         sendFile.setRemark(remark);
         sendFile.setSenderId(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
         // 检查审查人id是否有Role_Centor角色
-        List<Role> roles = employeeMapper.findRolesByEmployeeId(censorId);
-        boolean flag = false;
-        for (Role role : roles) {
-            if (role.getRoleId() == 2) {
-                flag = true;
-                break;
-            }
-        }
-        if (flag) {
+        if (employeeMapper.findRoleByEmployeeIdAndRoleId(censorId, 2) == null) {
             return new BackFrontMessage(500, "创建失败1", null);
         }
         sendFile.setCensorId(censorId);
@@ -118,7 +108,7 @@ public class DocumentServiceImpl implements DocumentService{
             }
             return new BackFrontMessage(200,"创建成功",null);
         } else {
-            new File(path + filename).delete();
+            new File(path+"/" + filename).delete();
             return new BackFrontMessage(500, "创建失败2", null);
         }
     }
@@ -127,17 +117,59 @@ public class DocumentServiceImpl implements DocumentService{
      * @param sendfileId
      * @param title
      * @param content
-     * @param annexUrl
      * @param remark
      * @param multipartFile
-     * @MethodName updateDocument
+     * @MethodName pdateNotPassDocument
      * @Description 修改发文
      * @Author JohnTang
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/15
      */
     @Override
-    public BackFrontMessage updateDocument(Integer sendfileId, String title, String content, String annexUrl, String remark, MultipartFile multipartFile) {
-        return null;
+    public BackFrontMessage updateNotPassDocument(Integer sendfileId, String title, String content, String remark, MultipartFile multipartFile) {
+        //todo 修改发文
+        // 修改发文必须满足的几个条件
+        // 必须是审查未通过
+        // 必须是发文的本人修改
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        SendFile sendFile = documentMapper.findSendFileByEmployeeIdAndSendfileId(currentEmployee.getEmployeeId(), sendfileId);
+        if (sendFile == null|| sendFile.getStatus() != -1) {
+            return new BackFrontMessage(500,"修改失败1",null);
+        }
+
+        String annexUrl = null;
+        // 如果需要修改附件
+        if (multipartFile != null ) {
+            // 保存新附件
+            try {
+                annexUrl = FileUtil.saveFileAtLocalDefaultPath(multipartFile, path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new BackFrontMessage(500,"修改失败2",null);
+            }
+            // 存在原附件，需要把原附件删除
+            if (sendFile.getAnnexUrl() != null) {
+                String oldFilePath = path +"/"+ sendFile.getAnnexUrl();
+                File oldFile = new File(oldFilePath);
+                if (oldFile.isFile() && oldFile.exists()) {
+                    oldFile.delete();
+                }
+            }
+
+        }
+
+        // 更新数据库
+        SendFile newSendfile = new SendFile();
+        newSendfile.setSendfileId(sendfileId);
+        newSendfile.setTitle(title);
+        newSendfile.setAnnexUrl(annexUrl);
+        newSendfile.setContext(content);
+        newSendfile.setRemark(remark);
+
+        if (documentMapper.updateSendFileBySendFile(newSendfile) != 0) {
+            return new BackFrontMessage(200, "修改成功", null);
+        } else {
+            return new BackFrontMessage(500, "修改失败3", null);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class Employee implements UserDetails {
     private String idCard;
     private String sex;
     private Date entryTime;
-    private int departmentId;
+    private String departmentName;
     private String position;
     private String homeAddress;
     @JsonIgnore

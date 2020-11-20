@@ -10,13 +10,13 @@ import javax.annotation.Resource;
 
 /**
  * @ClassName EmployeeCardHolderController
- * @Description 添加描述
+ * @Description 职工名片对应控制类
  * @Author Waynejwei
  * @LastChangeDate 2020/11/14 16:28
  * @Version v1.0
  */
 
-@Api(tags = "共享名片夹")
+@Api(tags = "共享名片")
 @RestController
 public class EmployeeCardHolderController {
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.ScheduleMapper">
+    <insert id="insertSchedule" useGeneratedKeys="true" keyProperty="scheduleId">
+        insert into Schedule(startTime, endTime, leader, location, content
+        <if test="remark != null">,remark</if>
+        <if test="type != null">,type</if>)
+        values(#{startTime}, #{endTime}, #{leader}, #{location}, #{content}
+        <if test="remark != null">, #{remark}</if>
+        <if test="type != null">, #{type}</if>)
+    </insert>
+
+    <update id="updateScheduleByScheduleId">
+        update Schedule set scheduleId = #{scheduleId}
+        <if test="startTime != null">,startTime = #{startTime}</if>
+        <if test="endTime != null">,endTime = #{endTime}</if>
+        <if test="leader != null">,leader = #{leader}</if>
+        <if test="location != null">,location = #{location}</if>
+        <if test="content != null">,content = #{content}</if>
+        <if test="remark ! null">,remark = #{remark}</if>
+        <if test="type != null">,type = #{type}</if>
+        where scheduleId = #{scheduleId}
+    </update>
+
+    <delete id="deleteScheduleByScheduleId">
+        delete from Schedule where scheduleId = #{scheduleId}
+    </delete>
+
+    <select id="findScheduleByScheduleId" resultType="com.sicnu.oasystem.pojo.Schedule">
+        select * from Schedule where scheduleId = #{scheduleId}
+    </select>
+
+    <select id="findDeadLineScheduleByTime" resultType="com.sicnu.oasystem.pojo.Schedule">
+
+    </select>
+</mapper>

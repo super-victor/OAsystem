@@ -43,18 +43,17 @@ public interface DocumentService {
     BackFrontMessage createDocument(Integer type, String title, String content, Integer sendPersonNum, String remark, Integer censorId, Integer isUrgent, MultipartFile file, List<Integer> receiverIdList);
 
     /**
-     * @MethodName updateDocument
+     * @MethodName pdateNotPassDocument
      * @param sendfileId
      * @param title
      * @param content
-     * @param annexUrl
      * @param remark
      * @param multipartFile
-     * @Description 修改发文
+     * @Description 修改未通过发文
      * @Author JohnTang
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/15
      */
-    BackFrontMessage updateDocument(Integer sendfileId,String title, String content,String annexUrl,String remark,MultipartFile multipartFile);
+    BackFrontMessage updateNotPassDocument(Integer sendfileId,String title, String content,String remark,MultipartFile multipartFile);
 
 }

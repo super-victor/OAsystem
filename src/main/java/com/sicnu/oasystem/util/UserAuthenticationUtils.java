@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.util;
 
 import com.sicnu.oasystem.pojo.Employee;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -12,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  **/
 
 public class UserAuthenticationUtils {
+    @Value("${document.path}")
+    private String path;
     
     /**
      * @MethodName getCurrentUserFromSecurityContext()
@@ -24,4 +27,6 @@ public class UserAuthenticationUtils {
     public static Employee getCurrentUserFromSecurityContext() {
         return (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+
 }

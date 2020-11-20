@@ -34,7 +34,7 @@ public class MeetingRoomController {
      */
     @GetMapping("/MeetingRoomInfo")
     public BackFrontMessage getMeetingRoomInfo(String place,Integer isOccapy,String MeetingRoomName){
-        return new  BackFrontMessage(200,"获取成功",meetingRoomService.getMeetRoomInfo(place,isOccapy,MeetingRoomName));
+        return new BackFrontMessage(200,"获取成功",meetingRoomService.getMeetRoomInfo(place,isOccapy,MeetingRoomName));
     }
 }
 

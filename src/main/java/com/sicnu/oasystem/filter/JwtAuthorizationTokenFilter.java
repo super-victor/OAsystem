@@ -37,7 +37,10 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-
+        //todo
+        // 1、设置一个全局允许url,springsecurity tokenfilter filterSource实现ant模式匹配
+        // 2、检查token在用户修改密码后签发
+        // 3、如果token快要过期刷新token，防止用户在访问页面时突然未登录
         String[] passUrls = {"/login"};
         boolean pass = false;
         for (String passUrl : passUrls) {
