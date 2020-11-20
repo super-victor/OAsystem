@@ -76,6 +76,9 @@ export default {
 .el-message .el-icon-success{
   font-size: 20px;
 }
+.el-message .el-icon-warning{
+  font-size: 20px;
+}
 .el-loading-mask.is-fullscreen .el-loading-spinner{
   font-size: 15px;
 }
