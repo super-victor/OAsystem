@@ -40,4 +40,7 @@
     <select id="getMeetingRoomNum" resultType="java.lang.Integer">
         select count(*) from meetingroom
     </select>
+    <select id="getMeetingRoomById" resultType="com.sicnu.oasystem.pojo.MeetingRoom">
+        select * from meetingroom where meetingroomid=#{MeetingRoomId}
+    </select>
 </mapper>

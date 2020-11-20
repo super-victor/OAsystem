@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @InterfaceName MeetingRoomService
- * @Description
+ * @Description 会议室的Service
  * @Author pan
  * @LastChangeDate 2020/11/13 14:43
  * @Version v1.0

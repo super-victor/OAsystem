@@ -36,12 +36,12 @@
 
 
     <select id="getAllEmployee" resultMap="ems">
-         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentId=department.departmentId
+         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentname=department.name
     </select>
 
     <select id="getEmployeeBypage" resultMap="ems">
          select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,department.departmentId,department.name as dname
-         from employee,department where employee.departmentId=department.departmentId
+         from employee,department where employee.departmentname=department.name
          LIMIT
 		 ${(currentPageNum-1)*pageSize}, ${pageSize}
     </select>
@@ -52,7 +52,7 @@
 
     <select id="getEmployeeByCondition" resultMap="ems">
         select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname
-        from employee,department where employee.departmentId=department.departmentId
+        from employee,department where employee.departmentname=department.name
         <if test="sex !=null">
             and employee.sex=#{sex}
         </if>

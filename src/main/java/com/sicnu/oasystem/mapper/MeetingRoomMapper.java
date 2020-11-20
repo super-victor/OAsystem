@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.mapper;
 
 import com.sicnu.oasystem.pojo.MeetingRoom;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface MeetingRoomMapper {
     Integer updateMeetingRoomIsOccapy();
 
     Integer updateMettingRoomNotIsOccapy();
+
+    MeetingRoom getMeetingRoomById(Integer MeetingRoomId);
+
 }
