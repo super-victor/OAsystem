@@ -23,7 +23,7 @@ drop table if exists Department;
 -- 部门表
 create table Department (
     departmentId int auto_increment comment '部门id',
-    name varchar(10) not null comment '部门名称',
+    name varchar(50) not null comment '部门名称',
     phone char(11) not null comment '部门电话',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
@@ -44,7 +44,7 @@ create table Employee (
     idCard char(18) not null comment '职工身份证号码',
     sex char(2) comment '职工性别',
     entryTime timestamp default current_timestamp not null comment '职工入职时间',
-    departmentName varchar(10) not null comment '部门名称',
+    departmentName varchar(50) not null comment '部门名称',
     position varchar(10) not null comment '职工职位',
     homeAddress varchar(50) comment '职工家庭地址',
     passwordChangeDate timestamp default current_timestamp comment'密码最后修改时间',
@@ -89,7 +89,7 @@ create table EmployeeSchedule(
 -- 名片夹分类表
 create table CardHolderClassfy(
     cardHolderClassfyId int not null auto_increment comment '名片夹分类id',
-    name varchar(20) not null comment '名片夹分类名称',
+    name varchar(50) not null comment '名片夹分类名称',
     ownerId int not null comment '名片夹拥有者id',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
@@ -135,7 +135,7 @@ create table EmployeeCardHolder(
 -- 待办事项表
 create table Todo (
     todoId int  not null auto_increment comment '待办事项id',
-    name varchar(20) not null comment '待办事项名称',
+    name varchar(50) not null comment '待办事项名称',
     content text comment'待办事项内容',
     beginTime timestamp not null comment '开始日期时间',
     deadline timestamp not null comment '截止日期时间',
@@ -256,7 +256,7 @@ create table ReceiveFile(
 -- 角色表
 create table Role(
     roleId int not null auto_increment comment '角色ID',
-    name varchar(10) not null  comment '角色名称',
+    name varchar(20) not null  comment '角色名称',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_Role_roleId primary key (roleId)
@@ -311,7 +311,7 @@ create table Meeting(
     employeeId int not null comment '主会人ID',
     record text comment '会议记录',
     remark text comment '备注',
-    name varchar(20) not null comment '会议名称',
+    name varchar(50) not null comment '会议名称',
     appoinmentStatus int not null comment '会议预约状态 0预约中 -1 预约失败 1预约失败 2会议完成',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
@@ -331,17 +331,17 @@ insert into department (name, phone) values ('财务部', '10002');
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学');
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学');
 
-INSERT INTO `employeecardholder` VALUES ('1', '2', '1', '1', '2020-11-16 21:47:20', null);
-INSERT INTO `employeecardholder` VALUES ('2', '1', '1', '4', '2020-11-17 10:25:01', '2020-11-17 10:26:40');
-
-INSERT INTO `cardholder` VALUES ('1', '1', '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯', '后勤部', '普通员工', '2020-11-16 21:47:20', '2020-11-16 22:08:48');
-
 INSERT INTO `cardholderclassfy` VALUES ('1', '后端', '2', '2020-11-16 10:57:47', '2020-11-16 11:07:09');
 INSERT INTO `cardholderclassfy` VALUES ('2', '前端', '2', '2020-11-16 11:11:25', null);
 INSERT INTO `cardholderclassfy` VALUES ('3', '前端', '1', '2020-11-17 10:20:48', null);
 INSERT INTO `cardholderclassfy` VALUES ('4', '财务', '1', '2020-11-17 10:26:20', null);
 INSERT INTO `cardholderclassfy` VALUES ('5', '', '2', '2020-11-18 20:04:15', null);
 INSERT INTO `cardholderclassfy` VALUES ('6', '测试人员', '2', '2020-11-18 20:05:52', null);
+
+INSERT INTO `cardholder` VALUES ('1', '1', '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯', '后勤部', '普通员工', '2020-11-16 21:47:20', '2020-11-16 22:08:48');
+
+INSERT INTO `employeecardholder` VALUES ('1', '2', '1', '1', '2020-11-16 21:47:20', null);
+INSERT INTO `employeecardholder` VALUES ('2', '1', '1', '4', '2020-11-17 10:25:01', '2020-11-17 10:26:40');
 
 INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
 INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');
@@ -350,8 +350,10 @@ INSERT INTO `meetingroom` VALUES ('3', '301会议室', '3楼', '0', '100', '2020
 INSERT INTO `meeting` VALUES ('1', '1', '1', '1', null, null, '产品设计', '1', '2020-11-13 19:18:30', '2020-11-13 22:42:09', '2020-11-06 19:18:14', '2020-11-25 19:18:20', '20');
 INSERT INTO `meeting` VALUES ('2', '2', '0', '1', null, null, '部门会议', '1', '2020-11-13 19:55:49', '2020-11-13 20:02:44', '2020-11-19 19:55:02', '2020-11-27 19:55:06', '10');
 
-INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
-
 INSERT INTO `equipmentclassify` VALUES ('1', '显示器', '2020-11-15 22:15:39', null);
 INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', null);
 
+INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
+
+insert into role (name) values ('ROLE_Admin');
+insert into role (name) values ('ROLE_Censor');
