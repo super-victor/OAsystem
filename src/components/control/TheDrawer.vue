@@ -13,6 +13,7 @@
 
 <script>
   import {mapState} from 'vuex';
+  import {mapMutations} from 'vuex';
   export default {
     components: {},
     data() {
@@ -32,7 +33,11 @@
       
     },
     methods: {
+      ...mapMutations([
+        'MAIN_CLICK'
+      ]),
       routeChange(firstRoute,secondRoute){
+        this.MAIN_CLICK(false);
         this.$router.push(`/${firstRoute}/${secondRoute}`);
       }
     },

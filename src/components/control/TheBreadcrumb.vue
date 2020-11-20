@@ -42,7 +42,7 @@
 <style lang='less' scoped>
 @import '../../style/common.less';
   .breadcrumb{
-    height: 100px;
+    height: 90px;
     width: 100%;
     .box{
       height: 40px;
