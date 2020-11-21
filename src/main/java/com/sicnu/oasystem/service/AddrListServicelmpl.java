@@ -74,7 +74,7 @@ public class AddrListServicelmpl implements AddrListService {
         int employeenums=employeeMapper.getemployeenumbers();
         List<Employee> employees=employeeMapper.getEmployeeBypage(currentPageNum,pageSize);
         if(employeenums!=0 && employees!=null){
-            return new BackFrontMessage(200,"获取成功",new BackFrontPage(pageSize,employeenums,currentPageNum,employees));
+            return new BackFrontMessage(200,"获取成功",new BackFrontPage(pageSize,employeenums/pageSize,currentPageNum,employees));
         }else {
             return new BackFrontMessage(500,"获取失败",null);
         }

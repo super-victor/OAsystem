@@ -1,8 +1,12 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.EquipmentClassifyMapper;
 import com.sicnu.oasystem.mapper.EquipmentMapper;
+import com.sicnu.oasystem.mapper.MeetingRoomMapper;
 import com.sicnu.oasystem.pojo.Equipment;
+import com.sicnu.oasystem.pojo.EquipmentClassify;
+import com.sicnu.oasystem.pojo.MeetingRoom;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -10,7 +14,7 @@ import java.util.List;
 
 /**
  * @ClassName EquipmentServicelpml
- * @Description
+ * @Description  设备服务的实现类
  * @Author pan
  * @LastChangeDate 2020/11/16 23:37
  * @Version v1.0
@@ -18,14 +22,24 @@ import java.util.List;
 @Service
 public class EquipmentServicelpml implements EquipmentService{
 
+    //todo:完成权限管理和安全管理
     @Resource
     EquipmentMapper equipmentMapper;
+
+    @Resource
+    EquipmentClassifyMapper equipmentClassifyMapper;
+
+    @Resource
+    MeetingRoomMapper meetingRoomMapper;
 
     @Override
     public BackFrontMessage addEquipment(Integer equipmentId, Integer equipmentclassifyId,
                                          Integer meetingroomId, String name, Integer ismaintain, int num) {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
-        if(equipment==null){
+        //todo:要判断分类是否存在 meetingId是否存在
+        EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
+        MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(meetingroomId);
+        if(equipment==null &&equipmentClassify !=null &&meetingRoom!=null){
             int res=0;
             res=equipmentMapper.addEquipment(equipmentId,equipmentclassifyId,meetingroomId,name,ismaintain,num);
             if(res==0){
@@ -34,7 +48,16 @@ public class EquipmentServicelpml implements EquipmentService{
                 return new BackFrontMessage(200,"添加设备成功",null);
             }
         }else{
-            return new BackFrontMessage(500,"设备已存在",null);
+            if(equipment!=null){
+                return new BackFrontMessage(500,"设备已存在",null);
+            }
+            if(equipmentClassify==null){
+                return new BackFrontMessage(500,"设备分类不存在",null);
+            }
+            if(meetingRoom==null){
+                return new BackFrontMessage(500,"设备所在会议室不存在",null);
+            }
+            return new BackFrontMessage(500,"设备未添加",null);
         }
     }
 
@@ -42,9 +65,15 @@ public class EquipmentServicelpml implements EquipmentService{
     public BackFrontMessage updateEquipment(Integer equipmentId, Integer equipmentclassifyId,
                                             Integer newmeetingroomId, String newname, Integer newismaintain, int newnum) {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
+        //todo:检查外键
+        EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
+        MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(newmeetingroomId);
         if (equipment==null){
             return new BackFrontMessage(500,"更新的设备不存在",null);
-        }else {
+        }else if(equipmentClassify==null ||meetingRoom==null){
+            return new BackFrontMessage(500,"更新数据不正确",null);
+        }
+        else {
             int res=0;
             res=equipmentMapper.updateEquipment(equipmentId,equipmentclassifyId,newmeetingroomId,newname,newismaintain,newnum);
             if(res==0){
@@ -56,12 +85,28 @@ public class EquipmentServicelpml implements EquipmentService{
     }
 
     @Override
+    public BackFrontMessage getEquipmentById(Integer equipmentId) {
+        Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
+        if(equipment==null){
+            return new BackFrontMessage(500,"设备不存在",null);
+        }else {
+            return new BackFrontMessage(200,"设备信息获取成功",equipment);
+        }
+    }
+
+    @Override
     public BackFrontMessage deleteEuipment(Integer equipmentId) {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
         if (equipment==null){
-            return new BackFrontMessage(500,"删除设备失败",null);
+            return new BackFrontMessage(500,"删除设备不存在",null);
         }else {
-            return new BackFrontMessage(200,"获取设备成功",null);
+            int res=0;
+            res=equipmentMapper.deleteEuipment(equipmentId);
+            if(res==0){
+                return new BackFrontMessage(500,"删除设备失败",null);
+            }else{
+                return new BackFrontMessage(200,"删除设备成功",null);
+            }
         }
     }
 

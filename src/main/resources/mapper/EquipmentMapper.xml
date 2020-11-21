@@ -31,9 +31,11 @@
         delete from equipment where equipmentId=#{equipmentId}
     </delete>
     <select id="getallEquipment" resultType="com.sicnu.oasystem.pojo.Equipment">
-        select * from equipment
+        select equipment.*,meetingroom.name as meetingRoomName,equipmentclassify.name as equipmentclassifyName from equipment,meetingroom,equipmentclassify
+        where equipment.meetingRoomId=meetingroom.meetingRoomId and equipment.equipmentclassifyid=equipmentclassify.equipmentclassifyid
     </select>
     <select id="getEquipmentById" resultType="com.sicnu.oasystem.pojo.Equipment">
-        select * from equipment where equipmentId=#{equipmentId}
+        select equipment.*,meetingroom.name as meetingRoomName,equipmentclassify.name as equipmentclassifyName from equipment,meetingroom,equipmentclassify where equipmentId=#{equipmentId}
+        and equipment.meetingRoomId=meetingroom.meetingRoomId and equipment.equipmentclassifyid=equipmentclassify.equipmentclassifyid
     </select>
 </mapper>
