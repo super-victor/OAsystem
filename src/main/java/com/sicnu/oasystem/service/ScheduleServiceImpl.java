@@ -1,8 +1,10 @@
 package com.sicnu.oasystem.service;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.EmployeeScheduleMapper;
 import com.sicnu.oasystem.mapper.ScheduleMapper;
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Resource
     ScheduleMapper scheduleMapper;
 
+    @Resource
+    EmployeeScheduleMapper employeeScheduleMapper;
+
 
     @Override
     public BackFrontMessage insertSchedule(Schedule schedule) {
@@ -39,19 +44,34 @@ public class ScheduleServiceImpl implements ScheduleService{
         if (result <= 0){
             return new BackFrontMessage(500,"添加日程失败",null);
         }else{
-            return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
+            EmployeeSchedule employeeSchedule = new EmployeeSchedule();
+            employeeSchedule.setEmployeeId(currentEmployee.getEmployeeId());
+            employeeSchedule.setScheduleId(schedule.getScheduleId());
+            int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
+            if (result2 <= 0){
+                return new BackFrontMessage(500,"添加职工日程映射失败",schedule.getScheduleId());
+            }else{
+                return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
+            }
         }
     }
 
     @Override
     public BackFrontMessage updateScheduleByScheduleId(Schedule schedule, int scheduleId) {
-        if (hasRoleToManageSchedule(scheduleId)){
-            return new BackFrontMessage(500,"您不是创建者无权修改此日程",null);
+        schedule.setScheduleId(scheduleId);
+        if (dontHasRoleToManageSchedule(scheduleId)){
+            return new BackFrontMessage(500,"您不是日程领导者无权修改此日程",null);
         }
         if (isTimeCorrect(schedule)){
             return new BackFrontMessage(500,"结束时间小于开始时间",null);
         }
-        schedule.setScheduleId(scheduleId);
+        if (schedule.getLeader() != null){
+            EmployeeSchedule es = employeeScheduleMapper
+                    .findEmployeeScheduleByEmployeeIdAndSchedule(schedule.getLeader(), scheduleId);
+            if (es == null) {
+                return new BackFrontMessage(500,"此人没有加入到日程中，不能转交管理权！",null);
+            }
+        }
         int result = scheduleMapper.updateScheduleByScheduleId(schedule);
         if (result <= 0){
             return new BackFrontMessage(500,"修改日程失败",null);
@@ -62,8 +82,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public BackFrontMessage deleteScheduleByScheduleId(int scheduleId) {
-        if (hasRoleToManageSchedule(scheduleId)){
-            return new BackFrontMessage(500,"您不是创建者无权删除此日程",null);
+        if (dontHasRoleToManageSchedule(scheduleId)){
+            return new BackFrontMessage(500,"您不是日程领导者无权删除此日程",null);
         }
         int result = scheduleMapper.deleteScheduleByScheduleId(scheduleId);
         if (result <= 0){
@@ -80,14 +100,29 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public BackFrontMessage findDeadLineScheduleByTime(Date intervalTime) {
-        Date date = new Date();
-        long nowTime = date.getTime();
-        long interval = intervalTime.getTime();
-        Date startTime = new Date(nowTime + interval);
-        log.info("截至的开始时间为 --> "+startTime);
-        List<Schedule> list = scheduleMapper.findDeadLineScheduleByTime(startTime);
-        return new BackFrontMessage(200,"查找近期成功",list);
+    public List<Schedule> findReadyToStartSchedule(long intervalTime) {
+        intervalTime = intervalTime * 1000 * 60 * 60;  //化为以小时为单位
+        long nowTime = new Date().getTime();
+        Date startTime = new Date(nowTime + intervalTime);
+        return scheduleMapper.findReadyToStartSchedule(startTime, new Date());
+    }
+
+    @Override
+    public List<Schedule> findDoingSchedule() {
+        return scheduleMapper.findDoingSchedule(new Date());
+    }
+
+    @Override
+    public List<Schedule> findEndSchedule() {
+        return scheduleMapper.findEndSchedule(new Date());
+    }
+
+    @Override
+    public List<Schedule> findReadyToEndSchedule(long intervalTime) {
+        intervalTime = intervalTime * 1000 * 60 * 60;  //化为以小时为单位
+        long nowTime = new Date().getTime();
+        Date endTime = new Date(nowTime + intervalTime);
+        return scheduleMapper.findReadyToEndSchedule(endTime, new Date());
     }
 
     /**
@@ -98,7 +133,7 @@ public class ScheduleServiceImpl implements ScheduleService{
      * @Return boolean
      * @LastChangeDate 2020/11/19
      */
-    private boolean hasRoleToManageSchedule(int scheduleId){
+    private boolean dontHasRoleToManageSchedule(int scheduleId){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         Schedule oldSchedule = scheduleMapper.findScheduleByScheduleId(scheduleId);
         return !currentEmployee.getEmployeeId().equals(oldSchedule.getLeader());

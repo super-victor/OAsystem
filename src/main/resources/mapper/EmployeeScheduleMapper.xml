@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.EmployeeScheduleMapper">
+
+    <insert id="insertEmployeeSchedule" useGeneratedKeys="true" keyProperty="employeeScheduleId">
+        insert into EmployeeSchedule(scheduleId, employeeId) values(#{scheduleId}, #{employeeId})
+    </insert>
+
+    <delete id="deleteEmployeeScheduleByEmployeeScheduleId">
+        delete from EmployeeSchedule where employeeScheduleId = #{employeeScheduleId}
+    </delete>
+
+    <select id="findEmployeeScheduleByScheduleId" resultType="java.lang.Integer">
+        select employeeId from EmployeeSchedule where scheduleId = #{scheduleId}
+    </select>
+
+    <select id="findEmployeeScheduleByEmployeeId" resultType="java.lang.Integer">
+        select scheduleId from EmployeeSchedule where employeeId = #{employeeId}
+    </select>
+
+    <select id="findEmployeeScheduleByEmployeeIdAndSchedule"
+            resultType="com.sicnu.oasystem.pojo.EmployeeSchedule">
+        select * from EmployeeSchedule where employeeId = #{employeeId} and scheduleId = #{scheduleId}
+    </select>
+
+    <select id="findEmployeeScheduleByEmployeeScheduleId"
+            resultType="com.sicnu.oasystem.pojo.EmployeeSchedule">
+        select * from EmployeeSchedule where employeeScheduleId = #{employeeScheduleId}
+    </select>
+
+</mapper>

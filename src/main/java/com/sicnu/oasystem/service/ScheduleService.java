@@ -4,6 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.Schedule;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @InterfaceName ScheduleService
@@ -57,14 +58,42 @@ public interface ScheduleService {
     BackFrontMessage findScheduleByScheduleId(int scheduleId);
 
     /**
-     * @MethodName findDeadLineScheduleByTime
-     * @param intervalTime 间隔时间
+     * @MethodName findReadyToStartSchedule
+     * @param intervalTime 间隔时间戳
      * @Description 获取快要开始的日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/17
      */
-    BackFrontMessage findDeadLineScheduleByTime(Date intervalTime);
+    List<Schedule> findReadyToStartSchedule(long intervalTime);
+
+    /**
+     * @MethodName findDoingSchedule
+     * @Description 正在进行的日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/20
+     */
+    List<Schedule> findDoingSchedule();
+
+    /**
+     * @MethodName findEndSchedule
+     * @Description 获取已经结束的日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/20
+     */
+    List<Schedule> findEndSchedule();
+
+    /**
+     * @MethodName findReadyToEndSchedule
+     * @param intervalTime 间隔时间
+     * @Description 获取快要结束的日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/20
+     */
+    List<Schedule> findReadyToEndSchedule(long intervalTime);
 
 
 }
