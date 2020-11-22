@@ -355,10 +355,37 @@ INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', nu
 
 INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
 
-insert into schedule (startTime, endTime, leader, location, content, remark, type) values ('2020-11-20 20:57:59', '2020-11-22 15:20:49', 1, '实验室', '完成日程接口', '日程接口以及职工日程接口', 4);
-
-insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (2, 1, 1);
-insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (3, 1, 2);
-
+insert into role (name) values ('ROLE_User');
 insert into role (name) values ('ROLE_Admin');
 insert into role (name) values ('ROLE_Censor');
+
+insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
+insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
+insert into menu (name, url, code) values ('获取个人所拥有的名片夹分类', 'GET /CardHolderClassfy', '0003');
+insert into menu (name, url, code) values ('删除名片夹分类', 'DELETE /CardHolderClassfy', '0004');
+insert into menu (name, url, code) values ('增加名片夹分类', 'POST /CardHolderClassfy', '0005');
+insert into menu (name, url, code) values ('修改名片夹分类名称', 'PUT /CardHolderClassfy', '0006');
+insert into menu (name, url, code) values ('添加名片', 'POST /CardHolder', '0007');
+insert into menu (name, url, code) values ('修改名片', 'PUT /CardHolder', '0008');
+insert into menu (name, url, code) values ('添加别人分享的名片夹)', 'POST /EmployeeCardHolder', '0009');
+insert into menu (name, url, code) values ('删除名片夹', 'DELETE /EmployeeCardHolder', '000A');
+insert into menu (name, url, code) values ('查找自己所拥有的名片夹', 'GET /findEmployeeCardHolderByEmployeeId', '000B');
+insert into menu (name, url, code) values ('查找自己某一分类下的名片夹', 'GET /findEmployeeCardHolderByCardHolderClassfyId', '000C');
+insert into menu (name, url, code) values ('修改名片夹的分类', 'POST /EmployeeCardHolder', '000D');
+insert into menu (name, url, code) values ('获取所有员工的通讯录','GET /addressbook','000E');
+insert into menu (name, url, code) values ('获取所有部门的部门名称','GET /getAllDepartmentName','000F');
+insert into menu (name, url, code) values ('分页获取员工通讯录','GET /addressbookbypage','000G');
+insert into menu (name, url, code) values ('按条件查询员工通讯录','GET /getBypage/condition','000H');
+insert into menu (name, url, code) values ('添加设备分类','POST /addEquipmentClassify','000I');
+insert into menu (name, url, code) values ('修改设备分类信息','PUT /updateEquipmentClassify','000J');
+insert into menu (name, url, code) values ('获取所有设备分类信息','GET /getAllEquipmentClassify','000K');
+insert into menu (name, url, code) values ('删除设备分类','POST /deleteEquipmentClassify','000L');
+insert into menu (name, url, code) values ('添加设备','POST /addEquipment','000M');
+insert into menu (name, url, code) values ('修改设备','PUT /updateEquipment','000N');
+insert into menu (name, url, code) values ('删除设备','DELETE /deleteEuipment','000P');
+insert into menu (name, url, code) values ('获取所有的设备信息','GET /getallEquipment','000Q');
+insert into menu (name, url, code) values ('查找设备信息','GET /getEquipmentById','000R');
+insert into menu (name, url, code) values ('获取所有的会议室信息','GET /getAllMeetingRoom','000S');
+insert into menu (name, url, code) values ('添加会议室','POST /addMeetingRoom','000T');
+insert into menu (name, url, code) values ('删除会议室','DELETE /deleteMeetingRoom','000V');
+insert into menu (name, url, code) values ('查找会议室','GET /getMeetingRoomById','000W');

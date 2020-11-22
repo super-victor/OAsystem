@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.document.impl;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.DocumentMapper;
@@ -6,6 +6,7 @@ import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.ReceiveFile;
 import com.sicnu.oasystem.pojo.SendFile;
+import com.sicnu.oasystem.service.document.DocumentService;
 import com.sicnu.oasystem.util.FileUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @ClassName DocumentServiceImpl
@@ -26,7 +26,7 @@ import java.util.UUID;
  */
 
 @Service
-public class DocumentServiceImpl implements DocumentService{
+public class DocumentServiceImpl implements DocumentService {
 
     @Resource
     DocumentMapper documentMapper;
