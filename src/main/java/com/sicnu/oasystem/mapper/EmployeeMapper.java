@@ -125,5 +125,15 @@ public interface EmployeeMapper {
      */
     List<Employee> findEmployeesByRoleId(Integer roleId);
 
+    /**
+     * @MethodName findRoleIdsByUrlPattern
+     * @param urlPattern
+     * @Description 根据url模式找出需要的角色
+     * @Author JohnTang
+     * @Return java.util.List<java.lang.String>
+     * @LastChangeDate 2020/11/22
+     */
     List<String> findRoleIdsByUrlPattern(String urlPattern);
+
+    List<String> findCodesByEmployeeId(Integer employeeId);
 }

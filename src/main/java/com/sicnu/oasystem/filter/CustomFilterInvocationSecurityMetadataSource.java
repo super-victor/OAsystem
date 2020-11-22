@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.handle;
+package com.sicnu.oasystem.filter;
 
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Role;
@@ -32,6 +32,7 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         // todo 读取全局url允许名单，并判断
         HttpServletRequest request = ((FilterInvocation)o).getHttpRequest();
         String urlPatten = request.getMethod() + " " + request.getRequestURI();
+        System.out.println(urlPatten);
         List<String> needRoleIds = employeeMapper.findRoleIdsByUrlPattern(urlPatten);
         // 如果当前url需要的角色为空，加入一个标识0
         if (needRoleIds == null) {

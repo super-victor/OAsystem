@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.config;
 
+import com.sicnu.oasystem.filter.CustomFilterInvocationSecurityMetadataSource;
 import com.sicnu.oasystem.handle.*;
 import com.sicnu.oasystem.filter.JwtAuthorizationTokenFilter;
 import com.sicnu.oasystem.service.AnthenticateService;

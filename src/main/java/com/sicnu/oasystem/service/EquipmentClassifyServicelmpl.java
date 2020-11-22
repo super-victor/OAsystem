@@ -24,7 +24,7 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService{
 
     @Override
     public BackFrontMessage addEquipmentClassify(String classifyName) {
-        Integer res=0;
+        Integer res= 0;
         res=equipmentClassifyMapper.EquipmentClassifyIfExitByName(classifyName);
         if(res==1){
             return new BackFrontMessage(500,"设备分类已存在",null);
