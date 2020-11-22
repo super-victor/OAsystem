@@ -8,6 +8,7 @@ package com.sicnu.oasystem.json;
 
 public class BackFrontMessage {
     // 200成功
+    // 300账户被锁
     // 301权限不足
     // 500失败
     private int status;

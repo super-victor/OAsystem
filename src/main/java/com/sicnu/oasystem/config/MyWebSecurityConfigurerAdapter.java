@@ -30,6 +30,8 @@ import java.util.Map;
 
 @Configuration
 public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    // todo 后台监控和swagger与前台提供给用户的接口抽离出来设置ip白名单，127.0.0.1之内的都能访问
+
     @Resource
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 

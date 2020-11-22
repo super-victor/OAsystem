@@ -47,6 +47,7 @@ create table Employee (
     departmentName varchar(50) not null comment '部门名称',
     position varchar(10) not null comment '职工职位',
     homeAddress varchar(50) comment '职工家庭地址',
+    isAccountLocked int comment '账户是否被锁',
     passwordChangeDate timestamp default current_timestamp comment'密码最后修改时间',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
@@ -328,8 +329,8 @@ create table Meeting(
 insert into department (name, phone) values ('后勤部', '10001');
 insert into department (name, phone) values ('财务部', '10002');
 
-insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学');
-insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学');
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学', 0);
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学', 0);
 
 INSERT INTO `cardholderclassfy` VALUES ('1', '后端', '2', '2020-11-16 10:57:47', '2020-11-16 11:07:09');
 INSERT INTO `cardholderclassfy` VALUES ('2', '前端', '2', '2020-11-16 11:11:25', null);
@@ -376,7 +377,7 @@ insert into menu (name, url, code) values ('添加别人分享的名片夹)', 'P
 insert into menu (name, url, code) values ('删除名片夹', 'DELETE /EmployeeCardHolder', '000A');
 insert into menu (name, url, code) values ('查找自己所拥有的名片夹', 'GET /findEmployeeCardHolderByEmployeeId', '000B');
 insert into menu (name, url, code) values ('查找自己某一分类下的名片夹', 'GET /findEmployeeCardHolderByCardHolderClassfyId', '000C');
-insert into menu (name, url, code) values ('修改名片夹的分类', 'POST /EmployeeCardHolder', '000D');
+insert into menu (name, url, code) values ('修改名片夹的分类', 'PUT /EmployeeCardHolder', '000D');
 insert into menu (name, url, code) values ('获取所有员工的通讯录','GET /addressbook','000E');
 insert into menu (name, url, code) values ('获取所有部门的部门名称','GET /getAllDepartmentName','000F');
 insert into menu (name, url, code) values ('分页获取员工通讯录','GET /addressbookbypage','000G');

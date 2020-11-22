@@ -33,6 +33,7 @@ public class Employee implements UserDetails {
     private String departmentName;
     private String position;
     private String homeAddress;
+    private Integer isAccountLocked;
     @JsonIgnore
     private Date passwordChangeDate;
     @JsonIgnore
@@ -59,7 +60,11 @@ public class Employee implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        if (isAccountLocked == 1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

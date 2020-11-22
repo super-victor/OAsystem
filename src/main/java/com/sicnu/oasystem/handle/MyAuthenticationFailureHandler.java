@@ -2,6 +2,7 @@ package com.sicnu.oasystem.handle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sicnu.oasystem.json.BackFrontMessage;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,13 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        BackFrontMessage authMessage = new BackFrontMessage(500, "登录失败", null);
+        BackFrontMessage authMessage;
+        if (exception instanceof LockedException) {
+            authMessage = new BackFrontMessage(300, "账户被锁定", null);
+        } else {
+            authMessage = new BackFrontMessage(500,"登录失败", null);
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(authMessage);
         response.setContentType("application/json;charset=utf-8");
