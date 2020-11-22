@@ -1,8 +1,9 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.employee.impl;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.service.employee.EmployeeService;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
  */
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Resource
     EmployeeMapper employeeMapper;

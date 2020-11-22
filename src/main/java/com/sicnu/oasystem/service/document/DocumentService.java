@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.document;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import org.springframework.web.multipart.MultipartFile;
