@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,10 +17,13 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class EmployeeSchedule {
+    @JsonIgnore
     private Integer employeeScheduleId;
     private Integer scheduleId;
     private Integer employeeId;
+    @JsonIgnore
     private Date createTime;
+    @JsonIgnore
     private Date updateTime;
 
     public EmployeeSchedule(){}

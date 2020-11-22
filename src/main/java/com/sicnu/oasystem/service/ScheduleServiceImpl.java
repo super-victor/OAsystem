@@ -101,7 +101,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public List<Schedule> findReadyToStartSchedule(long intervalTime) {
-        intervalTime = intervalTime * 1000 * 60 * 60;  //化为以小时为单位
+        intervalTime = intervalTime * 1000 * 60;  //化为以分钟为单位
         long nowTime = new Date().getTime();
         Date startTime = new Date(nowTime + intervalTime);
         return scheduleMapper.findReadyToStartSchedule(startTime, new Date());
@@ -119,7 +119,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public List<Schedule> findReadyToEndSchedule(long intervalTime) {
-        intervalTime = intervalTime * 1000 * 60 * 60;  //化为以小时为单位
+        intervalTime = intervalTime * 1000 * 60;  //化为以分钟为单位
         long nowTime = new Date().getTime();
         Date endTime = new Date(nowTime + intervalTime);
         return scheduleMapper.findReadyToEndSchedule(endTime, new Date());
