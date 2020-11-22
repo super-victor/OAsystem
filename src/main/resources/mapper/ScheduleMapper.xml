@@ -12,13 +12,13 @@
 
     <update id="updateScheduleByScheduleId">
         update Schedule set scheduleId = #{scheduleId}
-        <if test="startTime != null">,startTime = #{startTime}</if>
-        <if test="endTime != null">,endTime = #{endTime}</if>
-        <if test="leader != null">,leader = #{leader}</if>
-        <if test="location != null">,location = #{location}</if>
-        <if test="content != null">,content = #{content}</if>
-        <if test="remark ! null">,remark = #{remark}</if>
-        <if test="type != null">,type = #{type}</if>
+        <if test="startTime != null">,startTime = #{startTime} </if>
+        <if test="endTime != null">,endTime = #{endTime} </if>
+        <if test="leader != null">,leader = #{leader} </if>
+        <if test="location != null">,location = #{location} </if>
+        <if test="content != null">,content = #{content} </if>
+        <if test="remark != null">,remark = #{remark} </if>
+        <if test="type != null">,type = #{type} </if>
         where scheduleId = #{scheduleId}
     </update>
 
@@ -30,7 +30,19 @@
         select * from Schedule where scheduleId = #{scheduleId}
     </select>
 
-    <select id="findDeadLineScheduleByTime" resultType="com.sicnu.oasystem.pojo.Schedule">
+    <select id="findReadyToStartSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
+        select * from Schedule where #{startTime} >= startTime and startTime >= #{nowTime}
+    </select>
 
+    <select id="findReadyToEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
+        select * from Schedule where #{endTime} >= endTime
+    </select>
+
+    <select id="findDoingSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
+        select * from Schedule where #{nowTime} >= startTime and endTime > #{nowTime}
+    </select>
+
+    <select id="findEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
+        select * from Schedule where #{nowTime} >= endTime and endTime >= #{nowTime}
     </select>
 </mapper>

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @ClassName EquipmentClassifyServicelmpl
- * @Description
+ * @Description  设备分类服务的实现类
  * @Author pan
  * @LastChangeDate 2020/11/16 11:07
  * @Version v1.0
@@ -24,13 +24,13 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService{
 
     @Override
     public BackFrontMessage addEquipmentClassify(String classifyName) {
-        Integer res= 0;
+        Integer res=null;
         res=equipmentClassifyMapper.EquipmentClassifyIfExitByName(classifyName);
-        if(res==1){
+        if(res!=null){
             return new BackFrontMessage(500,"设备分类已存在",null);
         }else {
             res=equipmentClassifyMapper.addEquipmentClassify(classifyName);
-            if(res==1){
+            if(res!=null){
                 return new BackFrontMessage(200,"添加设备分类成功",null);
             }else {
                 return new BackFrontMessage(500,"添加设备分类失败",null);

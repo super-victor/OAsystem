@@ -22,4 +22,7 @@ public class Equipment {
     private Integer num;
     private Date createTime;
     private Date updateTime;
+
+    private String meetingRoomName;
+    private String equipmentClassifyName;
 }

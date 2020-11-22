@@ -62,7 +62,7 @@ public class ScheduleController {
      * @LastChangeDate 2020/11/19
      */
     @ApiOperation(value = "删除日程")
-    @DeleteMapping("Schedule")
+    @DeleteMapping("/Schedule")
     public BackFrontMessage deleteSchedule(@RequestParam int scheduleId){
         return scheduleService.deleteScheduleByScheduleId(scheduleId);
     }
@@ -75,10 +75,9 @@ public class ScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/19
      */
-    @GetMapping("findScheduleByScheduleId")
+    @ApiOperation(value = "通过日程id获取日程信息")
+    @GetMapping("/findScheduleByScheduleId")
     public BackFrontMessage findScheduleByScheduleId(@RequestParam int scheduleId){
         return scheduleService.findScheduleByScheduleId(scheduleId);
     }
-
-    //todo：查找要开始的日程、正在进行的日程、快要结束的日程、已结束的日程
 }

@@ -21,4 +21,6 @@ public class EmployeeSchedule {
     private Integer employeeId;
     private Date createTime;
     private Date updateTime;
+
+    public EmployeeSchedule(){}
 }

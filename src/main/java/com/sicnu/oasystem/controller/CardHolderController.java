@@ -54,19 +54,5 @@ public class CardHolderController {
         return cardHolderService.updateCardHolder(cardHolder, cardHolderId);
     }
 
-    /**
-     * @MethodName deleteCardHolder
-     * @param cardHolderId 名片夹id
-     * @Description 删除名片夹
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/8
-     */
-    @ApiOperation(value = "删除名片夹")
-    @DeleteMapping("/CardHolder")
-    public BackFrontMessage deleteCardHolder(@RequestParam int cardHolderId){
-        return cardHolderService.deleteCardHolder(cardHolderId);
-    }
-
 
 }

@@ -66,4 +66,14 @@ public interface EquipmentService {
      * @LastChangeDate 2020/11/16
      */
     BackFrontMessage getallEquipment();
+
+    /**
+     * @MethodName getEquipmentById
+     * @param equipmentId
+     * @Description 根据设备Id获取设备信息
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/20
+     */
+    BackFrontMessage getEquipmentById(Integer equipmentId);
 }
