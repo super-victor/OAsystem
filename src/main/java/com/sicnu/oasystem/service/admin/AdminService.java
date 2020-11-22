@@ -12,4 +12,17 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 
 public interface AdminService {
 
+    BackFrontMessage getAllMenus();
+
+    BackFrontMessage getAllRoles();
+
+    BackFrontMessage getAllEmployees();
+
+    BackFrontMessage addMenuInRole(Integer menuId, Integer roleId);
+
+    BackFrontMessage deleteMenuInRole(Integer menuId, Integer roleId);
+
+    BackFrontMessage addRoleInEmployee(Integer employeeId, Integer roleId);
+
+    BackFrontMessage deleteRoleInEmployee(Integer employeeId, Integer roleId);
 }

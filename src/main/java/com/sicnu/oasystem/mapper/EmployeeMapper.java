@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.mapper;
 
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.pojo.Menu;
 import com.sicnu.oasystem.pojo.Role;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
@@ -136,4 +137,8 @@ public interface EmployeeMapper {
     List<String> findRoleIdsByUrlPattern(String urlPattern);
 
     List<String> findCodesByEmployeeId(Integer employeeId);
+
+    List<Menu> findAllMenus();
+
+    List<Role> findAllRoles();
 }

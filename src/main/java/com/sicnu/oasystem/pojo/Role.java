@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,7 +21,9 @@ public class Role implements GrantedAuthority {
     // 2 ROLE_Censor
     private int roleId;
     private String name;
+    @JsonIgnore
     private Date createTime;
+    @JsonIgnore
     private Date updateTime;
 
     @Override

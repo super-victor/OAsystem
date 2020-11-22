@@ -79,6 +79,12 @@
     <select id="findCodesByEmployeeId" resultType="java.lang.String">
         select code from menu where menuId in (select menuId from RoleMenu where roleId in (select roleId from EmployeeRole where employeeId = #{employeeId}))
     </select>
+    <select id="findAllMenus" resultType="com.sicnu.oasystem.pojo.Menu">
+        select * from menu
+    </select>
+    <select id="findAllRoles" resultType="com.sicnu.oasystem.pojo.Role">
+        select * from role
+    </select>
 
 
 </mapper>
