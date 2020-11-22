@@ -355,5 +355,10 @@ INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', nu
 
 INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
 
+insert into schedule (startTime, endTime, leader, location, content, remark, type) values ('2020-11-20 20:57:59', '2020-11-22 15:20:49', 1, '实验室', '完成日程接口', '日程接口以及职工日程接口', 4);
+
+insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (2, 1, 1);
+insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (3, 1, 2);
+
 insert into role (name) values ('ROLE_Admin');
 insert into role (name) values ('ROLE_Censor');
