@@ -101,7 +101,7 @@
         })
         .then(res=>{
             // this.cards = res.object;
-            this.$emit('getCard',res.object);
+            this.$emit('getCard',{info:res.object,fileId:this.select.id});
         })
         .catch(err=>{
             console.log(err);

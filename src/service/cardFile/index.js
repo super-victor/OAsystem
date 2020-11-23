@@ -42,7 +42,7 @@ export default{
     const res = await NetworkRequest({
         url:'/CardHolderClassfy',
         method:'delete',
-        postHeaderType:'multipart/form-data',
+        postHeaderType:'www-form',
         throttle:true,
         data
     });
@@ -59,7 +59,7 @@ export default{
     const res = await NetworkRequest({
         url:'/CardHolderClassfy',
         method:'put',
-        postHeaderType:'multipart/form-data',
+        postHeaderType:'www-form',
         throttle:true,
         data
     });
@@ -82,11 +82,11 @@ export default{
       return res.data;
   },
   // 新建名片
-  async AddCard(data) {
+  async addCard(data) {
     const res = await NetworkRequest({
       url:'/CardHolder',
       method:'post',
-      postHeaderType:'multipart/form-data',
+      postHeaderType:'application/json;charset=UTF-8',
       throttle:true,
       data
     })

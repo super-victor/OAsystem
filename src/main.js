@@ -32,7 +32,9 @@ import {
   Form,
   FormItem,
   Row,
-  Col
+  Col,
+  Tabs,
+  TabPane
 } from 'element-ui';
 
 Vue.use(Container);
@@ -66,6 +68,8 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Tabs);
+Vue.use(TabPane);
 
 Vue.config.productionTip = false
 

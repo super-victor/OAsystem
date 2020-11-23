@@ -89,15 +89,17 @@
         // 新建名片信息
         newInfo:{
           name: '',
-          tel: '',
+          phone: '',
           email: '',
           company: '',
           department: '',
           position: '',
           address: '',
+          employeeId:1
         },
         cardCode: '', // 名片导入时的共享码
-        cards: [] // 名片信息
+        cards: [], // 名片信息
+        fileId: 0 // 分类id
       };
     },
     computed: {
@@ -121,6 +123,24 @@
       // 新建或导入名片
       submitOption(type) {
         if(type === '新建') {
+          cardFileAPI.addCard({
+            name: '',
+            phone: '',
+            email: '',
+            company: '',
+            department: '',
+            position: '',
+            address: '',
+            employeeId:1
+          })
+          .then(res=>{
+            this.innerVisible = false;
+            this.dialogVisible2 = false;
+            console.log('a');
+          })
+          .catch(err=>{
+            this.$message.error('新建失败');
+          })
         } else {
           cardFileAPI.importCard({
             cardHolderClassfyId:this.select.id,
@@ -138,11 +158,13 @@
       },
       // 获取某一分类下的名片
       getCard(data) {
-        this.cards = data;
+        this.cards = data.info;
+        this.fileId = data.fileId;
       }
     },
     created() {
       this.getFileName();
+      console.log(this.classifyNames);
     },
     mounted() {
       this.$emit('childrenBread',['共享名片']);
