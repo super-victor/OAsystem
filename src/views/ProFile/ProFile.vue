@@ -24,7 +24,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="性别" style="height:60px;width:170px">
+              <el-form-item label="性别" style="height:60px;width:150px">
                 <el-input :disabled="true" :value="userInfo.sex=='f'?'女':'男'"></el-input>
               </el-form-item>
             </el-col>
@@ -78,11 +78,7 @@
     data() {
       return {
         breadcrumbItem:['个人信息'],
-        formData:{
-          email:'',
-          homeAddress:'',
-          phone:''
-        },
+        formData:{},
         rules:{
           email:[
             { required: true, message: '请输入电子邮箱', trigger: 'blur' },
@@ -106,7 +102,8 @@
     watch: {},
     methods: {
       ...mapMutations([
-        'MAIN_CLICK'
+        'MAIN_CLICK',
+        'UPDATE_USERINFO'
       ]),
       mainBoxClick(){
         this.MAIN_CLICK(false);
@@ -115,12 +112,21 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let {email,homeAddress,phone} = this.formData;
-            loginAPI.updateProfile({
+            if(email == this.userInfo.email && homeAddress == this.userInfo.homeAddress && phone == this.userInfo.phone){
+              this.$message({
+                message: '您尚未对信息进行修改',
+                type: 'warning'
+              });
+              return;
+            }
+            let obj = {
               email,
               homeAddress,
               phone
-            })
+            }
+            loginAPI.updateProfile(obj)
             .then(res=>{
+              this.UPDATE_USERINFO(obj);
               this.$message({
                 message: '信息修改成功',
                 type: 'success'
@@ -136,7 +142,12 @@
       }
     },
     created() {
-      
+      let {email,homeAddress,phone} = this .userInfo;
+      this.formData = {
+        email,
+        homeAddress,
+        phone
+      };
     },
     mounted() {
       

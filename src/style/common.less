@@ -26,9 +26,16 @@
 @smallBorderRadius:2px;//小圆角
 
 //所有字体大小、图标大小、图片大小、div宽度等均使用rem为单位，div高度可用px为单位
+@media screen and (min-width: 0px){
+  html{
+    font-size: 1000px * 100 / @designSize;
+  }
+}
 
-html{
-  font-size: 100vw * 100 / @designSize;//响应式尺寸
+@media screen and (min-width: 1000px){
+  html{
+    font-size: 100vw * 100 / @designSize;//响应式尺寸
+  }
 }
 
 *{

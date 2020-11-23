@@ -115,6 +115,7 @@
       justify-content: flex-end;
       padding-right: 25px;
       box-sizing: border-box;
+      position: relative;
       .userImg{
         height: 35px;
         width: 35px;
