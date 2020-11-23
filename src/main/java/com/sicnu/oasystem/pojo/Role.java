@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName Role
@@ -21,6 +22,8 @@ public class Role implements GrantedAuthority {
     // 2 ROLE_Censor
     private int roleId;
     private String name;
+    // 拥有此角色的用户列表
+    private List<Employee> employeeList;
     @JsonIgnore
     private Date createTime;
     @JsonIgnore

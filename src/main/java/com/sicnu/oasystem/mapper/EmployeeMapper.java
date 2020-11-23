@@ -7,6 +7,7 @@ import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @InterfaceName EmployeeMapper
@@ -141,4 +142,14 @@ public interface EmployeeMapper {
     List<Menu> findAllMenus();
 
     List<Role> findAllRoles();
+
+    List<Role> findAllRolesWithEmpolyeeList();
+
+    int insertRoleIntoEmployeeRole(Integer employeeId, Integer roleId);
+
+    int deletefromEmployeeRole(Integer employeeId, Integer roleId);
+
+    int insertMenuAndRoleIntoRoleMenu(Integer menuId, Integer roleId);
+
+    int deletefromRoleMenu(Integer menuId, Integer roleId);
 }

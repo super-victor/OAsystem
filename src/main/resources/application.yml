@@ -32,7 +32,7 @@ document:
   path: C:\Users\JohnTang\Desktop\oasystem
 
 # 热部署
-spring.devtools.restart.enabled: true
+#spring.devtools.restart.enabled: true
 
 # 生产环节启用
 # springfox.documentation.swagger-ui.enabled=false

@@ -365,6 +365,12 @@ insert into role (name) values ('ROLE_User');
 insert into role (name) values ('ROLE_Admin');
 insert into role (name) values ('ROLE_Censor');
 
+insert into employeerole (employeeId, roleId) values (1, 1);
+insert into employeerole (employeeId, roleId) values (1, 2);
+insert into employeerole (employeeId, roleId) values (1, 3);
+insert into employeerole (employeeId, roleId) values (2, 1);
+insert into employeerole (employeeId, roleId) values (2, 2);
+
 insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
 insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
 insert into menu (name, url, code) values ('获取个人所拥有的名片夹分类', 'GET /CardHolderClassfy', '0003');

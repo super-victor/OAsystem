@@ -17,6 +17,31 @@
         </association>
     </resultMap>
 
+    <resultMap id="roleWithUsers" type="com.sicnu.oasystem.pojo.Role">
+        <id property="roleId" column="roleId"></id>
+        <result property="name" column="name"></result>
+        <collection property="employeeList" javaType="ArrayList" column="roleId" ofType="com.sicnu.oasystem.pojo.Employee" select="findEmployeesByRoleId"/>
+    </resultMap>
+    <insert id="insertRoleIntoEmployeeRole">
+        insert into EmployeeRole (roleId, employeeId) values (#{roleId}, #{employeeId})
+    </insert>
+    <insert id="insertMenuAndRoleIntoRoleMenu">
+        insert into rolemenu (menuId,roleId) values (#{menuId}, #{roleId})
+    </insert>
+
+    <delete id="deletefromEmployeeRole">
+        delete from EmployeeRole where employeeId = #{employeeId} and roleId = #{roleId}
+    </delete>
+
+    <delete id="deletefromRoleMenu">
+        delete from RoleMenu where roleId = #{roleId} and menuId = #{menuId}
+    </delete>
+
+
+    <select id="findAllRolesWithEmpolyeeList" resultMap="roleWithUsers">
+        select * from role
+    </select>
+
     <update id="updatePartlyEmployeeByEmployeeId">
         update employee set employeeId = #{employeeId},
         <if test="email != null">,email = #{email},</if>
@@ -82,9 +107,12 @@
     <select id="findAllMenus" resultType="com.sicnu.oasystem.pojo.Menu">
         select * from menu
     </select>
+
     <select id="findAllRoles" resultType="com.sicnu.oasystem.pojo.Role">
         select * from role
     </select>
+
+
 
 
 </mapper>

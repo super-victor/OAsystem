@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.handle;
 
+import com.sicnu.oasystem.pojo.Role;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @ClassName CustomAccessDecisionManager
@@ -30,14 +32,26 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
         if (first.equals("0")) {
             return;
         }
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        if (!authorities.contains(first)) {
-            throw new AccessDeniedException("权限不足");
-        }
-        while (iterator.hasNext()) {
-            if (!authorities.contains(iterator.next())) {
-                throw new AccessDeniedException("权限不足");
+        List<Role> authorities = (List<Role>) authentication.getAuthorities();
+        boolean flag = true;
+
+        for(Role role:authorities){
+            if(role.getName().equals(first)){
+                flag = false;
             }
+        }
+
+        while (iterator.hasNext() && flag) {
+            String roleName = iterator.next().getAttribute();
+            for(Role role:authorities){
+                if(role.getName().equals(roleName)){
+                    flag = false;
+                }
+            }
+        }
+
+        if (flag) {
+            throw new AccessDeniedException("权限不足3");
         }
     }
 

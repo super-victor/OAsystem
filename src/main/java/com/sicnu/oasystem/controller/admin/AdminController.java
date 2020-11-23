@@ -1,6 +1,12 @@
 package com.sicnu.oasystem.controller.admin;
 
+import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.service.AddrListService;
+import com.sicnu.oasystem.service.admin.AdminService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @ClassName AdminController
@@ -12,6 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AdminController {
+    @Resource
+    AddrListService addrListService;
+
+    @Resource
+    AdminService adminService;
+
+    @GetMapping("/allEmployeeDetails")
+    BackFrontMessage getAllEmployeeDetails(Integer currentPageNum,Integer pageSize) {
+        return addrListService.getEmployeeBypage(currentPageNum,pageSize);
+    }
+
+    @GetMapping("/allRolesWithEmployeeList")
+    BackFrontMessage getAllRoleWithEmployeeList(){
+        return adminService.getAllRoles();
+    }
+
+
 
 
 }

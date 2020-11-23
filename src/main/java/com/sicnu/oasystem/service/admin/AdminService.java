@@ -11,18 +11,70 @@ import com.sicnu.oasystem.json.BackFrontMessage;
  */
 
 public interface AdminService {
-
+    /**
+     * @MethodName getAllMenus
+     * @param
+     * @Description 获取所有的功能列表
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage getAllMenus();
 
+    /**
+     * @MethodName getAllRoles
+     * @param
+     * @Description 获取所有的角色
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage getAllRoles();
 
-    BackFrontMessage getAllEmployees();
-
+    /**
+     * @MethodName addMenuInRole
+     * @param menuId
+     * @param roleId
+     * @Description 将角色和功能关联起来
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage addMenuInRole(Integer menuId, Integer roleId);
 
+    /**
+     * @MethodName deleteMenuInRole
+     * @param menuId
+     * @param roleId
+     * @Description 取消角色和功能的关联
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage deleteMenuInRole(Integer menuId, Integer roleId);
 
+    /**
+     * @MethodName addRoleInEmployee
+     * @param employeeId
+     * @param roleId
+     * @Description 添加职工和角色的对应
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage addRoleInEmployee(Integer employeeId, Integer roleId);
 
+    /**
+     * @MethodName deleteRoleInEmployee
+     * @param employeeId
+     * @param roleId
+     * @Description 取消职工和角色的对应
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/23
+     */
     BackFrontMessage deleteRoleInEmployee(Integer employeeId, Integer roleId);
+
+
+
 }
