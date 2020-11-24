@@ -1,18 +1,24 @@
 !<!-- ChildrenComponent1 -->
 <template>
   <div class='list_item flex-row'>
-      <img src="@/assets/Schedule/schedule.png" alt="" class="main_img">
+      <!-- <img src="@/assets/Schedule/schedule.png" alt="" class="main_img">
       <div class="flex-col center">
         <p class="address">杭州市</p>
-      </div>
+      </div> -->
+      <FullCalendar defaultView="dayGridMonth" :plugins="calendarPlugins" />
   </div>
 </template>
 
 <script>
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
   export default {
-    components: {},
+    components: {
+      FullCalendar
+    },
     data() {
       return {
+        calendarPlugins: [ dayGridPlugin ]
       };
     },
     computed: {
@@ -33,8 +39,6 @@
     margin-top: 0.5rem;
     margin-left: 1rem;
     margin-bottom: 1rem;
-    height: 1.6rem;
-    width: 8rem;
     border-radius: @smallBorderRadius;
     background-color: @background;
     box-shadow: 2px 2px 10px @placeholderText;
