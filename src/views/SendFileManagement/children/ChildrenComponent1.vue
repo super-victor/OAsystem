@@ -23,6 +23,7 @@
     },
     watch: {},
     methods: {
+      ...mapMutations(['UPDATE_BREAD']),
       ...mapMutations('sendFileManagement',[
         'UPDATE_FILEMANAGEMENTINFO'
       ]),
@@ -34,7 +35,7 @@
       
     },
     mounted() {
-      this.$emit('childrenBread',['查询拟稿']);
+      this.UPDATE_BREAD(['发文管理','查询拟稿']);
     }
   }
 </script>

@@ -14,6 +14,9 @@
             <el-main>
               <router-view/>
             </el-main>
+            <el-footer>
+              <the-breadcrumb></the-breadcrumb>
+            </el-footer>
           </el-container>
         </el-container>
       </el-container>
@@ -29,6 +32,7 @@ import UserLogin from '@/views/Login/UserLogin';
 import TheHeader from '@/components/basic/TheHeader';
 import TheAside from '@/components/basic/TheAside';
 import TheDrawer from '@/components/control/TheDrawer';
+import TheBreadcrumb from '@/components/control/TheBreadcrumb';
 export default {
   data() {
     return {
@@ -39,7 +43,8 @@ export default {
     TheHeader,
     TheAside,
     TheDrawer,
-    UserLogin
+    UserLogin,
+    TheBreadcrumb
   },
   methods: {
   }
@@ -64,6 +69,10 @@ export default {
   min-width: 880px;
   padding: 0;
 }
+.el-footer{
+  height: 40px !important;
+  min-width: 880px;
+}
 .container{
   height: 100%;
 }
@@ -84,5 +93,11 @@ export default {
 }
 .el-loading-spinner .el-loading-text{
   font-size: 10px;
+}
+.el-popover--plain{
+  padding: 8px 15px;
+}
+.el-popover{
+  min-width: 50px;
 }
 </style>

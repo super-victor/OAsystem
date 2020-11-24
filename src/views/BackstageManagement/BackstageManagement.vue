@@ -1,21 +1,17 @@
 !<!-- BackstageManagement -->
 <template>
   <div class='BackstageManagement' @click="mainBoxClick">
-    <the-breadcrumb :breadcrumbItem="breadcrumbItem"></the-breadcrumb>
-    <router-view @childrenBread="childrenBread" />
+    <router-view />
   </div>
 </template>
 
 <script>
-  import TheBreadcrumb from '@/components/control/TheBreadcrumb';
   import {mapMutations} from 'vuex';
   export default {
     components: {
-      TheBreadcrumb
     },
     data() {
       return {
-        breadcrumbItem:[]
       };
     },
     computed: {},
@@ -27,9 +23,6 @@
       mainBoxClick(){
         this.MAIN_CLICK(false);
       },
-      childrenBread(textArr){
-        this.breadcrumbItem = ['后台管理',...textArr];
-      }
     },
     created() {
       
