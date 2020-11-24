@@ -45,7 +45,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
   import {mapState,mapMutations} from 'vuex';
+=======
+  import {mapState} from 'vuex';
+>>>>>>> lkx
   export default {
     components: {},
     data() {
@@ -61,7 +65,10 @@
     },
     watch: {},
     methods: {
+<<<<<<< HEAD
       ...mapMutations(['UPDATE_BREAD']),
+=======
+>>>>>>> lkx
       handleCheckAllChange(val,obj) {
         obj.currentAuthority = val ? obj.totalAuthority : [];
         obj.isIndeterminate = false;
@@ -162,7 +169,11 @@
       this.authorityArr = authorityArr;
     },
     mounted() {
+<<<<<<< HEAD
       this.UPDATE_BREAD(['后台管理','角色功能维护']);
+=======
+      this.$emit('childrenBread',['角色功能维护']);
+>>>>>>> lkx
       setTimeout(()=>{
         this.loading=false;
       },1000)
@@ -171,7 +182,11 @@
 </script>
 <style lang='less' scoped>
   .RoleAuthority{
+<<<<<<< HEAD
     height: 100%;
+=======
+    height: calc(100% - 90px);
+>>>>>>> lkx
     width: 100%;
     font-size: 30px;
     display: flex;

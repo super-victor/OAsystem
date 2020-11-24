@@ -160,7 +160,10 @@
 <script>
 import StaffRole from '../component/StaffRole';
 import backstageAPI from '@/service/BackstageManagement';
+<<<<<<< HEAD
 import {mapMutations} from 'vuex';
+=======
+>>>>>>> lkx
   export default {
     components: {
       StaffRole
@@ -206,7 +209,10 @@ import {mapMutations} from 'vuex';
     },
     watch: {},
     methods: {
+<<<<<<< HEAD
       ...mapMutations(['UPDATE_BREAD']),
+=======
+>>>>>>> lkx
       getSex(row, column) {
         return row.sex==='m'?'男':'女';
       },
@@ -287,7 +293,11 @@ import {mapMutations} from 'vuex';
       })
     },
     mounted() {
+<<<<<<< HEAD
       this.UPDATE_BREAD(['后台管理','员工管理']);
+=======
+      this.$emit('childrenBread',['员工管理']);
+>>>>>>> lkx
       this.currentTableData = this.tableData.slice(0,this.currentSize);
     }
   }
