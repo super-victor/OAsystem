@@ -1,8 +1,8 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.Schedule;
-import com.sicnu.oasystem.service.ScheduleService;
+import com.sicnu.oasystem.service.schedule.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

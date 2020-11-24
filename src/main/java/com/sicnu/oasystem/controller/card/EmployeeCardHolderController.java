@@ -1,7 +1,7 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.service.EmployeeCardHolderService;
+import com.sicnu.oasystem.service.card.EmployeeCardHolderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

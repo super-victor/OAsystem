@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
@@ -8,6 +8,7 @@ import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeCardHolder;
+import com.sicnu.oasystem.service.card.EmployeeCardHolderService;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 
 @Service
-public class EmployeeCardHolderServiceImpl implements EmployeeCardHolderService{
+public class EmployeeCardHolderServiceImpl implements EmployeeCardHolderService {
 
     @Resource
     EmployeeCardHolderMapper employeeCardHolderMapper;

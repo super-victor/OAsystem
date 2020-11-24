@@ -1,8 +1,8 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.CardHolder;
-import com.sicnu.oasystem.service.CardHolderService;
+import com.sicnu.oasystem.service.card.CardHolderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +17,9 @@ import javax.annotation.Resource;
  * @Version v1.0
  */
 
+/**
+ * TODO:1.修改名片夹表，添加名片夹拥有者，分类。2.删除职工名片夹对应表。3.分享名片夹即复制一条数据(分类不能对应)
+ */
 @Api(tags = "名片管理")
 @RestController
 public class CardHolderController {

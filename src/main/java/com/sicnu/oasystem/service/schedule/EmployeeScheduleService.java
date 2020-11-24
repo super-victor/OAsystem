@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;

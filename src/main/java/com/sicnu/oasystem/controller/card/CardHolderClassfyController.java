@@ -1,9 +1,8 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.service.CardHolderClassfyService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.sicnu.oasystem.service.card.CardHolderClassfyService;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -38,7 +37,7 @@ public class CardHolderClassfyController {
 
     /**
      * @MethodName deleteCardHolderClassfyByCardHolderClassfyId
-     * @param cardHolderClassfyId 名片夹分类id
+     * @param cardHolderClassfyId 名片夹id
      * @Description 通过名片夹分类id删除名片夹分类
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -46,7 +45,8 @@ public class CardHolderClassfyController {
      */
     @ApiOperation(value = "通过名片夹分类id删除名片夹分类")
     @DeleteMapping("/CardHolderClassfy")
-    public BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(@RequestParam int cardHolderClassfyId){
+    public BackFrontMessage deleteCardHolderClassfyByCardHolderClassfyId(
+            @RequestParam int cardHolderClassfyId){
         return cardHolderClassfyService.deleteCardHolderClassfyByCardHolderClassfyId(cardHolderClassfyId);
     }
 

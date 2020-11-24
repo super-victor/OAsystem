@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeScheduleMapper;
@@ -6,6 +6,7 @@ import com.sicnu.oasystem.mapper.ScheduleMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
+import com.sicnu.oasystem.service.schedule.ScheduleService;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
 
     @Resource
     ScheduleMapper scheduleMapper;
