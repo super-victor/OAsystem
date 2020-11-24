@@ -35,11 +35,7 @@ import {mapMutations} from 'vuex';
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .DepartmentManagement{
-<<<<<<< HEAD
     height: 100%;
-=======
-    height: calc(100% - 90px);
->>>>>>> lkx
     width: 100%;
     font-size: 30px;
     display: flex;

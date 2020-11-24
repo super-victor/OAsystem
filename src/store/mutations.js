@@ -3,10 +3,7 @@ import{
   GET_USERINFO,
   UPDATE_USERINFO,
   UPDATE_PAGE_PERMISSIONS,
-<<<<<<< HEAD
   UPDATE_BREAD,
-=======
->>>>>>> lkx
   ASIDE_CLICK,
   ITEM_CLICK,
   MAIN_CLICK
@@ -60,12 +57,9 @@ export default{
       }
     }
   },
-<<<<<<< HEAD
   [UPDATE_BREAD](state,payload){
     state.currentBread = payload;
   },
-=======
->>>>>>> lkx
   [ASIDE_CLICK](state,payload){
     state.asideItem = payload;
   },

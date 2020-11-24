@@ -290,11 +290,8 @@ export default{
       }
     },
   },
-<<<<<<< HEAD
   //****面包屑状态
   currentBread:[],
-=======
->>>>>>> lkx
   //****全局侧边栏状态
   //侧边栏信息
   asideMenu:[
