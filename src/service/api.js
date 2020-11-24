@@ -23,7 +23,9 @@ export const NetworkRequest = options => {
     let {timeout,postHeaderType,throttle,url,method,data} = options;
 
     axios.defaults.timeout = timeout || 30000;//设置超时时间
-    axios.defaults.headers.post['Content-Type'] = postHeaderType || 'application/json;charset=UTF-8';//设置post方式时的请求头
+    axios.defaults.headers.post['Content-Type'] = postHeaderType || 'application/x-www-form-urlencoded';//设置post方式时的请求头
+    axios.defaults.headers.put['Content-Type'] = postHeaderType || 'application/x-www-form-urlencoded';//设置put方式时的请求头
+    axios.defaults.headers.delete['Content-Type'] = postHeaderType || 'application/x-www-form-urlencoded';//设置delete方式时的请求头
 
     //请求拦截
     axios.interceptors.request.use(config=>{
@@ -84,7 +86,7 @@ export const NetworkRequest = options => {
       }).catch(err=>{
         reject(err);
       })
-    }else if(method=='post'){
+    }else{
       let params;
       if(postHeaderType==='multipart/form-data'){
         let formData = new FormData();
@@ -92,29 +94,30 @@ export const NetworkRequest = options => {
           formData.append(item,data[item]);
         }
         params = formData;
-      }else if(postHeaderType==='application/x-www-form-urlencoded'){
-        params = qs.stringify(data);
-      }else{
+      }else if(postHeaderType==='application/json'){
         params = data;
+      }else{
+        params = qs.stringify(data);
       }
-      axios.post(url,params).then(res=>{
-        resolve(res);
-      }).catch(err=>{
-        reject(err);
-      })
-    }else if(method=='put'){
-      axios.put(url,data).then(res=>{
-        resolve(res);
-      }).catch(err=>{
-        reject(err);
-      })
-    }else{
-      axios.delete(url,data).then(res=>{
-        resolve(res);
-      }).catch(err=>{
-        reject(err);
-      })
+      if(method=='post'){
+        axios.post(url,params).then(res=>{
+          resolve(res);
+        }).catch(err=>{
+          reject(err);
+        })
+      }else if(method=='put'){
+        axios.put(url,params).then(res=>{
+          resolve(res);
+        }).catch(err=>{
+          reject(err);
+        })
+      }else{
+        axios.delete(url,params).then(res=>{
+          resolve(res);
+        }).catch(err=>{
+          reject(err);
+        })
+      }
     }
-
   })
 }

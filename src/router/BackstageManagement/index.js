@@ -2,8 +2,7 @@ import BackstageManagement from '@/views/BackstageManagement/BackstageManagement
 import DepartmentManagement from '@/views/BackstageManagement/children/DepartmentManagement'
 import StaffManagement from '@/views/BackstageManagement/children/StaffManagement'
 import RoleManagement from '@/views/BackstageManagement/children/RoleManagement'
-import AuthorityManagement from '@/views/BackstageManagement/children/AuthorityManagement'
-
+import RoleAuthority from '@/views/BackstageManagement/children/RoleAuthority'
 
   export default {
     path: '/backstage-management',
@@ -27,9 +26,9 @@ import AuthorityManagement from '@/views/BackstageManagement/children/AuthorityM
         component: RoleManagement
       },
       {
-        path: 'authority',
-        name: 'AuthorityManagement',
-        component: AuthorityManagement
+        path: 'role-authority',
+        name: 'RoleAuthority',
+        component: RoleAuthority
       }
     ]
   }

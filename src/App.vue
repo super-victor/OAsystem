@@ -85,4 +85,10 @@ export default {
 .el-loading-spinner .el-loading-text{
   font-size: 10px;
 }
+.el-popover--plain{
+  padding: 8px 15px;
+}
+.el-popover{
+  min-width: 50px;
+}
 </style>
