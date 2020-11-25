@@ -13,8 +13,8 @@ public interface MessageService {
     /**
      * @MethodName send
      * @param employeeId
-     * @param type 使用DataUtil的常量
-     * @param title 使用DataUtil的常量
+     * @param type 使用DataUtil的常量 消息的类型
+     * @param title 使用DataUtil的常量 消息的标题
      * @param content
      * @Description 系统发送消息
      * @Author JohnTang
