@@ -17,6 +17,14 @@ import java.util.List;
 @Mapper
 public interface DepartmentMapper {
 
+    /**
+     * @MethodName getAllDepartmentName
+     * @param
+     * @Description 获取所有的部门名称
+     * @Author JohnTang
+     * @Return java.util.List<java.lang.String>
+     * @LastChangeDate 2020/11/25
+     */
     List<String> getAllDepartmentName();
 
     /***

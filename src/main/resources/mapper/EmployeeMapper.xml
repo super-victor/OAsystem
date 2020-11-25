@@ -22,11 +22,14 @@
         <result property="name" column="name"></result>
         <collection property="employeeList" javaType="ArrayList" column="roleId" ofType="com.sicnu.oasystem.pojo.Employee" select="findEmployeesByRoleId"/>
     </resultMap>
-    <insert id="insertRoleIntoEmployeeRole">
+    <insert id="insertIntoEmployeeRole">
         insert into EmployeeRole (roleId, employeeId) values (#{roleId}, #{employeeId})
     </insert>
-    <insert id="insertMenuAndRoleIntoRoleMenu">
+    <insert id="insertIntoRoleMenu">
         insert into rolemenu (menuId,roleId) values (#{menuId}, #{roleId})
+    </insert>
+    <insert id="insertIntoRoleMenuByCode">
+        insert into rolemenu (menuId,roleId) values select menuId,#{roleId} from menu where code = #{code}
     </insert>
 
     <delete id="deletefromEmployeeRole">
@@ -35,6 +38,9 @@
 
     <delete id="deletefromRoleMenu">
         delete from RoleMenu where roleId = #{roleId} and menuId = #{menuId}
+    </delete>
+    <delete id="deletefromRoleMenuByCode">
+        delete from roleMenu where roleId = #{roleId} and menuId = (select menuId from menu where code = #{code})
     </delete>
 
 
@@ -50,6 +56,10 @@
         where employeeid = #{employeeId}
     </update>
 
+    <update id="updateIsAccountLockedInEmployee">
+        update employee set isAccountLocked = #{isAccountLocked} where employeeId = #{employeeId}
+    </update>
+
     <select id="findEmployeeByUsername" resultType="com.sicnu.oasystem.pojo.Employee">
         select * from employee where username = #{username}
     </select>
@@ -61,8 +71,6 @@
     <select id="findEmployeeByEmployeeId" resultType="com.sicnu.oasystem.pojo.Employee">
         select * from employee where employeeId = #{employeeId}
     </select>
-
-
 
     <select id="getAllEmployee" resultMap="ems">
          select employee.employeeId,employee.username,employee.name,employee.phone,employee.email,employee.position,employee.sex,employee.entryTime,department.departmentId,department.name as dname from employee,department where employee.departmentname=department.name
@@ -111,8 +119,12 @@
     <select id="findAllRoles" resultType="com.sicnu.oasystem.pojo.Role">
         select * from role
     </select>
-
-
+    <select id="findAllEmployee" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee
+    </select>
+    <select id="findCodesByRoleId" resultType="java.lang.String">
+        select code from menu where menuId in (select menuId from rolemenu where roleId = #{roleId})
+    </select>
 
 
 </mapper>

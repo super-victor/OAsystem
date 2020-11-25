@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service.document.impl;
+package com.sicnu.oasystem.service.document;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.DocumentMapper;

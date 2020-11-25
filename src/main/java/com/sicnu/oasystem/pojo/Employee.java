@@ -33,7 +33,7 @@ public class Employee implements UserDetails {
     private String departmentName;
     private String position;
     private String homeAddress;
-    private Integer isAccountLocked;
+    private int isAccountLocked;
     @JsonIgnore
     private Date passwordChangeDate;
     @JsonIgnore
