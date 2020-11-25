@@ -44,6 +44,11 @@ public class CardController {
     @ApiOperation(value = "直接手动添加名片")
     @PostMapping("/Card")
     public BackFrontMessage insertCard(@RequestBody Card card, @RequestParam Integer cardHolderId){
+        if (card.getOwnerId() == null || card.getName() == null ||
+                card.getPhone() == null || card.getAddress() == null ||
+                card.getCompany() == null){
+            return new BackFrontMessage(500,"请将数据填写完整！",null);
+        }
         return cardService.insertCard(card, cardHolderId);
     }
 

@@ -6,6 +6,7 @@ import com.sicnu.oasystem.mapper.CardMapper;
 import com.sicnu.oasystem.pojo.Card;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
+import com.sicnu.oasystem.util.ValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BackFrontMessage insertCard(Card card, Integer cardHolderId){
+        if (!ValidUtil.isValidMobileNumber(card.getPhone())){
+            return new BackFrontMessage(500,"请输入正确的电话格式",null);
+        }
+        if (card.getEmail() != null && !ValidUtil.isValidEmail(card.getEmail())){
+            return new BackFrontMessage(500,"请输入正确的邮箱格式",null);
+        }
         //添加名片夹时先判断是不是它的名片夹
         if (!hasCardHolder(cardHolderId)) { //不含此名片夹
             return new BackFrontMessage(500,"您没有此名片夹，不能选择此名片夹!",null);
@@ -66,6 +73,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BackFrontMessage updateCard(Card card, int cardId) {
+        if (card.getPhone() != null && !ValidUtil.isValidMobileNumber(card.getPhone())){
+            return new BackFrontMessage(500,"请输入正确的电话格式",null);
+        }
+        if (card.getEmail() != null && !ValidUtil.isValidEmail(card.getEmail())){
+            return new BackFrontMessage(500,"请输入正确的邮箱格式",null);
+        }
         if (!hasOwnedCardByCardId(cardId)) {
             return new BackFrontMessage(500,"您没有此名片",null);
         }
