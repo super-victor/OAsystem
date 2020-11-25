@@ -312,6 +312,18 @@ create table Meeting(
     constraint fk_Meeting_meetingRoomId foreign key (meetingRoomId) references MeetingRoom(meetingRoomId)
 );
 
+create table Message (
+    messageId int not null auto_increment comment '消息id',
+    employeeId int not null comment '员工id',
+    type int not null comment '消息种类',
+    title varchar(30) not null comment '消息头',
+    content varchar(50) not null comment '消息内容',
+    sendTime timestamp not null default current_timestamp comment '发送时间',
+    isRead int not null comment '消息是否已读',
+    constraint pk_Message_messageId primary key (messageId),
+    constraint fk_Message_employeeId foreign key (employeeId) references Employee(employeeId)
+);
+
 
 -- 数据
 insert into department (name, phone) values ('后勤部', '10001');

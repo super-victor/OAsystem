@@ -9,15 +9,22 @@ import java.util.Date;
  *
  * @Auther: pan
  * @Date: 2020/11/05/20:34
- * @Description:留言实体类
+ * @Description:消息实体类
  */
 @Data
 public class Message {
+//    private Integer messageId;
+//    private Integer senderId;
+//    private Integer receiverId;
+//    private String content;
+//    private Integer isRead;
+//    private Date createTime;
+//    private Date updateTime;
     private Integer messageId;
-    private Integer senderId;
-    private Integer receiverId;
+    private Integer employeeId;
+    private Integer type;
+    private String title;
     private String content;
     private Integer isRead;
-    private Date createTime;
-    private Date updateTime;
+    private Date createtime;
 }
