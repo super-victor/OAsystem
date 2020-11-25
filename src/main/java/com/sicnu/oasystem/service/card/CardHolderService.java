@@ -1,47 +1,54 @@
 package com.sicnu.oasystem.service.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.pojo.CardHolder;
 
 /**
  * @InterfaceName CardHolderService
  * @Description 名片夹服务接口
  * @Author Waynejwei
- * @LastChangeDate 2020/11/8 16:14
+ * @LastChangeDate 2020/11/8 16:17
  * @Version v1.0
  */
 
 public interface CardHolderService {
 
     /**
+     * @MethodName findCardHolderByEmployeeId
+     * @Description 获取某一职工的所用名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/6
+     */
+    BackFrontMessage findCardHolderByEmployeeId();
+
+    /**
+     * @MethodName deleteCardHolderByCardHolderId
+     * @param cardHolderId 名片夹id
+     * @Description 通过名片夹id删除名片夹
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/7
+     */
+    BackFrontMessage deleteCardHolderByCardHolderId(int cardHolderId);
+
+    /**
      * @MethodName insertCardHolder
-     * @param cardHolder 名片夹
-     * @param cardHolderClassfyId 名片夹分类id
-     * @Description 添加名片夹
+     * @param name  名片夹名称
+     * @Description 增加名片夹
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/8
+     * @LastChangeDate 2020/11/7
      */
-    BackFrontMessage insertCardHolder(CardHolder cardHolder, Integer cardHolderClassfyId);
+    BackFrontMessage insertCardHolder(String name);
 
     /**
-     * @MethodName deleteCardHolder
+     * @MethodName updateCardHolderName
      * @param cardHolderId 名片夹id
-     * @Description 删除名片夹by名片夹id
+     * @param name 名片夹名称
+     * @Description 修改名片夹分类名称
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
      */
-    BackFrontMessage deleteCardHolder(int cardHolderId);
-
-    /**
-     * @MethodName updateCardHolderAboutClassfy
-     * @param cardHolder 名片夹
-     * @param cardHolderId 名片夹id
-     * @Description 修改名片夹所在分类
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/8
-     */
-    BackFrontMessage updateCardHolder(CardHolder cardHolder, int cardHolderId);
+    BackFrontMessage updateCardHolderName(int cardHolderId, String name);
 }

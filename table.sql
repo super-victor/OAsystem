@@ -87,23 +87,24 @@ create table EmployeeSchedule(
 );
 
 
--- 名片夹分类表
-create table CardHolderClassfy(
-    cardHolderClassfyId int not null auto_increment comment '名片夹分类id',
+-- 名片夹表
+create table CardHolder(
+    cardHolderId int not null auto_increment comment '名片夹id',
     name varchar(50) not null comment '名片夹分类名称',
     ownerId int not null comment '名片夹拥有者id',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_CardHolderClassfy_cardHolderClassfyId primary key(cardHolderClassfyId),
-    constraint fk_CardHolderClassfy_ownerId foreign key(ownerId) references Employee(employeeId)
+    constraint pk_CardHolder_cardHolderId primary key(cardHolderId),
+    constraint fk_CardHolder_ownerId foreign key(ownerId) references Employee(employeeId)
 );
 
 
 
--- 名片夹表
-create table CardHolder(
-    cardHolderId int not null auto_increment comment '名片id',
-    employeeId int not null comment '名片夹的职工id',
+-- 名片表
+create table Card(
+    cardId int not null auto_increment comment '名片id',
+    ownerId int not null comment '名片拥有着id',
+    cardHolderId int not null comment '名片夹id',
     name varchar(20) not null comment '姓名',
     phone char(11) not null comment '电话',
     email varchar(20) comment '邮箱',
@@ -113,22 +114,9 @@ create table CardHolder(
     position varchar(20) comment '职位',
     createTime timestamp default current_timestamp comment '字段创建时间',
     updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_CardHolder_cardHolderId primary key(cardHolderId),
-    constraint fk_CardHolder_employeeId foreign key(employeeId) references Employee(employeeId)
-);
-
--- 名片夹员工对应表
-create table EmployeeCardHolder(
-    employeeCardHolderId int not null auto_increment comment '职工名片夹对应id',
-    employeeId int not null comment '职工id',
-    cardHolderId int not null comment '名片id',
-    cardHolderClassfyId int not null comment '名片夹分类id',
-    createTime timestamp default current_timestamp comment '字段创建时间',
-    updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_EmployeeCardHolder_employeeCardHolderId primary key(employeeCardHolderId),
-    constraint fk_EmployeeCardHolder_employeeId foreign key(employeeId) references Employee(employeeId),
-    constraint fk_EmployeeCardHolder_cardHolderId foreign key(cardHolderId) references CardHolder(cardHolderId),
-    constraint fk_CardHolder_cardHoledrClassfyId foreign key(cardHolderClassfyId) references CardHolderClassfy(cardHolderClassfyId)
+    constraint pk_Card_cardId primary key(cardId),
+    constraint fk_Card_ownerId foreign key(ownerId) references Employee(employeeId),
+    constraint fk_Card_cardHolderId foreign key(cardHolderId) references Employee(employeeId)
 );
 
 
@@ -332,17 +320,14 @@ insert into department (name, phone) values ('财务部', '10002');
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学', 0);
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学', 0);
 
-INSERT INTO `cardholderclassfy` VALUES ('1', '后端', '2', '2020-11-16 10:57:47', '2020-11-16 11:07:09');
-INSERT INTO `cardholderclassfy` VALUES ('2', '前端', '2', '2020-11-16 11:11:25', null);
-INSERT INTO `cardholderclassfy` VALUES ('3', '前端', '1', '2020-11-17 10:20:48', null);
-INSERT INTO `cardholderclassfy` VALUES ('4', '财务', '1', '2020-11-17 10:26:20', null);
-INSERT INTO `cardholderclassfy` VALUES ('5', '', '2', '2020-11-18 20:04:15', null);
-INSERT INTO `cardholderclassfy` VALUES ('6', '测试人员', '2', '2020-11-18 20:05:52', null);
+insert into cardholder (name, ownerId) values ('默认名片夹', 1);
+insert into cardholder (name, ownerId) values ('默认名片夹', 2);
+insert into cardholder (name, ownerId) values ('默认名片夹', 3);
+insert into cardholder (name, ownerId) values ('默认名片夹', 4);
+insert into cardholder (name, ownerId) values ('默认名片夹', 5);
+insert into cardholder (name, ownerId) values ('后端', 2);
 
-INSERT INTO `cardholder` VALUES ('1', '1', '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯', '后勤部', '普通员工', '2020-11-16 21:47:20', '2020-11-16 22:08:48');
-
-INSERT INTO `employeecardholder` VALUES ('1', '2', '1', '1', '2020-11-16 21:47:20', null);
-INSERT INTO `employeecardholder` VALUES ('2', '1', '1', '4', '2020-11-17 10:25:01', '2020-11-17 10:26:40');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
 
 INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
 INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');
@@ -373,17 +358,17 @@ insert into employeerole (employeeId, roleId) values (2, 2);
 
 insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
 insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
-insert into menu (name, url, code) values ('获取个人所拥有的名片夹分类', 'GET /CardHolderClassfy', '0003');
-insert into menu (name, url, code) values ('删除名片夹分类', 'DELETE /CardHolderClassfy', '0004');
-insert into menu (name, url, code) values ('增加名片夹分类', 'POST /CardHolderClassfy', '0005');
-insert into menu (name, url, code) values ('修改名片夹分类名称', 'PUT /CardHolderClassfy', '0006');
-insert into menu (name, url, code) values ('添加名片', 'POST /CardHolder', '0007');
-insert into menu (name, url, code) values ('修改名片', 'PUT /CardHolder', '0008');
-insert into menu (name, url, code) values ('添加别人分享的名片夹)', 'POST /EmployeeCardHolder', '0009');
-insert into menu (name, url, code) values ('删除名片夹', 'DELETE /EmployeeCardHolder', '000A');
-insert into menu (name, url, code) values ('查找自己所拥有的名片夹', 'GET /findEmployeeCardHolderByEmployeeId', '000B');
-insert into menu (name, url, code) values ('查找自己某一分类下的名片夹', 'GET /findEmployeeCardHolderByCardHolderClassfyId', '000C');
-insert into menu (name, url, code) values ('修改名片夹的分类', 'PUT /EmployeeCardHolder', '000D');
+
+insert into menu (name, url, code) values ('获取职工所拥有的名片夹', 'GET /CardHolder', '0003');
+insert into menu (name, url, code) values ('通过名片夹id删除名片夹', 'DELETE /CardHolder', '0004');
+insert into menu (name, url, code) values ('增加名片夹', 'POST /CardHolder', '0005');
+insert into menu (name, url, code) values ('修改名片夹名称', 'PUT /CardHolder', '0006');
+insert into menu (name, url, code) values ('直接手动添加名片', 'POST /Card', '0007');
+insert into menu (name, url, code) values ('修改名片相关内容', 'PUT /Card', '0008');
+insert into menu (name, url, code) values ('分享名片', 'POST /shareCard', '0009');
+insert into menu (name, url, code) values ('通过名片id删除名片', 'DELETE /Card', '000A');
+insert into menu (name, url, code) values ('通过名片夹id查找名片', 'GET /Card', '000B');
+
 insert into menu (name, url, code) values ('获取所有员工的通讯录','GET /addressbook','000E');
 insert into menu (name, url, code) values ('获取所有部门的部门名称','GET /getAllDepartmentName','000F');
 insert into menu (name, url, code) values ('分页获取员工通讯录','GET /addressbookbypage','000G');

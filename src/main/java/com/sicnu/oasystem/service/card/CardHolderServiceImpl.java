@@ -1,25 +1,23 @@
 package com.sicnu.oasystem.service.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.mapper.CardHolderClassfyMapper;
 import com.sicnu.oasystem.mapper.CardHolderMapper;
-import com.sicnu.oasystem.mapper.EmployeeCardHolderMapper;
+import com.sicnu.oasystem.mapper.CardMapper;
+import com.sicnu.oasystem.pojo.Card;
 import com.sicnu.oasystem.pojo.CardHolder;
-import com.sicnu.oasystem.pojo.CardHolderClassfy;
 import com.sicnu.oasystem.pojo.Employee;
-import com.sicnu.oasystem.pojo.EmployeeCardHolder;
-import com.sicnu.oasystem.service.card.CardHolderService;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
- * @ClassName CardHolderService
+ * @ClassName CardHolderServiceImpl
  * @Description 名片夹服务实现类
  * @Author Waynejwei
- * @LastChangeDate 2020/11/8 14:32
+ * @LastChangeDate 2020/11/6 17:00
  * @Version v1.0
  */
 
@@ -31,72 +29,117 @@ public class CardHolderServiceImpl implements CardHolderService {
     CardHolderMapper cardHolderMapper;
 
     @Resource
-    EmployeeCardHolderMapper employeeCardHolderMapper;
-
-    @Resource
-    CardHolderClassfyMapper cardHolderClassfyMapper;
+    CardMapper cardMapper;
 
     @Override
-    public BackFrontMessage insertCardHolder(CardHolder cardHolder, Integer cardHolderClassfyId){
-        //添加分类时先判断是不是它的分类
-        if (!hasCardHolderClassfy(cardHolderClassfyId)) { //不含此分类
-            return new BackFrontMessage(500,"您没有此分类，不能选择此分类!",null);
-        }
-        int counter = cardHolderMapper.insertCardHolder(cardHolder);
-        if (counter > 0){
-            //并将此文件夹添加到职工文件夹对应表中
-//            log.info("cardHolderId --> "+cardHolder.getCardHolderId());
-            Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
-            EmployeeCardHolder employeeCardHolder = new EmployeeCardHolder();
-            employeeCardHolder.setCardHolderId(cardHolder.getCardHolderId());
-            employeeCardHolder.setEmployeeId(currentEmployee.getEmployeeId());
-            employeeCardHolder.setCardHolderClassfyId(cardHolderClassfyId);
-            int counter2 = employeeCardHolderMapper
-                    .insertEmployeeCardHolder(employeeCardHolder);
-            if (counter2 > 0){
-                return new BackFrontMessage(200,"添加成功",cardHolder.getCardHolderId());
-            }
-            return new BackFrontMessage(200,"名片夹职工对应表添加失败",null);
-        } else {
-            return new BackFrontMessage(500,"名片夹表添加失败",null);
-        }
-    }
-
-    /**
-     * @MethodName hasCardHolderClassfy
-     * @param cardHolderClassfyId 名片夹分类id
-     * @Description 判断职工是否拥有名片夹分类
-     * @Author Waynejwei
-     * @Return boolean
-     * @LastChangeDate 2020/11/16
-     */
-    private boolean hasCardHolderClassfy(Integer cardHolderClassfyId) {
+    public BackFrontMessage findCardHolderByEmployeeId(){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
-        CardHolderClassfy cardHolderClassfy = cardHolderClassfyMapper.findCardHolderClassfyByCardHolderClassfyIdAndEmployeeId(
-                cardHolderClassfyId, currentEmployee.getEmployeeId());
-        return cardHolderClassfy != null;
+        List<com.sicnu.oasystem.pojo.CardHolder> list = cardHolderMapper.findCardHolderByEmployeeId(currentEmployee.getEmployeeId());
+        //将默认名片夹放在第一位
+        int location = 0;
+        for (com.sicnu.oasystem.pojo.CardHolder cardHolder : list) {
+            if ("默认名片夹".equals(cardHolder.getName())){
+                break;
+            }
+            location++;
+        }
+        com.sicnu.oasystem.pojo.CardHolder defaultCardHoler = list.get(location);
+        com.sicnu.oasystem.pojo.CardHolder firstCardHolder = list.get(0);
+        list.set(0, defaultCardHoler);
+        list.set(location, firstCardHolder);
+        return new BackFrontMessage(200,"获取成功",list);
     }
 
     @Override
-    public BackFrontMessage deleteCardHolder(int cardHolderId) {
-        int result = cardHolderMapper.deleteCardHolderByCardHolderId(cardHolderId);
-        if (result > 0){
-            return new BackFrontMessage(200,"删除成功",null);
+    public BackFrontMessage deleteCardHolderByCardHolderId(int cardHolderId){
+        if (isDefaultCardHolder(cardHolderId)){
+            return new BackFrontMessage(500,"默认名片夹不可删除",null);
+        }
+        //获取“默认名片夹”的名片夹id
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        com.sicnu.oasystem.pojo.CardHolder defaultCardHolder = cardHolderMapper
+                .findCardHolderByName("默认名片夹", currentEmployee.getEmployeeId());
+        //转移前判断是否需要转移
+        List<Card> hasCardHolder = cardMapper.findCardByCardHolderId(cardHolderId);
+        boolean updateCard = false;   //默认不需要转移
+        if ( hasCardHolder.size() != 0 ) {  //有需要转移的名片夹
+            updateCard = true;
+        }
+        //删除前先将此名片夹下的名片转移到“默认名片夹”下
+        int transferCount = cardMapper.updateOldCardHolderIdByNewCardHolderId(
+                cardHolderId, defaultCardHolder.getCardHolderId());
+        if (transferCount > 0 || !updateCard){  //转移行数大于0，或者不需要转移
+            int result = cardHolderMapper
+                    .deleteCardHolderByCardHolderId(cardHolderId);
+            if (result > 0){
+                return new BackFrontMessage(200,"删除成功,该名片夹下的名片已转移至‘默认名片夹‘下",null);
+            } else {
+                return new BackFrontMessage(500,"删除失败",null);
+            }
         } else {
             return new BackFrontMessage(500,"删除失败",null);
         }
     }
 
     @Override
-    public BackFrontMessage updateCardHolder(CardHolder cardHolder, int cardHolderId) {
-        cardHolder.setCardHolderId(cardHolderId);
-        int counter = cardHolderMapper.updateCardHolderByCardHolderId(cardHolder);
+    public BackFrontMessage insertCardHolder(String name){
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        //查看是否有重名的文件夹分类
+        if (hasSameName(currentEmployee, name)){
+            return new BackFrontMessage(500,"添加失败，您已经此名字的名片夹分类!",null);
+        }
+        com.sicnu.oasystem.pojo.CardHolder cardHolder = new com.sicnu.oasystem.pojo.CardHolder();
+        cardHolder.setName(name);
+        cardHolder.setOwnerId(currentEmployee.getEmployeeId());
+        int counter = cardHolderMapper
+                .insertCardHolderByCardHolderId(cardHolder);
         if (counter > 0){
+            return new BackFrontMessage(200,"添加成功", cardHolder.getCardHolderId());
+        } else {
+            return new BackFrontMessage(500,"添加失败",null);
+        }
+    }
+
+    @Override
+    public BackFrontMessage updateCardHolderName(int cardHolderId, String name){
+        if (isDefaultCardHolder(cardHolderId)) {
+            return new BackFrontMessage(500,"默认名片夹不可修改!",null);
+        }
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        if(hasSameName(currentEmployee, name)){
+            return new BackFrontMessage(500,"修改失败，您已经此名字的名片夹分类!",null);
+        }
+        int result = cardHolderMapper.updateCardHolderNameByCardHolderId(cardHolderId, name);
+        if (result == 1){
             return new BackFrontMessage(200,"修改成功",null);
         } else {
             return new BackFrontMessage(500,"修改失败",null);
         }
     }
 
+    /**
+     * @MethodName hasSameName
+     * @param name 名片夹分类名称
+     * @Description 判断某一职工是否拥有此名字的名片夹分类
+     * @Author Waynejwei
+     * @Return boolean 拥有则返回true
+     * @LastChangeDate 2020/11/8
+     */
+    private boolean hasSameName(Employee currentEmployee, String name){
+        com.sicnu.oasystem.pojo.CardHolder cardHolderByName = cardHolderMapper.findCardHolderByName(name, currentEmployee.getEmployeeId());
+        return cardHolderByName != null;
+    }
 
+    /**
+     * @MethodName isDefaultCardHolder
+     * @param cardHolderId 名片夹id
+     * @Description 是否是默认名片夹
+     * @Author Waynejwei
+     * @Return boolean
+     * @LastChangeDate 2020/11/25
+     */
+    private boolean isDefaultCardHolder(int cardHolderId){
+        CardHolder cardHolder = cardHolderMapper.findCardHolderByCardHolderId(cardHolderId);
+        return "默认名片夹".equals(cardHolder.getName());
+    }
 }
