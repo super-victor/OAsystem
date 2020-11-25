@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @InterfaceName AdminService
- * @Description 添加描述
+ * @Description 管理员服务
  * @Author JohnTang
  * @LastChangeDate 2020/11/22 10:40
  * @Version v1.0
@@ -150,5 +150,4 @@ public interface AdminService {
      * @LastChangeDate 2020/11/25
      */
     BackFrontMessage updateEmployeeRolelist(Integer employeeId, List<Integer> roleIdList);
-
 }

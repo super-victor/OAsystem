@@ -2,8 +2,12 @@ package com.sicnu.oasystem.filter;
 
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Role;
+import com.sicnu.oasystem.util.NotLoginException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
@@ -28,16 +32,19 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
     EmployeeMapper employeeMapper;
 
     @Override
-    public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+    public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException,AuthenticationException {
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+            throw new NotLoginException("未登录");
+        }
+
         // todo 读取全局url允许名单，并判断
         HttpServletRequest request = ((FilterInvocation)o).getHttpRequest();
         String urlPatten = request.getMethod() + " " + request.getRequestURI();
         System.out.println(urlPatten);
         List<String> needRoleIds = employeeMapper.findRoleIdsByUrlPattern(urlPatten);
-        // 如果当前url需要的角色为空，加入一个标识0
+        // 如果当前url需要的角色为空,返回空
         if (needRoleIds == null) {
-            needRoleIds = new ArrayList<>(1);
-            needRoleIds.add("0");
+            return null;
         }
         String[] needRoleIdsCopy = new String[needRoleIds.size()];
         return SecurityConfig.createList(needRoleIds.toArray(needRoleIdsCopy));

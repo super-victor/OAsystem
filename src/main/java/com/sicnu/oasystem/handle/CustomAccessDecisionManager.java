@@ -4,6 +4,7 @@ import com.sicnu.oasystem.pojo.Role;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,35 +27,25 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        Iterator<ConfigAttribute> iterator = collection.iterator();
-        String first = iterator.next().getAttribute();
-        // 先判断标志，没有需要角色直接pass
-        if (first.equals("0")) {
+        if (collection == null) {
             return;
         }
 
+        Iterator<ConfigAttribute> iterator = collection.iterator();
+
         List<Role> authorities = (List<Role>) authentication.getAuthorities();
-        boolean flag = true;
 
-        for(Role role:authorities){
-            if(role.getName().equals(first)){
-                flag = false;
-                break;
-            }
-        }
-
-        while (iterator.hasNext() && flag) {
+        while (iterator.hasNext()) {
             String roleName = iterator.next().getAttribute();
             for(Role role:authorities){
-                if(role.getName().equals(roleName)){
-                    flag = false;
+                if(role.getAuthority().equals(roleName)){
+                    return;
                 }
             }
         }
 
-        if (flag) {
-            throw new AccessDeniedException("权限不足3");
-        }
+        //需要的权限都没有抛出异常
+        throw new AccessDeniedException("权限不足3");
     }
 
     @Override
