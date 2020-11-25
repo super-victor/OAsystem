@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.CardMapper">
+
+    <insert id="insertCard" useGeneratedKeys="true" keyProperty="cardId">
+        insert into Card(ownerId, cardHolderId, name, phone
+        <if test="email != null">,email</if>
+        ,address,company
+        <if test="department != null">,department</if>
+        <if test="position != null">,position</if>)
+        values(#{ownerId}, #{cardHolderId}, #{name}, #{phone}
+        <if test="email != null">,#{email}</if>
+        ,#{address},#{company}
+        <if test="department != null">,#{department}</if>
+        <if test="position != null">,#{position}</if>)
+    </insert>
+
+    <update id="updateCardByCardId">
+        update Card set cardId = #{cardId}
+        <if test="ownerId != null">,ownerId = #{ownerId}</if>
+        <if test="cardHolderId != null">,cardHolderId = #{cardHolderId}</if>
+        <if test="name != null">,name = #{name}</if>
+        <if test="phone != null">,phone = #{phone}</if>
+        <if test="email != null">,email = #{email}</if>
+        <if test="address != null">,address = #{address}</if>
+        <if test="company != null">,company = #{company}</if>
+        <if test="department != null">,department = #{department}</if>
+        <if test="position != null">,position = #{position} </if>
+        where cardId = #{cardId}
+    </update>
+
+    <update id="updateOldCardHolderIdByNewCardHolderId">
+        update Card set cardHolderId = #{newCardHolderId} where cardHolderId = #{oldCardHolderId}
+    </update>
+
+    <delete id="deleteCardByCardId">
+        delete from Card where cardId = #{cardId}
+    </delete>
+
+    <select id="findCardByCardId" resultType="com.sicnu.oasystem.pojo.Card">
+        select * from Card where cardId = #{cardId}
+    </select>
+
+    <select id="findCardByCardHolderId" resultType="com.sicnu.oasystem.pojo.Card">
+        select * from Card where cardHolderId = #{cardHolderId}
+    </select>
+
+    <select id="findCardByPhone" resultType="com.sicnu.oasystem.pojo.Card">
+        select * from Card where phone = #{phone} and ownerId = #{ownerId}
+    </select>
+
+    <select id="findCardByCardIdAndEmployeeId" resultType="com.sicnu.oasystem.pojo.Card">
+        select * from Card where cardId = #{cardId} and ownerId = #{ownerId}
+    </select>
+
+
+</mapper>
