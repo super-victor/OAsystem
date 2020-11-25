@@ -32,12 +32,14 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
         if (first.equals("0")) {
             return;
         }
+
         List<Role> authorities = (List<Role>) authentication.getAuthorities();
         boolean flag = true;
 
         for(Role role:authorities){
             if(role.getName().equals(first)){
                 flag = false;
+                break;
             }
         }
 

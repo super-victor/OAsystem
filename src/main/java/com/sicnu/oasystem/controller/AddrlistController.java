@@ -20,8 +20,8 @@ import javax.annotation.Resource;
 @RestController
 public class AddrlistController {
 
-      @Resource
-      AddrListService addrListService;
+    @Resource
+    AddrListService addrListService;
 
     /**
      * @MethodName getaddrlist

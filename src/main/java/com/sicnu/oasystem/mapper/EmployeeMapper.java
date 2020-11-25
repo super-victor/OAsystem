@@ -65,12 +65,22 @@ public interface EmployeeMapper {
     /**
      * @MethodName getAllEmployee
      * @param
-     * @Description 获取所有员工的数据
+     * @Description 获取所有员工的数据及对应部门数据
      * @Author pan
      * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
      * @LastChangeDate 2020/11/9
      */
     List<Employee> getAllEmployee();
+
+    /**
+     * @MethodName findAllEmployee
+     * @param
+     * @Description 获取所有员工数据
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/25
+     */
+    List<Employee> findAllEmployee();
 
     /**
      * @MethodName getEmployeeBypage
@@ -137,19 +147,130 @@ public interface EmployeeMapper {
      */
     List<String> findRoleIdsByUrlPattern(String urlPattern);
 
+    /**
+     * @MethodName findCodesByEmployeeId
+     * @param employeeId
+     * @Description 根据员工id找出所有的code
+     * @Author JohnTang
+     * @Return java.util.List<java.lang.String>
+     * @LastChangeDate 2020/11/25
+     */
     List<String> findCodesByEmployeeId(Integer employeeId);
 
+    /**
+     * @MethodName findCodesByRoleId
+     * @param roleId
+     * @Description 根据角色id找出所有的code
+     * @Author JohnTang
+     * @Return java.util.List<java.lang.String>
+     * @LastChangeDate 2020/11/25
+     */
+    List<String> findCodesByRoleId(Integer roleId);
+
+    /**
+     * @MethodName findAllMenus
+     * @param
+     * @Description 找出所有的功能列表
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Menu>
+     * @LastChangeDate 2020/11/25
+     */
     List<Menu> findAllMenus();
 
+    /**
+     * @MethodName findAllRoles
+     * @param
+     * @Description 找出所有的角色
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Role>
+     * @LastChangeDate 2020/11/25
+     */
     List<Role> findAllRoles();
 
+    /**
+     * @MethodName findAllRolesWithEmpolyeeList
+     * @param
+     * @Description 找出所有的角色以及角色对应的拥有角色的员工
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Role>
+     * @LastChangeDate 2020/11/25
+     */
     List<Role> findAllRolesWithEmpolyeeList();
 
-    int insertRoleIntoEmployeeRole(Integer employeeId, Integer roleId);
+    /**
+     * @MethodName insertRoleIntoEmployeeRole
+     * @param employeeId
+     * @param roleId
+     * @Description 将角色和职工的对应关系添加进职工角色表
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
+    int insertIntoEmployeeRole(Integer employeeId, Integer roleId);
 
+    /**
+     * @MethodName deletefromEmployeeRole
+     * @param employeeId
+     * @param roleId
+     * @Description 删除职工和角色的对应关系
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
     int deletefromEmployeeRole(Integer employeeId, Integer roleId);
 
-    int insertMenuAndRoleIntoRoleMenu(Integer menuId, Integer roleId);
+    /**
+     * @MethodName insertIntoRoleMenu
+     * @param menuId
+     * @param roleId
+     * @Description 添加角色和功能的对应关系
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
+    int insertIntoRoleMenu(Integer menuId, Integer roleId);
 
+    /**
+     * @MethodName deletefromRoleMenu
+     * @param menuId
+     * @param roleId
+     * @Description 删除角色和功能的对应关系
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
     int deletefromRoleMenu(Integer menuId, Integer roleId);
+
+    /**
+     * @MethodName deletefromRoleMenuByCode
+     * @param roleId
+     * @param code
+     * @Description 根据code删除角色和功能的对应关系
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
+    int deletefromRoleMenuByCode(Integer roleId, String code);
+
+    /**
+     * @MethodName insertIntoRoleMenuByCode
+     * @param roleId
+     * @param code 根据code添加角色和功能的对应关系
+     * @Description
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
+    int insertIntoRoleMenuByCode(Integer roleId, String code);
+
+    /**
+     * @MethodName updateIsAccountLockedInEmployee
+     * @param employeeId
+     * @param isAccountLocked
+     * @Description 更新角色账户锁定的状态
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/25
+     */
+    int updateIsAccountLockedInEmployee(Integer employeeId,Integer isAccountLocked);
 }

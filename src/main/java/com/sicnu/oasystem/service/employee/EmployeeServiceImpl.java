@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service.employee.impl;
+package com.sicnu.oasystem.service.employee;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
