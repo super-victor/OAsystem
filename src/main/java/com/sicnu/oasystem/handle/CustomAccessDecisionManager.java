@@ -36,9 +36,9 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
         List<Role> authorities = (List<Role>) authentication.getAuthorities();
 
         while (iterator.hasNext()) {
-            String roleName = iterator.next().getAttribute();
+            String roleId = iterator.next().getAttribute();
             for(Role role:authorities){
-                if(role.getAuthority().equals(roleName)){
+                if(role.getAuthority().equals(roleId)){
                     return;
                 }
             }
