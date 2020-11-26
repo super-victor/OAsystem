@@ -107,8 +107,9 @@
     </select>
 
     <select id="findRoleIdsByUrlPattern" resultType="java.lang.String">
-        select name from role where roleId in(select roleId from RoleMenu where menuId = (select menuId from menu where url = #{urlPattern}))
+        select roleId from role where roleId in(select roleId from RoleMenu where menuId = (select menuId from menu where url = #{urlPattern}))
     </select>
+
     <select id="findCodesByEmployeeId" resultType="java.lang.String">
         select code from menu where menuId in (select menuId from RoleMenu where roleId in (select roleId from EmployeeRole where employeeId = #{employeeId}))
     </select>

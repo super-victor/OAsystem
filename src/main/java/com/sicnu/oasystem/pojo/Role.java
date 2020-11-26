@@ -20,7 +20,7 @@ public class Role implements GrantedAuthority {
     // 权限列表
     // 1 ROLE_Admin
     // 2 ROLE_Censor
-    private int roleId;
+    private Integer roleId;
     private String name;
     // 拥有此角色的用户列表
     private List<Employee> employeeList;
@@ -31,6 +31,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return name;
+        return roleId.toString();
     }
 }

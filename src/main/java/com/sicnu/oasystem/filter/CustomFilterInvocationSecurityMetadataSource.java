@@ -33,9 +33,9 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException,AuthenticationException {
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            throw new NotLoginException("未登录");
-        }
+//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+//            throw new NotLoginException("未登录");
+//        }
 
         // todo 读取全局url允许名单，并判断
         HttpServletRequest request = ((FilterInvocation)o).getHttpRequest();
