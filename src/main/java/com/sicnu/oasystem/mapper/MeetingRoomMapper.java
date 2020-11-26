@@ -26,4 +26,11 @@ public interface MeetingRoomMapper {
 
     MeetingRoom getMeetingRoomById(Integer MeetingRoomId);
 
+    Integer addMeetingRoom(String name,String place,Integer isOccapy,Integer maxperson);
+
+    Integer updateMeetingRoom(Integer MeetingRoomId,String place, Integer isOccapy, String MeetingRoomName,int maxpserson);
+
+    Integer deleteMeetingRoom(Integer MeetingRoomId);
+
+    MeetingRoom getMeetingRoomByNameAndPlace(String name,String place);
 }

@@ -28,7 +28,7 @@ public interface EquipmentService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/16
      */
-    BackFrontMessage addEquipment(Integer equipmentId, Integer equipmentclassifyId,
+    BackFrontMessage addEquipment(Integer equipmentclassifyId,
                                   Integer meetingroomId, String name, Integer ismaintain, int num);
 
     /**
@@ -45,7 +45,7 @@ public interface EquipmentService {
      * @LastChangeDate 2020/11/16
      */
     BackFrontMessage updateEquipment(Integer equipmentId,Integer equipmentclassifyId,
-                            Integer newmeetingroomId,String newname,Integer newismaintain,int newnum);
+                            Integer newmeetingroomId,String newname,Integer newismaintain,Integer newnum);
 
     /**
      * @MethodName deleteEuipment
@@ -76,4 +76,6 @@ public interface EquipmentService {
      * @LastChangeDate 2020/11/20
      */
     BackFrontMessage getEquipmentById(Integer equipmentId);
+
+    BackFrontMessage getEquipmentByCondition(Integer meetingroomid,Integer equipmentclassifyId,String name);
 }

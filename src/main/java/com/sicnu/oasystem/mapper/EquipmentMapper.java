@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @InterfaceName EqiupmentMapper
- * @Description
+ * @Description Eqiupment的Mapper
  * @Author pan
  * @LastChangeDate 2020/11/15 21:42
  * @Version v1.0
@@ -27,8 +27,8 @@ public interface EquipmentMapper {
      * @Return java.lang.Integer
      * @LastChangeDate 2020/11/16
      */
-    Integer addEquipment(Integer equipmentId,Integer equipmentclassifyId,
-                         Integer meetingroomId,String name,Integer ismaintain,int num);
+    Integer addEquipment(Integer equipmentclassifyId,
+                         Integer meetingroomId,String name,Integer ismaintain,Integer num);
 
     /**
      * @MethodName updateEquipment
@@ -44,8 +44,9 @@ public interface EquipmentMapper {
      * @LastChangeDate 2020/11/16
      */
     Integer updateEquipment(Integer equipmentId,Integer equipmentclassifyId,
-                            Integer newmeetingroomId,String newname,Integer newismaintain,int newnum);
+                            Integer newmeetingroomId,String newname,Integer newismaintain,Integer newnum);
 
+    Integer updateeq(Integer equipmentId);
     /**
      * @MethodName deleteEuipment
      * @param equipmentId
@@ -75,4 +76,8 @@ public interface EquipmentMapper {
      * @LastChangeDate 2020/11/16
      */
     Equipment getEquipmentById(Integer equipmentId);
+
+    Equipment getEquipmentByclassifyAndRoomAndname(Integer equipmentclassifyId, Integer meetingroomId, String name);
+
+    List<Equipment> getEquipmentByCondition(Integer meetingroomid,Integer equipmentclassifyId,String name);
 }

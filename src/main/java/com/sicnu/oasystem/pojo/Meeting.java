@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Data
 public class Meeting {
+    @JsonIgnore
     private Integer meetingId;  //会议ID
     private Integer meetingRoomId;  //会议室ID
     private Integer status;   //会议状态
@@ -21,7 +23,9 @@ public class Meeting {
     private String remark;   //备注
     private String name;    //会议名称
     private Integer appoinmentStatus;   //会议预约状态
+    @JsonIgnore
     private Date createTime;  //创建时间
+    @JsonIgnore
     private Date updateTime;  //修改时间
     private Date startTime;   //会议开始时间
     private Date endTime; //会议结束时间
