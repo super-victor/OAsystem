@@ -30,7 +30,75 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage getAllEmployee() {
-        return new BackFrontMessage(200,"获取成功",employeeMapper.findAllEmployee());
+        return new BackFrontMessage(200,"获取成功",employeeMapper.findAllEmployeeExceptA());
+    }
+
+    @Override
+    public BackFrontMessage addEmployee(Employee employee) {
+        int flag;
+        try {
+            flag = employeeMapper.insertEmployee(employee);
+        }catch (DuplicateKeyException e) {
+            flag = 0;
+        }catch (DataIntegrityViolationException e) {
+            flag = 0;
+        }catch (Exception e){
+            flag = 0;
+        }
+
+        if (flag != 0) {
+            return new BackFrontMessage(200, "添加成功", null);
+        } else {
+            return new BackFrontMessage(500, "添加失败", null);
+        }
+    }
+
+    @Override
+    public BackFrontMessage deleteEmployee(int employeeId) {
+        //确保不是拥有管理员和超级管理员用户
+        // unfinish
+        //先将用户有关的所有表都清空完
+        if (employeeMapper.deleteEmployee(employeeId) != 0) {
+            return new BackFrontMessage(200,"删除成功",null);
+        } else {
+            return new BackFrontMessage(500,"删除失败",null);
+        }
+    }
+
+    @Override
+    public BackFrontMessage addRole(String name) {
+        int flag;
+        try {
+            flag = employeeMapper.insertRole(name);
+        }catch (DuplicateKeyException e) {
+            flag = 0;
+        }catch (DataIntegrityViolationException e) {
+            flag = 0;
+        }catch (Exception e){
+            flag = 0;
+        }
+
+        if (flag != 0) {
+            return new BackFrontMessage(200, "添加成功", null);
+        } else {
+            return new BackFrontMessage(500, "添加失败", null);
+        }
+    }
+
+    @Override
+    public BackFrontMessage deleteRole(int roleId) {
+        int flag;
+        try {
+            flag = employeeMapper.deleteRole(roleId);
+        }catch (Exception e){
+            flag = 0;
+        }
+
+        if (flag != 0) {
+            return new BackFrontMessage(200, "删除成功", null);
+        } else {
+            return new BackFrontMessage(500, "删除失败", null);
+        }
     }
 
     @Override
@@ -45,6 +113,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage updateRoleMenulist(Integer roleId, List<String> codeList) {
+        // 判断roleId是否为超级管理员和管理员
+        if (roleId == 1 || roleId == 2) {
+            return new BackFrontMessage(500,"修改失败",null);
+        }
+
         List<String> primaryCodeList = employeeMapper.findCodesByRoleId(roleId);
 
         ListUtil.compare(primaryCodeList, codeList);
@@ -67,6 +140,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage updateRoleEmployeelist(Integer roleId, List<Integer> employeeIdList) {
+        if (roleId == 1 || roleId == 2) {
+            return new BackFrontMessage(500,"修改失败",null);
+        }
         List<Employee> primaryEmployeeList = employeeMapper.findEmployeesByRoleId(roleId);
         List<Integer> primaryEmployeeIdList = new ArrayList<>(primaryEmployeeList.size());
 
@@ -129,6 +205,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage lockOrUnlockEmployee(Integer employeeId, Integer isAccountLocked) {
+        //判断是否为超级管理员，管理员
         if (employeeMapper.updateIsAccountLockedInEmployee(employeeId, isAccountLocked) == 1) {
             return new BackFrontMessage(200, "修改成功",null);
         } else {
@@ -146,6 +223,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage updateEmployeeRolelist(Integer employeeId, List<Integer> roleIdList) {
+        // 判断是否为超级管理员，管理员 判断角色列表中有没有1,2
         List<Role> primaryRoleList = employeeMapper.findRolesByEmployeeId(employeeId);
         List<Integer> primaryRoleIdList = new ArrayList<>(primaryRoleList.size());
 

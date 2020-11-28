@@ -15,8 +15,11 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +62,9 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
     @Resource
     CustomAccessDecisionManager customAccessDecisionManager;
 
+    @Resource
+    GlobalSecurityConfig globalSecurityConfig;
+
 //  启用密码加密
 //	@Bean
 //    PasswordEncoder passwordEncoder() {
@@ -97,10 +103,11 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
                 return o;
             }
         })
-                .antMatchers("/v2/**",
-                          "/swagger-resources/**",
-                          "/swagger-resources",
-                          "/swagger-ui**","/webjars/**")
+//                .antMatchers("/v2/**",
+//                          "/swagger-resources/**",
+//                          "/swagger-resources",
+//                          "/swagger-ui**","/webjars/**")
+                .antMatchers(globalSecurityConfig.getAllowUrlList().toArray(new String[globalSecurityConfig.getAllowUrlList().size()]))
                 .permitAll()
 //                .antMatchers("/user/**")
 //                .hasRole("User")

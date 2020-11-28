@@ -21,6 +21,10 @@ import java.util.Map;
 @Mapper
 public interface EmployeeMapper {
 
+    int insertEmployee(Employee employee);
+
+    int deleteEmployee(int employeeId);
+
     /**
      * @MethodName findEmployeeByUsername
      * @Param String username
@@ -273,4 +277,48 @@ public interface EmployeeMapper {
      * @LastChangeDate 2020/11/25
      */
     int updateIsAccountLockedInEmployee(Integer employeeId,Integer isAccountLocked);
+
+    /**
+     * @MethodName findAllEmployeeExcept12
+     * @param
+     * @Description 找出除了管理员和超级管理员的用户
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/26
+     */
+    List<Employee> findAllEmployeeExceptA();
+
+    /**
+     * @MethodName findAllAdmin
+     * @param
+     * @Description 找出所有的管理员
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/11/26
+     */
+    List<Employee> findAllAdmin();
+
+    /**
+     * @MethodName addAdmin
+     * @param employeeId
+     * @Description 给用户添加管理员角色
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/26
+     */
+    int addAdmin(int employeeId);
+    
+    /**
+     * @MethodName deleteAdmin 
+     * @param employeeId 
+     * @Description 添加描述
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/27
+     */
+    int deleteAdmin(int employeeId);
+
+    int insertRole(String roleName);
+
+    int deleteRole(int roleId);
 }

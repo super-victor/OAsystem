@@ -1,6 +1,9 @@
 package com.sicnu.oasystem.service.admin;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.pojo.Role;
+
 import java.util.List;
 
 /**
@@ -22,6 +25,14 @@ public interface AdminService {
      * @LastChangeDate 2020/11/25
      */
     BackFrontMessage getAllEmployee();
+
+    BackFrontMessage addEmployee(Employee employee);
+
+    BackFrontMessage deleteEmployee(int employeeId);
+
+    BackFrontMessage addRole(String roleName);
+
+    BackFrontMessage deleteRole(int roleId);
 
     /**
      * @MethodName getAllMenus

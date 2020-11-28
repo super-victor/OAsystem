@@ -27,6 +27,14 @@ public interface DepartmentMapper {
      */
     List<String> getAllDepartmentName();
 
+    List<Department> findAllDepartment();
+
+    int addDepartment(Department department);
+
+    int updateDepartment(Department department);
+
+    int deleteDepartment(int departmentId);
+
     /***
      * @MethodName findDepartmentByDepartmentId
      * @param departmentId

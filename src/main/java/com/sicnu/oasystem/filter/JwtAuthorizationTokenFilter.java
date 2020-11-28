@@ -1,11 +1,14 @@
 package com.sicnu.oasystem.filter;
 
+import com.sicnu.oasystem.config.GlobalSecurityConfig;
 import com.sicnu.oasystem.util.JwtTokenUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Resource;
@@ -23,10 +26,6 @@ import java.io.IOException;
  * @Version v1.0
  **/
 
-/*
-     token安全性问题:未考虑修改密码后重置token，之前token失效
- */
-
 @Component
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Resource
@@ -35,21 +34,25 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Resource
     JwtTokenUtil jwtTokenUtil;
 
+    @Resource
+    GlobalSecurityConfig globalSecurityConfig;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //todo
-        // 1、设置一个全局允许url,springsecurity tokenfilter filterSource实现ant模式匹配
-        // 2、检查token在用户修改密码后签发
-        // 3、如果token快要过期刷新token，防止用户在访问页面时突然未登录
-        String[] passUrls = {"/login"};
-        boolean pass = false;
-        for (String passUrl : passUrls) {
-            if (passUrl.equals(httpServletRequest.getRequestURI())) {
-                pass = true;
+        // 1.检查token在用户修改密码后签发
+        // 2.如果token快要过期刷新token，防止用户在访问页面时突然未登录
+
+        // 判断系统全局允许名单
+        boolean flag = true;
+        for (String allowUrl: globalSecurityConfig.getAllowUrlList()) {
+            if (new AntPathMatcher().match(allowUrl, httpServletRequest.getRequestURI())) {
+                flag = false;
             }
         }
+
         String token = httpServletRequest.getHeader("token");
-        if (token != null && !pass) {
+        if (token != null && flag) {
             String username = jwtTokenUtil.getUsernameFromToken(token);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

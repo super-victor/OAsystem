@@ -248,7 +248,8 @@ create table Role(
     name varchar(20) not null  comment '角色名称',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
-    constraint pk_Role_roleId primary key (roleId)
+    constraint pk_Role_roleId primary key (roleId),
+    constraint unique_Role_name unique key(name)
  );
 
 

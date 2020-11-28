@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.controller.admin;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.service.admin.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -139,4 +140,29 @@ public class AdminController {
     BackFrontMessage updateEmployeeRolelist(@RequestParam Integer employeeId, @RequestParam List<Integer> roleIdList){
         return adminService.updateEmployeeRolelist(employeeId, roleIdList);
     }
+
+    @ApiOperation(value = "添加职工")
+    @PostMapping("/employee")
+    BackFrontMessage addEmployee( @RequestBody @ModelAttribute Employee employee){
+        return adminService.addEmployee(employee);
+    }
+
+    @ApiOperation(value = "删除职工")
+    @DeleteMapping("/employee")
+    BackFrontMessage deleteEmployee(@RequestParam int employeeId){
+        return adminService.deleteEmployee(employeeId);
+    }
+
+    @ApiOperation(value = "添加角色")
+    @PostMapping("/role")
+    BackFrontMessage addRole(@RequestParam String roleName){
+        return adminService.addRole(roleName);
+    }
+
+    @ApiOperation(value = "删除角色")
+    @DeleteMapping("/role")
+    BackFrontMessage deleteRole(@RequestParam Integer roleId){
+        return adminService.deleteRole(roleId);
+    }
+
 }
