@@ -30,4 +30,6 @@ public class Meeting {
     private Date startTime;   //会议开始时间
     private Date endTime; //会议结束时间
     private Integer peopleNum; //会议人数
+
+    private String meetingRoomName;
 }

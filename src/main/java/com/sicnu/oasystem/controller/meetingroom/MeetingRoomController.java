@@ -1,8 +1,8 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.MeetingRoom;
-import com.sicnu.oasystem.service.MeetingRoomService;
+import com.sicnu.oasystem.service.meetingroom.MeetingRoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

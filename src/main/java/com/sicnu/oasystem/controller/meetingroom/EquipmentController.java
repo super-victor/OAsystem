@@ -1,9 +1,8 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.Equipment;
-import com.sicnu.oasystem.service.EquipmentService;
-import com.sicnu.oasystem.service.EquipmentServicelpml;
+import com.sicnu.oasystem.service.meetingroom.EquipmentServicelpml;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +50,6 @@ public class EquipmentController {
     @ApiOperation("修改设备")
     @PutMapping("/updateEquipment")
     public BackFrontMessage updateEquipment(@RequestBody Equipment equipment){
-        System.out.println(equipment);
-//        return new BackFrontMessage(200,"ds",null);
         return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getNum());
     }
 
