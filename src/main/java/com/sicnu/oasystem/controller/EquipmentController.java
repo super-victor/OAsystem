@@ -35,7 +35,8 @@ public class EquipmentController {
     @ApiOperation("添加设备")
     @PostMapping("/addEquipment")
         public BackFrontMessage addEquipment(@RequestBody Equipment equipment){
-        return equipmentServicelpml.addEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId()
+        System.out.println(equipment);
+        return equipmentServicelpml.addEquipment(equipment.getEquipmentClassifyId()
                 ,equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getNum());
     }
 
@@ -50,8 +51,9 @@ public class EquipmentController {
     @ApiOperation("修改设备")
     @PutMapping("/updateEquipment")
     public BackFrontMessage updateEquipment(@RequestBody Equipment equipment){
-        return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId()
-                ,equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getNum());
+        System.out.println(equipment);
+//        return new BackFrontMessage(200,"ds",null);
+        return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getNum());
     }
 
     /**
@@ -85,6 +87,11 @@ public class EquipmentController {
     @GetMapping("/getEquipmentById")
     public BackFrontMessage getEquipmentById(Integer equipmentId){
         return equipmentServicelpml.getEquipmentById(equipmentId);
+    }
+
+    @GetMapping("/getEquipmentByCondition") //todo 未添加权限
+    public BackFrontMessage getEquipmentByCondition(Integer meetingroomid, Integer equipmentclassifyId, String name){
+        return equipmentServicelpml.getEquipmentByCondition(meetingroomid,equipmentclassifyId,name);
     }
 
 }

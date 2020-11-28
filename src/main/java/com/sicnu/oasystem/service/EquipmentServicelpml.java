@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class EquipmentServicelpml implements EquipmentService{
 
-    //todo:完成权限管理和安全管理
+
     @Resource
     EquipmentMapper equipmentMapper;
 
@@ -33,24 +33,30 @@ public class EquipmentServicelpml implements EquipmentService{
     MeetingRoomMapper meetingRoomMapper;
 
     @Override
-    public BackFrontMessage addEquipment(Integer equipmentId, Integer equipmentclassifyId,
+    public BackFrontMessage addEquipment(Integer equipmentclassifyId,
                                          Integer meetingroomId, String name, Integer ismaintain, int num) {
-        Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
-        //todo:要判断分类是否存在 meetingId是否存在
+        //Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
+        if(equipmentclassifyId==null || equipmentclassifyId<=0 ||meetingroomId==null ||meetingroomId<=0 || name==null){
+            return new BackFrontMessage(500,"添加设备失败",null);
+        }
         EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
         MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(meetingroomId);
-        if(equipment==null &&equipmentClassify !=null &&meetingRoom!=null){
+        if(equipmentClassify !=null &&meetingRoom!=null){
+            Equipment equipment=equipmentMapper.getEquipmentByclassifyAndRoomAndname(equipmentclassifyId,meetingroomId,name);
+            if(equipment!=null){
+                return new BackFrontMessage(500,"设备已存在",null);
+            }
             int res=0;
-            res=equipmentMapper.addEquipment(equipmentId,equipmentclassifyId,meetingroomId,name,ismaintain,num);
+            res=equipmentMapper.addEquipment(equipmentclassifyId,meetingroomId,name,ismaintain,num);
             if(res==0){
                 return new BackFrontMessage(500,"添加设备失败",null);
             }else{
                 return new BackFrontMessage(200,"添加设备成功",null);
             }
         }else{
-            if(equipment!=null){
-                return new BackFrontMessage(500,"设备已存在",null);
-            }
+//            if(equipment!=null){
+//                return new BackFrontMessage(500,"设备已存在",null);
+//            }
             if(equipmentClassify==null){
                 return new BackFrontMessage(500,"设备分类不存在",null);
             }
@@ -63,9 +69,8 @@ public class EquipmentServicelpml implements EquipmentService{
 
     @Override
     public BackFrontMessage updateEquipment(Integer equipmentId, Integer equipmentclassifyId,
-                                            Integer newmeetingroomId, String newname, Integer newismaintain, int newnum) {
+                                            Integer newmeetingroomId, String newname, Integer newismaintain, Integer newnum) {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
-        //todo:检查外键
         EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
         MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(newmeetingroomId);
         if (equipment==null){
@@ -75,6 +80,7 @@ public class EquipmentServicelpml implements EquipmentService{
         }
         else {
             int res=0;
+//            res=equipmentMapper.updateeq(equipmentId);
             res=equipmentMapper.updateEquipment(equipmentId,equipmentclassifyId,newmeetingroomId,newname,newismaintain,newnum);
             if(res==0){
                 return new BackFrontMessage(500,"更新设备失败",null);
@@ -93,6 +99,23 @@ public class EquipmentServicelpml implements EquipmentService{
             return new BackFrontMessage(200,"设备信息获取成功",equipment);
         }
     }
+
+    @Override
+    public BackFrontMessage getEquipmentByCondition(Integer meetingroomid, Integer equipmentclassifyId, String name) {
+//        if(meetingroomid==null||meetingroomid<=0||equipmentclassifyId==null||equipmentclassifyId<=0||name==null){
+//            return new BackFrontMessage(500,"按条件查找设备失败",null);
+//        }
+        List<Equipment> equipments=equipmentMapper.getEquipmentByCondition(meetingroomid,equipmentclassifyId,name);
+        if (equipments==null){
+            return new BackFrontMessage(500,"按条件查找设备失败",null);
+        }else if(equipments.size()==0){
+            return new BackFrontMessage(500,"按条件未查找到设备",null);
+        }
+        else {
+            return new BackFrontMessage(200,"按条件查找设备成功",equipments);
+        }
+    }
+
 
     @Override
     public BackFrontMessage deleteEuipment(Integer equipmentId) {

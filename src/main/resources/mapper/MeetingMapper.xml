@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicnu.oasystem.mapper.MeetingMapper">
+    <insert id="addOrderMeeting">
+        insert into meeting(meetingroomid,status,employeeid,name,appoinmentstatus,starttime,endtime,peoplenum)
+        values (#{param1},#{param2},#{param3},#{param4},0,#{param5},#{param6},#{param7})
+    </insert>
+    <update id="approveMeeting">
+        update meeting set appoinmentstatus=#{param2} where meetingid=#{param1}
+    </update>
+    <update id="updateOrderMeeting">
+        update meeting set meetingid=#{param1}
+        <where>
+            <if test="param2!=null">
+                ,status=#{param2}
+            </if>
+            <if test="param3!=null">
+                ,name=#{param3}
+            </if>
+            <if test="param4!=null">
+                ,starttime=#{param4}
+            </if>
+            <if test="param5!=null">
+                ,endtime=#{param5}
+            </if>
+            <if test="param6>0">
+                ,peoplenum=#{param6}
+            </if>
+        </where>
+    </update>
+    <delete id="deleteMeeting">
+        delete from meeting where meetingid=#{meetingId}
+    </delete>
+
+    <select id="getAllMeetings" resultType="com.sicnu.oasystem.pojo.Meeting">
+        select * from meeting
+    </select>
+    <select id="getMeetingById" resultType="com.sicnu.oasystem.pojo.Meeting">
+        select * from meeting where meetingid=#{meetingId}
+    </select>
+</mapper>

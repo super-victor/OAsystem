@@ -3,12 +3,12 @@
 <mapper namespace="com.sicnu.oasystem.mapper.EquipmentMapper">
 
     <insert id="addEquipment">
-        insert into equipment(equipmentId,equipmentClassifyId,meetingRoomId,name,isMaintain,num)
-        values (#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
+        insert into equipment(equipmentClassifyId,meetingRoomId,name,isMaintain,num)
+        values (#{param1},#{param2},#{param3},#{param4},#{param5})
     </insert>
 
     <update id="updateEquipment">
-        update equipment set equipmentId=#{param1}
+        update equipment set equipmentId=#{equipmentId}
         <if test="param2 !=null">
             ,equipmentclassifyId=#{param2}
         </if>
@@ -18,13 +18,16 @@
         <if test="param4 !=null">
             ,name=#{param4}
         </if>
-        <if test="param5">
+        <if test="param5 !=null">
             ,isMaintain=#{param5}
         </if>
-        <if test="param6 !=0 and param6>=0">
+        <if test="param6!=null and param6>=0">
             ,num=#{param6}
         </if>
-        where equipmentId=#{param1}
+        where equipmentId=#{equipmentId}
+    </update>
+    <update id="updateeq">
+        update equipment set num=5 where equipmentId=#{equipmentId}
     </update>
 
     <delete id="deleteEuipment">
@@ -38,4 +41,23 @@
         select equipment.*,meetingroom.name as meetingRoomName,equipmentclassify.name as equipmentclassifyName from equipment,meetingroom,equipmentclassify where equipmentId=#{equipmentId}
         and equipment.meetingRoomId=meetingroom.meetingRoomId and equipment.equipmentclassifyid=equipmentclassify.equipmentclassifyid
     </select>
+    <select id="getEquipmentByCondition" resultType="com.sicnu.oasystem.pojo.Equipment">
+        select equipment.*,meetingroom.name as meetingRoomName,equipmentclassify.name as equipmentclassifyName from equipment,meetingroom,equipmentclassify
+        where equipment.meetingRoomId=meetingroom.meetingRoomId and equipment.equipmentclassifyid=equipmentclassify.equipmentclassifyid
+        <if test="param1!=null and param1>0">
+            and meetingroom.meetingRoomId=#{param1}
+        </if>
+        <if test="param2!=null and param2>0">
+            and equipment.equipmentclassifyid=#{param2}
+        </if>
+        <if test="param3!=null">
+            and equipment.name=#{param3}
+        </if>
+    </select>
+    <select id="getEquipmentByclassifyAndRoomAndname" resultType="com.sicnu.oasystem.pojo.Equipment">
+        select equipment.*,meetingroom.name as meetingRoomName,equipmentclassify.name as equipmentclassifyName from equipment,meetingroom,equipmentclassify where
+         equipment.meetingRoomId=meetingroom.meetingRoomId and equipment.equipmentclassifyid=equipmentclassify.equipmentclassifyid
+        and equipmentclassify.equipmentclassifyId=#{param1} and meetingroom.meetingRoomId=#{param2} and equipment.name=#{param3}
+    </select>
+
 </mapper>

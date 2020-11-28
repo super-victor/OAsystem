@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.service;
 
+import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.MeetingRoom;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface MeetingRoomService {
      * @Return java.util.List<com.sicnu.oasystem.pojo.MeetingRoom>
      * @LastChangeDate 2020/11/13
      */
-    public List<MeetingRoom> getMeetRoomInfo(String place,Integer isOccapy,String MeetingRoomName);
+    public BackFrontMessage getMeetRoomInfo(String place, Integer isOccapy, String MeetingRoomName);
 
     /**
      * @MethodName updateMeetingRoomIsOccapy
@@ -46,4 +47,12 @@ public interface MeetingRoomService {
      */
     public Integer uodateMeetingRoomNotIsOccapy();
 
+
+    public BackFrontMessage getMeetingRoomById(Integer meetingRoomId);
+
+    public BackFrontMessage updateMeetingRoom(Integer MeetingRoomId,String place, Integer isOccapy, String MeetingRoomName,int maxpserson);
+
+    public BackFrontMessage deleteMeetingRoom(Integer MeetingRoomId);
+
+    public BackFrontMessage addMeetingRoom(String name,String place,Integer isOccapy,Integer maxperson);
 }

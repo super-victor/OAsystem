@@ -6,12 +6,16 @@
         <result property="place" column="place"></result>
         <result property="name" column="name"></result>
         <result property="isOccapy" column="isOccapy"></result>
+        <result property="maxperson" column="maxperson"></result>
         <association property="meeting" javaType="com.sicnu.oasystem.pojo.Meeting">
             <result property="name" column="meetingName"></result>
             <result property="startTime" column="startTime"></result>
             <result property="endTime" column="endTime"></result>
         </association>
     </resultMap>
+    <insert id="addMeetingRoom">
+        insert into meetingroom(name,place,isOccapy,maxperson) values (#{param1},#{param2},#{param3},#{param4})
+    </insert>
     <update id="updateMeetingRoomIsOccapy">
         update meetingroom set isOccapy=1 where meetingroomId in(select meetingroomId
         from meeting where CURRENT_DATE>startTime and endTime>CURRENT_DATE)
@@ -20,10 +24,29 @@
         update meetingroom set isOccapy=0 where meetingroomId in(select meetingroomId
         from meeting where startTime>CURRENT_DATE or CURRENT_DATE>endTime)
     </update>
+    <update id="updateMeetingRoom">
+        update meetingroom set MeetingRoomId=#{MeetingRoomId}
+        <where>
+            <if test="param2!=null">
+                ,place=#{param2}
+            </if>
+            <if test="param3!=null">
+                ,isOccapy=#{param3}
+            </if>
+            <if test="param4!=null">
+                ,MeetingRoomName=#{MeetingRoomName}
+            </if>
+            <if test="param5>0"></if>
+        </where>
+        where MeetingRoomId=#{MeetingRoomId}
+    </update>
+    <delete id="deleteMeetingRoom">
+        delete from meetingroom where meetingroomid=#{MeetingRoomId}
+    </delete>
 
 
     <select id="getAllMeetingRoom" resultMap="meet">
-        select meetingroom.place,meetingroom.name,meetingroom.isOccapy,meeting.name as meetingName,meeting.startTime,meeting.endTime
+        select meetingroom.place,meetingroom.name,meetingroom.isOccapy,meetingroom.maxperson,meeting.name as meetingName,meeting.startTime,meeting.endTime
         from meetingroom LEFT JOIN meeting on meetingroom.meetingRoomId=meeting.meetingRoomId and meeting.status=1
         <where>
             <if test="place !=null">
@@ -42,5 +65,17 @@
     </select>
     <select id="getMeetingRoomById" resultType="com.sicnu.oasystem.pojo.MeetingRoom">
         select * from meetingroom where meetingroomid=#{MeetingRoomId}
+    </select>
+    <select id="getMeetingRoomByNameAndPlace" resultType="com.sicnu.oasystem.pojo.MeetingRoom">
+        select * from meetingroom
+        <where>
+            <if test="param1!=null">
+                name=#{param1}
+            </if>
+            <if test="param2!=null">
+                or place=#{param2}
+            </if>
+        </where>
+
     </select>
 </mapper>
