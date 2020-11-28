@@ -1,8 +1,9 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EquipmentClassifyMapper;
 import com.sicnu.oasystem.pojo.EquipmentClassify;
+import com.sicnu.oasystem.service.meetingroom.EquipmentClassifyService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +17,7 @@ import java.util.List;
  * @Version v1.0
  */
 @Service
-public class EquipmentClassifyServicelmpl implements EquipmentClassifyService{
+public class EquipmentClassifyServicelmpl implements EquipmentClassifyService {
 
     @Resource
     EquipmentClassifyMapper equipmentClassifyMapper;

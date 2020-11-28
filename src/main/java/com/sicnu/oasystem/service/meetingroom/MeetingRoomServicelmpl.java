@@ -1,9 +1,9 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.MeetingRoomMapper;
 import com.sicnu.oasystem.pojo.MeetingRoom;
-import org.springframework.security.core.parameters.P;
+import com.sicnu.oasystem.service.meetingroom.MeetingRoomService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +17,7 @@ import java.util.List;
  * @Version v1.0
  */
 @Service
-public class MeetingRoomServicelmpl implements MeetingRoomService{
+public class MeetingRoomServicelmpl implements MeetingRoomService {
 
     @Resource
     MeetingRoomMapper meetingRoomMapper;

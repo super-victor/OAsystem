@@ -1,10 +1,9 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.service.EquipmentClassifyServicelmpl;
+import com.sicnu.oasystem.service.meetingroom.EquipmentClassifyServicelmpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

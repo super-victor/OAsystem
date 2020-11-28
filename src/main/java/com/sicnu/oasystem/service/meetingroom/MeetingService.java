@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.Meeting;
@@ -60,7 +60,9 @@ public interface MeetingService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/24
      */
-    BackFrontMessage addOrderMeeting(Integer meetingid, Integer status, Integer employeeid, String name, Date startTime, Date endtime, Integer peoplenum);
+    BackFrontMessage addOrderMeeting(Integer meetingid, Integer status, Integer employeeid,
+                                     String name, Date startTime, Date endtime,
+                                     Integer peoplenum,String remark);
 
     /**
      * @MethodName approveMeeting
@@ -72,4 +74,15 @@ public interface MeetingService {
      * @LastChangeDate 2020/11/24
      */
     BackFrontMessage approveMeeting(Integer meetingid,Integer appoinmentstatus);
+
+    /**
+     * @MethodName getNotApprovedMeeting
+     * @param
+     * @Description 获取未审批的会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/28
+     */
+    BackFrontMessage getNotApprovedMeeting();
+
 }

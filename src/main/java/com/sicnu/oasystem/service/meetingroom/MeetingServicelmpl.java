@@ -1,9 +1,10 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.MeetingMapper;
 import com.sicnu.oasystem.pojo.Meeting;
-import com.sun.xml.bind.v2.model.core.ID;
+import com.sicnu.oasystem.service.meetingroom.MeetingService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -16,8 +17,8 @@ import java.util.List;
  * @LastChangeDate 2020/11/24 23:26
  * @Version v1.0
  */
-
-public class MeetingServicelmpl implements MeetingService{
+@Service
+public class MeetingServicelmpl implements MeetingService {
 
     @Resource
     MeetingMapper meetingMapper;
@@ -28,6 +29,9 @@ public class MeetingServicelmpl implements MeetingService{
         if (meetings==null){
             return new BackFrontMessage(500,"获取所有的会议失败",null);
         }else {
+            if(meetings.size()==0){
+                return new BackFrontMessage(500,"当前没有会议",null);
+            }
             return new BackFrontMessage(200,"获取所有会议成功",meetings);
         }
     }
@@ -45,7 +49,7 @@ public class MeetingServicelmpl implements MeetingService{
     @Override
     public BackFrontMessage deleteMeeting(Integer meetingId) {
 
-        int res=0;
+        int res = 0;
         res=meetingMapper.deleteMeeting(meetingId);
         if (res==0){
             return new BackFrontMessage(500,"删除会议失败",null);
@@ -55,9 +59,17 @@ public class MeetingServicelmpl implements MeetingService{
     }
 
     @Override
-    public BackFrontMessage addOrderMeeting(Integer meetingid, Integer status, Integer employeeid, String name, Date startTime, Date endtime, Integer peoplenum) {
+    public BackFrontMessage addOrderMeeting(Integer meetingroomid, Integer status, Integer employeeid, String name, Date startTime,
+                                            Date endtime, Integer peoplenum,String remark) {
+        if(meetingroomid==null||employeeid==null||meetingroomid<=0||employeeid<=0){
+            return new BackFrontMessage(500,"预约会议失败",null);
+        }
+        List<Meeting> meeting=meetingMapper.judgeIsIsOccupy(meetingroomid,startTime,endtime);
+        if (meeting!=null||meeting.size()!=0){
+            return new BackFrontMessage(500,"此时段不能预约会议",null);
+        }
         int res=0;
-        res=meetingMapper.addOrderMeeting(meetingid,status,employeeid,name,startTime,endtime,peoplenum);
+        res=meetingMapper.addOrderMeeting(meetingroomid,status,employeeid,name,startTime,endtime,peoplenum,remark);
         if(res==0){
             return new BackFrontMessage(500,"预约会议失败",null);
         }else {
@@ -67,7 +79,7 @@ public class MeetingServicelmpl implements MeetingService{
 
     @Override
     public BackFrontMessage approveMeeting(Integer meetingid, Integer appoinmentstatus) {
-        if(appoinmentstatus!=1||appoinmentstatus!=-1){
+        if(appoinmentstatus!=1 && appoinmentstatus!=-1){
             return new BackFrontMessage(500,"会议审批失败",null);
         }else {
             int res=0;
@@ -79,5 +91,20 @@ public class MeetingServicelmpl implements MeetingService{
             }
         }
     }
+
+    @Override
+    public BackFrontMessage getNotApprovedMeeting() {
+        List<Meeting>meetings=meetingMapper.waitingApproveMeeting();
+        if (meetings==null){
+            return new BackFrontMessage(500,"查询未审批会议失败",null);
+        }else {
+            if (meetings.size()==0){
+                return new BackFrontMessage(500,"没有待审批的会议",null);
+            }else {
+                return new BackFrontMessage(200,"查询未审批会议成功",meetings);
+            }
+        }
+    }
+
 }
 
