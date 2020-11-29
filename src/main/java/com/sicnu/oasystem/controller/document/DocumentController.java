@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.document;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.document.DocumentService;

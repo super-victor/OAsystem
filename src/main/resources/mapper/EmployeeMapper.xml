@@ -37,7 +37,7 @@
     </insert>
 
     <insert id="insertEmployee">
-        insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values (#{username}, #{name}, #{password}, #{phone}, #{email}, #{idCard}, #{sex}, #{departmentName}, #{position}, #{homeAddress}, 0);
+        insert into employee (username, name, password, phone, email, idCard, sex, departmentName,birthday, position, homeAddress, isAccountLocked) values (#{username}, #{name}, #{password}, #{phone}, #{email}, #{idCard}, #{sex}, #{departmentName}, #{birthday}, #{position}, #{homeAddress}, 0);
     </insert>
     <insert id="insertRole">
         insert into role (name) values (#{name})

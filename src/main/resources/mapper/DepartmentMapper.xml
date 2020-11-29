@@ -3,11 +3,11 @@
 
 <mapper namespace="com.sicnu.oasystem.mapper.DepartmentMapper">
     <insert id="addDepartment">
-        insert into department (name,phone) values (#{departmentName},  #{phone})
+        insert into department (name,phone) values (#{name},  #{phone})
     </insert>
     <update id="updateDepartment">
         update department set departmentId = #{departmentId}
-        <if test="name != null">,name = #{departmentName}</if>
+        <if test="name != null">,name = #{name}</if>
         <if test="phone != null">,phone = #{phone}</if>
         where departmentId = #{departmentId}
     </update>

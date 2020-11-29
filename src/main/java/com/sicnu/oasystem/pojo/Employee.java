@@ -25,6 +25,7 @@ public class Employee implements UserDetails {
     private String username;
     @ApiModelProperty(required = true)
     private String name;
+    private Date birthday;
     @JsonIgnore
     private String password;
     @ApiModelProperty(required = true)
@@ -38,6 +39,7 @@ public class Employee implements UserDetails {
     private Date entryTime;
     @ApiModelProperty(required = true)
     private String departmentName;
+    @ApiModelProperty(required = true)
     private String position;
     @ApiModelProperty(required = true)
     private String homeAddress;

@@ -5,28 +5,23 @@ import java.util.List;
 
 /**
  * @ClassName ListUtil
- * @Description 添加描述
+ * @Description 列表工具类
  * @Author JohnTang
  * @LastChangeDate 2020/11/24 11:09
  * @Version v1.0
  */
 
 public class ListUtil {
-    //保证实现arraylist
+    /**
+     * @MethodName compare
+     * @param primary 原数组 (方法执行完后装的就是相对于原数组减少的部分)
+     * @param current 增加删除后的数组 (方法执行完后装的就是相对于原数组增加的部分)
+     * @Description 必须保证list是arraylist的实现
+     * @Author JohnTang
+     * @Return void
+     * @LastChangeDate 2020/11/28
+     */
     public static<T> void compare(List<T> primary , List<T> current){
-//        Iterator<T> iP = primary.iterator();
-//        Iterator<T> iC;
-//        while (iP.hasNext()) {
-//            T t = iP.next();
-//            iC = current.iterator();
-//            while (iC.hasNext()) {
-//                if (t.equals(iC.next())) {
-//                    iP.remove();
-//                    iC.remove();
-//                    break;
-//                }
-//            }
-//        }
         List<T> intersection = new ArrayList<>(primary.size());
         intersection.addAll(primary);
         // 取到了交集

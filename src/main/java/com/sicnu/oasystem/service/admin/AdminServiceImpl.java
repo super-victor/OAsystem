@@ -12,6 +12,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -35,14 +37,29 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public BackFrontMessage addEmployee(Employee employee) {
+        employee.setUsername(employee.getEmail());
+        employee.setPassword("123456");
+        String birthdayString = employee.getIdCard().substring(7,15);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date birthday;
+        try {
+            birthday = simpleDateFormat.parse(birthdayString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new BackFrontMessage(500,"添加失败",null);
+        }
+        employee.setBirthday(birthday);
         int flag;
         try {
             flag = employeeMapper.insertEmployee(employee);
         }catch (DuplicateKeyException e) {
+            e.printStackTrace();
             flag = 0;
         }catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
             flag = 0;
         }catch (Exception e){
+            e.printStackTrace();
             flag = 0;
         }
 

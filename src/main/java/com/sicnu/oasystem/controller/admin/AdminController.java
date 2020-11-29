@@ -143,7 +143,7 @@ public class AdminController {
 
     @ApiOperation(value = "添加职工")
     @PostMapping("/employee")
-    BackFrontMessage addEmployee( @RequestBody @ModelAttribute Employee employee){
+    BackFrontMessage addEmployee(Employee employee){
         return adminService.addEmployee(employee);
     }
 

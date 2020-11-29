@@ -4,6 +4,8 @@ import com.sicnu.oasystem.pojo.ReceiveFile;
 import com.sicnu.oasystem.pojo.SendFile;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @InterfaceName DocumentMapper
  * @Description 收发文有关mapper
@@ -55,4 +57,18 @@ public interface DocumentMapper {
      * @LastChangeDate 2020/11/18
      */
     SendFile findSendFileByEmployeeIdAndSendfileId(Integer employeeId, Integer sendfileId);
+
+    List<SendFile> findUnReviewSendFile();
+
+    int updateStatusInSendFile(int sendfileId,int status);
+
+    /**
+     * @MethodName checkedReceiveFile
+     * @param receivefileId
+     * @Description 确认收到
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/11/28
+     */
+    int checkedReceiveFile(int receivefileId);
 }

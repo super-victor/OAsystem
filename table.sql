@@ -219,7 +219,7 @@ create table SendFile(
     remark text comment '备注',
     senderId int not null comment '发件人ID',
     censorId int not null comment '审查人ID',
-    status int not null comment '状态 -1未通过审查 0待审查 1通过审查 2收文结束',
+    status int not null comment '状态 -1草稿箱 0待审查 1通过审查 2收文结束',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_SendFile_sendfileId primary key (sendFileId),
@@ -233,7 +233,7 @@ create table ReceiveFile(
     receiveFileId int not null auto_increment comment '收文ID',
     sendFileId int not null comment '发文ID',
     receiverId int not null comment '收件人ID',
-    isRecceived int not null comment '是否收到',
+    isReceived int not null comment '是否收到',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_ReceiveFile_receiveId primary key (receiveFileId),
@@ -314,6 +314,7 @@ create table Meeting(
     constraint fk_Meeting_meetingRoomId foreign key (meetingRoomId) references MeetingRoom(meetingRoomId)
 );
 
+-- 消息表
 create table Message (
     messageId int not null auto_increment comment '消息id',
     employeeId int not null comment '员工id',
