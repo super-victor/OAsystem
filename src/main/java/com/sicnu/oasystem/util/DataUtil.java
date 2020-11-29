@@ -21,4 +21,7 @@ public class DataUtil {
     // 发文审查title
     public static final String MESSAGE_TITLE_POSTREVIEW = "发文审查";
 
+    //收到公司日程title
+    public static final String MESSAGE_TITLE_SCHEDULE = "公司日程";
+
 }

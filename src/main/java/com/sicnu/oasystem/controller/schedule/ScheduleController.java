@@ -25,17 +25,33 @@ public class ScheduleController {
     ScheduleService scheduleService;
 
     /**
-     * @MethodName insertSchedule
+     * @MethodName insertCompanySchedule
      * @param schedule 日程
-     * @Description 添加日程
+     * @param joiner 参与者
+     * @Description 添加公司日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/19
      */
-    @ApiOperation(value = "添加日程")
-    @PostMapping("/Schedule")
-    public BackFrontMessage insertSchedule(@RequestBody Schedule schedule){
-        return scheduleService.insertSchedule(schedule);
+    @ApiOperation(value = "添加公司日程")
+    @PostMapping("/CompanySchedule")
+    public BackFrontMessage insertCompanySchedule(@RequestBody Schedule schedule, @RequestParam String joiner){
+        //参与者列表用字符串拼接
+        return scheduleService.insertCompanySchedule(schedule, joiner);
+    }
+
+    /**
+     * @MethodName insertSelfSchedule
+     * @param schedule 日程
+     * @Description 添加个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/25
+     */
+    @ApiOperation("添加个人日程")
+    @PostMapping("/SelfSchedule")
+    public BackFrontMessage insertSelfSchedule(@RequestBody Schedule schedule){
+        return scheduleService.insertSelfSchedule(schedule);
     }
 
     /**
@@ -47,24 +63,53 @@ public class ScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/19
      */
-    @ApiOperation(value = "修改日程信息")
-    @PutMapping("/Schedule")
-    public BackFrontMessage updateSchedule(@RequestBody Schedule schedule, @RequestParam int scheduleId){
-        return scheduleService.updateScheduleByScheduleId(schedule,scheduleId);
+    @ApiOperation(value = "修改个人日程信息")
+    @PutMapping("/SelfSchedule")
+    public BackFrontMessage updateSelfSchedule(@RequestBody Schedule schedule, @RequestParam int scheduleId){
+        return scheduleService.updateScheduleByScheduleId(schedule, scheduleId, 0);
     }
 
     /**
-     * @MethodName deleteSchedule
+     * @MethodName updateCompanySchedule
+     * @param schedule 日程
+     * @param scheduleId 日程id
+     * @Description 修改公司日程信息
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/25
+     */
+    @ApiOperation(value = "修改公司日程信息")
+    @PutMapping("/CompanySchedule")
+    public BackFrontMessage updateCompanySchedule(@RequestBody Schedule schedule, @RequestParam int scheduleId){
+        return scheduleService.updateScheduleByScheduleId(schedule, scheduleId, 1);
+    }
+
+    /**
+     * @MethodName deleteCompanySchedule
      * @param scheduleId 日晨id
-     * @Description 删除日程
+     * @Description 删除公司日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/19
      */
-    @ApiOperation(value = "删除日程")
-    @DeleteMapping("/Schedule")
-    public BackFrontMessage deleteSchedule(@RequestParam int scheduleId){
-        return scheduleService.deleteScheduleByScheduleId(scheduleId);
+    @ApiOperation(value = "删除公司日程")
+    @DeleteMapping("/CompanySchedule")
+    public BackFrontMessage deleteCompanySchedule(@RequestParam int scheduleId){
+        return scheduleService.deleteScheduleByScheduleId(scheduleId, 1);
+    }
+
+    /**
+     * @MethodName deleteSelfSchedule
+     * @param scheduleId 日程id
+     * @Description 删除个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/25
+     */
+    @ApiOperation(value = "删除个人日程")
+    @DeleteMapping("/SelfSchedule")
+    public BackFrontMessage deleteSelfSchedule(@RequestParam int scheduleId){
+        return scheduleService.deleteScheduleByScheduleId(scheduleId, 0);
     }
 
     /**

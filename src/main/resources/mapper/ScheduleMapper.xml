@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.ScheduleMapper">
     <insert id="insertSchedule" useGeneratedKeys="true" keyProperty="scheduleId">
-        insert into Schedule(startTime, endTime, leader, location, content
+        insert into Schedule(isCompany, startTime, endTime, leader, location, content
         <if test="remark != null">,remark</if>
         <if test="type != null">,type</if>)
-        values(#{startTime}, #{endTime}, #{leader}, #{location}, #{content}
+        values(#{isCompany}, #{startTime}, #{endTime}, #{leader}, #{location}, #{content}
         <if test="remark != null">, #{remark}</if>
         <if test="type != null">, #{type}</if>)
     </insert>
@@ -31,11 +31,11 @@
     </select>
 
     <select id="findReadyToStartSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{startTime} >= startTime and startTime >= #{nowTime}
+        select * from Schedule where #{startTime} >= startTime and startTime > #{nowTime}
     </select>
 
     <select id="findReadyToEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{endTime} >= endTime
+        select * from Schedule where #{endTime} >= endTime and endTime > #{nowTime}
     </select>
 
     <select id="findDoingSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
@@ -43,6 +43,6 @@
     </select>
 
     <select id="findEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{nowTime} >= endTime and endTime >= #{nowTime}
+        select * from Schedule where #{nowTime} >= endTime
     </select>
 </mapper>

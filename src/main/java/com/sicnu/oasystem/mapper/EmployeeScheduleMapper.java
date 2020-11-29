@@ -38,6 +38,16 @@ public interface EmployeeScheduleMapper {
     int deleteEmployeeScheduleByEmployeeScheduleId(int employeeScheduleId);
 
     /**
+     * @MethodName deleteEmployeeScheduleByScheduleId
+     * @param scheduleId 日程id
+     * @Description 删除日程信息by日程id
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/11/29
+     */
+    int deleteEmployeeScheduleByScheduleId(int scheduleId);
+
+    /**
      * @MethodName findEmployeeScheduleByScheduleId
      * @param scheduleId 日程id
      * @Description 查找某一日程下的所有职工
@@ -58,7 +68,7 @@ public interface EmployeeScheduleMapper {
     List<Integer> findEmployeeScheduleByEmployeeId(int employeeId);
 
     /**
-     * @MethodName findEmployeeScheduleByEmployeeIdAndSchedule
+     * @MethodName findEmployeeScheduleByEmployeeIdAndScheduleId
      * @param employeeId 职工id
      * @param scheduleId 日程id
      * @Description 查询职工日程by职工id和日程id
@@ -66,7 +76,7 @@ public interface EmployeeScheduleMapper {
      * @Return com.sicnu.oasystem.pojo.EmployeeSchedule
      * @LastChangeDate 2020/11/20
      */
-    EmployeeSchedule findEmployeeScheduleByEmployeeIdAndSchedule(int employeeId, int scheduleId);
+    EmployeeSchedule findEmployeeScheduleByEmployeeIdAndScheduleId(int employeeId, int scheduleId);
 
     /**
      * @MethodName findEmployeeScheduleByEmployeeScheduleId

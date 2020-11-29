@@ -5,6 +5,7 @@ import com.sicnu.oasystem.pojo.Schedule;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @InterfaceName ScheduleService
@@ -19,33 +20,46 @@ public interface ScheduleService {
     /**
      * @MethodName insertSchedule
      * @param schedule 日程
-     * @Description 添加日程
+     * @Description 添加个人日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/17
      */
-    BackFrontMessage insertSchedule(Schedule schedule);
+    BackFrontMessage insertSelfSchedule(Schedule schedule);
+
+    /**
+     * @MethodName insertCompanySchedule
+     * @param schedule 公司日程
+     * @param joiner 参与者列表
+     * @Description 添加公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/26
+     */
+    BackFrontMessage insertCompanySchedule(Schedule schedule, String joiner);
 
     /**
      * @MethodName updateScheduleByScheduleId
      * @param schedule 日程
      * @param scheduleId 日程id
+     * @param isCompany 是否为公司日程
      * @Description 修改日程信息by日程id
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/17
      */
-    BackFrontMessage updateScheduleByScheduleId(Schedule schedule, int scheduleId);
+    BackFrontMessage updateScheduleByScheduleId(Schedule schedule, int scheduleId, int isCompany);
 
     /**
      * @MethodName deleteScheduleByScheduleId
      * @param scheduleId 日程id
+     * @param isCompany 是否是公司日程
      * @Description 删除日程by日程id
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/17
      */
-    BackFrontMessage deleteScheduleByScheduleId(int scheduleId);
+    BackFrontMessage deleteScheduleByScheduleId(int scheduleId, int isCompany);
 
     /**
      * @MethodName findScheduleByScheduleId

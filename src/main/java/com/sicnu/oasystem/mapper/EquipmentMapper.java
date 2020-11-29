@@ -28,7 +28,7 @@ public interface EquipmentMapper {
      * @LastChangeDate 2020/11/16
      */
     Integer addEquipment(Integer equipmentclassifyId,
-                         Integer meetingroomId,String name,Integer ismaintain,Integer num);
+                         Integer meetingroomId,String name,Integer ismaintain,String remark,Integer num);
 
     /**
      * @MethodName updateEquipment
@@ -44,7 +44,7 @@ public interface EquipmentMapper {
      * @LastChangeDate 2020/11/16
      */
     Integer updateEquipment(Integer equipmentId,Integer equipmentclassifyId,
-                            Integer newmeetingroomId,String newname,Integer newismaintain,Integer newnum);
+                            Integer newmeetingroomId,String newname,Integer newismaintain,String remark,Integer newnum);
 
     Integer updateeq(Integer equipmentId);
     /**

@@ -24,19 +24,19 @@ public class EmployeeScheduleController {
     @Resource
     EmployeeScheduleService employeeScheduleService;
 
-    /**
-     * @MethodName insertEmployeeSchedule
-     * @param employeeSchedule 职工日程
-     * @Description 添加职工日程映射关系
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    @ApiOperation(value = "添加职工日程映射关系")
-    @PostMapping("/EmployeeSchedule")
-    public BackFrontMessage insertEmployeeSchedule(@RequestBody EmployeeSchedule employeeSchedule){
-        return employeeScheduleService.insertEmployeeSchedule(employeeSchedule);
-    }
+//    /**
+//     * @MethodName insertEmployeeSchedule
+//     * @param employeeSchedule 职工日程
+//     * @Description 添加职工日程映射关系
+//     * @Author Waynejwei
+//     * @Return com.sicnu.oasystem.json.BackFrontMessage
+//     * @LastChangeDate 2020/11/20
+//     */
+//    @ApiOperation(value = "添加职工日程映射关系")
+//    @PostMapping("/EmployeeSchedule")
+//    public BackFrontMessage insertEmployeeSchedule(@RequestBody EmployeeSchedule employeeSchedule){
+//        return employeeScheduleService.insertEmployeeSchedule(employeeSchedule);
+//    }
 
     /**
      * @MethodName deleteEmployeeScheduleByEmployeeScheduleId

@@ -3,12 +3,12 @@
 <mapper namespace="com.sicnu.oasystem.mapper.EquipmentMapper">
 
     <insert id="addEquipment">
-        insert into equipment(equipmentClassifyId,meetingRoomId,name,isMaintain,num)
-        values (#{param1},#{param2},#{param3},#{param4},#{param5})
+        insert into equipment(equipmentClassifyId,meetingRoomId,name,isMaintain,remark,num)
+        values (#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
     </insert>
 
     <update id="updateEquipment">
-        update equipment set equipmentId=#{equipmentId}
+        update equipment set equipmentId=#{equipmentId} ,remark=#{param6}
         <if test="param2 !=null">
             ,equipmentclassifyId=#{param2}
         </if>
@@ -21,8 +21,8 @@
         <if test="param5 !=null">
             ,isMaintain=#{param5}
         </if>
-        <if test="param6!=null and param6>=0">
-            ,num=#{param6}
+        <if test="param7!=null and param7>=0">
+            ,num=#{param7}
         </if>
         where equipmentId=#{equipmentId}
     </update>

@@ -35,8 +35,7 @@ public class EquipmentServicelpml implements EquipmentService {
 
     @Override
     public BackFrontMessage addEquipment(Integer equipmentclassifyId,
-                                         Integer meetingroomId, String name, Integer ismaintain, int num) {
-        //Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
+                                         Integer meetingroomId, String name, Integer ismaintain, String remark,int num) {
         if(equipmentclassifyId==null || equipmentclassifyId<=0 ||meetingroomId==null ||meetingroomId<=0 || name==null){
             return new BackFrontMessage(500,"添加设备失败",null);
         }
@@ -48,7 +47,7 @@ public class EquipmentServicelpml implements EquipmentService {
                 return new BackFrontMessage(500,"设备已存在",null);
             }
             int res=0;
-            res=equipmentMapper.addEquipment(equipmentclassifyId,meetingroomId,name,ismaintain,num);
+            res=equipmentMapper.addEquipment(equipmentclassifyId,meetingroomId,name,ismaintain,remark,num);
             if(res==0){
                 return new BackFrontMessage(500,"添加设备失败",null);
             }else{
@@ -70,10 +69,14 @@ public class EquipmentServicelpml implements EquipmentService {
 
     @Override
     public BackFrontMessage updateEquipment(Integer equipmentId, Integer equipmentclassifyId,
-                                            Integer newmeetingroomId, String newname, Integer newismaintain, Integer newnum) {
+                                            Integer newmeetingroomId, String newname, Integer newismaintain, String remark,Integer newnum) {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
         EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
         MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(newmeetingroomId);
+        System.out.println(meetingRoom);
+        System.out.println(equipmentClassify);
+        System.out.println(equipmentclassifyId);
+        System.out.println(newmeetingroomId);
         if (equipment==null){
             return new BackFrontMessage(500,"更新的设备不存在",null);
         }else if(equipmentClassify==null ||meetingRoom==null){
@@ -81,8 +84,7 @@ public class EquipmentServicelpml implements EquipmentService {
         }
         else {
             int res=0;
-//            res=equipmentMapper.updateeq(equipmentId);
-            res=equipmentMapper.updateEquipment(equipmentId,equipmentclassifyId,newmeetingroomId,newname,newismaintain,newnum);
+            res=equipmentMapper.updateEquipment(equipmentId,equipmentclassifyId,newmeetingroomId,newname,newismaintain,remark,newnum);
             if(res==0){
                 return new BackFrontMessage(500,"更新设备失败",null);
             }else {

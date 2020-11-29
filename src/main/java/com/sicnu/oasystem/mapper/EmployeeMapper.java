@@ -123,13 +123,13 @@ public interface EmployeeMapper {
      * @MethodName findRoleByEmployeeIdAndRoleId
      * @param employeeId
      * @param roleId
-     * @Description 判断用户是否拥有该角色
+     * @Description 判断用户是否拥有该角色,返回数量
      * @Author JohnTang
      * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
      * @LastChangeDate 2020/11/18
      * @return
      */
-    Role findRoleByEmployeeIdAndRoleId(Integer employeeId, Integer roleId);
+    Integer findRoleByEmployeeIdAndRoleId(Integer employeeId, Integer roleId);
 
     /**
      * @MethodName findEmployeesByRoleId

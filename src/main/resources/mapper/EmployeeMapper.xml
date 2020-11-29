@@ -119,8 +119,8 @@
         </if>
     </select>
 
-    <select id="findRoleByEmployeeIdAndRoleId" resultType="com.sicnu.oasystem.pojo.Role">
-        select * from role where employeeId = #{employeeId} and roleId = #{roleId}
+    <select id="findRoleByEmployeeIdAndRoleId" resultType="java.lang.Integer">
+        select count(*) from employeerole where employeeId = #{employeeId} and roleId = #{roleId}
     </select>
 
     <select id="findEmployeesByRoleId" resultType="com.sicnu.oasystem.pojo.Employee">
