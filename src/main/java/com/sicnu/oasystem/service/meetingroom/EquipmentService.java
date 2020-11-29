@@ -29,7 +29,7 @@ public interface EquipmentService {
      * @LastChangeDate 2020/11/16
      */
     BackFrontMessage addEquipment(Integer equipmentclassifyId,
-                                  Integer meetingroomId, String name, Integer ismaintain, int num);
+                                  Integer meetingroomId, String name, Integer ismaintain, String remark,int num);
 
     /**
      * @MethodName updateEquipment
@@ -45,7 +45,7 @@ public interface EquipmentService {
      * @LastChangeDate 2020/11/16
      */
     BackFrontMessage updateEquipment(Integer equipmentId,Integer equipmentclassifyId,
-                            Integer newmeetingroomId,String newname,Integer newismaintain,Integer newnum);
+                            Integer newmeetingroomId,String newname,Integer newismaintain,String remark,Integer newnum);
 
     /**
      * @MethodName deleteEuipment
