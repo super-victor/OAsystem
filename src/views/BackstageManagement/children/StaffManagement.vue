@@ -5,12 +5,15 @@
       <div class="titleBox">
         <p class="title">部门结构</p>
       </div>
-      <ul class="departmentList">
+      <ul class="departmentList" v-loading="loading">
+        <li class="listItem" :class="{currentlistItem:currentDepartmentName=='all'}" @click="switchDepartmentToAll">全部</li>
         <li
         class="listItem"
         v-for="item in departmentArr"
-        :key="item.id">{{item.name}}</li>
-        <el-button round style="width:90%;margin:20px 0 0 5%;" icon="el-icon-setting">部门管理</el-button>
+        :class="{currentlistItem:currentDepartmentName==item.name}"
+        @click="switchDepartment(item)"
+        :key="item.departmentId">{{item.name}}</li>
+        <el-button round style="width:90%;margin:20px 0 0 5%;" icon="el-icon-setting" @click="$router.push('department')">部门管理</el-button>
       </ul>
     </div>
     <div class="roleBox">
@@ -24,7 +27,7 @@
         </div>
         <div class="importBox">
             <el-button style="width:150px;height:40px;" icon="el-icon-folder-opened">批量添加用户</el-button>
-            <el-button style="width:120px;height:40px;margin-left:20px;" type="primary" icon="el-icon-plus">添加用户</el-button>
+            <el-button style="width:120px;height:40px;margin-left:20px;" type="primary" icon="el-icon-plus" @click="openAddStaff=true">添加用户</el-button>
         </div>
       </div>
       <div class="bottomBox">
@@ -133,7 +136,7 @@
                   trigger="hover"
                   :open-delay="500"
                   content="删除用户账号">
-                <el-button slot="reference" type="danger" icon="el-icon-delete" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
+                <el-button slot="reference" type="danger" icon="el-icon-delete" circle @click="deleteStaff(scope.row)"></el-button>
                 </el-popover>
               </template>
             </el-table-column>
@@ -154,49 +157,34 @@
       </div>
     </div>
     <staff-role :userObj="userObj" :dialogVisible="openStaffRole" @closeStaffRole="closeStaffRole"></staff-role>
+    <add-staff :departmentArr="departmentArr" :addStaffDialogVisible="openAddStaff" @closeAddStaff="closeAddStaff"></add-staff>
   </div>
 </template>
 
 <script>
 import StaffRole from '../component/StaffRole';
 import backstageAPI from '@/service/BackstageManagement';
+import AddStaff from '../component/AddStaff';
 import {mapMutations} from 'vuex';
   export default {
     components: {
-      StaffRole
+      StaffRole,
+      AddStaff
     },
     data() {
       return {
         openStaffRole:false,
+        openAddStaff:false,
         userObj:{},
-        departmentArr:[
-          {
-            id:1,
-            name:'研发'
-          },
-          {
-            id:2,
-            name:'测试'
-          },
-          {
-            id:3,
-            name:'运维'
-          },
-          {
-            id:4,
-            name:'产品'
-          },
-          {
-            id:5,
-            name:'项目'
-          }
-        ],
+        departmentArr:[],
         searchText:'',
         currentSize:10,
         currentPage:1,
         currentTableData:[],
         tableData: [],
         loading:true,
+        staffArr:[],
+        currentDepartmentName:''
       };
     },
     computed: {
@@ -242,6 +230,10 @@ import {mapMutations} from 'vuex';
       closeStaffRole(flag){
         this.openStaffRole = flag;
       },
+      closeAddStaff(flag,update){
+        this.openAddStaff= flag;
+        if(update) this.getStaff();
+      },
       lockOrUnlockEmployee(obj){
         let {employeeId,accountNonLocked} = obj;
         let flag;
@@ -272,19 +264,70 @@ import {mapMutations} from 'vuex';
             this.$message.error('解锁失败');
           }
         })
+      },
+      deleteStaff(obj){
+        this.$confirm('此用户将被永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          backstageAPI.deleteRole({
+            employeeId:obj.employeeId
+          })
+          .then(res=>{
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            this.getStaff();
+          })
+          .catch(err=>{
+            this.$message.error('删除失败');
+          })
+        }).catch(() => {});
+      },
+      getDepartmentAndStaff(){
+        this.loading = true;
+        backstageAPI.getAllDepartment()
+        .then(res=>{
+          this.departmentArr = res.object;
+          this.getStaff();
+        })
+        .catch(err=>{
+          this.$message.error('部门信息获取失败');
+        })
+      },
+      getStaff(){
+        this.loading = true;
+        backstageAPI.getUserList()
+        .then(res=>{
+          this.staffArr = res.object;
+          this.filterStaff();
+          this.loading = false;
+        })
+        .catch(err=>{
+          this.$message.error('员工信息获取失败');
+        })
+      },
+      switchDepartment(item){
+        this.$router.push(item.name);
+        this.currentDepartmentName = item.name;
+        this.filterStaff();
+      },
+      switchDepartmentToAll(){
+        this.$router.push('all');
+        this.currentDepartmentName = 'all';
+        this.filterStaff();
+      },
+      filterStaff(){
+        let filterArr = this.currentDepartmentName=='all' ? this.staffArr : this.staffArr.filter(item=>item.departmentName==this.currentDepartmentName);
+        this.tableData = filterArr;
+        this.currentTableData = filterArr;
       }
     },
     created() {
-
-      backstageAPI.getUserList()
-      .then(res=>{
-        this.tableData = res.object;
-        this.currentTableData = res.object;
-        this.loading = false;
-      })
-      .catch(err=>{
-        this.$message.error('员工信息获取失败');
-      })
+      this.currentDepartmentName = this.$route.params.department;
+      this.getDepartmentAndStaff();
     },
     mounted() {
       this.UPDATE_BREAD(['后台管理','员工管理']);
@@ -303,6 +346,7 @@ import {mapMutations} from 'vuex';
     .departmentBox{
       height: 100%;
       width: 3.2rem;
+      min-width: 170px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -330,7 +374,7 @@ import {mapMutations} from 'vuex';
         }
       }
       .departmentList{
-        height: 545px;
+        height: 600px;
         width: 100%;
         border-radius: @smallBorderRadius;
         background-color: @white;
@@ -352,6 +396,10 @@ import {mapMutations} from 'vuex';
         }
         .listItem:hover{
           background-color: @background;
+        }
+        .currentlistItem{
+          background-color: @correlateColor1 !important;
+          color: @white;
         }
       }
     }
@@ -380,7 +428,7 @@ import {mapMutations} from 'vuex';
         }
       }
       .bottomBox{
-        height: 545px;
+        height: 600px;
         width: 100%;
         border-radius: @smallBorderRadius;
         background-color: @white;

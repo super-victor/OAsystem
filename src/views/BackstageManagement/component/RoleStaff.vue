@@ -2,7 +2,9 @@
 <template>
   <div>
     <el-dialog
-      :title="userInfo.name"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :title="userInfo.roleName"
       :visible.sync="dialogVisible"
       width="15rem"
       @open="openBox"
@@ -13,70 +15,72 @@
             <p class="title">部门结构</p>
           </div>
           <ul class="departmentList">
+            <li class="listItem" :class="{currentlistItem:currentDepartmentName=='all'}" @click="switchDepartmentToAll">全部</li>
             <li
             class="listItem"
             v-for="item in departmentArr"
-            :key="item.id">{{item.name}}</li>
+            :class="{currentlistItem:currentDepartmentName==item.name}"
+            @click="switchDepartment(item)"
+            :key="item.departmentId">{{item.name}}</li>
           </ul>
         </div>
-        <div class="checkBox">
-          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="userInfo.checkedRole" @change="handleCheckedCitiesChange">
-            <el-checkbox v-for="item in userInfo.role" :label="item" :key="item">{{item}}</el-checkbox>
-          </el-checkbox-group>
+        <div class="checkBox" v-loading="loading" :class="{checkBoxNodata:userInfo.role.length==0}">
+          <div v-if="userInfo.role.length==0" class="noDataBox">
+            <img src="@/assets/noData.png" alt="">
+            <p class="noData">暂无职员</p>
+          </div>
+          <div v-else>
+            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+            <div style="margin: 15px 0;"></div>
+            <el-checkbox-group v-model="userInfo.checkedRole" @change="handleCheckedCitiesChange">
+              <el-checkbox v-for="item in userInfo.role" :label="item" :key="item">{{item}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
         </div>    
       </div>
       <span slot="footer">
-        <el-button @click="closeStaffRole">取 消</el-button>
-        <el-button type="primary" @click="closeStaffRole">保 存</el-button>
+        <el-button @click="closeRoleStaff" :disabled="loading">取 消</el-button>
+        <el-button type="primary" @click="update" :disabled="loading" :loading="buttonLoading">保 存</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  
+  import backstageAPI from '@/service/BackstageManagement';
   export default {
     props:{
       dialogVisible:{
         type:Boolean,
         required:true,
         default:false
+      },
+      roleObj:{
+        type:Object,
+        required:true
+      },
+      departmentArr:{
+        type:Array,
+        required:true
       }
     },
     components: {},
     data() {
       return {
+        loading:true,
+        buttonLoading:false,
         checkAll: false,
         isIndeterminate: true,
         userInfo:{
-          name:'管理员',
-          role:['管理员','主管','经理','普通员工','管理员dw','主管23','经理12','普通员工dw'],
-          checkedRole:['主管','普通员工']
+          id:'',
+          roleName:'',
+          role:[],
+          checkedRole:[]
         },
-        departmentArr:[
-          {
-            id:1,
-            name:'研发'
-          },
-          {
-            id:2,
-            name:'测试'
-          },
-          {
-            id:3,
-            name:'运维'
-          },
-          {
-            id:4,
-            name:'产品'
-          },
-          {
-            id:5,
-            name:'项目'
-          }
-        ],
+        modifiableEmployeeList:[],//所有拥有该角色的非管理员员工列表
+        employeeList:[],//所有非管理员员工列表
+        authorityList:[],//角色权限列表
+        currentDepartmentName:'all'
       };
     },
     computed: {},
@@ -86,16 +90,87 @@
         this.$emit('closeRoleStaff',false);
       },
       openBox(){
-        console.log("123");
+        this.loading = true;
+        this.currentDepartmentName = 'all';
+        let {roleId,name,employeeList} = this.roleObj;
+        this.userInfo.id = roleId;
+        this.userInfo.roleName = name;
+        backstageAPI.getUserList()
+        .then(res=>{
+          this.employeeList = res.object;
+          let employeeIdArr = [];
+          for(let item of this.employeeList){
+            employeeIdArr.push(item.employeeId);
+          }
+          this.modifiableEmployeeList = employeeList.filter(item=>employeeIdArr.includes(item.employeeId));
+          let authorityEmployeeIdArr = [];
+          for(let item of this.modifiableEmployeeList){
+            authorityEmployeeIdArr.push(item.employeeId);
+          }
+          this.authorityList = this.employeeList.map(item=>{
+            return authorityEmployeeIdArr.includes(item.employeeId)? {...item,flag:true} : {...item,flag:false} ;
+          })
+          this.createSelection();
+          this.loading = false;
+        })
+        .catch(err=>{
+          this.$message.error('加载失败');
+        })
       },
       handleCheckAllChange(val) {
         this.userInfo.checkedRole = val ? this.userInfo.role : [];
         this.isIndeterminate = false;
+        for(let item of this.authorityList){
+          if(this.currentDepartmentName=='all' || item.departmentName==this.currentDepartmentName){
+            item.flag = val;
+          }
+        }
       },
       handleCheckedCitiesChange(value) {
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.userInfo.role.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.userInfo.role.length;
+        for(let item of this.authorityList){
+          if(this.currentDepartmentName=='all' || item.departmentName==this.currentDepartmentName){
+            item.flag = value.includes(item.name);
+          }
+        }
+      },
+      switchDepartment(item){
+        this.currentDepartmentName = item.name;
+        this.createSelection();
+      },
+      switchDepartmentToAll(){
+        this.currentDepartmentName = 'all';
+        this.createSelection();
+      },
+      createSelection(){
+        let list = this.currentDepartmentName=='all' ? this.authorityList : this.authorityList.filter(item=>item.departmentName==this.currentDepartmentName);
+        this.userInfo.role = list.map(item=>item.name);
+        this.userInfo.checkedRole = list.filter(item=>item.flag==true).map(item=>item.name);
+      },
+      update(){
+        this.buttonLoading = true;
+        let list = [];
+        for(let item of this.authorityList){
+          if(item.flag) list.push(item.employeeId);
+        }
+        backstageAPI.updateRoleEmployeelist({
+          roleId:this.userInfo.id,
+          employeeIdList:list
+        })
+        .then(res=>{
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          });
+          this.buttonLoading = false;
+          this.$emit('closeRoleStaff',false,1);
+        })
+        .catch(err=>{
+          this.$message.error('修改失败');
+          this.buttonLoading = false;
+        })
       }
     },
     created() {
@@ -166,11 +241,34 @@
         .listItem:hover{
           background-color: #EFEFEE;
         }
+        .currentlistItem{
+          background-color: #9CB7F0 !important;
+          color: white;
+        }
       }
     }
     .checkBox{
       min-height: 300px;
       width: calc(100% - 5rem);
+      .noDataBox{
+        height: 200px;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .noData{
+          height: 20px;
+          width: 100px;
+          text-align: center;
+          color: #C0C4CC;
+        }
+      }
+    }
+    .checkBoxNodata{
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     ::v-deep .el-checkbox-group{
       margin-top: 30px;

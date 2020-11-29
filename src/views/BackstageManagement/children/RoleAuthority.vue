@@ -2,7 +2,11 @@
 <template>
   <div class='RoleAuthority'>
     <div class="topBox">
-      <el-button style="height:40px;width:120px;" type="primary" icon="el-icon-document-checked">保存信息</el-button>
+      <div class="titleBox">
+        <p class="back" @click="back"><i class="el-icon-arrow-left" style="margin-right:5px;"></i>返回</p>
+        <p class="title"><i class="el-icon-user" style="margin-right:5px;"></i>{{roleName}}</p>
+      </div>
+      <el-button :loading="buttonLoading" style="height:40px;width:120px;" type="primary" icon="el-icon-document-checked" @click="saveInfo">保存信息</el-button>
     </div>
     <div class="bottomBox">
       <el-table
@@ -10,7 +14,7 @@
         border
         :span-method="arraySpanMethod"
         :data="authorityArr"
-        max-height="550"
+        max-height="600"
         style="width: 100%;">
         <!-- <el-table-column label="路由" align="center"> -->
           <el-table-column
@@ -45,15 +49,19 @@
 </template>
 
 <script>
+  import backstageAPI from '@/service/BackstageManagement';
   import {mapState,mapMutations} from 'vuex';
   export default {
     components: {},
     data() {
       return {
+        roleId:'',
+        roleName:'',
         checkAll: false,
         isIndeterminate: true,
         authorityArr:[],
-        loading:true
+        loading:true,
+        buttonLoading:false
       };
     },
     computed: {
@@ -72,7 +80,6 @@
         obj.isIndeterminate = checkedCount > 0 && checkedCount < obj.totalAuthority.length;
       },
       arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-        // console.log(this.authorityArr[rowIndex].status=='single' &&columnIndex)
         if(this.authorityArr[rowIndex].status=='single'){
           if(columnIndex ===0){
             return [1,2];
@@ -100,49 +107,57 @@
           }
         }
       },
+      back(){
+        this.$router.push('role');
+      },
+      saveInfo(){
+        this.buttonLoading = true;
+        let codeNameList = [];
+        for(let item of this.authorityArr){
+          codeNameList = [...codeNameList,...item.currentAuthority];
+        }
+        backstageAPI.putRoleMenulist({
+          roleId:this.roleId,
+          codeList:codeNameList
+        })
+        .then(res=>{
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+          this.buttonLoading = false;
+        })
+        .catch(err=>{
+          this.$message.error('修改失败');
+          this.buttonLoading = false;
+        })
+      }
     },
     created() {
+      let {id,name} = this.$route.query;
+      this.roleId = id;
+      this.roleName = name;
       let authorityArr = [];//提供表格所需格式数组
-
-      let showArr = ['0001','0003','000F','000I','0005','0007'];
-      let showObj = {};
-      for(let i=0;i<showArr.length;i++){
-        showObj[showArr[i]]=true;
-      }
-      let authority = this.userAuthority;
-      for(let firstPage in authority){
-        if(!authority[firstPage].children){
-          let theRoles = authority[firstPage].role;
-          let authorityItemObj = {};
-          let totalAuthority = [];
-          let currentAuthority = [];
-          authorityItemObj['role'] = theRoles;
-          authorityItemObj['name'] = authority[firstPage].name;
-          authorityItemObj['childrenName'] = null;
-          authorityItemObj['status'] = "single";
-          authorityItemObj['isIndeterminate'] = true;
-          authorityItemObj['checkAll'] = false;
-          for(let role in theRoles){
-            let theRole = theRoles[role];
-            totalAuthority.push(role.toString());
-            if(showObj[role]==true){
-              currentAuthority.push(role.toString());
-            }
-          }
-          authorityItemObj['totalAuthority'] = totalAuthority;
-          authorityItemObj['currentAuthority'] = currentAuthority;
-          authorityArr.push(authorityItemObj);
-        }else{
-          let theChildren = authority[firstPage].children;
-          for(let secondPage in theChildren){
-            let theRoles = theChildren[secondPage].role;
+      backstageAPI.getMenuCodeList({
+        roleId:this.roleId
+      })
+      .then(res=>{
+        let showArr = res.object;
+        let showObj = {};
+        for(let i=0;i<showArr.length;i++){
+          showObj[showArr[i]]=true;
+        }
+        let authority = this.userAuthority;
+        for(let firstPage in authority){
+          if(!authority[firstPage].children){
+            let theRoles = authority[firstPage].role;
             let authorityItemObj = {};
             let totalAuthority = [];
             let currentAuthority = [];
             authorityItemObj['role'] = theRoles;
             authorityItemObj['name'] = authority[firstPage].name;
-            authorityItemObj['childrenName'] = theChildren[secondPage].name;
-            authorityItemObj['status'] = "multiple";
+            authorityItemObj['childrenName'] = null;
+            authorityItemObj['status'] = "single";
             authorityItemObj['isIndeterminate'] = true;
             authorityItemObj['checkAll'] = false;
             for(let role in theRoles){
@@ -155,17 +170,41 @@
             authorityItemObj['totalAuthority'] = totalAuthority;
             authorityItemObj['currentAuthority'] = currentAuthority;
             authorityArr.push(authorityItemObj);
+          }else{
+            let theChildren = authority[firstPage].children;
+            for(let secondPage in theChildren){
+              let theRoles = theChildren[secondPage].role;
+              let authorityItemObj = {};
+              let totalAuthority = [];
+              let currentAuthority = [];
+              authorityItemObj['role'] = theRoles;
+              authorityItemObj['name'] = authority[firstPage].name;
+              authorityItemObj['childrenName'] = theChildren[secondPage].name;
+              authorityItemObj['status'] = "multiple";
+              authorityItemObj['isIndeterminate'] = true;
+              authorityItemObj['checkAll'] = false;
+              for(let role in theRoles){
+                let theRole = theRoles[role];
+                totalAuthority.push(role.toString());
+                if(showObj[role]==true){
+                  currentAuthority.push(role.toString());
+                }
+              }
+              authorityItemObj['totalAuthority'] = totalAuthority;
+              authorityItemObj['currentAuthority'] = currentAuthority;
+              authorityArr.push(authorityItemObj);
+            }
           }
         }
-      }
-      console.log(authorityArr)
-      this.authorityArr = authorityArr;
+        this.authorityArr = authorityArr;
+        this.loading=false;
+      })
+      .catch(err=>{
+        this.$message.error('获取角色功能失败');
+      })
     },
     mounted() {
       this.UPDATE_BREAD(['后台管理','角色功能维护']);
-      setTimeout(()=>{
-        this.loading=false;
-      },1000)
     }
   }
 </script>
@@ -182,10 +221,33 @@
       height: 50px;
       width: 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+        .titleBox{
+          height: 100%;
+          width: 400px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .back{
+            height: 70%;
+            width: 70px;
+            font-size: 17px;
+            line-height: 35px;
+            color:#606266;
+            cursor: pointer;
+          }
+          .title{
+            height: 100%;
+            width: 320px;
+            font-size: 20px;
+            line-height: 50px;
+            color: #303133;
+            font-weight: bolder;
+          }
+        }
     }
     .bottomBox{
-      height: 550px;
+      height: 600px;
       width: 100%;
       background-color: white;
       border-radius: 2px;

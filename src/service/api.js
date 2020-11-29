@@ -75,6 +75,9 @@ export const NetworkRequest = options => {
       if(headers.token) Store.commit('GET_TOKEN',headers.token);
       return response;
     },error=>{
+      if(throttle){
+        loading.close();
+      }
       return Promise.reject(error);
     })
 
@@ -82,6 +85,12 @@ export const NetworkRequest = options => {
       axios.get(url,{
         params:data
       }).then(res=>{
+        resolve(res);
+      }).catch(err=>{
+        reject(err);
+      })
+    }else if(method=='delete'){
+      axios.delete(url,{params:data}).then(res=>{
         resolve(res);
       }).catch(err=>{
         reject(err);
@@ -97,7 +106,7 @@ export const NetworkRequest = options => {
       }else if(postHeaderType==='application/json'){
         params = data;
       }else{
-        params = qs.stringify(data);
+        params = qs.stringify(data,{indices:false});
       }
       if(method=='post'){
         axios.post(url,params).then(res=>{
@@ -105,14 +114,8 @@ export const NetworkRequest = options => {
         }).catch(err=>{
           reject(err);
         })
-      }else if(method=='put'){
-        axios.put(url,params).then(res=>{
-          resolve(res);
-        }).catch(err=>{
-          reject(err);
-        })
       }else{
-        axios.delete(url,params).then(res=>{
+        axios.put(url,params).then(res=>{
           resolve(res);
         }).catch(err=>{
           reject(err);

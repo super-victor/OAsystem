@@ -2,12 +2,14 @@
 <template>
   <div>
     <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       :title="name"
       :visible.sync="dialogVisible"
       width="10rem"
       @open="openBox"
       :before-close="closeStaffRole">
-      <div class="StaffRole">
+      <div class="StaffRole" v-loading="loading">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="userInfo.checkedRole" @change="handleCheckedCitiesChange">
@@ -15,8 +17,8 @@
         </el-checkbox-group>
       </div>
       <span slot="footer">
-        <el-button @click="closeStaffRole">取 消</el-button>
-        <el-button type="primary" @click="closeStaffRole">保 存</el-button>
+        <el-button @click="closeStaffRole" :disabled="loading">取 消</el-button>
+        <el-button type="primary" @click="updateStaffRole" :disabled="loading" :loading="buttonLoading">保 存</el-button>
       </span>
     </el-dialog>
   </div>
@@ -39,14 +41,17 @@ import backstageAPI from '@/service/BackstageManagement';
     components: {},
     data() {
       return {
+        buttonLoading:false,
+        loading:true,
         id:'',
         name:'',
         checkAll: false,
         isIndeterminate: true,
         userInfo:{
-          role:['管理员','主管','经理','普通员工','产品经理'],
-          checkedRole:['主管','普通员工']
-        }
+          role:[],
+          checkedRole:[]
+        },
+        roleList:[]
       };
     },
     computed: {},
@@ -56,16 +61,48 @@ import backstageAPI from '@/service/BackstageManagement';
         this.$emit('closeStaffRole',false);
       },
       openBox(){
+        this.loading = true;
         this.id = this.userObj.employeeId;
         this.name = this.userObj.name;
-        backstageAPI.employeeRolelist({
+        backstageAPI.getEmployeeRolelist({
           employeeId:this.id
         })
         .then(res=>{
-          console.log(res);
+          let {role,checkedRole} = this.userInfo;
+          role.splice(0,role.length);
+          checkedRole.splice(0,checkedRole.length);
+          let {haveRoleList,nothaveRoleList} = res.object;
+          this.roleList = nothaveRoleList;
+          for(let item of haveRoleList){
+            checkedRole.push(item.name);
+          }
+          for(let item of nothaveRoleList){
+            role.push(item.name);
+          }
+          setTimeout(() => {
+            this.loading = false;
+          }, 500);
         })
         .catch(err=>{
           console.log(err);
+        })
+      },
+      updateStaffRole(){
+        this.buttonLoading = true;
+        backstageAPI.putEmployeeRolelist({
+          employeeId:this.id,
+          roleIdList:this.roleList.filter(item=>this.userInfo.checkedRole.includes(item.name)).map(item=>item.roleId)
+        })
+        .then(res=>{
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+          this.buttonLoading = false;
+        })
+        .catch(err=>{
+          this.$message.error('修改失败');
+          this.buttonLoading = false;
         })
       },
       handleCheckAllChange(val) {
