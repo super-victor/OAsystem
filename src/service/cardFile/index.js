@@ -9,7 +9,7 @@ export default{
  // 获取名片夹分类
   async requestCardFile(){
     const res = await NetworkRequest({
-      url:'/CardHolderClassfy',
+      url:'/CardHolder',
       method:'get',
       postHeaderType:'multipart/form-data',
       throttle:true,
