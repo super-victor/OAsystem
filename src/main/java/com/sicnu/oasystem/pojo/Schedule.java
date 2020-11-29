@@ -21,6 +21,8 @@ import java.util.*;
 public class Schedule {
     @JsonIgnore
     private Integer scheduleId;
+    @JsonIgnore
+    private Integer isCompany;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date startTime;
     @JsonFormat(pattern="yyyy-MM-dd")

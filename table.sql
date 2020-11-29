@@ -59,17 +59,18 @@ create table Employee (
 
 -- 日程表
 create table Schedule (
-    scheduleId int auto_increment comment '日程id',
-    startTime timestamp not null comment '日程开始时间',
-    endTime timestamp not null comment '日程结束时间',
-    leader int not null comment '负责人的id',
-    location varchar(50) not null comment '日程地点',
-    content text not null comment '日程内容',
-    remark text comment '日程备注',
-    type int comment '日程类型',
-    createTime timestamp default current_timestamp comment '字段创建时间',
-    updateTime timestamp on update current_timestamp comment '字段修改时间',
-    constraint pk_Schedule_scheduleId primary key(scheduleId)
+      scheduleId int auto_increment comment '日程id',
+      isCompany int not null comment '是否为公司日程',
+      startTime timestamp not null comment '日程开始时间',
+      endTime timestamp not null comment '日程结束时间',
+      leader int not null comment '负责人的id',
+      location varchar(50) not null comment '日程地点',
+      content text not null comment '日程内容',
+      remark text comment '日程备注',
+      type int comment '日程类型',
+      createTime timestamp default current_timestamp comment '字段创建时间',
+      updateTime timestamp on update current_timestamp comment '字段修改时间',
+      constraint pk_Schedule_scheduleId primary key(scheduleId)
 );
 
 
@@ -353,18 +354,23 @@ INSERT INTO `equipmentclassify` VALUES ('2', '电脑', '2020-11-15 22:20:17', nu
 
 INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-11-15 22:36:04', '2020-11-15 23:05:24');
 
-insert into schedule (startTime, endTime, leader, location, content, remark, type) values ('2020-11-20 20:57:59', '2020-11-22 15:20:49', 1, '实验室', '完成日程接口', '日程接口以及职工日程接口', 4);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-11-27 11:03:22', '2020-11-27 21:00:22', 2, '实验室', '我的日程', '完成日程接口', 4);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-11-29 16:38:01', '2020-11-30 04:38:01', 4, '公司', '协同办公平台', '完成项目50%功能', 4);
 
-insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (2, 1, 1);
-insert into employeeschedule(employeeScheduleId, scheduleId, employeeId) values (3, 1, 2);
+insert into employeeschedule(scheduleId, employeeId) values (1, 2);
+insert into employeeschedule(scheduleId, employeeId) values (5, 2);
+insert into employeeschedule(scheduleId, employeeId) values (5, 3);
+insert into employeeschedule(scheduleId, employeeId) values (5, 4);
 
 insert into role (name) values ('ROLE_User');
 insert into role (name) values ('ROLE_Admin');
 insert into role (name) values ('ROLE_Censor');
+insert into role (name) values ('ROLE_Schedule');
 
 insert into employeerole (employeeId, roleId) values (1, 1);
 insert into employeerole (employeeId, roleId) values (1, 2);
 insert into employeerole (employeeId, roleId) values (1, 3);
+insert into employeerole (employeeId, roleId) values (1, 4);
 insert into employeerole (employeeId, roleId) values (2, 1);
 insert into employeerole (employeeId, roleId) values (2, 2);
 
@@ -398,3 +404,24 @@ insert into menu (name, url, code) values ('获取所有的会议室信息','GET
 insert into menu (name, url, code) values ('添加会议室','POST /addMeetingRoom','000T');
 insert into menu (name, url, code) values ('删除会议室','DELETE /deleteMeetingRoom','000V');
 insert into menu (name, url, code) values ('查找会议室','GET /getMeetingRoomById','000W');
+
+insert into menu (name, url ,code) values ('添加公司日程','POST /CompanySchedule','000X');
+insert into menu (name, url ,code) values ('修改公司日程信息','POST /CompanySchedule','000Y');
+insert into menu (name, url ,code) values ('删除公司日程','DELETE /CompanySchedule','000Z');
+insert into menu (name, url ,code) values ('添加个人日程','DELETE /SelfSchedule','0011');
+insert into menu (name, url ,code) values ('修改个人日程信息','POST /SelfSchedule','0012');
+insert into menu (name, url ,code) values ('删除个人日程','DELETE /SelfSchedule','0013');
+
+insert into rolemenu (menuId, roleId) values (32, 4);
+insert into rolemenu (menuId, roleId) values (35, 4);
+
+insert into message (employeeId, type, title, content, sendTime, isRead) values (1, 1, '发文审核', '标题为xxx的发文审核已通过', '2020-11-25 22:38:12', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (3, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (4, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '有关''公司日程''内容的公司日程已经结束', '2020-11-29 16:35:25', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (3, 2, '公司日程', '有关''公司日程''内容的公司日程已经结束', '2020-11-29 16:35:25', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (4, 2, '公司日程', '有关''公司日程''内容的公司日程已经结束', '2020-11-29 16:35:25', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-29 16:39:43', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (3, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-29 16:39:43', 0);
+insert into message (employeeId, type, title, content, sendTime, isRead) values (4, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-29 16:39:43', 0);

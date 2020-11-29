@@ -3,8 +3,6 @@ package com.sicnu.oasystem.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.net.Inet4Address;
 import java.util.Date;
 
 /**
