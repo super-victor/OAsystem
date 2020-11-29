@@ -16,7 +16,7 @@ import RoleAuthority from '@/views/BackstageManagement/children/RoleAuthority'
         component: DepartmentManagement
       },
       {
-        path: 'staff',
+        path: 'staff/:department',
         name: 'StaffManagement',
         component: StaffManagement
       },

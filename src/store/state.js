@@ -459,7 +459,7 @@ export default{
         },
         {
           name:'员工管理',
-          route:'staff'
+          route:'staff/all'
         },
         {
           name:'角色管理',

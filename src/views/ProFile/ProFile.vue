@@ -55,7 +55,7 @@
             <el-input v-model="formData.homeAddress"></el-input>
           </el-form-item>
           <el-form-item label="电话号码" prop="phone" style="height:60px;width:500px">
-            <el-input v-model="formData.phone"></el-input>
+            <el-input v-model.number="formData.phone"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="button" @click="submitForm('formData')">保存信息</el-button>
