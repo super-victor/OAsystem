@@ -10,7 +10,6 @@ export default{
     const res = await NetworkRequest({
       url:'/findScheduleByScheduleId',
       method:'get',
-      postHeaderType:'multipart/form-data',
       throttle:true,
       data
     })

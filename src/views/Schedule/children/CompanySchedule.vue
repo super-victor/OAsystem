@@ -1,9 +1,7 @@
 !<!-- ChildrenComponent1 -->
 <template>
-  <div class='mine'>
-    <div class="center">
-      <Calendar />
-    </div>
+  <div class='CompanySchedule'>
+    <Calendar/>
   </div>
 </template>
 
@@ -16,6 +14,7 @@ import Calendar from '../component/Calendar';
     },
     data() {
       return {
+        
       };
     },
     computed: {
@@ -25,22 +24,20 @@ import Calendar from '../component/Calendar';
       ...mapMutations(['UPDATE_BREAD']),
     },
     created() {
+      
     },
     mounted() {
-      this.UPDATE_BREAD(['日程安排','我的日程']);
+      this.UPDATE_BREAD(['日程安排','公司日程']);
     }
   }
 </script>
 <style lang='less' scoped>
 @import '../../../style/common.less';
-  .mine{
-    height: 600px;
-    width: 85%;
-    .center {
-      margin-left: 10%;
-      padding: 50px;
-      border-radius: @baseBorderRadius;
-      background-color: @white;
-    }
+  .CompanySchedule{
+    font-size: 0.2rem;
+    padding: 50px;
+    width: 80%;
+    background-color: @white;
+    border: @baseBorderRadius;
   }
 </style>

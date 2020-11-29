@@ -10,11 +10,9 @@
   import {mapMutations} from 'vuex';
   export default {
     components: {
-      TheBreadcrumb
     },
     data() {
       return {
-        breadcrumbItem:[]
       };
     },
     computed: {},
@@ -25,9 +23,6 @@
       ]),
       mainBoxClick(){
         this.MAIN_CLICK(false);
-      },
-      childrenBread(textArr){
-        this.breadcrumbItem = ['名片夹',...textArr];
       }
     },
     created() {

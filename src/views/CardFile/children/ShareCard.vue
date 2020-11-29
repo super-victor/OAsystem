@@ -69,10 +69,10 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import {mapMutations,mapState} from 'vuex';
   import cardFileAPI from '@/service/cardFile'
-  import Card from './Card'
-  import CardFileList from './CardFileList'
+  import Card from '../component/Card'
+  import CardFileList from '../component/CardFileList'
   export default {
     components: {
       Card,
@@ -80,7 +80,6 @@
     },
     data() {
       return {
-        classifyNames: [], // 名片夹分类名
         newName: '', // 添加的名片夹分类名
         optionType: '', // 选择新建操作的类型
         dialogVisible1: false, // 添加分类
@@ -103,23 +102,23 @@
       };
     },
     computed: {
-      ...mapState['userInfo']
     },
     watch: {
     },
     methods: {
+      ...mapMutations(['UPDATE_BREAD']),
       // 新建或导入名片
       submitOption(type) {
         if(type === '新建') {
           cardFileAPI.addCard({
-            name: '',
-            phone: '',
-            email: '',
-            company: '',
-            department: '',
-            position: '',
-            address: '',
-            employeeId:1
+            name: this.newInfo.name,
+            phone: this.newInfo.phone,
+            email: this.newInfo.email,
+            company: this.newInfo.company,
+            department: this.newInfo.department,
+            position: this.newInfo.position,
+            address: this.newInfo.address,
+            cardHolderId:this.fileId
           })
           .then(res=>{
             this.innerVisible = false;
@@ -130,8 +129,8 @@
           })
         } else {
           cardFileAPI.importCard({
-            cardHolderClassfyId:this.select.id,
-            cardHolderId: this.cardCode
+            cardHolderId:this.fileId,
+            cardId: this.cardCode
           })
           .then(res=>{
             this.innerVisible = false;
@@ -149,10 +148,9 @@
       }
     },
     created() {
-      // console.log(this.classifyNames);
     },
     mounted() {
-      this.$emit('childrenBread',['共享名片']);
+      this.UPDATE_BREAD(['名片夹','共享名片']);
     }
   }
 </script>
@@ -173,10 +171,12 @@
         margin-left: 0.5rem;
       }
       .tip_info {
-        padding-left: 1rem;
+        margin-left: 0.5rem;
+        padding: 0.5rem;
         width: 9rem;
-        font-size: 0.35rem;
+        font-size: 0.3rem;
         color: @warningColor;
+        background-color: @white;
       }
       .new_card {
         padding: 0.5rem;

@@ -32,7 +32,7 @@
         <img src="@/assets/Card/Edit.png" alt="" @click="dialogVisible2 = true">
       </div>
       <div class="right_i delete" title="删除">
-        <img src="@/assets/Card/Delete.png" alt="" @click="shareCard">
+        <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardHolderId)">
       </div>
     </div>
     <!-- dialog-获取名片id -->
@@ -49,15 +49,24 @@
       <el-input v-model="newInfo.email" placeholder="请输入邮箱"></el-input>
       <el-input v-model="newInfo.address" placeholder="请输入地址"></el-input>
       <p>修改分类</p>
+      <el-select v-model="newHolder" placeholder="请选择新的分类">
+          <el-option
+          v-for="item in holders"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+          </el-option>
+      </el-select>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="updateCard()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import cardFileAPI from '@/service/cardFile'
   export default {
     props: ["msg"],
     data() {
@@ -67,21 +76,75 @@
         // 编辑名片信息
         newInfo:{
           name: this.msg.name,
-          tel: this.msg.phone,
+          phone: this.msg.phone,
           email: this.msg.email,
           company: this.msg.company,
           department: this.msg.department,
           position: this.msg.position,
           address: this.msg.address,
         },
+        holders: [], // 名片夹
+        newHolder: '', // 新的分类id
       };
     },
     computed: {},
     watch: {},
     methods: {
-      shareCard() {}
+      // 删除card
+      deleteCard(id) {
+        cardFileAPI.deleteCard({
+          cardId:id
+        })
+        .then(res=>{
+          this.$message.success('添加成功');
+          this.fileName.push({name: this.newName});
+          this.newName = '';
+          this.dialogVisible1 = false;
+        })
+        .catch(err=>{
+          // console.log(err);
+          this.$message.error('发生错误');
+        })
+      },
+      // 修改card
+      updateCard() {
+        cardFileAPI.updateCard({
+            cardId:this.msg.cardId,
+            name: this.newInfo.name,
+            phone: this.newInfo.phone,
+            email: this.newInfo.email,
+            company: this.newInfo.company,
+            department: this.newInfo.department,
+            position: this.newInfo.position,
+            address: this.newInfo.address,
+            cardHolderId:this.newHolder
+        })
+        .then(res=>{
+          this.$message.success('修改成功');
+          this.dialogVisible2 = false;
+        })
+        .catch(err=>{
+          console.log(err);
+          this.$message.error('发生错误');
+        })
+      },
+      // 请求名片夹分类
+      getFileName () {
+        cardFileAPI.requestCardFile()
+        .then(res=>{
+          res.object.forEach(element => {
+            this.holders.push({'name':element.name, 'id':element.cardHolderId});
+          });
+        })
+        .catch(err=>{
+          // console.log(err);
+          this.$message.error('获取失败');
+        })
+      },
     },
     created() {
+      this.getFileName();
+      this.newHolder = this.msg.cardHolderId;
     },
     mounted() {
       

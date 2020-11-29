@@ -103,6 +103,11 @@ export default{
     })
     return res.data;
   },
+  /**
+   * @param {Object} data 名片夹分类   address:地址，cardHolderId:,company:公司，department：部门，name：姓名，phone：电话，position：职位，email：邮箱
+   * 
+   * @returns {Promise<Object>} 
+  */
   // 修改名片
   async updateCard(data) {
     const res = await NetworkRequest({
@@ -113,6 +118,11 @@ export default{
     })
     return res.data;
   },
+  /**
+   * @param {Object} data 名片夹分类   cardId:名片id
+   * 
+   * @returns {Promise<Object>} 
+  */
   // 删除名片
   async deleteCard(data) {
     const res = await NetworkRequest({
@@ -122,16 +132,6 @@ export default{
       data
     })
     return res.data;
-  },
-  // 请求自己的名片
-  async requestAnimationFrame() {
-      const res = await NetworkRequest({
-          url: '',
-          method: 'get',
-          postHeaderType:'multipart/form-data',
-          throttle:true
-      })
-      return res.data;
   },
   async test() {
     const res = await NetworkRequest({

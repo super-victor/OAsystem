@@ -1,7 +1,8 @@
 import Schedule from '@/views/Schedule/Schedule'
 import Mine from '@/views/Schedule/children/Mine'
-import Inquiry from '@/views/Schedule/children/Inquiry'
-import Create from '@/views/Schedule/children/Create'
+import CompanySchedule from '@/views/Schedule/children/CompanySchedule'
+import CreateSchedule from '@/views/Schedule/children/CreateSchedule'
+import ManagementSchedule from '@/views/Schedule/children/ManagementSchedule'
 
   export default {
     path: '/schedule',
@@ -15,14 +16,19 @@ import Create from '@/views/Schedule/children/Create'
             component:Mine
         },
         {
-            path:'inquiry',
-            name:'Inquiry',
-            component:Inquiry
+            path:'company-schedule',
+            name:'CompanySchedule',
+            component:CompanySchedule
         },
         {
-            path:'create',
+            path:'create-schedule',
             name:'CreateSchedule',
-            component:Create
+            component:CreateSchedule
+        },
+        {
+            path:'management-schedule',
+            name:'ManagementSchedule',
+            component:ManagementSchedule
         }
     ]
   }

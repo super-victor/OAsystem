@@ -111,7 +111,6 @@
       },
     // 获取名片
     getCard(id) {
-      console.log(id);
       cardFileAPI.requestCard({
         cardHolderId: id
       })
@@ -120,7 +119,7 @@
         this.$emit('getCard',{info:res.object,fileId:this.select.id});
       })
       .catch(err=>{
-        console.log(err);
+        // console.log(err);
         this.$message.error('获取失败');
       })
     },
@@ -131,7 +130,7 @@
         })
         .then(res=>{
           this.$message.success('添加成功');
-          this.fileName.push({name: this.newName});
+          this.fileName.push({name: this.newName,id:res.object});
           this.newName = '';
           this.dialogVisible1 = false;
         })
@@ -166,6 +165,8 @@
         })
         .then(res=>{
           this.$message.success('删除成功');
+          this.fileName=[];
+          this.getFileName();
           this.dialogVisible3 = false;
         })
         .catch(err=>{
@@ -187,7 +188,7 @@
   .cardFileList{
     .row {
     padding: 0.15rem;
-    font-size: 0.22rem;
+    font-size: 0.2rem;
     cursor: pointer;
     img {
         width: 0.3rem;

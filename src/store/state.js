@@ -318,16 +318,16 @@ export default{
           route:'mine'
         },
         {
-          name:'查找日程',
-          route:'inquiry'
+          name:'公司日程',
+          route:'company-schedule'
         },
         {
-          name:'日程待办',
-          route:'agent'
+          name:'新建日程',
+          route:'create-schedule'
         },
         {
-          name:'创建日程',
-          route:'create'
+          name:'日程管理',
+          route:'management-schedule'
         }
       ]
     },
