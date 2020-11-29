@@ -10,6 +10,10 @@
         delete from EmployeeSchedule where employeeScheduleId = #{employeeScheduleId}
     </delete>
 
+    <delete id="deleteEmployeeScheduleByScheduleId">
+        delete from EmployeeSchedule where scheduleId = #{scheduleId}
+    </delete>
+
     <select id="findEmployeeScheduleByScheduleId" resultType="java.lang.Integer">
         select employeeId from EmployeeSchedule where scheduleId = #{scheduleId}
     </select>
@@ -18,7 +22,7 @@
         select scheduleId from EmployeeSchedule where employeeId = #{employeeId}
     </select>
 
-    <select id="findEmployeeScheduleByEmployeeIdAndSchedule"
+    <select id="findEmployeeScheduleByEmployeeIdAndScheduleId"
             resultType="com.sicnu.oasystem.pojo.EmployeeSchedule">
         select * from EmployeeSchedule where employeeId = #{employeeId} and scheduleId = #{scheduleId}
     </select>

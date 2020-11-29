@@ -20,6 +20,7 @@ public class Role implements GrantedAuthority {
     // 权限列表
     // 1 ROLE_Admin
     // 2 ROLE_Censor
+    // 3 ROLE_Schedule
     private Integer roleId;
     private String name;
     // 拥有此角色的用户列表

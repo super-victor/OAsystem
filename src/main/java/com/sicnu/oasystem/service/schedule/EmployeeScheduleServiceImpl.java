@@ -40,7 +40,7 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
     @Override
     public BackFrontMessage insertEmployeeSchedule(EmployeeSchedule employeeSchedule) {
         //添加时查询此人是否已经加入此日程
-        EmployeeSchedule em = employeeScheduleMapper.findEmployeeScheduleByEmployeeIdAndSchedule(
+        EmployeeSchedule em = employeeScheduleMapper.findEmployeeScheduleByEmployeeIdAndScheduleId(
                 employeeSchedule.getEmployeeId(),
                 employeeSchedule.getScheduleId());
         if (em != null) {
@@ -150,7 +150,7 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
         for (Schedule schedule : scheduleList) {
             //查询此日程职工是否加入
             EmployeeSchedule employeeSchedule = employeeScheduleMapper
-                    .findEmployeeScheduleByEmployeeIdAndSchedule(currentEmployee.getEmployeeId(), schedule.getScheduleId());
+                    .findEmployeeScheduleByEmployeeIdAndScheduleId(currentEmployee.getEmployeeId(), schedule.getScheduleId());
             if (employeeSchedule != null) {
                 list.add(schedule);
             }

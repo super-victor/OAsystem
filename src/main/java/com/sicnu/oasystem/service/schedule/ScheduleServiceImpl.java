@@ -1,19 +1,23 @@
 package com.sicnu.oasystem.service.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.mapper.EmployeeScheduleMapper;
 import com.sicnu.oasystem.mapper.ScheduleMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
+import com.sicnu.oasystem.pojo.Role;
 import com.sicnu.oasystem.pojo.Schedule;
-import com.sicnu.oasystem.service.schedule.ScheduleService;
+import com.sicnu.oasystem.service.message.MessageService;
+import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 /**
  * @ClassName ScheduleServiceImpl
@@ -33,11 +37,18 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Resource
     EmployeeScheduleMapper employeeScheduleMapper;
 
+    @Resource
+    MessageService messageService;
+
+    @Resource
+    EmployeeMapper employeeMapper;
+
 
     @Override
-    public BackFrontMessage insertSchedule(Schedule schedule) {
+    public BackFrontMessage insertSelfSchedule(Schedule schedule) {
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         schedule.setLeader(currentEmployee.getEmployeeId());
+        schedule.setIsCompany(0);
         if (isTimeCorrect(schedule)){
             return new BackFrontMessage(500,"结束时间小于开始时间",null);
         }
@@ -46,32 +57,81 @@ public class ScheduleServiceImpl implements ScheduleService {
             return new BackFrontMessage(500,"添加日程失败",null);
         }else{
             EmployeeSchedule employeeSchedule = new EmployeeSchedule();
-            employeeSchedule.setEmployeeId(currentEmployee.getEmployeeId());
             employeeSchedule.setScheduleId(schedule.getScheduleId());
+            employeeSchedule.setEmployeeId(currentEmployee.getEmployeeId());
             int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
             if (result2 <= 0){
-                return new BackFrontMessage(500,"添加职工日程映射失败",schedule.getScheduleId());
-            }else{
-                return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
+                return new BackFrontMessage(500,"添加员工日程映射失败",schedule.getScheduleId());
             }
+            return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
         }
     }
 
     @Override
-    public BackFrontMessage updateScheduleByScheduleId(Schedule schedule, int scheduleId) {
-        schedule.setScheduleId(scheduleId);
-        if (dontHasRoleToManageSchedule(scheduleId)){
-            return new BackFrontMessage(500,"您不是日程领导者无权修改此日程",null);
+    public BackFrontMessage insertCompanySchedule(Schedule schedule, String joiner) {
+        //TODO:转列表前，判断string是否符合格式(如：1,2,3,4)
+        String[] joiners = joiner.split(",");
+        List<String> joinerList = new ArrayList<>();
+        //检查是否有重复的参与者。若有重复的，则自动去重。
+        for (String join : joiners) {
+            if (!joinerList.contains(join)) {
+                joinerList.add(join);
+            }
         }
+        //判断设置的leader在不在参与人列表里面。如果不在则自动在列表中添加上
+        if (!joinerList.contains(String.valueOf(schedule.getLeader()))) {
+            joinerList.add(String.valueOf(schedule.getLeader()));
+        }
+        schedule.setIsCompany(1);
         if (isTimeCorrect(schedule)){
             return new BackFrontMessage(500,"结束时间小于开始时间",null);
         }
-        if (schedule.getLeader() != null){
-            EmployeeSchedule es = employeeScheduleMapper
-                    .findEmployeeScheduleByEmployeeIdAndSchedule(schedule.getLeader(), scheduleId);
-            if (es == null) {
-                return new BackFrontMessage(500,"此人没有加入到日程中，不能转交管理权！",null);
+        int result = scheduleMapper.insertSchedule(schedule);
+        if (result <= 0){
+            return new BackFrontMessage(500,"添加日程失败",null);
+        }else{
+            //将参与者加入职工日程对应表
+            for (String employeeId : joinerList) {
+                EmployeeSchedule employeeSchedule = new EmployeeSchedule();
+                //TODO:转int前需要判断是否可以转换为int
+                employeeSchedule.setEmployeeId(Integer.parseInt(employeeId));
+                employeeSchedule.setScheduleId(schedule.getScheduleId());
+                int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
+                if (result2 <= 0){
+                    return new BackFrontMessage(500,"添加职工日程映射失败",schedule.getScheduleId());
+                }
+                //发送消息
+                messageService.send(Integer.parseInt(employeeId), DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "您收到了一个关于'"+schedule.getContent()+"'的公司日程");
             }
+            return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
+        }
+    }
+
+    @Override
+    public BackFrontMessage updateScheduleByScheduleId(Schedule schedule, int scheduleId, int isCompany) {
+        schedule.setScheduleId(scheduleId);
+        if (isTimeCorrect(schedule)){
+            return new BackFrontMessage(500,"结束时间小于开始时间",null);
+        }
+        //如果是公司日程，则需要判断权限
+        if (isCompany == 1){
+            //判断是否为日程管理员或者日程领导者。若都不是，则无权修改
+            int employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
+            int isScheduleManager = employeeMapper.findRoleByEmployeeIdAndRoleId(
+                    employeeId, 4);
+            if (isScheduleManager == 0 && dontHasRoleToManageSchedule(scheduleId)){
+                return new BackFrontMessage(500,"您无权修改公司日程",null);
+            }
+            if (schedule.getLeader() != null){
+                EmployeeSchedule es = employeeScheduleMapper
+                        .findEmployeeScheduleByEmployeeIdAndScheduleId(schedule.getLeader(), scheduleId);
+                if (es == null) {
+                    return new BackFrontMessage(500,"此人没有加入到日程中，不能转交管理权！",null);
+                }
+            }
+        }
+        if (isCompany == 0){
+            schedule.setLeader(null);  //个人日程的领导者默认为自己，不能修改
         }
         int result = scheduleMapper.updateScheduleByScheduleId(schedule);
         if (result <= 0){
@@ -82,15 +142,35 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public BackFrontMessage deleteScheduleByScheduleId(int scheduleId) {
-        if (dontHasRoleToManageSchedule(scheduleId)){
-            return new BackFrontMessage(500,"您不是日程领导者无权删除此日程",null);
+    public BackFrontMessage deleteScheduleByScheduleId(int scheduleId, int isCompany) {
+        //个人日程只有自己才可以删除，公司日程管理员才可以删除
+        if (isCompany == 0){
+            EmployeeSchedule employeeSchedule = employeeScheduleMapper.findEmployeeScheduleByEmployeeIdAndScheduleId(
+                    UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),
+                    scheduleId);
+            if (employeeSchedule == null){
+                return new BackFrontMessage(500,"无权删除此日程",null);
+            }
         }
-        int result = scheduleMapper.deleteScheduleByScheduleId(scheduleId);
-        if (result <= 0){
-            return new BackFrontMessage(500,"删除日程失败",null);
+        List<Integer> employeeIdList = employeeScheduleMapper.findEmployeeScheduleByScheduleId(scheduleId);
+        //删除日程前，需要删除职工日程映射
+        int result1 = employeeScheduleMapper.deleteEmployeeScheduleByScheduleId(scheduleId);
+        if (result1 <= 0){
+            return new BackFrontMessage(500,"删除职工日程映射失败",null);
         }else{
-            return new BackFrontMessage(200,"删除日程成功",null);
+            if (isCompany == 1){
+                //删除职工日程后，通知职工日程结束
+                for (Integer employeeId : employeeIdList) {
+                    String content = scheduleMapper.findScheduleByScheduleId(scheduleId).getContent();
+                    messageService.send(employeeId, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "有关'"+content+"'内容的公司日程已经结束");
+                }
+            }
+            int result2 = scheduleMapper.deleteScheduleByScheduleId(scheduleId);
+            if (result2 <= 0){
+                return new BackFrontMessage(500,"删除日程失败",null);
+            }else{
+                return new BackFrontMessage(200,"删除日程成功",null);
+            }
         }
     }
 
@@ -172,5 +252,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return true;
             }
         }
+
+        //TODO:查找公司日程、个人日程
     }
 }

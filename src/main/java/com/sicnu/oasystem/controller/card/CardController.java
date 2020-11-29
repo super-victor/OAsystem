@@ -17,14 +17,6 @@ import javax.annotation.Resource;
  * @Version v1.0
  */
 
-/**
- * TODO:名片对应
- * 1.修改名片夹表，添加名片夹拥有者，分类。
- * 2.删除职工名片夹对应表。
- * 3.分享名片夹即复制一条数据(分类不能对应)。
- * 4.一个用户不能拥有另一个用户多个名片夹(也即是(employeeId和ownerId)不能重复)
- * 5.名片夹类名CardHolder、名片类名Card
- */
 @Api(tags = "名片管理")
 @RestController
 public class CardController {
