@@ -4,29 +4,26 @@
     <el-breadcrumb class="box" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item
-      v-for="(item,index) in breadcrumbItem"
+      v-for="(item,index) in currentBread"
       :key="index">{{item}}</el-breadcrumb-item>
     </el-breadcrumb>
-    <p class="text">{{breadcrumbItem[breadcrumbItem.length-1]}}</p>
   </div>
 </template>
 
 <script>
-  
+  import {mapState} from 'vuex';
   export default {
     components: {},
     props:{
-      breadcrumbItem:{
-        type:Array,
-        required:true
-      }
     },
     data() {
       return {
         
       };
     },
-    computed: {},
+    computed: {
+      ...mapState(['currentBread'])
+    },
     watch: {},
     methods: {
       
@@ -42,21 +39,15 @@
 <style lang='less' scoped>
 @import '../../style/common.less';
   .breadcrumb{
-    height: 90px;
+    height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
     .box{
       height: 40px;
       width: 100%;
       display: flex;
       align-items: center;
-    }
-    .text{
-      height: 35px;
-      width: 100%;
-      font-size: 22px;
-      line-height: 35px;
-      font-weight: 450;
-      color: @regularText;
     }
   }
 </style>

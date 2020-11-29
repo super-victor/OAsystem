@@ -38,7 +38,7 @@
       }
     },
     methods: {
-      ...mapMutations(['GET_USERINFO']),
+      ...mapMutations(['GET_USERINFO','UPDATE_PAGE_PERMISSIONS']),
       login(){
         if(!this.flag){
           this.$message({
@@ -57,11 +57,20 @@
             message: '登录成功',
             type: 'success'
           });
+          this.pagePermissions(res.object.usershow);
           this.$router.replace(this.$route.query.redirect);
         })
         .catch(err=>{
           this.$message.error('登录失败');
         })
+      },
+      //初始化页面权限
+      pagePermissions(showArr){
+        let showObj = {};
+        for(let i=0;i<showArr.length;i++){
+          showObj[showArr[i]]=true;
+        }
+        this.UPDATE_PAGE_PERMISSIONS(showObj);
       }
     },
     created() {

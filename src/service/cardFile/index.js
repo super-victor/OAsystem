@@ -11,7 +11,7 @@ export default{
     const res = await NetworkRequest({
       url:'/CardHolder',
       method:'get',
-      postHeaderType:'multipart/form-data',
+      postHeaderType:'application/x-www-form-urlencoded',
       throttle:true,
     })
     return res.data;
@@ -24,9 +24,8 @@ export default{
   // 添加名片夹分类
   async addCardFile(data) {
     const res = await NetworkRequest({
-        url:'/CardHolderClassfy',
+        url:'/CardHolder',
         method:'post',
-        postHeaderType:'multipart/form-data',
         throttle:true,
         data
     });
@@ -34,15 +33,14 @@ export default{
   },
 
   /**
-   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   * @param {Object} data 名片夹分类   cardHolderId :分类id
    * @returns {Promise<Object>} 
   */
   // 删除名片夹分类
   async deleteCardFile(data) {
     const res = await NetworkRequest({
-        url:'/CardHolderClassfy',
+        url:'/CardHolder',
         method:'delete',
-        postHeaderType:'www-form',
         throttle:true,
         data
     });
@@ -50,16 +48,15 @@ export default{
   },
 
   /**
-   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   * @param {Object} data 名片夹分类   cardHolderId :分类id
    *                                   name:分类名
    * @returns {Promise<Object>} 
   */
   // 修改名片夹分类
   async updateCardFile(data) {
     const res = await NetworkRequest({
-        url:'/CardHolderClassfy',
+        url:'/CardHolder',
         method:'put',
-        postHeaderType:'www-form',
         throttle:true,
         data
     });
@@ -67,13 +64,13 @@ export default{
   },
 
   /**
-   * @param {Object} data 名片夹分类   cardHolderClassfyId :分类id
+   * @param {Object} data 名片夹分类   cardHolderId :分类id
    * @returns {Promise<Object>} 
   */
   // 请求某一名片夹分类的所有名片
   async requestCard(data) {
     const res = await NetworkRequest({
-        url:'/findEmployeeCardHolderByCardHolderClassfyId',
+        url:'/Card',
         method:'get',
         postHeaderType:'multipart/form-data',
         throttle:true,
@@ -81,12 +78,16 @@ export default{
       })
       return res.data;
   },
+  /**
+   * @param {Object} data 名片夹分类   address:地址，cardHolderId:,company:公司，department：部门，name：姓名，phone：电话，position：职位，email：邮箱
+   * 
+   * @returns {Promise<Object>} 
+  */
   // 新建名片
   async addCard(data) {
     const res = await NetworkRequest({
-      url:'/CardHolder',
+      url:'/Card',
       method:'post',
-      postHeaderType:'application/json;charset=UTF-8',
       throttle:true,
       data
     })
@@ -95,9 +96,28 @@ export default{
   // 导入名片
   async importCard(data) {
     const res = await NetworkRequest({
-      url:'/EmployeeCardHolder',
+      url:'/shareCard',
       method:'post',
-      postHeaderType:'multipart/form-data',
+      throttle:true,
+      data
+    })
+    return res.data;
+  },
+  // 修改名片
+  async updateCard(data) {
+    const res = await NetworkRequest({
+      url:'/Card',
+      method:'put',
+      throttle:true,
+      data
+    })
+    return res.data;
+  },
+  // 删除名片
+  async deleteCard(data) {
+    const res = await NetworkRequest({
+      url:'/Card',
+      method:'delete',
       throttle:true,
       data
     })

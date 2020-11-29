@@ -34,7 +34,13 @@ import {
   Row,
   Col,
   Tabs,
-  TabPane
+  TabPane,
+  Tag,
+  Popover,
+  MessageBox,
+  Checkbox,
+  CheckboxGroup,
+  Loading,
 } from 'element-ui';
 
 Vue.use(Container);
@@ -70,10 +76,22 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Tabs);
 Vue.use(TabPane);
+Vue.use(Tag);
+Vue.use(Popover);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
 
 Vue.config.productionTip = false
 
 Vue.prototype.$message = Message;
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
 
 new Vue({
   router,

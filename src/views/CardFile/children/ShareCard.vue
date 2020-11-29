@@ -9,7 +9,7 @@
           <el-button class="submit" round type="primary" @click="dialogVisible2 = true">+ 新建名片</el-button>
         </div>
         <div class="left">
-          <CardFileList :fileName=classifyNames @getCard="getCard"></CardFileList>
+          <CardFileList @getCard="getCard"></CardFileList>
         </div>
       </div>
       <!-- 中间名片部分 -->
@@ -105,21 +105,9 @@
     computed: {
       ...mapState['userInfo']
     },
-    watch: {},
+    watch: {
+    },
     methods: {
-      // 请求名片夹分类
-      getFileName () {
-        cardFileAPI.requestCardFile()
-        .then(res=>{
-          res.object.forEach(element => {
-            this.classifyNames.push({'name':element.name, 'id':element.cardHolderClassfyId});
-          });
-        })
-        .catch(err=>{
-          // console.log(err);
-          this.$message.error('获取失败');
-        })
-      },
       // 新建或导入名片
       submitOption(type) {
         if(type === '新建') {
@@ -136,7 +124,6 @@
           .then(res=>{
             this.innerVisible = false;
             this.dialogVisible2 = false;
-            console.log('a');
           })
           .catch(err=>{
             this.$message.error('新建失败');
@@ -149,7 +136,6 @@
           .then(res=>{
             this.innerVisible = false;
             this.dialogVisible2 = false;
-            console.log('a');
           })
           .catch(err=>{
             this.$message.error('导入失败');
@@ -163,8 +149,7 @@
       }
     },
     created() {
-      this.getFileName();
-      console.log(this.classifyNames);
+      // console.log(this.classifyNames);
     },
     mounted() {
       this.$emit('childrenBread',['共享名片']);

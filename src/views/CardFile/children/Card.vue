@@ -3,24 +3,24 @@
     <div class="box flex-col">
       <div class="inner">
         <div class="row flex-row">
-          <p class="name">{{ msg.cardHolder.name }}</p>
-          <p class="depart">/{{ msg.cardHolderdepartment }}{{ msg.cardHolder.position }}</p>
+          <p class="name">{{ msg.name }}</p>
+          <p class="depart">/{{ msg.department }}{{ msg.position }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">电话</p>
-          <p class="llabel">{{ msg.cardHolder.phone }}</p>
+          <p class="llabel">{{ msg.phone }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">邮箱</p>
-          <p class="llabel">{{ msg.cardHolder.email }}</p>
+          <p class="llabel">{{ msg.email }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">公司</p>
-          <p class="llabel">{{ msg.cardHolder.company }}</p>
+          <p class="llabel">{{ msg.company }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">地址</p>
-          <p class="llabel">{{ msg.cardHolder.address }}</p>
+          <p class="llabel">{{ msg.address }}</p>
         </div>
       </div>
     </div>
@@ -66,13 +66,13 @@
         dialogVisible2: false, // 修改dialog
         // 编辑名片信息
         newInfo:{
-          name: this.msg.cardHolder.name,
-          tel: this.msg.cardHolder.phone,
-          email: this.msg.cardHolder.email,
-          company: this.msg.cardHolder.company,
-          department: this.msg.cardHolder.department,
-          position: this.msg.cardHolder.position,
-          address: this.msg.cardHolder.address,
+          name: this.msg.name,
+          tel: this.msg.phone,
+          email: this.msg.email,
+          company: this.msg.company,
+          department: this.msg.department,
+          position: this.msg.position,
+          address: this.msg.address,
         },
       };
     },

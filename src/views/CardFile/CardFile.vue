@@ -1,8 +1,7 @@
 !<!-- SendFileManagement -->
 <template>
-  <div class='SendFileManagement' @click="mainBoxClick">
-    <the-breadcrumb :breadcrumbItem="breadcrumbItem"></the-breadcrumb>
-    <router-view @childrenBread="childrenBread" />
+  <div class='SendFileManagement' @click="mainBoxClick"> 
+    <router-view />
   </div>
 </template>
 

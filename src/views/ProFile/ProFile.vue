@@ -1,13 +1,12 @@
 <!-- ProFile -->
 <template>
   <div class='ProFile' @click="mainBoxClick">
-    <the-breadcrumb :breadcrumbItem="breadcrumbItem"></the-breadcrumb>
     <div class="profileBox">
       <div class="imgBox">
         <img src="@/assets/user.png" alt="" class="img">
         <div class="nameBox">
-          <p class="name">{{userInfo.name}}</p>
-          <p class="position">{{userInfo.position}}</p>
+          <p class="name">{{userInfo.userinfo.name}}</p>
+          <p class="position">{{userInfo.userinfo.position}}</p>
         </div>
       </div>
       <div class="infoBox">
@@ -15,37 +14,37 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="用户名" style="height:60px;width:280px">
-                <el-input :disabled="true" :value="userInfo.username"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.username"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="姓名" style="height:60px;width:280px">
-                <el-input :disabled="true" :value="userInfo.name"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="性别" style="height:60px;width:150px">
-                <el-input :disabled="true" :value="userInfo.sex=='f'?'女':'男'"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.sex=='f'?'女':'男'"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="身份证号" style="height:60px;width:280px">
-                <el-input :disabled="true" :value="userInfo.idCard"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.idCard"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="生日" style="height:60px;width:260px">
-                <el-input :disabled="true" :value="userInfo.birthday"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.birthday"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="部门" style="height:60px;width:260px">
-                <el-input :disabled="true" :value="userInfo.department"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.department"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="职位" style="height:80px;width:260px">
-                <el-input :disabled="true" :value="userInfo.position"></el-input>
+                <el-input :disabled="true" :value="userInfo.userinfo.position"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -68,16 +67,13 @@
 </template>
 
 <script>
-  import TheBreadcrumb from '@/components/control/TheBreadcrumb';
   import {mapState,mapMutations} from 'vuex';
   import loginAPI from '@/service/userLogin';
   export default {
     components: {
-      TheBreadcrumb
     },
     data() {
       return {
-        breadcrumbItem:['个人信息'],
         formData:{},
         rules:{
           email:[
@@ -103,7 +99,8 @@
     methods: {
       ...mapMutations([
         'MAIN_CLICK',
-        'UPDATE_USERINFO'
+        'UPDATE_USERINFO',
+        'UPDATE_BREAD'
       ]),
       mainBoxClick(){
         this.MAIN_CLICK(false);
@@ -112,7 +109,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let {email,homeAddress,phone} = this.formData;
-            if(email == this.userInfo.email && homeAddress == this.userInfo.homeAddress && phone == this.userInfo.phone){
+            if(email == this.userInfo.userinfo.email && homeAddress == this.userInfo.userinfo.homeAddress && phone == this.userInfo.userinfo.phone){
               this.$message({
                 message: '您尚未对信息进行修改',
                 type: 'warning'
@@ -142,7 +139,7 @@
       }
     },
     created() {
-      let {email,homeAddress,phone} = this .userInfo;
+      let {email,homeAddress,phone} = this.userInfo.userinfo;
       this.formData = {
         email,
         homeAddress,
@@ -150,7 +147,7 @@
       };
     },
     mounted() {
-      
+      this.UPDATE_BREAD(['个人信息']);
     }
   }
 </script>
@@ -163,7 +160,7 @@
     box-sizing: border-box;
     background-color: @lighterBackground;
     .profileBox{
-      height: calc(100% - 100px);
+      height: 100%;
       width: 100%;
       display: flex;
       .imgBox{

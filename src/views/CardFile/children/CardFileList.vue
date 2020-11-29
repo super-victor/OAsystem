@@ -64,7 +64,7 @@
         <p class="warning" v-if="deleteFile">该分类将被删除，该分类下的名片将转移到默认分类下！</p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false;deleteFile = ''">取 消</el-button>
-        <el-button type="primary" @click="submitDelete">确 定</el-button>
+        <el-button type="primary" @click="submitDelete()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -73,10 +73,10 @@
 <script>
   import cardFileAPI from '@/service/cardFile'
   export default {
-    props: ["fileName"],
     data() {
       return {
-        select: '', // 选中的名片夹分类
+        fileName: [],
+        select: [], // 选中的名片夹分类
         dialogVisible1: false, //新建分类dialog
         dialogVisible2: false, //修改分类dialog
         dialogVisible3: false, //删除分类dialog
@@ -89,6 +89,21 @@
     computed: {},
     watch: {},
     methods: {
+      // 请求名片夹分类
+      getFileName () {
+        cardFileAPI.requestCardFile()
+        .then(res=>{
+          res.object.forEach(element => {
+            this.fileName.push({'name':element.name, 'id':element.cardHolderId});
+          });
+          this.getCard(res.object[0].cardHolderId);
+          this.select.id = res.object[0].cardHolderId;
+        })
+        .catch(err=>{
+          console.log(err);
+          this.$message.error('获取失败');
+        })
+      },
     //   选择名片夹分类
       selectClassfy (select) {
         this.select = select;
@@ -96,17 +111,18 @@
       },
     // 获取名片
     getCard(id) {
-        cardFileAPI.requestCard({
-            cardHolderClassfyId: id
-        })
-        .then(res=>{
-            // this.cards = res.object;
-            this.$emit('getCard',{info:res.object,fileId:this.select.id});
-        })
-        .catch(err=>{
-            console.log(err);
-            this.$message.error('获取失败');
-        })
+      console.log(id);
+      cardFileAPI.requestCard({
+        cardHolderId: id
+      })
+      .then(res=>{
+        // this.cards = res.object;
+        this.$emit('getCard',{info:res.object,fileId:this.select.id});
+      })
+      .catch(err=>{
+        console.log(err);
+        this.$message.error('获取失败');
+      })
     },
       // 添加名片夹分类
       addFile () {
@@ -126,13 +142,14 @@
       },
       // 修改分类名
       submitUpdate () {
-          console.log('a');
         cardFileAPI.updateCardFile({
-          cardHolderClassfyId: this.updateFile,
+          cardHolderId: this.updateFile,
           name: this.updateName
         })
         .then(res=>{
           this.$message.success('修改成功');
+          this.fileName = [];
+          this.getFileName();
           this.updateName = '';
           this.dialogVisible2 = false;
         })
@@ -143,19 +160,22 @@
       },
       // 删除分类
       submitDelete() {
+        console.log(this.deleteFile);
         cardFileAPI.deleteCardFile({
-            cardHolderClassfyId: this.deleteFile
+          cardHolderId: this.deleteFile
         })
         .then(res=>{
-            this.$message.success('删除成功');
-            this.dialogVisible3 = false;
+          this.$message.success('删除成功');
+          this.dialogVisible3 = false;
         })
         .catch(err=>{
-            this.$message.error('删除失败');
+          console.log(err);
+          this.$message.error('删除失败');
         })
       }
     },
     created() {
+      this.getFileName();
     },
     mounted() {
       
