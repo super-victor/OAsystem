@@ -27,7 +27,6 @@ public class CardController {
     /**
      * @MethodName insertCard
      * @param card 名片
-     * @param cardHolderId 名片夹id
      * @Description 直接手动添加名片
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -35,19 +34,18 @@ public class CardController {
      */
     @ApiOperation(value = "直接手动添加名片")
     @PostMapping("/Card")
-    public BackFrontMessage insertCard(@RequestBody Card card, @RequestParam Integer cardHolderId){
-        if (card.getOwnerId() == null || card.getName() == null ||
+    public BackFrontMessage insertCard(Card card){
+        if (card.getCardHolderId() == null || card.getName() == null ||
                 card.getPhone() == null || card.getAddress() == null ||
                 card.getCompany() == null){
             return new BackFrontMessage(500,"请将数据填写完整！",null);
         }
-        return cardService.insertCard(card, cardHolderId);
+        return cardService.insertCard(card, card.getCardHolderId());
     }
 
     /**
      * @MethodName updateCard
      * @param card 名片
-     * @param cardId 名片id
      * @Description 修改名片相关内容
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -55,8 +53,9 @@ public class CardController {
      */
     @ApiOperation(value = "修改名片相关内容")
     @PutMapping("/Card")
-    public BackFrontMessage updateCard(@RequestBody Card card, @RequestParam int cardId){
-        return cardService.updateCard(card, cardId);
+    public BackFrontMessage updateCard(Card card){
+        if (card.getCardId() == null)  return new BackFrontMessage(500,"名片id不能为空",null);
+        return cardService.updateCard(card, card.getCardId());
     }
 
     /**

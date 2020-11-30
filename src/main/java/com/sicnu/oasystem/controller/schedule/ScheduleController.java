@@ -27,7 +27,6 @@ public class ScheduleController {
     /**
      * @MethodName insertCompanySchedule
      * @param schedule 日程
-     * @param joiner 参与者
      * @Description 添加公司日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -35,9 +34,12 @@ public class ScheduleController {
      */
     @ApiOperation(value = "添加公司日程")
     @PostMapping("/CompanySchedule")
-    public BackFrontMessage insertCompanySchedule(@RequestBody Schedule schedule, @RequestParam String joiner){
-        //参与者列表用字符串拼接
-        return scheduleService.insertCompanySchedule(schedule, joiner);
+    public BackFrontMessage insertCompanySchedule(Schedule schedule){
+        if (schedule.getContent() == null || schedule.getStartTime() == null ||
+            schedule.getEndTime() == null || schedule.getLeader() == null ||
+                schedule.getLocation() == null || schedule.getJoiner() == null)
+            return new BackFrontMessage(500,"参数不完整",null);
+        return scheduleService.insertCompanySchedule(schedule);
     }
 
     /**
@@ -50,14 +52,16 @@ public class ScheduleController {
      */
     @ApiOperation("添加个人日程")
     @PostMapping("/SelfSchedule")
-    public BackFrontMessage insertSelfSchedule(@RequestBody Schedule schedule){
+    public BackFrontMessage insertSelfSchedule(Schedule schedule){
+        if (schedule.getContent() == null || schedule.getStartTime() == null ||
+                schedule.getEndTime() == null || schedule.getLocation() == null)
+            return new BackFrontMessage(500,"参数不完整",null);
         return scheduleService.insertSelfSchedule(schedule);
     }
 
     /**
      * @MethodName updateSchedule
      * @param schedule 日程
-     * @param scheduleId 日程id
      * @Description 修改日程信息
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -65,14 +69,13 @@ public class ScheduleController {
      */
     @ApiOperation(value = "修改个人日程信息")
     @PutMapping("/SelfSchedule")
-    public BackFrontMessage updateSelfSchedule(@RequestBody Schedule schedule, @RequestParam int scheduleId){
-        return scheduleService.updateScheduleByScheduleId(schedule, scheduleId, 0);
+    public BackFrontMessage updateSelfSchedule(Schedule schedule){
+        return scheduleService.updateScheduleByScheduleId(schedule, schedule.getScheduleId(), 0);
     }
 
     /**
      * @MethodName updateCompanySchedule
      * @param schedule 日程
-     * @param scheduleId 日程id
      * @Description 修改公司日程信息
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -80,8 +83,9 @@ public class ScheduleController {
      */
     @ApiOperation(value = "修改公司日程信息")
     @PutMapping("/CompanySchedule")
-    public BackFrontMessage updateCompanySchedule(@RequestBody Schedule schedule, @RequestParam int scheduleId){
-        return scheduleService.updateScheduleByScheduleId(schedule, scheduleId, 1);
+    public BackFrontMessage updateCompanySchedule(Schedule schedule){
+        if (schedule.getScheduleId() == null)  return new BackFrontMessage(500,"日程id不能为空",null);
+        return scheduleService.updateScheduleByScheduleId(schedule, schedule.getScheduleId(), 1);
     }
 
     /**

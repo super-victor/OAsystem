@@ -11,6 +11,7 @@ import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.service.message.MessageService;
 import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -68,19 +69,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public BackFrontMessage insertCompanySchedule(Schedule schedule, String joiner) {
-        //TODO:转列表前，判断string是否符合格式(如：1,2,3,4)
-        String[] joiners = joiner.split(",");
-        List<String> joinerList = new ArrayList<>();
+    public BackFrontMessage insertCompanySchedule(Schedule schedule) {
+        List<Integer> joinerList = new ArrayList<>();
         //检查是否有重复的参与者。若有重复的，则自动去重。
-        for (String join : joiners) {
+        for (Integer join : schedule.getJoiner()) {
             if (!joinerList.contains(join)) {
                 joinerList.add(join);
             }
         }
         //判断设置的leader在不在参与人列表里面。如果不在则自动在列表中添加上
-        if (!joinerList.contains(String.valueOf(schedule.getLeader()))) {
-            joinerList.add(String.valueOf(schedule.getLeader()));
+        if (!joinerList.contains(schedule.getLeader())) {
+            joinerList.add(schedule.getLeader());
         }
         schedule.setIsCompany(1);
         if (isTimeCorrect(schedule)){
@@ -91,17 +90,16 @@ public class ScheduleServiceImpl implements ScheduleService {
             return new BackFrontMessage(500,"添加日程失败",null);
         }else{
             //将参与者加入职工日程对应表
-            for (String employeeId : joinerList) {
+            for (Integer employeeId : joinerList) {
                 EmployeeSchedule employeeSchedule = new EmployeeSchedule();
-                //TODO:转int前需要判断是否可以转换为int
-                employeeSchedule.setEmployeeId(Integer.parseInt(employeeId));
+                employeeSchedule.setEmployeeId(employeeId);
                 employeeSchedule.setScheduleId(schedule.getScheduleId());
                 int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
                 if (result2 <= 0){
                     return new BackFrontMessage(500,"添加职工日程映射失败",schedule.getScheduleId());
                 }
                 //发送消息
-                messageService.send(Integer.parseInt(employeeId), DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "您收到了一个关于'"+schedule.getContent()+"'的公司日程");
+                messageService.send(employeeId, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "您收到了一个关于'"+schedule.getContent()+"'的公司日程");
             }
             return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
         }

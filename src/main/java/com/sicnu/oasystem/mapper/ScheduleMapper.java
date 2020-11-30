@@ -27,6 +27,10 @@ public interface ScheduleMapper {
      */
     Schedule findScheduleByScheduleId(int scheduleId);
 
+    String findContentByScheduleId(int scheduleId);
+
+    Date findDateByScheduleId(int scheduleId);
+
     /**
      * @MethodName findReadyToStartSchedule
      * @param startTime 要截至的开始时间

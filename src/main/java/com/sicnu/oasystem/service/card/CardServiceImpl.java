@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName CardServiceImpl
@@ -119,8 +122,15 @@ public class CardServiceImpl implements CardService {
         if (!hasCardHolder(cardHolderId)) {
             return new BackFrontMessage(500, "您没有此名片夹", null);
         }
+        List<Map<String,Object>> cardList = new ArrayList<>();
+        Map<String,Object> cardMap = new HashMap<>(16);
         List<Card> list = cardMapper.findCardByCardHolderId(cardHolderId);
-        return new BackFrontMessage(200, "查找成功", list);
+        for (Card card : list) {
+            cardMap.put("cardId",card.getCardId());
+            cardMap.put("card",card);
+            cardList.add(cardMap);
+        }
+        return new BackFrontMessage(200, "查找成功", cardList);
     }
 
     /**

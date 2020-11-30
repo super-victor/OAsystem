@@ -45,4 +45,12 @@
     <select id="findEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
         select * from Schedule where #{nowTime} >= endTime
     </select>
+
+    <select id="findContentByScheduleId" resultType="java.lang.String">
+        select content from Schedule where scheduleId = #{scheduleId}
+    </select>
+
+    <select id="findDateByScheduleId" resultType="java.util.Date">
+        select startTime from Schedule where scheduleId = #{scheduleId}
+    </select>
 </mapper>

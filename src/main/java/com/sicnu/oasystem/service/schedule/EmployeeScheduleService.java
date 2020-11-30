@@ -44,6 +44,10 @@ public interface EmployeeScheduleService {
      */
     BackFrontMessage findEmployeeScheduleByEmployeeId();
 
+//    BackFrontMessage findSelfScheduleByDate(Date date);
+//
+//    BackFrontMessage findCompanyScheduleByDate(Date date);
+
     /**
      * @MethodName findEmployeeScheduleByScheduleId
      * @param scheduleId 日程id

@@ -30,13 +30,12 @@ public interface ScheduleService {
     /**
      * @MethodName insertCompanySchedule
      * @param schedule 公司日程
-     * @param joiner 参与者列表
      * @Description 添加公司日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/26
      */
-    BackFrontMessage insertCompanySchedule(Schedule schedule, String joiner);
+    BackFrontMessage insertCompanySchedule(Schedule schedule);
 
     /**
      * @MethodName updateScheduleByScheduleId

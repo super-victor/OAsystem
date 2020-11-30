@@ -1,13 +1,13 @@
 package com.sicnu.oasystem.controller.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.service.schedule.EmployeeScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @ClassName EmployeeScheduleController
@@ -131,5 +131,25 @@ public class EmployeeScheduleController {
     @GetMapping("/findEndEmployeeSchedule")
     public BackFrontMessage findEndEmployeeSchedule(){
         return employeeScheduleService.findEndEmployeeSchedule();
+    }
+
+    /**
+     * @MethodName findSelfSchedule
+     * @param date 时间(yyyy-MM-dd)
+     * @Description  获取某天的个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/30
+     */
+    @ApiOperation(value = "获取某一天的个人日程")
+    @GetMapping("/findSelfSchedule")
+    public BackFrontMessage findSelfSchedule(@RequestParam Date date){
+        return null;
+    }
+
+    @ApiOperation(value = "获取该员工某一天的公司日程")
+    @GetMapping("/findCompanySchedule")
+    public BackFrontMessage findCompanySchedule(@RequestParam Date date){
+        return null;
     }
 }

@@ -2,8 +2,11 @@ package com.sicnu.oasystem.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.annotation.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.*;
 
@@ -15,7 +18,7 @@ import java.util.*;
  * @Version v1.0
  */
 
-
+@ApiModel(value = "Schedule", description = "日程")
 @Data
 @AllArgsConstructor
 public class Schedule {
@@ -23,9 +26,11 @@ public class Schedule {
     private Integer scheduleId;
     @JsonIgnore
     private Integer isCompany;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     private Integer leader;
     private String location;
@@ -49,4 +54,8 @@ public class Schedule {
             put(8,"其它");
         }
     };
+
+    private List<Integer> joiner;
+
+    public Schedule(){}
 }
