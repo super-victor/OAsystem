@@ -882,6 +882,55 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@fullcalendar/common@~5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/common/download/@fullcalendar/common-5.4.0.tgz#65474163e43bea4443b2577cd39d7021678237df"
+  integrity sha1-ZUdBY+Q76kRDsld8051wIWeCN98=
+  dependencies:
+    tslib "^2.0.3"
+
+"@fullcalendar/core@^5.4.0", "@fullcalendar/core@~5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/core/download/@fullcalendar/core-5.4.0.tgz#426eed400b0948b955e92275095d617e428be5a1"
+  integrity sha1-Qm7tQAsJSLlV6SJ1CV1hfkKL5aE=
+  dependencies:
+    "@fullcalendar/common" "~5.4.0"
+    preact "^10.0.5"
+    tslib "^2.0.3"
+
+"@fullcalendar/daygrid@^5.4.0", "@fullcalendar/daygrid@~5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/daygrid/download/@fullcalendar/daygrid-5.4.0.tgz#9e29089f58166cbfea980da1a69b55e157794ed6"
+  integrity sha1-nikIn1gWbL/qmA2hpptV4Vd5TtY=
+  dependencies:
+    "@fullcalendar/common" "~5.4.0"
+    tslib "^2.0.3"
+
+"@fullcalendar/interaction@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/interaction/download/@fullcalendar/interaction-5.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40fullcalendar%2Finteraction%2Fdownload%2F%40fullcalendar%2Finteraction-5.4.0.tgz#5d709a3381ca0670f6e629a4b19bdb4b9e18515c"
+  integrity sha1-XXCaM4HKBnD25imksZvbS54YUVw=
+  dependencies:
+    "@fullcalendar/common" "~5.4.0"
+    tslib "^2.0.3"
+
+"@fullcalendar/timegrid@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/timegrid/download/@fullcalendar/timegrid-5.4.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40fullcalendar%2Ftimegrid%2Fdownload%2F%40fullcalendar%2Ftimegrid-5.4.0.tgz#7869d6c8ba625f4508bb2f4c4a3c3933527a0690"
+  integrity sha1-eGnWyLpiX0UIuy9MSjw5M1J6BpA=
+  dependencies:
+    "@fullcalendar/common" "~5.4.0"
+    "@fullcalendar/daygrid" "~5.4.0"
+    tslib "^2.0.3"
+
+"@fullcalendar/vue@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/vue/download/@fullcalendar/vue-5.4.0.tgz#8dd31f6ff34476d42a9a315f8049d53a235014c3"
+  integrity sha1-jdMfb/NEdtQqmjFfgEnVOiNQFMM=
+  dependencies:
+    "@fullcalendar/core" "~5.4.0"
+    tslib "^2.0.3"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.npm.taobao.org/@hapi/address/download/@hapi/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -7956,6 +8005,11 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.27, postcss@^7.0.3
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preact@^10.0.5:
+  version "10.5.7"
+  resolved "https://registry.npm.taobao.org/preact/download/preact-10.5.7.tgz#f1d84725539e18f7ccbea937cf3db5895661dbd3"
+  integrity sha1-8dhHJVOeGPfMvqk3zz21iVZh29M=
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/prelude-ls/download/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -9524,6 +9578,11 @@ tslib@^1.10.0, tslib@^1.9.0:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.14.1.tgz?cache=0&sync_timestamp=1602286730817&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
 
+tslib@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
+  integrity sha1-jgdBrEX8DCJuWKF7/D5kubxsphw=
+
 tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.npm.taobao.org/tty-browserify/download/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
@@ -9885,9 +9944,9 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^2.6.11:
+vue@^2.6.12:
   version "2.6.12"
-  resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz?cache=0&sync_timestamp=1606321101076&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha1-9evU+mvShpQD4pqJau1JBEVskSM=
 
 vuex-persist@^3.1.3:

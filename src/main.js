@@ -41,6 +41,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Loading,
+  Switch
 } from 'element-ui';
 
 Vue.use(Container);
@@ -81,6 +82,7 @@ Vue.use(Popover);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
+Vue.use(Switch);
 
 Vue.prototype.$loading = Loading.service;
 

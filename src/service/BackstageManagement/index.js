@@ -148,7 +148,7 @@ export default{
    * @param {Object} data 用户数据   employeeId:职工号
    * @returns {Promise<Object>} 
   */
-  async deleteRole(data){
+  async deleteStaff(data){
     const res = await NetworkRequest({
       url:'/employee',
       method:'delete',
@@ -247,6 +247,22 @@ export default{
       url:'/roleEmployeelist',
       method:'put',
       data
+    })
+    return res.data;
+  },
+
+  /**
+   * 复制角色
+   * @param {Object} data 用户数据    newName:新角色的名称
+   *                                copyroleId:要复制的角色号
+   * @returns {Promise<Object>} 
+  */
+  async copyRole(data){
+    const res = await NetworkRequest({
+      url:'/copyrole',
+      method:'post',
+      data,
+      throttle:true
     })
     return res.data;
   },
