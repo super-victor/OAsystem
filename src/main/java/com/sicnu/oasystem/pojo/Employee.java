@@ -1,6 +1,8 @@
 package com.sicnu.oasystem.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,22 +18,30 @@ import java.util.List;
  * @LastChangeDate 2020/11/4 22:54
  * @Version v1.0
  */
-
+@ApiModel(value = "employee",description = "职工信息")
 @Data
 public class Employee implements UserDetails {
     private Integer employeeId;
     private String username;
+    @ApiModelProperty(required = true)
     private String name;
+    private Date birthday;
     @JsonIgnore
     private String password;
+    @ApiModelProperty(required = true)
     private String phone;
+    @ApiModelProperty(required = true)
     private String email;
-    private Date birthday;
+    @ApiModelProperty(required = true)
     private String idCard;
+    @ApiModelProperty(required = true)
     private String sex;
     private Date entryTime;
+    @ApiModelProperty(required = true)
     private String departmentName;
+    @ApiModelProperty(required = true)
     private String position;
+    @ApiModelProperty(required = true)
     private String homeAddress;
     private int isAccountLocked;
     @JsonIgnore

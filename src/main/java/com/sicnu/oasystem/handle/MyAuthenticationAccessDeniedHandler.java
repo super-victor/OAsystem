@@ -24,7 +24,7 @@ public class MyAuthenticationAccessDeniedHandler implements AccessDeniedHandler 
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        System.out.println(accessDeniedException.getStackTrace());
+        System.out.println(accessDeniedException.getMessage());
         BackFrontMessage authMessage = new BackFrontMessage(301, "权限不足1", null);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(authMessage);

@@ -33,8 +33,17 @@
         <if test="sendFile.remark != null">,remark = #{remark}</if>
         where senderId = #{senderId} and sendFileId = #{sendfileId}
     </update>
+    <update id="updateStatusInSendFile">
+        update sendfile set status = #{status} where sendfileId = #{sendfileId}
+    </update>
+    <update id="checkedReceiveFile">
+        update receivefile set isReceived = 1 where receivefileId = #{receivefileId}
+    </update>
     <select id="findSendFileByEmployeeIdAndSendfileId" resultType="com.sicnu.oasystem.pojo.SendFile">
         select * from sendfile where employeeId = #{employeeId} and sendfileId = #{sendfileId}
+    </select>
+    <select id="findUnReviewSendFile" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where status = 0
     </select>
 
 

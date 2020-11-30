@@ -28,8 +28,19 @@
     <insert id="insertIntoRoleMenu">
         insert into rolemenu (menuId,roleId) values (#{menuId}, #{roleId})
     </insert>
+
     <insert id="insertIntoRoleMenuByCode">
-        insert into rolemenu (menuId,roleId) values select menuId,#{roleId} from menu where code = #{code}
+        insert into rolemenu (menuId,roleId) select menuId,#{roleId} from menu where code = #{code}
+    </insert>
+    <insert id="addAdmin">
+        insert into EmployeeRole (employeeId, roleId) values (#{employeeId},2)
+    </insert>
+
+    <insert id="insertEmployee">
+        insert into employee (username, name, password, phone, email, idCard, sex, departmentName,birthday, position, homeAddress, isAccountLocked) values (#{username}, #{name}, #{password}, #{phone}, #{email}, #{idCard}, #{sex}, #{departmentName}, #{birthday}, #{position}, #{homeAddress}, 0);
+    </insert>
+    <insert id="insertRole">
+        insert into role (name) values (#{name})
     </insert>
 
     <delete id="deletefromEmployeeRole">
@@ -41,6 +52,16 @@
     </delete>
     <delete id="deletefromRoleMenuByCode">
         delete from roleMenu where roleId = #{roleId} and menuId = (select menuId from menu where code = #{code})
+    </delete>
+    <delete id="deleteAdmin">
+        delete from EmployeeRole where employeeId = #{employeeId} and roleId = 2
+    </delete>
+
+    <delete id="deleteEmployee">
+        delete from employee where employeeId = #{employeeId}
+    </delete>
+    <delete id="deleteRole">
+        delete from role where roleId = #{roleId}
     </delete>
 
 
@@ -125,6 +146,12 @@
     </select>
     <select id="findCodesByRoleId" resultType="java.lang.String">
         select code from menu where menuId in (select menuId from rolemenu where roleId = #{roleId})
+    </select>
+    <select id="findAllEmployeeExceptA" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where employeeId not in (select employeeId from EmployeeRole where roleId = 1 or roleId = 2)
+    </select>
+    <select id="findAllAdmin" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where employeeId in (select employeeId from EmployeeRole where roleId = 2)
     </select>
 
 

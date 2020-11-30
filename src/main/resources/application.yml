@@ -36,3 +36,12 @@ document:
 
 # 生产环节启用
 # springfox.documentation.swagger-ui.enabled=false
+
+global-security-config:
+  allow-url-list:
+    - "/login"
+    - "/v2/**"
+    - "/swagger-resources/**"
+    - "/swagger-resources"
+    - "/swagger-ui**"
+    - "/webjars/**"
