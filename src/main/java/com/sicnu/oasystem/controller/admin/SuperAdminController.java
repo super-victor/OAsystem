@@ -2,8 +2,8 @@ package com.sicnu.oasystem.controller.admin;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.admin.SuperAdminService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +18,7 @@ import java.util.List;
  * @Version v1.0
  */
 
+@Api(tags = "超级管理员")
 @RestController
 public class SuperAdminController {
     @Resource
