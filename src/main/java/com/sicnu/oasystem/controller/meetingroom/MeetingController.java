@@ -64,7 +64,7 @@ public class MeetingController {
             return new BackFrontMessage(500,"预约会议失败",null);
         }
         if(StartTime.after(Endtine)){
-            return new BackFrontMessage(500,"预约会议信息失败",null);
+            return new BackFrontMessage(500,"预约会议失败",null);
         }
         return meetingServicelmpl.addOrderMeeting(meetingroomid,status,employeeid,name,StartTime,Endtine,peoplenum,remark);
     }

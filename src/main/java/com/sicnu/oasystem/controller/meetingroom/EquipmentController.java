@@ -33,7 +33,7 @@ public class EquipmentController {
      */
     @ApiOperation("添加设备")
     @PostMapping("/addEquipment")
-        public BackFrontMessage addEquipment(@RequestBody Equipment equipment){
+        public BackFrontMessage addEquipment(Equipment equipment){
         return equipmentServicelpml.addEquipment(equipment.getEquipmentClassifyId()
                 ,equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
     }
@@ -48,7 +48,7 @@ public class EquipmentController {
      */
     @ApiOperation("修改设备")
     @PutMapping("/updateEquipment")
-    public BackFrontMessage updateEquipment(@RequestBody Equipment equipment){
+    public BackFrontMessage updateEquipment(Equipment equipment){
         System.out.println(equipment);
         System.out.println(equipment.getEquipmentClassifyId());
         return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
