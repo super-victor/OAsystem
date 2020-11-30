@@ -55,7 +55,6 @@
 
           <!-- 分页 -->
           <!-- <div class="block" style="margin:20px 0 0 auto">
-
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" background
               :page-sizes="[1,5,10,15,20]" :current-page.sync="currentPage3" :page-size="1"
               layout="sizes, prev, pager, next, jumper" :total="total">
@@ -111,7 +110,6 @@
         loading:true
       }
     },
-
     created() {
       // 初始页面展示表格
       pageAPI.paginationRequest({
@@ -127,7 +125,6 @@
       }).catch(err => {
         this.$message.error('读取失败');
         console.log("pageAPI:",err)
-
       })
       //获取总数据
       dataAPI.dataRequest()
@@ -159,7 +156,6 @@
         this.MAIN_CLICK(false);
       },
      
-
       //部门搜索栏失去焦点
       message() {
         if (!this.department) {
@@ -176,7 +172,6 @@
           }).catch(err => {
             this.$message.error('读取失败');
             console.log(err)
-
           })
         }
       },
@@ -211,13 +206,10 @@
       //      else console.log(item.department);
       //    })
       // },
-
       //部门搜索框过滤
       filter() {
         this.departmentfilterres = this.departmentres.filter(item => item.indexOf(this.department) > -1);
       },
-
-
       //改变页面显示条数
       handleSizeChange(val) {
         this.department = '';
@@ -231,7 +223,6 @@
           pageSize: this.pageSize,
         }).then(res => {
           console.log(res.object)
-
           this.tableData = res.object.currentPageList;
           this.tablefilterData = this.tableData;
           this.total = res.object.totalPageNum;
@@ -241,7 +232,6 @@
         }).catch(err => {
           this.$message.error('读取失败');
           console.log(err)
-
         })
       },
       //切换页数
@@ -263,7 +253,6 @@
         }).catch(err => {
           this.$message.error('读取失败');
           console.log(err)
-
         })
       },
     },
@@ -275,20 +264,17 @@
 
 <style lang='less' scoped>
   @import '../../../style/common.less';
-
   .addressBook {
     height: 40%; //这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部msgBox高度不超过exampleBox高度，不然会出现bug
     width: 100%;
     padding: 30px;
     box-sizing: border-box;
-
     .msgBox {
       height: 800px;
       width: 100%;
       font-size: 30px;
       display: flex;
       justify-content: flex-start;
-
       .content {
         height: 700px;
         width: 100%;
@@ -296,40 +282,23 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-end;
-
         .total {
           display: flex;
           height: 600px;
-
-<<<<<<< HEAD
-  .addressBook {
-    height: 900px; //这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部msgBox高度不超过exampleBox高度，不然会出现bug
-    width: 100%;
-    padding: 30px;
-    box-sizing: border-box;
-    background-color: @background;
-  }
-=======
           .chooses {
             background: white;
             box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
             border-radius: @baseBorderRadius;
->>>>>>> hyc
-
             .choose {
               margin-bottom: 0.15rem;
             }
-
           ::v-deep .box-card {
               cursor: pointer;
               box-shadow: none;
               border:none;
-
               .text {
                 font-size: 15px;
-
               }
-
               .item {
                 padding: 18px 0;
                 margin-top: 5px;
@@ -337,46 +306,37 @@
                 border-bottom:1px solid #EBEEF5
               }
             }
-
             .choose {
               display: flex;
             }
-
             margin-right: 0.5rem;
           }
-
           .table {
             width:100%;
             display: flex;
             flex-direction: column;
-
             .search {
               width: 5rem;
               margin-bottom: 0.3rem;
               display: flex;
               box-shadow: 0 0 13px 10px rgba(82, 63, 105, 0.05);
               border-radius: @baseBorderRadius;
-
               .el-input {
                 margin-right: 0.2rem;
               }
-
               .el-button {
                 width: 180px;
               }
             }
-
             .el_table {
               box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
               border-radius: @baseBorderRadius;
             }
-
             // .block {
             //   align-self: flex-end;
             // }
           }
         }
-
         .block {
           // display: flex;
           // .block_page{
