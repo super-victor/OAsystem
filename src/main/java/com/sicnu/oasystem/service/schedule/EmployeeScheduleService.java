@@ -3,6 +3,7 @@ package com.sicnu.oasystem.service.schedule;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -44,9 +45,27 @@ public interface EmployeeScheduleService {
      */
     BackFrontMessage findEmployeeScheduleByEmployeeId();
 
-//    BackFrontMessage findSelfScheduleByDate(Date date);
-//
-//    BackFrontMessage findCompanyScheduleByDate(Date date);
+    /**
+     * @MethodName findSelfScheduleByDate
+     * @param start 开始时间
+     * @param end 结束时间
+     * @Description 获取该职工在start、end之间的个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/30
+     */
+    BackFrontMessage findSelfScheduleByDate(Date start, Date end) throws ParseException;
+
+    /**
+     * @MethodName findCompanyScheduleByDate
+     * @param start 开始时间
+     * @param end 结束时间
+     * @Description 获取该职工在start、end之间的公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/30
+     */
+    BackFrontMessage findCompanyScheduleByDate(Date start, Date end);
 
     /**
      * @MethodName findEmployeeScheduleByScheduleId

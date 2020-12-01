@@ -6,13 +6,10 @@ import com.sicnu.oasystem.mapper.EmployeeScheduleMapper;
 import com.sicnu.oasystem.mapper.ScheduleMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
-import com.sicnu.oasystem.pojo.Role;
 import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.service.message.MessageService;
 import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
-import io.swagger.models.auth.In;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -250,7 +247,5 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return true;
             }
         }
-
-        //TODO:查找公司日程、个人日程
     }
 }

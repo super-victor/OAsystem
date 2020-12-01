@@ -32,4 +32,20 @@
         select * from EmployeeSchedule where employeeScheduleId = #{employeeScheduleId}
     </select>
 
+
+
+    <select id="findCompanyScheduleByDate" resultType="java.lang.Integer">
+        select scheduleId from employeeschedule where employeeId = #{employeeId} and scheduleId in (
+        select scheduleId from schedule where isCompany = 1 and
+        ((endTime >= #{start} and #{end} >= endTime) or
+        (startTime >= #{start} and #{end} >= endTime)));
+    </select>
+
+    <select id="findSelfScheduleByDate" resultType="java.lang.Integer">
+        select scheduleId from employeeschedule where employeeId = #{employeeId} and scheduleId in (
+        select scheduleId from schedule where isCompany = 0 and
+        ((endTime >= #{start} and #{end} >= endTime) or
+        (startTime >= #{start} and #{end} >= endTime)));
+    </select>
+
 </mapper>

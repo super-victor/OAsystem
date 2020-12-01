@@ -8,11 +8,11 @@ import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName EmployeeScheduleServiceImpl
@@ -23,6 +23,7 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
 
     @Resource
@@ -78,12 +79,25 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         List<Integer> scheduleIdList = employeeScheduleMapper
                 .findEmployeeScheduleByEmployeeId(currentEmployee.getEmployeeId());
-        List<Schedule> scheduleList = new ArrayList<>();
-        for (Integer scheduleId : scheduleIdList) {
-            Schedule schedule = scheduleMapper.findScheduleByScheduleId(scheduleId);
-            scheduleList.add(schedule);
-        }
-        return new BackFrontMessage(200,"查询成功",scheduleList);
+        return new BackFrontMessage(200,"查询成功",getScheduleListByEmployeeSchduleList(scheduleIdList));
+    }
+
+    @Override
+    public BackFrontMessage findSelfScheduleByDate(Date start, Date end) {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        List<Integer> scheduleIdList = employeeScheduleMapper
+                .findSelfScheduleByDate(currentEmployee.getEmployeeId(), start, end);
+        return new BackFrontMessage(200,"查询成功",getScheduleListByEmployeeSchduleList(scheduleIdList));
+    }
+
+
+
+    @Override
+    public BackFrontMessage findCompanyScheduleByDate(Date start, Date end) {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        List<Integer> scheduleIdList = employeeScheduleMapper
+                .findCompanyScheduleByDate(currentEmployee.getEmployeeId(), start, end);
+        return new BackFrontMessage(200,"查询成功",getScheduleListByEmployeeSchduleList(scheduleIdList));
     }
 
     @Override
@@ -156,5 +170,25 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
             }
         }
         return list;
+    }
+
+    /**
+     * @MethodName getScheduleListByEmployeeSchduleList
+     * @param scheduleIdList 职工日程列表
+     * @Description 通过职工日程映射列表，返回职工参与的日程信息
+     * @Author Waynejwei
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Schedule>
+     * @LastChangeDate 2020/11/30
+     */
+    private List<Map<String,Object>> getScheduleListByEmployeeSchduleList(List<Integer> scheduleIdList){
+        List<Map<String,Object>> resultMap = new ArrayList<>();
+        for (Integer scheduleId : scheduleIdList) {
+            Map<String,Object> map = new HashMap<>(16);
+            map.put("scheduleId",scheduleId);
+            Schedule schedule = scheduleMapper.findScheduleByScheduleId(scheduleId);
+            map.put("schedule",schedule);
+            resultMap.add(map);
+        }
+        return resultMap;
     }
 }

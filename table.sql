@@ -413,9 +413,19 @@ insert into menu (name, url ,code) values ('删除公司日程','DELETE /Company
 insert into menu (name, url ,code) values ('添加个人日程','DELETE /SelfSchedule','0011');
 insert into menu (name, url ,code) values ('修改个人日程信息','POST /SelfSchedule','0012');
 insert into menu (name, url ,code) values ('删除个人日程','DELETE /SelfSchedule','0013');
+insert into menu (name, url ,code) values ('获取该员工一段时间的个人日程','GET /findSelfSchedule','0014');
+insert into menu (name, url ,code) values ('获取该员工一段时间的公司日程','GET /findCompanySchedule','0015');
 
 insert into rolemenu (menuId, roleId) values (32, 4);
 insert into rolemenu (menuId, roleId) values (35, 4);
+insert into rolemenu (menuId, roleId) values (39, 1);
+insert into rolemenu (menuId, roleId) values (39, 2);
+insert into rolemenu (menuId, roleId) values (39, 4);
+insert into rolemenu (menuId, roleId) values (39, 12);
+insert into rolemenu (menuId, roleId) values (40, 1);
+insert into rolemenu (menuId, roleId) values (40, 2);
+insert into rolemenu (menuId, roleId) values (40, 4);
+insert into rolemenu (menuId, roleId) values (40, 12);
 
 insert into message (employeeId, type, title, content, sendTime, isRead) values (1, 1, '发文审核', '标题为xxx的发文审核已通过', '2020-11-25 22:38:12', 0);
 insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);

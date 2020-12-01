@@ -4,6 +4,7 @@ import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,4 +88,28 @@ public interface EmployeeScheduleMapper {
      * @LastChangeDate 2020/11/20
      */
     EmployeeSchedule findEmployeeScheduleByEmployeeScheduleId(int employeeScheduleId);
+
+    /**
+     * @MethodName findSelfScheduleByDate
+     * @param employeeId 职工id
+     * @param start 开始时间
+     * @param end 结束时间
+     * @Description 获取start到end之间的所有个人日程
+     * @Author Waynejwei
+     * @Return java.util.List<java.lang.Integer>
+     * @LastChangeDate 2020/11/30
+     */
+    List<Integer> findSelfScheduleByDate(int employeeId, Date start, Date end);
+
+    /**
+     * @MethodName findCompanyScheduleByDate
+     * @param employeeId 职工id
+     * @param start 开始时间
+     * @param end 结束时间
+     * @Description 获取start到end之间的所有公司日程
+     * @Author Waynejwei
+     * @Return java.util.List<java.lang.Integer>
+     * @LastChangeDate 2020/11/30
+     */
+    List<Integer> findCompanyScheduleByDate(int employeeId, Date start, Date end);
 }

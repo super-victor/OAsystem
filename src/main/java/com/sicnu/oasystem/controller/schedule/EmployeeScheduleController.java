@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * @ClassName EmployeeScheduleController
@@ -135,21 +136,41 @@ public class EmployeeScheduleController {
 
     /**
      * @MethodName findSelfSchedule
-     * @param date 时间(yyyy-MM-dd)
-     * @Description  获取某天的个人日程
+     * @param start 时间(yyyy-MM-dd)
+     * @param end 结束时间
+     * @Description  获取某段时间的个人日程
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/30
      */
-    @ApiOperation(value = "获取某一天的个人日程")
+    @ApiOperation(value = "获取该员工一段时间的个人日程")
     @GetMapping("/findSelfSchedule")
-    public BackFrontMessage findSelfSchedule(@RequestParam Date date){
-        return null;
+    public BackFrontMessage findSelfSchedule(@RequestParam String start, @RequestParam String end){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            return employeeScheduleService.findSelfScheduleByDate(simpleDateFormat.parse(start), simpleDateFormat.parse(end));
+        }catch (ParseException e){
+            return new BackFrontMessage(500,"时间格式错误",null);
+        }
     }
 
-    @ApiOperation(value = "获取该员工某一天的公司日程")
+    /**
+     * @MethodName findCompanySchedule
+     * @param start 开始时间
+     * @param end 结束时间
+     * @Description 获取某个人在一段时间内的公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/11/30
+     */
+    @ApiOperation(value = "获取该员工一段时间的公司日程")
     @GetMapping("/findCompanySchedule")
-    public BackFrontMessage findCompanySchedule(@RequestParam Date date){
-        return null;
+    public BackFrontMessage findCompanySchedule(@RequestParam String start, @RequestParam String end){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            return employeeScheduleService.findCompanyScheduleByDate(simpleDateFormat.parse(start), simpleDateFormat.parse(end));
+        }catch (ParseException e){
+            return new BackFrontMessage(500,"时间格式错误",null);
+        }
     }
 }
