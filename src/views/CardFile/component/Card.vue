@@ -3,24 +3,24 @@
     <div class="box flex-col">
       <div class="inner">
         <div class="row flex-row">
-          <p class="name">{{ msg.name }}</p>
-          <p class="depart">/{{ msg.department }}{{ msg.position }}</p>
+          <p class="name">{{ msg.card.name }}</p>
+          <p class="depart">/{{ msg.card.department }}{{ msg.card.position }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">电话</p>
-          <p class="llabel">{{ msg.phone }}</p>
+          <p class="llabel">{{ msg.card.phone }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">邮箱</p>
-          <p class="llabel">{{ msg.email }}</p>
+          <p class="llabel">{{ msg.card.email }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">公司</p>
-          <p class="llabel">{{ msg.company }}</p>
+          <p class="llabel">{{ msg.card.company }}</p>
         </div>
         <div class="info_row flex-row">
           <p class="rlabel">地址</p>
-          <p class="llabel">{{ msg.address }}</p>
+          <p class="llabel">{{ msg.card.address }}</p>
         </div>
       </div>
     </div>
@@ -32,12 +32,12 @@
         <img src="@/assets/Card/Edit.png" alt="" @click="dialogVisible2 = true">
       </div>
       <div class="right_i delete" title="删除">
-        <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardHolderId)">
+        <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardId)">
       </div>
     </div>
     <!-- dialog-获取名片id -->
     <el-dialog title="名片分享" :visible.sync="dialogVisible1">
-      <p>名片分享码为：{{ this.msg.cardHolderId }}</p>
+      <p>名片分享码为：{{ this.msg.cardId }}</p>
     </el-dialog>
     <!-- dialog-修改名片 -->
     <el-dialog title="名片修改" :visible.sync="dialogVisible2" class="innerCard">
@@ -75,16 +75,16 @@
         dialogVisible2: false, // 修改dialog
         // 编辑名片信息
         newInfo:{
-          name: this.msg.name,
-          phone: this.msg.phone,
-          email: this.msg.email,
-          company: this.msg.company,
-          department: this.msg.department,
-          position: this.msg.position,
-          address: this.msg.address,
+          name: this.msg.card.name,
+          phone: this.msg.card.phone,
+          email: this.msg.card.email,
+          company: this.msg.card.company,
+          department: this.msg.card.department,
+          position: this.msg.card.position,
+          address: this.msg.card.address,
         },
         holders: [], // 名片夹
-        newHolder: '', // 新的分类id
+        newHolder: 0, // 新的分类id
       };
     },
     computed: {},
@@ -96,13 +96,10 @@
           cardId:id
         })
         .then(res=>{
-          this.$message.success('添加成功');
-          this.fileName.push({name: this.newName});
-          this.newName = '';
           this.dialogVisible1 = false;
         })
         .catch(err=>{
-          // console.log(err);
+          console.log(err);
           this.$message.error('发生错误');
         })
       },
@@ -121,6 +118,8 @@
         })
         .then(res=>{
           this.$message.success('修改成功');
+          this.msg.card=this.newInfo;
+          this.msg.cardHolderId = this.newHolder;
           this.dialogVisible2 = false;
         })
         .catch(err=>{
@@ -144,7 +143,7 @@
     },
     created() {
       this.getFileName();
-      this.newHolder = this.msg.cardHolderId;
+      this.newHolder = this.msg.card.cardHolderId;
     },
     mounted() {
       
