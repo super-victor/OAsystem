@@ -63,13 +63,6 @@
                 placement="top-start"
                 trigger="hover"
                 :open-delay="500"
-                content="冻结角色所有功能">
-                  <el-button slot="reference" icon="el-icon-lock" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
-              </el-popover>
-              <el-popover
-                placement="top-start"
-                trigger="hover"
-                :open-delay="500"
                 content="编辑角色功能">
                   <el-button slot="reference" type="primary" icon="el-icon-edit-outline" circle @click="goRoleAuthority(scope.row)"></el-button>
               </el-popover>
@@ -85,7 +78,7 @@
                 trigger="hover"
                 :open-delay="500"
                 content="复制角色">
-                  <el-button slot="reference" type="primary" icon="el-icon-document-copy" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
+                  <el-button slot="reference" type="primary" icon="el-icon-document-copy" circle @click="copyRole(scope.row)"></el-button>
               </el-popover>
               <el-popover
                 placement="top-start"
@@ -158,6 +151,28 @@ import backstageAPI from '@/service/BackstageManagement';
           .catch(err=>{
             this.$message.error('添加失败');
             this.buttonLoading = false;
+          })
+        })
+        .catch(err=>{})
+      },
+      copyRole(obj){
+        this.$prompt('请输入复制后的新角色名称', '复制角色', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          backstageAPI.copyRole({
+            newName:value,
+            copyroleId:obj.roleId
+          })
+          .then(res=>{
+            this.$message({
+              message: '复制成功',
+              type: 'success'
+            });
+            this.getRole();
+          })
+          .catch(err=>{
+            this.$message.error('复制失败');
           })
         })
         .catch(err=>{})

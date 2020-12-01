@@ -13,7 +13,7 @@
         :class="{currentlistItem:currentDepartmentName==item.name}"
         @click="switchDepartment(item)"
         :key="item.departmentId">{{item.name}}</li>
-        <el-button round style="width:90%;margin:20px 0 0 5%;" icon="el-icon-setting" @click="$router.push('department')">部门管理</el-button>
+        <el-button round style="width:90%;margin:20px 0 0 5%;" icon="el-icon-setting" @click="$router.push('/backstage-management/department')">部门管理</el-button>
       </ul>
     </div>
     <div class="roleBox">
@@ -271,7 +271,7 @@ import {mapMutations} from 'vuex';
           cancelButtonText: '取消',
           type: 'error'
         }).then(() => {
-          backstageAPI.deleteRole({
+          backstageAPI.deleteStaff({
             employeeId:obj.employeeId
           })
           .then(res=>{
