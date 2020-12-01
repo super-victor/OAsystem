@@ -112,4 +112,15 @@ public interface EmployeeScheduleMapper {
      * @LastChangeDate 2020/11/30
      */
     List<Integer> findCompanyScheduleByDate(int employeeId, Date start, Date end);
+
+    /**
+     * @MethodName findScheduleByEmployeeIdAndIsCompany
+     * @param employeeId 职工id
+     * @param isCompany 是否为公司日程
+     * @Description 获取职工日程
+     * @Author Waynejwei
+     * @Return java.util.List<java.lang.Integer>
+     * @LastChangeDate 2020/12/1
+     */
+    List<Integer> findScheduleByEmployeeIdAndIsCompany(int employeeId, int isCompany);
 }

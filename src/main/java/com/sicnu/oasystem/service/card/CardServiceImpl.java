@@ -123,9 +123,9 @@ public class CardServiceImpl implements CardService {
             return new BackFrontMessage(500, "您没有此名片夹", null);
         }
         List<Map<String,Object>> cardList = new ArrayList<>();
-        Map<String,Object> cardMap = new HashMap<>(16);
         List<Card> list = cardMapper.findCardByCardHolderId(cardHolderId);
         for (Card card : list) {
+            Map<String,Object> cardMap = new HashMap<>(16);
             cardMap.put("cardId",card.getCardId());
             cardMap.put("card",card);
             cardList.add(cardMap);

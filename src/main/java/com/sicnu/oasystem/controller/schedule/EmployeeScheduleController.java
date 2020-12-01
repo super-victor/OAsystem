@@ -47,11 +47,11 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
-    @ApiOperation(value = "删除职工日程映射")
-    @DeleteMapping("/EmployeeSchedule")
-    public BackFrontMessage deleteEmployeeScheduleByEmployeeScheduleId(@RequestParam int employeeScheduleId){
-        return employeeScheduleService.deleteEmployeeSchedule(employeeScheduleId);
-    }
+//    @ApiOperation(value = "删除职工日程映射")
+//    @DeleteMapping("/EmployeeSchedule")
+//    public BackFrontMessage deleteEmployeeScheduleByEmployeeScheduleId(@RequestParam int employeeScheduleId){
+//        return employeeScheduleService.deleteEmployeeSchedule(employeeScheduleId);
+//    }
 
     /**
      * @MethodName findEmployeeScheduleByEmployeeId
@@ -88,11 +88,11 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
-    @ApiOperation(value = "查找职工快要开始的日程")
-    @GetMapping("/findReadyToStartEmployeeSchedule")
-    public BackFrontMessage findReadyToStartEmployeeSchedule(@RequestParam long intervalTime){
-        return employeeScheduleService.findReadyToStartEmployeeSchedule(intervalTime);
-    }
+//    @ApiOperation(value = "查找职工快要开始的日程")
+//    @GetMapping("/findReadyToStartEmployeeSchedule")
+//    public BackFrontMessage findReadyToStartEmployeeSchedule(@RequestParam long intervalTime){
+//        return employeeScheduleService.findReadyToStartEmployeeSchedule(intervalTime);
+//    }
 
     /**
      * @MethodName findDoingEmployeeSchedule
@@ -101,11 +101,11 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
-    @ApiOperation(value = "查询职工正在进行的日程")
-    @GetMapping("/findDoingEmployeeSchedule")
-    public BackFrontMessage findDoingEmployeeSchedule(){
-        return employeeScheduleService.findDoingEmployeeSchedule();
-    }
+//    @ApiOperation(value = "查询职工正在进行的日程")
+//    @GetMapping("/findDoingEmployeeSchedule")
+//    public BackFrontMessage findDoingEmployeeSchedule(){
+//        return employeeScheduleService.findDoingEmployeeSchedule();
+//    }
 
     /**
      * @MethodName findBeReadyToEndEmployeeSchedule
@@ -115,11 +115,11 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
-    @ApiOperation(value = "查询职工快要结束的日程")
-    @GetMapping("/findBeReadyToEndEmployeeSchedule")
-    public BackFrontMessage findBeReadyToEndEmployeeSchedule(@RequestParam long intervalTime){
-        return employeeScheduleService.findBeReadyToEndEmployeeSchedule(intervalTime);
-    }
+//    @ApiOperation(value = "查询职工快要结束的日程")
+//    @GetMapping("/findBeReadyToEndEmployeeSchedule")
+//    public BackFrontMessage findBeReadyToEndEmployeeSchedule(@RequestParam long intervalTime){
+//        return employeeScheduleService.findBeReadyToEndEmployeeSchedule(intervalTime);
+//    }
 
     /**
      * @MethodName findEndEmployeeSchedule
@@ -128,14 +128,14 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
-    @ApiOperation(value = "查询职工已经结束的日程")
-    @GetMapping("/findEndEmployeeSchedule")
-    public BackFrontMessage findEndEmployeeSchedule(){
-        return employeeScheduleService.findEndEmployeeSchedule();
-    }
+//    @ApiOperation(value = "查询职工已经结束的日程")
+//    @GetMapping("/findEndEmployeeSchedule")
+//    public BackFrontMessage findEndEmployeeSchedule(){
+//        return employeeScheduleService.findEndEmployeeSchedule();
+//    }
 
     /**
-     * @MethodName findSelfSchedule
+     * @MethodName findSelfScheduleByDate
      * @param start 时间(yyyy-MM-dd)
      * @param end 结束时间
      * @Description  获取某段时间的个人日程
@@ -144,8 +144,8 @@ public class EmployeeScheduleController {
      * @LastChangeDate 2020/11/30
      */
     @ApiOperation(value = "获取该员工一段时间的个人日程")
-    @GetMapping("/findSelfSchedule")
-    public BackFrontMessage findSelfSchedule(@RequestParam String start, @RequestParam String end){
+    @GetMapping("/findSelfScheduleByDate")
+    public BackFrontMessage findSelfScheduleByDate(@RequestParam String start, @RequestParam String end){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try{
             return employeeScheduleService.findSelfScheduleByDate(simpleDateFormat.parse(start), simpleDateFormat.parse(end));
@@ -155,7 +155,7 @@ public class EmployeeScheduleController {
     }
 
     /**
-     * @MethodName findCompanySchedule
+     * @MethodName findCompanyScheduleByDate
      * @param start 开始时间
      * @param end 结束时间
      * @Description 获取某个人在一段时间内的公司日程
@@ -164,13 +164,39 @@ public class EmployeeScheduleController {
      * @LastChangeDate 2020/11/30
      */
     @ApiOperation(value = "获取该员工一段时间的公司日程")
-    @GetMapping("/findCompanySchedule")
-    public BackFrontMessage findCompanySchedule(@RequestParam String start, @RequestParam String end){
+    @GetMapping("/findCompanyScheduleByDate")
+    public BackFrontMessage findCompanyScheduleByDate(@RequestParam String start, @RequestParam String end){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try{
             return employeeScheduleService.findCompanyScheduleByDate(simpleDateFormat.parse(start), simpleDateFormat.parse(end));
         }catch (ParseException e){
             return new BackFrontMessage(500,"时间格式错误",null);
         }
+    }
+
+    /**
+     * @MethodName findCompanySchedule
+     * @Description 获取该员工所有的公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/1
+     */
+    @ApiOperation(value = "获取该员工所有的公司日程")
+    @GetMapping("/findCompanySchedule")
+    public BackFrontMessage findCompanySchedule(){
+        return employeeScheduleService.findCompanyScheduleByEmployeeId();
+    }
+
+    /**
+     * @MethodName findSelfSchedule
+     * @Description 获取该员工所有的个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/1
+     */
+    @ApiOperation(value = "获取该员工所有的个人日程")
+    @GetMapping("/findSelfSchedule")
+    public BackFrontMessage findSelfSchedule(){
+        return employeeScheduleService.findSelfScheduleByEmployeeId();
     }
 }

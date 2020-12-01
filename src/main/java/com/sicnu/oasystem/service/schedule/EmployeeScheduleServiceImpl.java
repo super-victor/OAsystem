@@ -101,6 +101,22 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
     }
 
     @Override
+    public BackFrontMessage findSelfScheduleByEmployeeId() {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        List<Integer> scheduleIdList = employeeScheduleMapper
+                .findScheduleByEmployeeIdAndIsCompany(currentEmployee.getEmployeeId(), 0);
+        return new BackFrontMessage(200,"查询成功",getScheduleListByEmployeeSchduleList(scheduleIdList));
+    }
+
+    @Override
+    public BackFrontMessage findCompanyScheduleByEmployeeId() {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        List<Integer> scheduleIdList = employeeScheduleMapper
+                .findScheduleByEmployeeIdAndIsCompany(currentEmployee.getEmployeeId(), 1);
+        return new BackFrontMessage(200,"查询成功",getScheduleListByEmployeeSchduleList(scheduleIdList));
+    }
+
+    @Override
     public BackFrontMessage findEmployeeScheduleByScheduleId(int scheduleId) {
         List<Integer> employeeIdList = employeeScheduleMapper
                 .findEmployeeScheduleByScheduleId(scheduleId);

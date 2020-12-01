@@ -117,7 +117,7 @@ create table Card(
     updateTime timestamp on update current_timestamp comment '字段修改时间',
     constraint pk_Card_cardId primary key(cardId),
     constraint fk_Card_ownerId foreign key(ownerId) references Employee(employeeId),
-    constraint fk_Card_cardHolderId foreign key(cardHolderId) references Employee(employeeId)
+    constraint fk_Card_cardHolderId foreign key(cardHolderId) references CardHolder(cardHolderId)
 );
 
 
@@ -342,7 +342,11 @@ insert into cardholder (name, ownerId) values ('默认名片夹', 4);
 insert into cardholder (name, ownerId) values ('默认名片夹', 5);
 insert into cardholder (name, ownerId) values ('后端', 2);
 
+insert into card(ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 11, '1', '11111','11111,','1111','1111','1111','1111');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 5, '张一', '13348943243', 'Yu@163.com', '成龙', 'Sicnu', '人事部', '职员');
+
 
 INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
 INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');

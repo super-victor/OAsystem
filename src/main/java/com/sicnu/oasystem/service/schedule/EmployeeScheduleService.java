@@ -68,6 +68,24 @@ public interface EmployeeScheduleService {
     BackFrontMessage findCompanyScheduleByDate(Date start, Date end);
 
     /**
+     * @MethodName findSelfScheduleByEmployeeId
+     * @Description 获取职工所有的个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/1
+     */
+    BackFrontMessage findSelfScheduleByEmployeeId();
+
+    /**
+     * @MethodName findCompanyScheduleByEmployeeId
+     * @Description 获取职工所有的公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/1
+     */
+    BackFrontMessage findCompanyScheduleByEmployeeId();
+
+    /**
      * @MethodName findEmployeeScheduleByScheduleId
      * @param scheduleId 日程id
      * @Description 查找某一日程下的所有职工

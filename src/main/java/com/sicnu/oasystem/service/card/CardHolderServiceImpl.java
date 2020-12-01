@@ -9,6 +9,8 @@ import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -50,8 +52,9 @@ public class CardHolderServiceImpl implements CardHolderService {
         return new BackFrontMessage(200,"获取成功",list);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public BackFrontMessage deleteCardHolderByCardHolderId(int cardHolderId){
+    public BackFrontMessage deleteCardHolderByCardHolderId(int cardHolderId) {
         if (isDefaultCardHolder(cardHolderId)){
             return new BackFrontMessage(500,"默认名片夹不可删除",null);
         }
@@ -65,19 +68,25 @@ public class CardHolderServiceImpl implements CardHolderService {
         if ( hasCardHolder.size() != 0 ) {  //有需要转移的名片夹
             updateCard = true;
         }
-        //删除前先将此名片夹下的名片转移到“默认名片夹”下
-        int transferCount = cardMapper.updateOldCardHolderIdByNewCardHolderId(
-                cardHolderId, defaultCardHolder.getCardHolderId());
-        if (transferCount > 0 || !updateCard){  //转移行数大于0，或者不需要转移
-            int result = cardHolderMapper
-                    .deleteCardHolderByCardHolderId(cardHolderId);
-            if (result > 0){
-                return new BackFrontMessage(200,"删除成功,该名片夹下的名片已转移至‘默认名片夹‘下",null);
+        try{
+            //删除前先将此名片夹下的名片转移到“默认名片夹”下
+            int transferCount = cardMapper.updateOldCardHolderIdByNewCardHolderId(
+                    cardHolderId, defaultCardHolder.getCardHolderId());
+            if (transferCount > 0 || !updateCard){  //转移行数大于0，或者不需要转移
+                int result = cardHolderMapper
+                        .deleteCardHolderByCardHolderId(cardHolderId);
+                if (result > 0){
+                    return new BackFrontMessage(200,"删除成功,该名片夹下的名片已转移至‘默认名片夹‘下",null);
+                } else {
+                    throw new Exception("删除名片夹失败");
+                }
             } else {
-                return new BackFrontMessage(500,"删除失败",null);
+                throw new Exception("删除名片夹失败，名片转移失败");
             }
-        } else {
-            return new BackFrontMessage(500,"删除失败",null);
+        } catch (Exception e){
+            //事务未完成，则回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new BackFrontMessage(500,"删除名片夹失败",null);
         }
     }
 

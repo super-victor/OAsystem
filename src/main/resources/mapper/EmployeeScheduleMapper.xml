@@ -48,4 +48,9 @@
         (startTime >= #{start} and #{end} >= endTime)));
     </select>
 
+    <select id="findScheduleByEmployeeIdAndIsCompany" resultType="java.lang.Integer">
+        select scheduleId from employeeschedule where employeeId = #{employeeId} and scheduleId in (
+        select scheduleId from schedule where isCompany = #{isCompany})
+    </select>
+
 </mapper>
