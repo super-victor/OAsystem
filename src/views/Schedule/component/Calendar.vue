@@ -45,8 +45,8 @@ export default {
         events: [{ // 将在日历上显示的事件对象， events 可以是数组、json、函数。具体可以查看官方文档
             title: '聚餐',
             id:2,
-            start: '2020-11-09',
-            end: '2020-11-11', // 这里要注意，end为可选参数，无end参数时该事件仅在当天展示
+            start: '2020-12-01 16:39:01',
+            end: '2020-12-05 20:00:00', // 这里要注意，end为可选参数，无end参数时该事件仅在当天展示
             backgroundColor: '#FDEBC9', // 该事件的背景颜色
             borderColor: '#FDEBC9', // 该事件的边框颜色
             textColor: '#F9AE26' // 该事件的文字颜色
@@ -84,10 +84,9 @@ export default {
           scheduleId: id
         })
         .then(res=>{
-          const h = this.$createElement;
           this.$msgbox({
             title:'日程内容',
-            message: res
+            message: dateClickInfo.event.start
           })
           // console.log(res);
         })

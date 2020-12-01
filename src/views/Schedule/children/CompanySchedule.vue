@@ -37,6 +37,7 @@ import Calendar from '../component/Calendar';
     font-size: 0.2rem;
     padding: 50px;
     width: 80%;
+    height: 600px;
     background-color: @white;
     border: @baseBorderRadius;
   }

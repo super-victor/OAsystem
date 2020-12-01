@@ -35,7 +35,7 @@ import Calendar from '../component/Calendar';
 @import '../../../style/common.less';
   .mine{
     height: 600px;
-    width: 85%;
+    width: 80%;
     .center {
       margin-left: 10%;
       padding: 50px;
