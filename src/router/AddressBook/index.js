@@ -1,6 +1,6 @@
 import AddressBook from '@/views/AddressBook/AddressBook.vue'
 
-import ChildComponent from "@/views/AddressBook/children/ChildComponent.vue";
+import AddressBookSelect from "@/views/AddressBook/children/AddressBookSelect.vue";
 
 
   export default {
@@ -11,8 +11,8 @@ import ChildComponent from "@/views/AddressBook/children/ChildComponent.vue";
     children:[
       {
       path:'/address-book/inquiry',
-      name:'ChildrenComponent',
-      component:ChildComponent,
+      name:'AddressBookSelect',
+      component:AddressBookSelect,
       }
   ]
   }

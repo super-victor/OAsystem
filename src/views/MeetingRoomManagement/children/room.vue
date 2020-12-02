@@ -22,6 +22,14 @@
     </div>
 
     <div class="msgBox">
+      <!-- 会议室筛选 -->
+      <!-- <el-tree
+        :data="data"
+        :props="defaultProps"
+        accordion
+        @node-click="handleNodeClick">
+      </el-tree> -->
+
       <!-- 搜索筛选 -->
       <div class="head">
         <!-- 筛选 -->
@@ -57,17 +65,17 @@
       <div class="table">
         <template>
           <el-table :data="tableData" stripe style="height:550px;width: 100%;padding:0 25px">
-            <el-table-column prop="meetingroomnum" label="会议室号" width=220px>
+            <el-table-column prop="meetingroomnum" label="会议室号" >
             </el-table-column>
-            <el-table-column prop="status" label="状态" width=200px>
+            <el-table-column prop="status" label="状态">
             </el-table-column>
-            <el-table-column prop="communicate" label="会议名称" width=250px>
+            <el-table-column prop="communicate" label="会议名称" >
             </el-table-column>
-            <el-table-column prop="starttime" label="开始时间" width=180px>
+            <el-table-column prop="starttime" label="开始时间" >
             </el-table-column>
-            <el-table-column prop="endtime" label="结束时间" width=180px>
+            <el-table-column prop="endtime" label="结束时间" >
             </el-table-column>
-            <el-table-column prop="" label="会议预约" width=180px>
+            <el-table-column prop="" label="会议预约" >
               <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-plus" circle @click="dialogFormVisible = true"></el-button>
               </template>
@@ -245,6 +253,7 @@ import {mapMutations} from 'vuex'
       }
 
       .table {
+        width: 100%;
         height: 70%;
         margin-top: 20px;
         padding: 0 10px;

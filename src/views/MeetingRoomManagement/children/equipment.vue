@@ -47,7 +47,7 @@
       <el-dialog class="updateDialog" title="修改设备信息" :visible.sync="updateEquipment" > 
         <el-form class="updateForm" :model="updateForm" label-width="90px" >
           <el-form-item label="会议室号:" style="width:80%;padding-bottom:20px;" prop="roomId">
-              <el-select v-model.number="updateForm.roomId" placeholder="请选择">
+              <el-select v-model="updateForm.roomId" placeholder="请选择">
                 <el-option
                   v-for="item in MeetingroomData"
                   :key="item.value"
@@ -128,16 +128,21 @@
       <!-- 表格 -->
       <div class="table">
         <template>
-          <el-table :data="tableFilterData" stripe style="height:550px;width: 100%;padding:0 25px" v-loading ="loading">
-            <el-table-column prop="meetingRoomName" label="会议室号" width="">
+          <el-table :data="tableFilterData" stripe style="height:550px;width: 100%;padding:0 25px" v-loading ="loading" > 
+            <el-table-column prop="meetingRoomName" label="会议室号" width="" sortable>
             </el-table-column>
-            <el-table-column prop="name" label="设备名称" width="">
+            <el-table-column prop="name" label="设备名称" width="" sortable>
             </el-table-column>
-            <el-table-column prop="equipmentClassifyName" label="类型">
+            <el-table-column prop="equipmentClassifyName" label="类型" sortable>
             </el-table-column>
-            <el-table-column prop="num" label="数量">
+            <el-table-column prop="num" label="数量" sortable>
             </el-table-column>
-            <el-table-column prop="isMaintain" label="维护状态" width="">
+            <el-table-column label="维护状态" width="" >
+              <template slot-scope="scope">
+                 <el-button :type="scope.row.isMaintain == 1?'success':'danger'" size="mini" :icon="scope.row.isMaintain ==1?'el-icon-check':'el-icon-close'" circle></el-button>
+          
+                 <!-- <el-button type="danger" size="mini" icon="el-icon-close" circle></el-button> -->
+              </template>
             </el-table-column>
             <el-table-column  label="操作" width="200" align="center">
               <template slot-scope="scope">
@@ -198,18 +203,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.tableData = res.object ;
         this.tableFilterData = this.tableData;
         console.log("filter:",this.tableFilterData)
-        this.tableData.map((item, index) => {
-          if (this.tableData[index].isMaintain == 0){
-            let getIndex0 = index;
-            this.zero[index] = 0;
-            this.tableData[getIndex0].isMaintain = <el-button type="success" size="mini" icon="el-icon-check" circle></el-button>
-            }
-            else if(this.tableData[index].isMaintain == 1){
-              let getIndex1 = index;
-              this.zero[index] = 1;
-              this.tableData[getIndex1].isMaintain = <el-button type="danger" size="mini" icon="el-icon-close" circle></el-button>
-            }
-          })
           
         }).catch(err => {
           this.$message.error('读取失败');
@@ -269,7 +262,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         tableFilterData:[],
         ClassifyData:[],
         loading:true,
-        zero:[],
          rules: {
           name: [
             { required: true, message: '请输入设备名称', trigger: 'blur' },
@@ -338,21 +330,18 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.updateForm.equipmentId = mes.equipmentId;
         this.updateForm.types = mes.equipmentClassifyId;
         this.updateForm.roomId = mes.meetingRoomId;
+        console.log(this.updateForm.roomId)
+        this.updateForm.isMaintain =String( mes.isMaintain);
         this.updateForm.name = mes.name;
         this.updateForm.remark = mes.remark;
         this.updateForm.num = mes.num;
-        if(this.zero[this.tableFilterData.indexOf(mes)]==0) this.updateForm.isMaintain = "1";
-        else if(this.zero[this.tableFilterData.indexOf(mes)]==1) this.updateForm.isMaintain = "0";
       },
       UpdateEquipment(){
-        let updateNumiIsMaintain =0;
-        if(this.updateForm.isMaintain==="0") updateNumiIsMaintain = 1;
-        else updateNumiIsMaintain = 0;
         console.log( this.updateForm.equipmentId,typeof(this.updateForm.equipmentId),
           this.updateForm.types,typeof(this.updateForm.types),
           this.updateForm.roomId,typeof(this.updateForm.roomId),
           this.updateForm.name,typeof(this.updateForm.name),
-          updateNumiIsMaintain,typeof(updateNumiIsMaintain),
+          this.updateForm.isMaintain,typeof(this.updateForm.isMaintain),
           this.updateForm.remark,typeof(this.updateForm.remark),
           this.updateForm.num,typeof(this.updateForm.num),);
         this.loading = true
@@ -362,7 +351,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
           equipmentClassifyId:this.updateForm.types,
           meetingRoomId:this.updateForm.roomId,
           name:this.updateForm.name,
-          isMaintain:updateNumiIsMaintain,
+          isMaintain:this.updateForm.isMaintain,
           remark:this.updateForm.remark,
           num:this.updateForm.num,
         }).then(
@@ -416,9 +405,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       getAddEquipment(){
         this.loading = true
         this.addEquipment = false;
-        let numisMaintain = 0;
-        if(this.form.isMaintain==="0") numisMaintain = 1;
-        else numisMaintain = 0;
+ 
         console.log(this.form.types,typeof(this.form.types),
           this.form.roomId,typeof(this.form.roomId),
         this.form.name,typeof(this.form.name),
@@ -430,7 +417,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
           equipmentClassifyId:this.form.types,
           meetingRoomId:this.form.roomId,
           name:this.form.name,
-          isMaintain:numisMaintain,
+          isMaintain:this.form.isMaintain,
           remark:this.form.remark,
           num:this.form.num,
         }).then(
@@ -451,16 +438,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.loading = false;
         this.tableData = res.object ;
         this.tableFilterData = this.tableData;
-        this.tableData.map((item, index) => {
-          if (this.tableData[index].isMaintain == 0){
-            let getIndex0 = index;
-            this.tableData[getIndex0].isMaintain = <el-button type="success" size="mini" icon="el-icon-check" circle></el-button>
-            }
-            else if(this.tableData[index].isMaintain == 1){
-              let getIndex1 = index;
-              this.tableData[getIndex1].isMaintain = <el-button type="danger" size="mini" icon="el-icon-close" circle></el-button>
-            }
-          }) 
         }).catch(err => {
           this.$message.error('读取失败');
           console.log("equipmentAPI:",err)
@@ -505,7 +482,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       }
     }
     .msgBox {
-      height: 800px;
+      height: 100px;
       width: 100%;
       font-size: 30px;
       display: flex;
