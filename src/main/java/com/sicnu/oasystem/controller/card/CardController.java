@@ -9,8 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName CardController
@@ -37,7 +35,7 @@ public class CardController {
      */
     @ApiOperation(value = "直接手动添加名片")
     @PostMapping("/Card")
-    public BackFrontMessage insertCard(@Validated Card card){
+    public BackFrontMessage insertCard(@Validated({Card.Add.class}) Card card){
         return cardService.insertCard(card, card.getCardHolderId());
     }
 
@@ -51,7 +49,7 @@ public class CardController {
      */
     @ApiOperation(value = "修改名片相关内容")
     @PutMapping("/Card")
-    public BackFrontMessage updateCard(Card card){
+    public BackFrontMessage updateCard(@Validated({Card.Update.class}) Card card){
         if (card.getCardId() == null)  return new BackFrontMessage(500,"名片id不能为空",null);
         return cardService.updateCard(card, card.getCardId());
     }

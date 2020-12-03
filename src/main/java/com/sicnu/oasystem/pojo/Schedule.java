@@ -24,22 +24,23 @@ import java.util.*;
 @AllArgsConstructor
 public class Schedule {
     @JsonIgnore
+    @NotNull(message = "日程id不能为空",groups = {Update.class})
     private Integer scheduleId;
     @JsonIgnore
     private Integer isCompany;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotBlank(message = "开始时间不能为空")
+    @NotBlank(message = "开始时间不能为空",groups = {Company.class, Self.class})
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotBlank(message = "结束时间不能为空")
+    @NotBlank(message = "结束时间不能为空",groups = {Company.class, Self.class})
     private Date endTime;
-    @NotNull(message = "领导人不能为空")
+    @NotNull(message = "领导人不能为空",groups = {Company.class})
     private Integer leader;
-    @NotBlank(message = "日程地点不能为空")
+    @NotBlank(message = "日程地点不能为空",groups = {Company.class, Self.class})
     private String location;
-    @NotBlank(message = "日程内容不能为空")
+    @NotBlank(message = "日程内容不能为空", groups = {Company.class, Self.class})
     private String content;
     private String remark;
     private Integer type;
@@ -64,4 +65,13 @@ public class Schedule {
     private List<Integer> joiner;
 
     public Schedule(){}
+
+    public interface Company{
+    }
+
+    public interface Self{
+    }
+
+    public interface Update{
+    }
 }
