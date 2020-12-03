@@ -27,18 +27,18 @@ public class Card {
     private Integer cardId;
     @JsonIgnore
     private Integer ownerId;
-    @NotNull(message = "名片夹id不能为空")
+    @NotNull(message = "名片夹id不能为空",groups = {Add.class})
     private Integer cardHolderId;
-    @NotBlank(message = "名片名称不能为空")
+    @NotBlank(message = "名片名称不能为空",groups = {Add.class})
     private String name;
-    @Length(min = 11, max = 11, message = "电话格式不正确")
-    @NotBlank(message = "电话不能为空")
+    @Length(min = 11, max = 11, message = "电话格式不正确",groups = {Add.class, Update.class})
+    @NotBlank(message = "电话不能为空",groups = {Add.class})
     private String phone;
-    @Pattern(regexp = "\\w+@(\\w+\\.){1,3}\\w+", message = "邮箱格式不正确")
+    @Pattern(regexp = "\\w+@(\\w+\\.){1,3}\\w+", message = "邮箱格式不正确",groups = {Add.class,Update.class})
     private String email;
-    @NotBlank(message = "地址不能为空")
+    @NotBlank(message = "地址不能为空",groups = {Add.class})
     private String address;
-    @NotBlank(message = "公司不能为空")
+    @NotBlank(message = "公司不能为空",groups = {Add.class})
     private String company;
     private String department;
     private String position;
@@ -47,4 +47,10 @@ public class Card {
     @JsonIgnore
     private Date updateTime;
     public Card(){}
+
+    public interface Add{
+    }
+
+    public interface Update{
+    }
 }

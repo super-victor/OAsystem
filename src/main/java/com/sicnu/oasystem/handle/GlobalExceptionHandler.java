@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.handle;
 
+import com.sicnu.oasystem.json.BackFrontMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -11,8 +12,6 @@ import javax.validation.ValidationException;
 import org.springframework.validation.BindException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,10 +40,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {BindException.class, ValidationException.class, MethodArgumentNotValidException.class})
-    public Map<String, Object> handleParameterVerificationException(Exception e) {
+    public BackFrontMessage handleParameterVerificationException(Exception e) {
         log.error(" handleParameterVerificationException has been invoked", e);
-        Map<String, Object> resultMap = new HashMap<>(4);
-        resultMap.put("code", "100001");
         String msg = null;
         /// BindException
         if (e instanceof BindException) {
@@ -79,8 +76,7 @@ public class GlobalExceptionHandler {
         } else {
             msg = "处理参数时异常";
         }
-        resultMap.put("msg", msg);
-        return resultMap;
+        return new BackFrontMessage(500, msg, null);
     }
 
 }

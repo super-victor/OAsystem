@@ -1,18 +1,13 @@
 package com.sicnu.oasystem.controller.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.service.card.CardHolderService;
 import io.swagger.annotations.*;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 
 /**
