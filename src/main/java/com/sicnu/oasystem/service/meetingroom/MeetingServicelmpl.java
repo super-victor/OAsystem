@@ -4,6 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.MeetingMapper;
 import com.sicnu.oasystem.pojo.Meeting;
 import com.sicnu.oasystem.service.meetingroom.MeetingService;
+import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +31,7 @@ public class MeetingServicelmpl implements MeetingService {
             return new BackFrontMessage(500,"获取所有的会议失败",null);
         }else {
             if(meetings.size()==0){
-                return new BackFrontMessage(500,"当前没有会议",null);
+                return new BackFrontMessage(500,"没有会议",null);
             }
             return new BackFrontMessage(200,"获取所有会议成功",meetings);
         }
@@ -59,21 +60,24 @@ public class MeetingServicelmpl implements MeetingService {
     }
 
     @Override
-    public BackFrontMessage addOrderMeeting(Integer meetingroomid, Integer status, Integer employeeid, String name, Date startTime,
+    public BackFrontMessage addOrderMeeting(Integer meetingroomid, Integer employeeid, String name, Date startTime,
                                             Date endtime, Integer peoplenum,String remark) {
         if(meetingroomid==null||employeeid==null||meetingroomid<=0||employeeid<=0){
             return new BackFrontMessage(500,"预约会议失败",null);
         }
         List<Meeting> meeting=meetingMapper.judgeIsIsOccupy(meetingroomid,startTime,endtime);
-        if (meeting!=null||meeting.size()!=0){
+
+        if (meeting!=null && meeting.size()!=0){
             return new BackFrontMessage(500,"此时段不能预约会议",null);
         }
         int res=0;
-        res=meetingMapper.addOrderMeeting(meetingroomid,status,employeeid,name,startTime,endtime,peoplenum,remark);
+        res=meetingMapper.addOrderMeeting(meetingroomid,employeeid,name,startTime,endtime,peoplenum,remark);
         if(res==0){
             return new BackFrontMessage(500,"预约会议失败",null);
         }else {
+//            todo:System.out.println(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
             return new BackFrontMessage(200,"预约会议成功",null);
+
         }
     }
 
@@ -103,6 +107,16 @@ public class MeetingServicelmpl implements MeetingService {
             }else {
                 return new BackFrontMessage(200,"查询未审批会议成功",meetings);
             }
+        }
+    }
+
+    @Override
+    public BackFrontMessage getCurrentAllMeeting() {
+        List<Meeting>meetings=meetingMapper.getCurrentAllMeeting();
+        if(meetings==null||meetings.size()==0){
+            return new BackFrontMessage(500,"当前没有会议",null);
+        }else {
+            return new BackFrontMessage(200,"获取当前所有会议成功",meetings);
         }
     }
 

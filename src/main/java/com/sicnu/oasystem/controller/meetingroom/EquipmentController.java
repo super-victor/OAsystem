@@ -51,7 +51,8 @@ public class EquipmentController {
     public BackFrontMessage updateEquipment(Equipment equipment){
         System.out.println(equipment);
         System.out.println(equipment.getEquipmentClassifyId());
-        return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
+        return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),
+                equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
     }
 
     /**

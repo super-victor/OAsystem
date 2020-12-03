@@ -46,8 +46,8 @@
 
 
     <select id="getAllMeetingRoom" resultMap="meet">
-        select meetingroom.place,meetingroom.name,meetingroom.isOccapy,meetingroom.maxperson,meeting.name as meetingName,meeting.startTime,meeting.endTime
-        from meetingroom LEFT JOIN meeting on meetingroom.meetingRoomId=meeting.meetingRoomId and meeting.status=1
+        select meetingroom.meetingroomid,meetingroom.place,meetingroom.name,meetingroom.isOccapy,meetingroom.maxperson,meeting.name as meetingName,meeting.startTime,meeting.endTime
+        from meetingroom LEFT JOIN meeting on meetingroom.meetingRoomId=meeting.meetingRoomId and meeting.status=1 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
         <where>
             <if test="place !=null">
                 and meetingroom.place like #{place}

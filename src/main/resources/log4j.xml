@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- 日志输出到控制台 -->
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <!-- 日志输出格式 -->
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd HH:mm:ss SSS}][%c]-[%m]%n"/>
+        </layout>
+
+        <!--过滤器设置输出的级别-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <!-- 设置日志输出的最小级别 -->
+            <param name="levelMin" value="info"/>
+            <!-- 设置日志输出的最大级别 -->
+            <param name="levelMax" value="ERROR"/>
+        </filter>
+    </appender>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{dd/MM/yy hh:mm:ss:sss z}] %5p %c{2}: %m%n" />
+        </layout>
+    </appender>
+    <appender name="infoAppender" class="org.apache.log4j.jdbc.JDBCAppender">
+        <param name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <param name="URL"
+               value="jdbc:mysql://101.201.254.63:3306/oaDB?serverTimezone=GMT%2B8&amp;useAffectedRows=true"/>
+        <param name="user" value="oasystem"/>
+        <param name="password" value="tangliyi123"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="INSERT INTO log(level,content,type) values('%-5p','%m','%X{type}')"/>
+        </layout>
+    </appender>
+    <appender name="errorAppender" class="org.apache.log4j.jdbc.JDBCAppender">
+        <param name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <param name="URL"
+               value="jdbc:mysql://101.201.254.63:3306/oaDB?serverTimezone=GMT%2B8&amp;useAffectedRows=true"/>
+        <param name="user" value="oasystem"/>
+        <param name="password" value="tangliyi123"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="INSERT INTO log(level,content,type) values('%-5p','%m','%X{type}')"/>
+        </layout>
+    </appender>
+    <logger name="com.sicnu.oasystem.*" additivity="true">
+        <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="info" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="infoAppender"/>
+    </logger>
+    <logger name="error" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="errorAppender"/>
+    </logger>
+    <root>
+        <appender-ref ref="stdout"/>
+    </root>
+
+</log4j:configuration>

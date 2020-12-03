@@ -1,4 +1,4 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.addrlist;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 

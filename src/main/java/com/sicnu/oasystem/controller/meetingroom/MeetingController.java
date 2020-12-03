@@ -25,11 +25,16 @@ public class MeetingController {
     @Resource
     MeetingServicelmpl meetingServicelmpl;
 
-    @ApiOperation("获取所有会议")
+    @ApiOperation("获取所有预约成功的会议")
     @GetMapping("/getAllMeetings")
     public BackFrontMessage getAllMeetings(){
         return meetingServicelmpl.getAllMeetings();
     };
+
+    @GetMapping("/getCurrentAllMeeting")
+    public  BackFrontMessage getCurrentAllMeeting(){
+        return meetingServicelmpl.getCurrentAllMeeting();
+    }
 
     @GetMapping("/getMeetingById")
     @ApiOperation("按会议Id获取会议信息")
@@ -51,7 +56,7 @@ public class MeetingController {
 
     @ApiOperation("预约会议")
     @PostMapping("/addOrderMeeting")
-    public BackFrontMessage addOrderMeeting(@RequestParam Integer meetingroomid, @RequestParam Integer status, @RequestParam Integer employeeid, @RequestParam String name, @RequestParam String startTime,
+    public BackFrontMessage addOrderMeeting(@RequestParam Integer meetingroomid, @RequestParam Integer employeeid, @RequestParam String name, @RequestParam String startTime,
                                             @RequestParam String endtime, @RequestParam Integer peoplenum, @RequestParam String remark){
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -66,7 +71,7 @@ public class MeetingController {
         if(StartTime.after(Endtine)){
             return new BackFrontMessage(500,"预约会议失败",null);
         }
-        return meetingServicelmpl.addOrderMeeting(meetingroomid,status,employeeid,name,StartTime,Endtine,peoplenum,remark);
+        return meetingServicelmpl.addOrderMeeting(meetingroomid,employeeid,name,StartTime,Endtine,peoplenum,remark);
     }
 }
 

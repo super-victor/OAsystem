@@ -60,7 +60,7 @@ public interface MeetingService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/24
      */
-    BackFrontMessage addOrderMeeting(Integer meetingid, Integer status, Integer employeeid,
+    BackFrontMessage addOrderMeeting(Integer meetingid, Integer employeeid,
                                      String name, Date startTime, Date endtime,
                                      Integer peoplenum,String remark);
 
@@ -84,5 +84,7 @@ public interface MeetingService {
      * @LastChangeDate 2020/11/28
      */
     BackFrontMessage getNotApprovedMeeting();
+
+    BackFrontMessage getCurrentAllMeeting();
 
 }

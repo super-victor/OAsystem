@@ -8,6 +8,7 @@ import com.sicnu.oasystem.pojo.Equipment;
 import com.sicnu.oasystem.pojo.EquipmentClassify;
 import com.sicnu.oasystem.pojo.MeetingRoom;
 import com.sicnu.oasystem.service.meetingroom.EquipmentService;
+import com.sicnu.oasystem.util.LogUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +33,9 @@ public class EquipmentServicelpml implements EquipmentService {
 
     @Resource
     MeetingRoomMapper meetingRoomMapper;
+
+    @Resource
+    LogUtil logUtil;
 
     @Override
     public BackFrontMessage addEquipment(Integer equipmentclassifyId,
@@ -88,6 +92,7 @@ public class EquipmentServicelpml implements EquipmentService {
             if(res==0){
                 return new BackFrontMessage(500,"更新设备失败",null);
             }else {
+                logUtil.updateInfo("修改设备成功"+equipment);
                 return new BackFrontMessage(200,"更新设备成功",null);
             }
         }

@@ -3,7 +3,7 @@
 <mapper namespace="com.sicnu.oasystem.mapper.MeetingMapper">
     <insert id="addOrderMeeting">
         insert into meeting(meetingroomid,status,employeeid,name,appoinmentstatus,starttime,endtime,peoplenum,remark)
-        values (#{param1},#{param2},#{param3},#{param4},0,#{param5},#{param6},#{param7},#{param8})
+        values (#{param1},0,#{param2},#{param3},0,#{param4},#{param5},#{param6},#{param7})
     </insert>
     <update id="approveMeeting">
         update meeting set appoinmentstatus=#{param2} where meetingid=#{param1}
@@ -34,7 +34,7 @@
 
     <select id="getAllMeetings" resultType="com.sicnu.oasystem.pojo.Meeting">
         select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
-        and appoinmentstatus=1 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
+        and appoinmentstatus=1
     </select>
     <select id="getMeetingById" resultType="com.sicnu.oasystem.pojo.Meeting">
         select * from meeting where meetingid=#{meetingId}
@@ -45,6 +45,12 @@
     </select>
     <select id="judgeIsIsOccupy" resultType="com.sicnu.oasystem.pojo.Meeting">
         select * from meeting where meetingroomid=#{param1} and ((UNIX_TIMESTAMP(#{param2})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param2}))
-        or(UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param3})) or(UNIX_TIMESTAMP(#{param2})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param3})) )
+        or(UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param3}))
+        or(UNIX_TIMESTAMP(starttime)>=UNIX_TIMESTAMP(#{param2}) and UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(endtime))
+        or(UNIX_TIMESTAMP(#{param2})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param3})))
+    </select>
+    <select id="getCurrentAllMeeting" resultType="com.sicnu.oasystem.pojo.Meeting">
+        select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
+        and appoinmentstatus=1 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
     </select>
 </mapper>

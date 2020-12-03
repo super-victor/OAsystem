@@ -1,10 +1,11 @@
-package com.sicnu.oasystem.service;
+package com.sicnu.oasystem.service.addrlist;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.json.BackFrontPage;
 import com.sicnu.oasystem.mapper.DepartmentMapper;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.service.addrlist.AddrListService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -303,7 +303,7 @@ create table Meeting(
     record text comment '会议记录',
     remark text comment '备注',
     name varchar(50) not null comment '会议名称',
-    appoinmentStatus int not null comment '会议预约状态 0预约中 -1 预约失败 1预约失败 2会议完成',
+    appoinmentStatus int not null comment '会议预约状态 0预约中 -1 预约失败 1预约成功 2会议完成',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     startTime timestamp not null comment '会议开始时间',
@@ -326,7 +326,27 @@ create table Message (
     constraint pk_Message_messageId primary key (messageId),
     constraint fk_Message_employeeId foreign key (employeeId) references Employee(employeeId)
 );
+create table Message(
+    messageId int not null  auto_increment comment '消息ID',
+    employeeid int not null comment '员工id',
+    messageTitle varchar(20) not null comment '消息头',
+    messagecontext text not null comment '消息内容',
+    creattime date not null comment '创建时间',
+    isread int not null comment '消息是否已读',
+    constraint pk_Message_messageid primary key (messageId),
+    constraint fk_EmployeeRole_employeeId foreign key (employeeid) references Employee(employeeId)
+);
 
+
+CREATE table log(
+    logId int not null auto_increment,
+    level varchar(45) not null,
+    type char(20) not null,
+    content text,
+    createTime timestamp default current_timestamp comment '创建时间',
+    updateTime timestamp on update current_timestamp comment '修改时间',
+    constraint pk_Log_LogId primary key (logId)
+);
 
 -- 数据
 insert into department (name, phone) values ('后勤部', '10001');
@@ -334,6 +354,10 @@ insert into department (name, phone) values ('财务部', '10002');
 
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学', 0);
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学', 0);
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('zhangsan','张三','666666','12345678910','968561352@qq.com','510100000000000002','f','财务部','普通用户','四川师范大学',0);
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('lisi','李四','121212','12345678910','115645284@qq.com','510100000000000003','f','后勤部','管理员','四川师范大学',0);
+insert into employee(username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('wanghong','王红','123123','12345678910','12456385@qq.com','510100000000000004','m','后勤部','普通员工','四川师范大学',0);
+
 
 insert into cardholder (name, ownerId) values ('默认名片夹', 1);
 insert into cardholder (name, ownerId) values ('默认名片夹', 2);
@@ -410,6 +434,64 @@ insert into menu (name, url, code) values ('获取所有的会议室信息','GET
 insert into menu (name, url, code) values ('添加会议室','POST /addMeetingRoom','000T');
 insert into menu (name, url, code) values ('删除会议室','DELETE /deleteMeetingRoom','000V');
 insert into menu (name, url, code) values ('查找会议室','GET /getMeetingRoomById','000W');
+
+insert into EmployeeRole(employeeId, roleId) values (3,1);
+insert into EmployeeRole(employeeId, roleId) values (4,2);
+insert into EmployeeRole(employeeId, roleId) values (5,1);
+insert into EmployeeRole(employeeId, roleId) values (4,1);
+insert into EmployeeRole(employeeId, roleId) values (4,3);
+
+insert into RoleMenu(roleId, menuId) values (1,1);
+insert into RoleMenu(roleId, menuId) values (1,2);
+insert into RoleMenu(roleId, menuId) values (1,3);
+insert into RoleMenu(roleId, menuId) values (1,4);
+insert into RoleMenu(roleId, menuId) values (1,5);
+insert into RoleMenu(roleId, menuId) values (1,6);
+insert into RoleMenu(roleId, menuId) values (1,7);
+insert into RoleMenu(roleId, menuId) values (1,8);
+insert into RoleMenu(roleId, menuId) values (1,9);
+insert into RoleMenu(roleId, menuId) values (1,10);
+insert into RoleMenu(roleId, menuId) values (1,11);
+insert into RoleMenu(roleId, menuId) values (1,12);
+insert into RoleMenu(roleId, menuId) values (1,14);
+insert into RoleMenu(roleId, menuId) values (1,15);
+insert into RoleMenu(roleId, menuId) values (1,16);
+insert into RoleMenu(roleId, menuId) values (1,17);
+insert into RoleMenu(roleId, menuId) values (1,18);
+insert into RoleMenu(roleId, menuId) values (1,21);
+insert into RoleMenu(roleId, menuId) values (1,26);
+insert into RoleMenu(roleId, menuId) values (1,27);
+insert into RoleMenu(roleId, menuId) values (1,28);
+insert into RoleMenu(roleId, menuId) values (1,31);
+insert into RoleMenu(roleId, menuId) values (2,1);
+insert into RoleMenu(roleId, menuId) values (2,2);
+insert into RoleMenu(roleId, menuId) values (2,3);
+insert into RoleMenu(roleId, menuId) values (2,4);
+insert into RoleMenu(roleId, menuId) values (2,5);
+insert into RoleMenu(roleId, menuId) values (2,6);
+insert into RoleMenu(roleId, menuId) values (2,7);
+insert into RoleMenu(roleId, menuId) values (2,8);
+insert into RoleMenu(roleId, menuId) values (2,9);
+insert into RoleMenu(roleId, menuId) values (2,10);
+insert into RoleMenu(roleId, menuId) values (2,11);
+insert into RoleMenu(roleId, menuId) values (2,12);
+insert into RoleMenu(roleId, menuId) values (2,14);
+insert into RoleMenu(roleId, menuId) values (2,15);
+insert into RoleMenu(roleId, menuId) values (2,16);
+insert into RoleMenu(roleId, menuId) values (2,17);
+insert into RoleMenu(roleId, menuId) values (2,18);
+insert into RoleMenu(roleId, menuId) values (2,19);
+insert into RoleMenu(roleId, menuId) values (2,20);
+insert into RoleMenu(roleId, menuId) values (2,21);
+insert into RoleMenu(roleId, menuId) values (2,23);
+insert into RoleMenu(roleId, menuId) values (2,24);
+insert into RoleMenu(roleId, menuId) values (2,25);
+insert into RoleMenu(roleId, menuId) values (2,26);
+insert into RoleMenu(roleId, menuId) values (2,27);
+insert into RoleMenu(roleId, menuId) values (2,28);
+insert into RoleMenu(roleId, menuId) values (2,29);
+insert into RoleMenu(roleId, menuId) values (2,30);
+insert into RoleMenu(roleId, menuId) values (2,31);
 
 insert into menu (name, url ,code) values ('添加公司日程','POST /CompanySchedule','000X');
 insert into menu (name, url ,code) values ('修改公司日程信息','POST /CompanySchedule','000Y');

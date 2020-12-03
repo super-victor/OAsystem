@@ -1,7 +1,7 @@
-package com.sicnu.oasystem.controller;
+package com.sicnu.oasystem.controller.addrlist;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.service.AddrListService;
+import com.sicnu.oasystem.service.addrlist.AddrListService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +48,7 @@ public class AddrlistController {
     @ApiOperation(value = "获取所有部门的部门名称")
     @GetMapping("/getAllDepartmentName")
     public BackFrontMessage getDepartmentName(){
+        System.out.println(1/0);
         return addrListService.getDeparmentName();
 //        return addrListService.getDeparmentname();
     }

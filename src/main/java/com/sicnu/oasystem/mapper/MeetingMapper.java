@@ -26,6 +26,8 @@ public interface MeetingMapper {
      */
     List<Meeting>getAllMeetings();
 
+    List<Meeting>getCurrentAllMeeting();
+
     /**
      * @MethodName getMeetingById
      * @param meetingId
@@ -61,7 +63,7 @@ public interface MeetingMapper {
      * @Return java.lang.Integer
      * @LastChangeDate 2020/11/28
      */
-    Integer addOrderMeeting(Integer meetingroomid, Integer status, Integer employeeid, String name, Date startTime,Date endtime,Integer peoplenum,String remark);
+    Integer addOrderMeeting(Integer meetingroomid, Integer employeeid, String name, Date startTime,Date endtime,Integer peoplenum,String remark);
 
     /**
      * @MethodName approveMeeting
