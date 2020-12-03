@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -28,12 +29,17 @@ public class Schedule {
     private Integer isCompany;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotBlank(message = "开始时间不能为空")
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotBlank(message = "结束时间不能为空")
     private Date endTime;
+    @NotNull(message = "领导人不能为空")
     private Integer leader;
+    @NotBlank(message = "日程地点不能为空")
     private String location;
+    @NotBlank(message = "日程内容不能为空")
     private String content;
     private String remark;
     private Integer type;

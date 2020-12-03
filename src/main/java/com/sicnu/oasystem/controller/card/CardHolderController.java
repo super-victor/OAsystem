@@ -1,11 +1,19 @@
 package com.sicnu.oasystem.controller.card;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.service.card.CardHolderService;
 import io.swagger.annotations.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * @ClassName CardHolderController
@@ -17,6 +25,7 @@ import javax.annotation.Resource;
 
 @Api(tags = "名片夹管理")
 @RestController
+@Validated
 public class CardHolderController {
 
     @Resource
@@ -60,22 +69,22 @@ public class CardHolderController {
      */
     @ApiOperation(value = "增加名片夹")
     @PostMapping("/CardHolder")
-    public BackFrontMessage insertCardHolder(@RequestParam String name){
+    public BackFrontMessage insertCardHolder(@RequestParam @Validated @NotBlank(message = "名片夹名称不能为空") String name){
         return cardHolderService.insertCardHolder(name);
     }
 
     /**
      * @MethodName updateCardHolderName
      * @param cardHolderId  名片夹id
-     * @param name 修改名片夹名称
-     * @Description
+     * @param name 文件夹名称
+     * @Description 修改名片夹名称
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/8
      */
     @ApiOperation(value = "修改名片夹名称")
     @PutMapping("/CardHolder")
-    public BackFrontMessage updateCardHolderName(@RequestParam int cardHolderId, @RequestParam String name){
+    public BackFrontMessage updateCardHolderName(@RequestParam int cardHolderId, @RequestParam @Validated @NotBlank(message = "名片夹名称不能为空") String name){
         return cardHolderService.updateCardHolderName(cardHolderId, name);
     }
 }

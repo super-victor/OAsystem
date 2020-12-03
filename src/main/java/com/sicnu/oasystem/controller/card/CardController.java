@@ -5,9 +5,12 @@ import com.sicnu.oasystem.pojo.Card;
 import com.sicnu.oasystem.service.card.CardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName CardController
@@ -34,12 +37,7 @@ public class CardController {
      */
     @ApiOperation(value = "直接手动添加名片")
     @PostMapping("/Card")
-    public BackFrontMessage insertCard(Card card){
-        if (card.getCardHolderId() == null || card.getName() == null ||
-                card.getPhone() == null || card.getAddress() == null ||
-                card.getCompany() == null){
-            return new BackFrontMessage(500,"请将数据填写完整！",null);
-        }
+    public BackFrontMessage insertCard(@Validated Card card){
         return cardService.insertCard(card, card.getCardHolderId());
     }
 

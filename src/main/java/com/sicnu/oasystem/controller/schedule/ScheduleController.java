@@ -5,6 +5,7 @@ import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.service.schedule.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,11 +35,7 @@ public class ScheduleController {
      */
     @ApiOperation(value = "添加公司日程")
     @PostMapping("/CompanySchedule")
-    public BackFrontMessage insertCompanySchedule(Schedule schedule){
-        if (schedule.getContent() == null || schedule.getStartTime() == null ||
-            schedule.getEndTime() == null || schedule.getLeader() == null ||
-                schedule.getLocation() == null || schedule.getJoiner() == null)
-            return new BackFrontMessage(500,"参数不完整",null);
+    public BackFrontMessage insertCompanySchedule(@Validated Schedule schedule){
         return scheduleService.insertCompanySchedule(schedule);
     }
 
@@ -70,6 +67,7 @@ public class ScheduleController {
     @ApiOperation(value = "修改个人日程信息")
     @PutMapping("/SelfSchedule")
     public BackFrontMessage updateSelfSchedule(Schedule schedule){
+        if (schedule.getScheduleId() == null)   return new BackFrontMessage(500,"日程id不能为空",null);
         return scheduleService.updateScheduleByScheduleId(schedule, schedule.getScheduleId(), 0);
     }
 
