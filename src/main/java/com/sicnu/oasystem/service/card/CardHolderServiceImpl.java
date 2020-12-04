@@ -6,6 +6,7 @@ import com.sicnu.oasystem.mapper.CardMapper;
 import com.sicnu.oasystem.pojo.Card;
 import com.sicnu.oasystem.pojo.CardHolder;
 import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.util.LogUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class CardHolderServiceImpl implements CardHolderService {
 
     @Resource
     CardMapper cardMapper;
+
+    @Resource
+    LogUtil logUtil;
 
     @Override
     public BackFrontMessage findCardHolderByEmployeeId(){
@@ -76,11 +80,14 @@ public class CardHolderServiceImpl implements CardHolderService {
                 int result = cardHolderMapper
                         .deleteCardHolderByCardHolderId(cardHolderId);
                 if (result > 0){
+                    logUtil.deleteInfo(currentEmployee.getEmployeeId()+"用户删除名片夹id为"+cardHolderId+"的名片夹");
                     return new BackFrontMessage(200,"删除成功,该名片夹下的名片已转移至‘默认名片夹‘下",null);
                 } else {
+                    logUtil.customException(currentEmployee.getEmployeeId()+"用户未成功删除名片夹id为"+cardHolderId+"的名片夹");
                     throw new Exception("删除名片夹失败");
                 }
             } else {
+                logUtil.customException(currentEmployee.getEmployeeId()+"用户未成功删除名片夹id为"+cardHolderId+"的名片夹，原因：名片转移失败");
                 throw new Exception("删除名片夹失败，名片转移失败");
             }
         } catch (Exception e){
@@ -103,8 +110,11 @@ public class CardHolderServiceImpl implements CardHolderService {
         int counter = cardHolderMapper
                 .insertCardHolderByCardHolderId(cardHolder);
         if (counter > 0){
+            //TODO:测试log，接口为cardHolder的添加名片夹
+            logUtil.insertInfo(currentEmployee.getEmployeeId()+"用户添加名片夹成功，名片夹信息："+cardHolder.toString());
             return new BackFrontMessage(200,"添加成功", cardHolder.getCardHolderId());
         } else {
+            logUtil.customException(currentEmployee.getEmployeeId()+"用户添加名片夹失败");
             return new BackFrontMessage(500,"添加失败",null);
         }
     }
@@ -120,8 +130,10 @@ public class CardHolderServiceImpl implements CardHolderService {
         }
         int result = cardHolderMapper.updateCardHolderNameByCardHolderId(cardHolderId, name);
         if (result == 1){
+            logUtil.updateInfo(currentEmployee.getEmployeeId()+"用户将名片夹id为："+cardHolderId+"的名片夹名称修改为："+name);
             return new BackFrontMessage(200,"修改成功",null);
         } else {
+            logUtil.customException(currentEmployee.getEmployeeId()+"用户未能成功修改名片夹id为："+cardHolderId+"的名片夹");
             return new BackFrontMessage(500,"修改失败",null);
         }
     }

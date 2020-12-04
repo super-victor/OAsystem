@@ -53,4 +53,22 @@ public class Card {
 
     public interface Update{
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "cardId=" + cardId +
+                ", ownerId=" + ownerId +
+                ", cardHolderId=" + cardHolderId +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", company='" + company + '\'' +
+                ", department='" + department + '\'' +
+                ", position='" + position + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

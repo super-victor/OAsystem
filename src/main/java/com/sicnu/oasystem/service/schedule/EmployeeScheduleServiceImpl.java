@@ -7,6 +7,7 @@ import com.sicnu.oasystem.mapper.ScheduleMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
+import com.sicnu.oasystem.util.LogUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
     @Resource
     ScheduleService scheduleService;
 
+    @Resource
+    LogUtil logUtil;
+
     @Override
     public BackFrontMessage insertEmployeeSchedule(EmployeeSchedule employeeSchedule) {
         //添加时查询此人是否已经加入此日程
@@ -49,8 +53,10 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
         }
         int result = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
         if (result <= 0){
+            logUtil.customException(employeeSchedule.getEmployeeId()+"用户添加日程映射失败，日程id为："+employeeSchedule.getScheduleId());
             return new BackFrontMessage(500,"添加职工日程映射失败",null);
         }else{
+            logUtil.insertInfo(employeeSchedule.getEmployeeId()+"用户添加日程映射成功，日程id为："+employeeSchedule.getScheduleId());
             return new BackFrontMessage(200,"添加职工日程映射成功",employeeSchedule.getEmployeeScheduleId());
         }
     }
@@ -67,9 +73,12 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
             return new BackFrontMessage(500,"无法退出此日程，退出前请转交日程管理权!",null);
         }
         int result = employeeScheduleMapper.deleteEmployeeScheduleByEmployeeScheduleId(employeeScheduleId);
+        Integer employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
         if (result <= 0){
+            logUtil.customException(employeeId+"用户删除职工日程映射失败，职工日程id为："+employeeScheduleId);
             return new BackFrontMessage(500,"删除职工日程映射失败",null);
         }else{
+            logUtil.deleteInfo(employeeId+"用户删除职工日程映射成功，职工日程id为："+employeeScheduleId);
             return new BackFrontMessage(200,"删除职工日程映射成功",null);
         }
     }

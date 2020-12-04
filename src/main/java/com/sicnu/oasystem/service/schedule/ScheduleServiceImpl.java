@@ -9,6 +9,7 @@ import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
 import com.sicnu.oasystem.service.message.MessageService;
 import com.sicnu.oasystem.util.DataUtil;
+import com.sicnu.oasystem.util.LogUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Resource
     EmployeeMapper employeeMapper;
 
+    @Resource
+    LogUtil logUtil;
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -56,16 +60,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         try{
             int result = scheduleMapper.insertSchedule(schedule);
             if (result <= 0){
-                return new BackFrontMessage(500,"日程添加失败",null);
+                logUtil.customException(currentEmployee.getEmployeeId()+"用户添加个人日程失败");
+                return new BackFrontMessage(500,"个人日程添加失败",null);
             }else{
                 EmployeeSchedule employeeSchedule = new EmployeeSchedule();
                 employeeSchedule.setScheduleId(schedule.getScheduleId());
                 employeeSchedule.setEmployeeId(currentEmployee.getEmployeeId());
                 int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
                 if (result2 <= 0){
+                    logUtil.customException(currentEmployee.getEmployeeId()+"用户添加职工日程映射失败,原因是添加职工日程映射失败");
                     throw new Exception("添加员工日程映射失败");
                 }
-                return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
+                logUtil.insertInfo(currentEmployee.getEmployeeId()+"用户添加个人日程成功，日程信息为："+schedule.toString());
+                return new BackFrontMessage(200,"添加个人日程成功",schedule.getScheduleId());
             }
         } catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -94,6 +101,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         try{
             int result = scheduleMapper.insertSchedule(schedule);
             if (result <= 0){
+                logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
+                        "日程管理员添加公司日程失败");
                 return new BackFrontMessage(500,"添加日程失败",null);
             }else{
                 //将参与者加入职工日程对应表
@@ -103,11 +112,17 @@ public class ScheduleServiceImpl implements ScheduleService {
                     employeeSchedule.setScheduleId(schedule.getScheduleId());
                     int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
                     if (result2 <= 0){
+                        logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
+                                "日程管理员添加公司日程失败，原因是添加职工日程映射失败");
                         throw new Exception("添加职工日程映射失败");
                     }
-                    //发送消息
+                }
+                for (Integer employeeId : joinerList) {
+                    //添加完了才能发送消息，免得失败后事务回滚
                     messageService.send(employeeId, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "您收到了一个关于'"+schedule.getContent()+"'的公司日程");
                 }
+                logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
+                        "日程管理员添加公司日程成功，日程信息："+schedule.toString());
                 return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
             }
         } catch (Exception e){
@@ -123,10 +138,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (isTimeCorrect(schedule)){
             return new BackFrontMessage(500,"结束时间小于开始时间",null);
         }
+        int employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
         //如果是公司日程，则需要判断权限
         if (isCompany == 1){
             //判断是否为日程管理员或者日程领导者。若都不是，则无权修改
-            int employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
             int isScheduleManager = employeeMapper.findRoleByEmployeeIdAndRoleId(
                     employeeId, 4);
             if (isScheduleManager == 0 && dontHasRoleToManageSchedule(scheduleId)){
@@ -145,8 +160,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         int result = scheduleMapper.updateScheduleByScheduleId(schedule);
         if (result <= 0){
+            logUtil.customException(employeeId+"用户修改日程失败");
             return new BackFrontMessage(500,"修改日程失败",null);
         }else{
+            logUtil.updateInfo(employeeId+"用户修改日程成功，修改内容为："+schedule.toString());
             return new BackFrontMessage(200,"修改日程成功",null);
         }
     }
@@ -154,11 +171,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public BackFrontMessage deleteScheduleByScheduleId(int scheduleId, int isCompany) {
+        Integer employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
         //个人日程只有自己才可以删除，公司日程管理员才可以删除
         if (isCompany == 0){
             EmployeeSchedule employeeSchedule = employeeScheduleMapper.findEmployeeScheduleByEmployeeIdAndScheduleId(
-                    UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),
-                    scheduleId);
+                    employeeId, scheduleId);
             if (employeeSchedule == null){
                 return new BackFrontMessage(500,"无权删除此日程",null);
             }
@@ -168,19 +185,22 @@ public class ScheduleServiceImpl implements ScheduleService {
             //删除日程前，需要删除职工日程映射
             int result1 = employeeScheduleMapper.deleteEmployeeScheduleByScheduleId(scheduleId);
             if (result1 <= 0){
+                logUtil.deleteInfo(employeeId+"用户删除日程失败，日程id为："+scheduleId+"，原因是删除职工日程映射失败");
                 return new BackFrontMessage(500,"删除职工日程映射失败",null);
             }else{
-                if (isCompany == 1){
-                    //删除职工日程后，通知职工日程结束
-                    for (Integer employeeId : employeeIdList) {
-                        String content = scheduleMapper.findScheduleByScheduleId(scheduleId).getContent();
-                        messageService.send(employeeId, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "有关'"+content+"'内容的公司日程已经结束");
-                    }
-                }
                 int result2 = scheduleMapper.deleteScheduleByScheduleId(scheduleId);
                 if (result2 <= 0){
+                    logUtil.deleteInfo(employeeId+"用户删除日程失败，日程id为："+scheduleId);
                     throw new Exception("删除日程失败");
                 }else{
+                    if (isCompany == 1){
+                        //删除日程后，通知职工日程结束
+                        for (Integer employeeId1 : employeeIdList) {
+                            String content = scheduleMapper.findScheduleByScheduleId(scheduleId).getContent();
+                            messageService.send(employeeId1, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "有关'"+content+"'内容的公司日程已经结束");
+                        }
+                    }
+                    logUtil.deleteInfo(employeeId+"用户删除日程成功，日程id为："+scheduleId);
                     return new BackFrontMessage(200,"删除日程成功",null);
                 }
             }

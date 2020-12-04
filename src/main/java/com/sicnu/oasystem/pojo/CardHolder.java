@@ -34,4 +34,14 @@ public class CardHolder {
 
     public CardHolder(){}
 
+    @Override
+    public String toString() {
+        return "CardHolder{" +
+                "cardHolderId=" + cardHolderId +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }
