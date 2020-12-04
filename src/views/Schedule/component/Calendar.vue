@@ -1,6 +1,28 @@
 <template>
 	<div class="item">
     <FullCalendar class="fullCalendar" ref="fullCalendar" :options="calendarOptions"/>
+    <el-dialog title="日程信息" :visible.sync="dialogVisible1" class="dialog">
+      <div class="row">
+        <p class="la">发起人</p>
+        <p>{{info.leader}}</p>
+      </div>
+      <div class="row">
+        <p class="la">日程内容</p>
+        <p>{{info.content}}</p>
+      </div>
+      <div class="row">
+        <p class="la">日程地点</p>
+        <p>{{info.location}}</p>
+      </div>
+      <div class="row">
+        <p class="la">开始时间</p>
+        <p>{{info.startTime}}</p>
+      </div>
+      <div class="row">
+        <p class="la">结束时间</p>
+        <p>{{info.endTime}}</p>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -16,9 +38,12 @@ export default {
   components: {
     FullCalendar  // 像使用自定义组件一样使用
   },
+  props:['events'],
   data() {
     return {
+      dialogVisible1:false,
       calendarApi: null,
+      info:[],
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ], // 需要用哪个插件引入后放到这个数组里
         initialDate: new Date(), // 日历第一次加载时显示的初始日期。可以解析为Date的任何职包括ISO8601日期字符串，例如"2014-02-01"。
@@ -77,17 +102,15 @@ export default {
   },
   methods: {
     handleDateClick(dateClickInfo) {
-      console.log(dateClickInfo);
+      // console.log(dateClickInfo);
       if (dateClickInfo.event) {
         const id = parseInt(dateClickInfo.event.id);
         scheduleAPI.getSchedule({
-          scheduleId: id
+          scheduleId:id
         })
         .then(res=>{
-          this.$msgbox({
-            title:'日程内容',
-            message: dateClickInfo.event.start
-          })
+          this.dialogVisible1 = true;
+          this.info = res.object;
           // console.log(res);
         })
         .catch(err=>{
@@ -126,14 +149,28 @@ export default {
       // 如果dayGridMonth查看日历，则将日历后移一个月。
       // 如果日历位于dayGridWeek或中timeGridWeek，则将日历后移一周。
       // 如果日历位于dayGridDay或中timeGridDay，则将日历移回一天。
-    }
+    },
   },
   created() {
+    this.calendarOptions.events = this.events;
+    // console.log(this.calendarOptions.initialDate);
   }
 }
 </script>
 
 <style lang="less" scoped>
 .item {
+  .dialog .el-dialog__body{
+    width: 100%;
+    .row {
+      .la {
+        font-weight: bold;
+        width: 80px;
+      }
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+    }
+  }
 }
 </style>

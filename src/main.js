@@ -41,7 +41,9 @@ import {
   Checkbox,
   CheckboxGroup,
   Loading,
-  Switch
+  Switch,
+  DatePicker,
+  TimePicker
 } from 'element-ui';
 
 Vue.use(Container);
@@ -83,6 +85,8 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
+Vue.use(DatePicker);
+Vue.use(TimePicker);
 
 Vue.prototype.$loading = Loading.service;
 
