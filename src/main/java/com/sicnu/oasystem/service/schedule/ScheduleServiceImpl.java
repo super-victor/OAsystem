@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         try{
             int result = scheduleMapper.insertSchedule(schedule);
             if (result <= 0){
-                logUtil.customException(currentEmployee.getEmployeeId()+"用户添加个人日程失败");
+                logUtil.customException("添加个人日程失败");
                 return new BackFrontMessage(500,"个人日程添加失败",null);
             }else{
                 EmployeeSchedule employeeSchedule = new EmployeeSchedule();
@@ -68,10 +68,10 @@ public class ScheduleServiceImpl implements ScheduleService {
                 employeeSchedule.setEmployeeId(currentEmployee.getEmployeeId());
                 int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
                 if (result2 <= 0){
-                    logUtil.customException(currentEmployee.getEmployeeId()+"用户添加职工日程映射失败,原因是添加职工日程映射失败");
+                    logUtil.customException("添加职工日程映射失败,原因是添加职工日程映射失败");
                     throw new Exception("添加员工日程映射失败");
                 }
-                logUtil.insertInfo(currentEmployee.getEmployeeId()+"用户添加个人日程成功，日程信息为："+schedule.toString());
+                logUtil.insertInfo("添加个人日程成功，日程信息为："+schedule);
                 return new BackFrontMessage(200,"添加个人日程成功",schedule.getScheduleId());
             }
         } catch (Exception e){
@@ -101,8 +101,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         try{
             int result = scheduleMapper.insertSchedule(schedule);
             if (result <= 0){
-                logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
-                        "日程管理员添加公司日程失败");
+                logUtil.customException("日程管理员添加公司日程失败");
                 return new BackFrontMessage(500,"添加日程失败",null);
             }else{
                 //将参与者加入职工日程对应表
@@ -112,8 +111,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     employeeSchedule.setScheduleId(schedule.getScheduleId());
                     int result2 = employeeScheduleMapper.insertEmployeeSchedule(employeeSchedule);
                     if (result2 <= 0){
-                        logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
-                                "日程管理员添加公司日程失败，原因是添加职工日程映射失败");
+                        logUtil.customException("日程管理员添加公司日程失败，原因是添加职工日程映射失败");
                         throw new Exception("添加职工日程映射失败");
                     }
                 }
@@ -121,8 +119,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     //添加完了才能发送消息，免得失败后事务回滚
                     messageService.send(employeeId, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "您收到了一个关于'"+schedule.getContent()+"'的公司日程");
                 }
-                logUtil.customException(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+
-                        "日程管理员添加公司日程成功，日程信息："+schedule.toString());
+                logUtil.customException("日程管理员添加公司日程成功，日程信息："+schedule);
                 return new BackFrontMessage(200,"添加日程成功",schedule.getScheduleId());
             }
         } catch (Exception e){
@@ -160,10 +157,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         int result = scheduleMapper.updateScheduleByScheduleId(schedule);
         if (result <= 0){
-            logUtil.customException(employeeId+"用户修改日程失败");
+            logUtil.customException("修改日程失败");
             return new BackFrontMessage(500,"修改日程失败",null);
         }else{
-            logUtil.updateInfo(employeeId+"用户修改日程成功，修改内容为："+schedule.toString());
+            logUtil.updateInfo("修改日程成功，修改内容为："+schedule);
             return new BackFrontMessage(200,"修改日程成功",null);
         }
     }
@@ -185,12 +182,12 @@ public class ScheduleServiceImpl implements ScheduleService {
             //删除日程前，需要删除职工日程映射
             int result1 = employeeScheduleMapper.deleteEmployeeScheduleByScheduleId(scheduleId);
             if (result1 <= 0){
-                logUtil.deleteInfo(employeeId+"用户删除日程失败，日程id为："+scheduleId+"，原因是删除职工日程映射失败");
+                logUtil.deleteInfo("删除日程失败，日程id为："+scheduleId+"，原因是删除职工日程映射失败");
                 return new BackFrontMessage(500,"删除职工日程映射失败",null);
             }else{
                 int result2 = scheduleMapper.deleteScheduleByScheduleId(scheduleId);
                 if (result2 <= 0){
-                    logUtil.deleteInfo(employeeId+"用户删除日程失败，日程id为："+scheduleId);
+                    logUtil.deleteInfo("删除日程失败，日程id为："+scheduleId);
                     throw new Exception("删除日程失败");
                 }else{
                     if (isCompany == 1){
@@ -200,7 +197,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                             messageService.send(employeeId1, DataUtil.MESSAGE_TYPE_INFO, DataUtil.MESSAGE_TITLE_SCHEDULE, "有关'"+content+"'内容的公司日程已经结束");
                         }
                     }
-                    logUtil.deleteInfo(employeeId+"用户删除日程成功，日程id为："+scheduleId);
+                    logUtil.deleteInfo("删除日程成功，日程id为："+scheduleId);
                     return new BackFrontMessage(200,"删除日程成功",null);
                 }
             }

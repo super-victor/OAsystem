@@ -7,7 +7,6 @@ import com.sicnu.oasystem.pojo.Card;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.LogUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
-import com.sicnu.oasystem.util.ValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +52,10 @@ public class CardServiceImpl implements CardService {
         card.setOwnerId(currentEmployee.getEmployeeId());
         int counter = cardMapper.insertCard(card);
         if (counter > 0){
-            logUtil.insertInfo(currentEmployee.getEmployeeId()+"用户添加名片成功，名片信息为："+card.toString());
+            logUtil.insertInfo("添加名片成功，名片信息为："+card);
             return new BackFrontMessage(200,"添加成功", card.getCardId());
         } else {
-            logUtil.customException(currentEmployee.getEmployeeId()+"用户添加名片失败");
+            logUtil.customException("添加名片失败");
             return new BackFrontMessage(500,"名片添加失败",null);
         }
     }
@@ -69,27 +68,26 @@ public class CardServiceImpl implements CardService {
         }
         int result = cardMapper.deleteCardByCardId(cardId);
         if (result > 0){
-            logUtil.deleteInfo(employeeId+"用户删除名片成功，名片id为："+cardId);
+            logUtil.deleteInfo("删除名片成功，名片id为："+cardId);
             return new BackFrontMessage(200,"删除成功",null);
         } else {
-            logUtil.customException(employeeId+"用户删除名片失败，名片id为："+cardId);
+            logUtil.customException("删除名片失败，名片id为："+cardId);
             return new BackFrontMessage(500,"删除失败",null);
         }
     }
 
     @Override
     public BackFrontMessage updateCard(Card card, int cardId) {
-        Integer employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
         if (!hasOwnedCardByCardId(cardId)) {
             return new BackFrontMessage(500,"您没有此名片",null);
         }
         card.setCardId(cardId);
         int counter = cardMapper.updateCardByCardId(card);
         if (counter > 0){
-            logUtil.updateInfo(employeeId+"用户修改名片成功，修改内容为："+card.toString());
+            logUtil.updateInfo("修改名片成功，修改内容为："+card);
             return new BackFrontMessage(200,"修改成功",null);
         } else {
-            logUtil.customException(employeeId+"用户修改名片失败，名片id为："+cardId);
+            logUtil.customException("修改名片失败，名片id为："+cardId);
             return new BackFrontMessage(500,"修改失败",null);
         }
     }
@@ -110,10 +108,10 @@ public class CardServiceImpl implements CardService {
         card.setOwnerId(currentEmployee.getEmployeeId());
         int result = cardMapper.insertCard(card);
         if (result <= 0){
-            logUtil.customException(currentEmployee.getEmployeeId()+"用户分享名片失败，名片id为："+cardId);
+            logUtil.customException("分享名片失败，名片id为："+cardId);
             return new BackFrontMessage(500, "分享失败", null);
         }else{
-            logUtil.insertInfo(currentEmployee.getEmployeeId()+"用户通过分享获取名片，名片信息为："+card.toString());
+            logUtil.insertInfo("分享名片成功，名片信息为："+card);
             return new BackFrontMessage(200, "分享成功", card.getCardId());
         }
     }

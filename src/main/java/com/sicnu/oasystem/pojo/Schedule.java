@@ -75,21 +75,4 @@ public class Schedule {
     public interface Update{
     }
 
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "scheduleId=" + scheduleId +
-                ", isCompany=" + isCompany +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", leader=" + leader +
-                ", location='" + location + '\'' +
-                ", content='" + content + '\'' +
-                ", remark='" + remark + '\'' +
-                ", type=" + type +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", joiner=" + joiner +
-                '}';
-    }
 }
