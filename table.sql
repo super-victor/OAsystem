@@ -1,9 +1,12 @@
+drop table if exists log;
+drop table if exists Message;
+drop table if exists DocumentAnnex;
+drop table if exists DocumentAcess;
 drop table if exists RoleMenu;
 drop table if exists Menu;
 drop table if exists Meeting;
 drop table if exists EmployeeRole;
 drop table if exists Role;
-drop table if exists ReceiveFile;
 drop table if exists SendFile;
 drop table if exists Equipment;
 drop table if exists MeetingRoom;
@@ -11,7 +14,7 @@ drop table if exists EquipmentClassify;
 drop table if exists Message;
 drop table if exists EmployeeTodo;
 drop table if exists Todo;
-drop table if exists EmployeeCardHolder;
+drop table if exists Card;
 drop table if exists CardHolder;
 drop table if exists CardHolderClassfy;
 drop table if exists EmployeeSchedule;
@@ -151,22 +154,6 @@ create table EmployeeTodo (
     constraint unique_EmployeeTodo_employeeId_todoId unique key(employeeId,todoId)
 );
 
-
--- 留言表
-create table Message (
-    messageId int not null auto_increment comment '留言id',
-    senderId int not null comment '发送者id',
-    receiverId int not null comment '接收者id',
-    content text not null comment '留言内容',
-    isRead int not null comment '是否已读',
-    createTime timestamp default current_timestamp comment '字段创建时间',
-    updateTime timestamp on update current_timestamp comment '字段更新时间',
-    constraint pk_Message_messageId primary key(messageId),
-    constraint fk_Message_senderId foreign key(senderId) references Employee(employeeId),
-    constraint fk_Message_receiverId foreign key(receiverId) references Employee(employeeId)
-);
-
-
 -- 设备分类表
 create table EquipmentClassify (
     equipmentClassifyId int not null auto_increment comment '设备分类id',
@@ -210,16 +197,17 @@ create table Equipment (
 -- 发文表
 create table SendFile(
     sendFileId int not null auto_increment comment '发文id',
-    type int not null comment '发文类别',
-    title varchar(20) not null comment '标题',
-    annexUrl varchar(20) comment '附件URL',
-    context text not null comment '正文',
-    sendPsrsonNum int not null comment '分发人数',
-    isUrgent int not null comment '发文缓急',
+    type varchar(50) comment '发文类别',
+    subject varchar(50) comment '主题词',
+    isPublic int comment '是否公有',
+    title varchar(20) comment '标题',
+    content text comment '正文',
+    urgent varchar(20) comment '发文缓急',
     remark text comment '备注',
     senderId int not null comment '发件人ID',
-    censorId int not null comment '审查人ID',
-    status int not null comment '状态 -1草稿箱 0待审查 1通过审查 2收文结束',
+    censorId int comment '审稿人ID',
+    status int not null comment '状态 -3空白文件 -1草稿箱 -2审查不通过 0待审查 1通过审查(发布)',
+    cersorOpinion varchar(50) comment '审稿人意见',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_SendFile_sendfileId primary key (sendFileId),
@@ -227,25 +215,35 @@ create table SendFile(
     constraint fk_SendFile_censorId foreign key (censorId) references Employee(employeeId)
 );
 
-
--- 收文表
-create table ReceiveFile(
-    receiveFileId int not null auto_increment comment '收文ID',
-    sendFileId int not null comment '发文ID',
-    receiverId int not null comment '收件人ID',
-    isReceived int not null comment '是否收到',
+-- 发文附件
+create table DocumentAnnex(
+    documnetAnnexId int not null auto_increment comment '文档附件id',
+    sendFileId int not null comment '发文id',
+    annexUrl varchar(50) not null comment '附件url',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
-    constraint pk_ReceiveFile_receiveId primary key (receiveFileId),
-    constraint fk_ReceiveFile_sendFileId foreign key (sendFileId) references SendFile(sendFileId),
-    constraint fk_ReceiveFile_receiverId foreign key (receiverId) references Employee(employeeId),
-    constraint unique_ReceiveFile_sendFileId_receiverId unique key(sendFileId,receiverId)
+    constraint pk_DocumnetAnnex_documnetAnnexId primary key (documnetAnnexId),
+    constraint fk_DocumnetAnnex_sendfileId foreign key (sendFileId) references SendFile(sendFileId),
+    constraint unique_DocumnetAnnex_annexUrl unique key(annexUrl)
+);
+
+-- 已发布发文查看权限控制表
+create table DocumentAcess(
+    documentAcessId int not null auto_increment comment '文档权限id',
+    sendFileId int not null comment '已发布发文id',
+    employeeId int not null comment '可查看职工id',
+    createTime timestamp default current_timestamp comment '创建时间',
+    updateTime timestamp on update current_timestamp comment '修改时间',
+    constraint pk_DocumentAcess_documentAcessId primary key (documentAcessId),
+    constraint fk_DocumentAcess_sendfileId foreign key (sendFileId) references SendFile(sendFileId),
+    constraint unique_DocumentAcess_sendFileId_employeeId unique key(sendFileId,employeeId)
 );
 
 
 -- 角色表
 create table Role(
     roleId int not null auto_increment comment '角色ID',
+    isAble int not null default 1 comment '角色是否可用',
     name varchar(20) not null  comment '角色名称',
     createTime timestamp default current_timestamp comment '创建时间',
     updateTime timestamp on update current_timestamp comment '修改时间',
@@ -326,16 +324,6 @@ create table Message (
     constraint pk_Message_messageId primary key (messageId),
     constraint fk_Message_employeeId foreign key (employeeId) references Employee(employeeId)
 );
-create table Message(
-    messageId int not null  auto_increment comment '消息ID',
-    employeeid int not null comment '员工id',
-    messageTitle varchar(20) not null comment '消息头',
-    messagecontext text not null comment '消息内容',
-    creattime date not null comment '创建时间',
-    isread int not null comment '消息是否已读',
-    constraint pk_Message_messageid primary key (messageId),
-    constraint fk_EmployeeRole_employeeId foreign key (employeeid) references Employee(employeeId)
-);
 
 
 CREATE table log(
@@ -352,12 +340,11 @@ CREATE table log(
 insert into department (name, phone) values ('后勤部', '10001');
 insert into department (name, phone) values ('财务部', '10002');
 
-insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学', 0);
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('123456', '小花', '123456', '10086', '2238192070@qq.com', '510100000000000001', 'f', '财务部', '普通员工', '四川师范大学', 0);
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('pickmiu', '小明', '123456', '10086', '2238192070@qq.com', '510100000000000000', 'm', '后勤部', '普通员工', '四川师范大学', 0);
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('zhangsan','张三','666666','12345678910','968561352@qq.com','510100000000000002','f','财务部','普通用户','四川师范大学',0);
 insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('lisi','李四','121212','12345678910','115645284@qq.com','510100000000000003','f','后勤部','管理员','四川师范大学',0);
-insert into employee(username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('wanghong','王红','123123','12345678910','12456385@qq.com','510100000000000004','m','后勤部','普通员工','四川师范大学',0);
-
+insert into employee (username, name, password, phone, email, idCard, sex, departmentName, position, homeAddress, isAccountLocked) values ('wanghong','王红','123123','12345678910','12456385@qq.com','510100000000000004','m','后勤部','普通员工','四川师范大学',0);
 
 insert into cardholder (name, ownerId) values ('默认名片夹', 1);
 insert into cardholder (name, ownerId) values ('默认名片夹', 2);
@@ -366,11 +353,9 @@ insert into cardholder (name, ownerId) values ('默认名片夹', 4);
 insert into cardholder (name, ownerId) values ('默认名片夹', 5);
 insert into cardholder (name, ownerId) values ('后端', 2);
 
-insert into card(ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 11, '1', '11111','11111,','1111','1111','1111','1111');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 5, '张一', '13348943243', 'Yu@163.com', '成龙', 'Sicnu', '人事部', '职员');
-
 
 INSERT INTO `meetingroom` VALUES ('1', '101会议室', '3楼', '1', '100', '2020-11-13 15:35:27', '2020-11-13 22:48:31');
 INSERT INTO `meetingroom` VALUES ('2', '201会议室', '2楼', '0', '100', '2020-11-13 15:56:09', '2020-11-13 22:55:56');
@@ -388,21 +373,14 @@ insert into schedule (isCompany, startTime, endTime, leader, location, content, 
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-11-29 16:38:01', '2020-11-30 04:38:01', 4, '公司', '协同办公平台', '完成项目50%功能', 4);
 
 insert into employeeschedule(scheduleId, employeeId) values (1, 2);
-insert into employeeschedule(scheduleId, employeeId) values (5, 2);
-insert into employeeschedule(scheduleId, employeeId) values (5, 3);
-insert into employeeschedule(scheduleId, employeeId) values (5, 4);
 
-insert into role (name) values ('ROLE_User');
-insert into role (name) values ('ROLE_Admin');
-insert into role (name) values ('ROLE_Censor');
-insert into role (name) values ('ROLE_Schedule');
+insert into role (name) values ('超级管理员');
+insert into role (name) values ('管理员');
+insert into role (name) values ('审稿人');
 
-insert into employeerole (employeeId, roleId) values (1, 1);
-insert into employeerole (employeeId, roleId) values (1, 2);
-insert into employeerole (employeeId, roleId) values (1, 3);
-insert into employeerole (employeeId, roleId) values (1, 4);
-insert into employeerole (employeeId, roleId) values (2, 1);
-insert into employeerole (employeeId, roleId) values (2, 2);
+insert into employeerole (employeeId, roleId) values (1,1);
+insert into employeerole (employeeId, roleId) values (2,2);
+insert into employeerole (employeeId, roleId) values (3,3);
 
 insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
 insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
@@ -434,84 +412,21 @@ insert into menu (name, url, code) values ('获取所有的会议室信息','GET
 insert into menu (name, url, code) values ('添加会议室','POST /addMeetingRoom','000T');
 insert into menu (name, url, code) values ('删除会议室','DELETE /deleteMeetingRoom','000V');
 insert into menu (name, url, code) values ('查找会议室','GET /getMeetingRoomById','000W');
-
-insert into EmployeeRole(employeeId, roleId) values (3,1);
-insert into EmployeeRole(employeeId, roleId) values (4,2);
-insert into EmployeeRole(employeeId, roleId) values (5,1);
-insert into EmployeeRole(employeeId, roleId) values (4,1);
-insert into EmployeeRole(employeeId, roleId) values (4,3);
-
-insert into RoleMenu(roleId, menuId) values (1,1);
-insert into RoleMenu(roleId, menuId) values (1,2);
-insert into RoleMenu(roleId, menuId) values (1,3);
-insert into RoleMenu(roleId, menuId) values (1,4);
-insert into RoleMenu(roleId, menuId) values (1,5);
-insert into RoleMenu(roleId, menuId) values (1,6);
-insert into RoleMenu(roleId, menuId) values (1,7);
-insert into RoleMenu(roleId, menuId) values (1,8);
-insert into RoleMenu(roleId, menuId) values (1,9);
-insert into RoleMenu(roleId, menuId) values (1,10);
-insert into RoleMenu(roleId, menuId) values (1,11);
-insert into RoleMenu(roleId, menuId) values (1,12);
-insert into RoleMenu(roleId, menuId) values (1,14);
-insert into RoleMenu(roleId, menuId) values (1,15);
-insert into RoleMenu(roleId, menuId) values (1,16);
-insert into RoleMenu(roleId, menuId) values (1,17);
-insert into RoleMenu(roleId, menuId) values (1,18);
-insert into RoleMenu(roleId, menuId) values (1,21);
-insert into RoleMenu(roleId, menuId) values (1,26);
-insert into RoleMenu(roleId, menuId) values (1,27);
-insert into RoleMenu(roleId, menuId) values (1,28);
-insert into RoleMenu(roleId, menuId) values (1,31);
-insert into RoleMenu(roleId, menuId) values (2,1);
-insert into RoleMenu(roleId, menuId) values (2,2);
-insert into RoleMenu(roleId, menuId) values (2,3);
-insert into RoleMenu(roleId, menuId) values (2,4);
-insert into RoleMenu(roleId, menuId) values (2,5);
-insert into RoleMenu(roleId, menuId) values (2,6);
-insert into RoleMenu(roleId, menuId) values (2,7);
-insert into RoleMenu(roleId, menuId) values (2,8);
-insert into RoleMenu(roleId, menuId) values (2,9);
-insert into RoleMenu(roleId, menuId) values (2,10);
-insert into RoleMenu(roleId, menuId) values (2,11);
-insert into RoleMenu(roleId, menuId) values (2,12);
-insert into RoleMenu(roleId, menuId) values (2,14);
-insert into RoleMenu(roleId, menuId) values (2,15);
-insert into RoleMenu(roleId, menuId) values (2,16);
-insert into RoleMenu(roleId, menuId) values (2,17);
-insert into RoleMenu(roleId, menuId) values (2,18);
-insert into RoleMenu(roleId, menuId) values (2,19);
-insert into RoleMenu(roleId, menuId) values (2,20);
-insert into RoleMenu(roleId, menuId) values (2,21);
-insert into RoleMenu(roleId, menuId) values (2,23);
-insert into RoleMenu(roleId, menuId) values (2,24);
-insert into RoleMenu(roleId, menuId) values (2,25);
-insert into RoleMenu(roleId, menuId) values (2,26);
-insert into RoleMenu(roleId, menuId) values (2,27);
-insert into RoleMenu(roleId, menuId) values (2,28);
-insert into RoleMenu(roleId, menuId) values (2,29);
-insert into RoleMenu(roleId, menuId) values (2,30);
-insert into RoleMenu(roleId, menuId) values (2,31);
-
 insert into menu (name, url ,code) values ('添加公司日程','POST /CompanySchedule','000X');
-insert into menu (name, url ,code) values ('修改公司日程信息','POST /CompanySchedule','000Y');
+insert into menu (name, url ,code) values ('修改公司日程信息','PUT /CompanySchedule','000Y');
 insert into menu (name, url ,code) values ('删除公司日程','DELETE /CompanySchedule','000Z');
-insert into menu (name, url ,code) values ('添加个人日程','DELETE /SelfSchedule','0011');
-insert into menu (name, url ,code) values ('修改个人日程信息','POST /SelfSchedule','0012');
+insert into menu (name, url ,code) values ('添加个人日程','POST /SelfSchedule','0011');
+insert into menu (name, url ,code) values ('修改个人日程信息','PUT /SelfSchedule','0012');
 insert into menu (name, url ,code) values ('删除个人日程','DELETE /SelfSchedule','0013');
-insert into menu (name, url ,code) values ('获取该员工一段时间的个人日程','GET /findSelfSchedule','0014');
-insert into menu (name, url ,code) values ('获取该员工一段时间的公司日程','GET /findCompanySchedule','0015');
+insert into menu (name, url ,code) values ('审稿人获取自己未审稿','GET /UnCheckDocument','0014');
+insert into menu (name, url ,code) values ('审稿人审稿','PUT /CheckDocument','0015');
+insert into menu (name, url ,code) values ('获取该员工一段时间的个人日程','GET /findSelfSchedule','0016');
+insert into menu (name, url ,code) values ('获取该员工一段时间的公司日程','GET /findCompanySchedule','0017');
 
-insert into rolemenu (menuId, roleId) values (32, 4);
-insert into rolemenu (menuId, roleId) values (35, 4);
-insert into rolemenu (menuId, roleId) values (39, 1);
-insert into rolemenu (menuId, roleId) values (39, 2);
-insert into rolemenu (menuId, roleId) values (39, 4);
-insert into rolemenu (menuId, roleId) values (39, 12);
-insert into rolemenu (menuId, roleId) values (40, 1);
-insert into rolemenu (menuId, roleId) values (40, 2);
-insert into rolemenu (menuId, roleId) values (40, 4);
-insert into rolemenu (menuId, roleId) values (40, 12);
+
+
+insert into rolemenu (roleId, menuId) VALUES (3, 35);
+insert into rolemenu (roleId, menuId) VALUES (3, 36);
 
 insert into message (employeeId, type, title, content, sendTime, isRead) values (1, 1, '发文审核', '标题为xxx的发文审核已通过', '2020-11-25 22:38:12', 0);
 insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);
