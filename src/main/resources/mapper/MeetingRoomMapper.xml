@@ -78,4 +78,10 @@
         </where>
 
     </select>
+    <select id="getAllStorey" resultType="java.lang.String">
+        select distinct (place) from meetingroom
+    </select>
+    <select id="getMeetinRoomByStorey" resultType="com.sicnu.oasystem.pojo.MeetingRoom">
+        select * from meetingroom where place=#{place}
+    </select>
 </mapper>

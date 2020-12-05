@@ -2,6 +2,7 @@ package com.sicnu.oasystem.controller.admin;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.admin.SuperAdminService;
+import com.sicnu.oasystem.service.admin.logService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class SuperAdminController {
     @Resource
     SuperAdminService superAdminService;
 
+    @Resource
+    logService logService;
+
     @ApiOperation(value = "获取所有管理员信息")
     @GetMapping("/alladmin")
     BackFrontMessage getAllAdmin(){
@@ -42,6 +46,33 @@ public class SuperAdminController {
         return superAdminService.lockAdmin(employeeId, isAccountLocked);
     }
 
+    @ApiOperation("获取所有的日志信息")
+    @GetMapping("/getAllLogs")
+    BackFrontMessage getAllLogs(){
+        return logService.getAllLogs();
+    }
 
+    @ApiOperation("获取所有的操作日志")
+    @GetMapping("/getAllOperateLogs")
+    BackFrontMessage getAllOperateLogs(String operation){
+        return logService.getAllOperateLogs(operation);
+    }
 
+    @ApiOperation("获取所有的系统日志")
+    @GetMapping("/getAllSysLogs")
+    BackFrontMessage getAllSysLogs(){
+        return logService.getAllSysLogs();
+    }
+
+    @ApiOperation("获取所有的日志级别")
+    @GetMapping("/getAllLogLevels")
+    BackFrontMessage getAllLogLevels(){
+        return logService.getAllLogLevels();
+    }
+
+    @ApiOperation("按日志级别获取日志类型")
+    @GetMapping("/getLogTypeByLevel")
+    BackFrontMessage getLogTypeByLevel(String level){
+        return logService.getLogTypeByLevel(level);
+    }
 }

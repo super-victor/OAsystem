@@ -4,10 +4,14 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.addrlist.AddrListService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName AdrrlistController
@@ -18,6 +22,7 @@ import javax.annotation.Resource;
  */
 @Api(tags = "通讯录")
 @RestController
+@Validated
 public class AddrlistController {
 
     @Resource
@@ -64,7 +69,7 @@ public class AddrlistController {
      */
     @ApiOperation(value = "分页获取员工通讯录")
     @GetMapping("/addressbookbypage")
-    public  BackFrontMessage getemplBypage(Integer currentPageNum,Integer pageSize){
+    public  BackFrontMessage getemplBypage(@Validated @NotNull(message = "当前页数不能为空") @Min(value = 1,message = "当前页数最小为1") Integer currentPageNum, @Validated @NotNull(message = "页面大小不能为空") Integer pageSize){
         return addrListService.getEmployeeBypage(currentPageNum,pageSize);
     }
 

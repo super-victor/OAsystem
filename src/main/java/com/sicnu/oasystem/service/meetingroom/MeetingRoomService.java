@@ -55,4 +55,6 @@ public interface MeetingRoomService {
     public BackFrontMessage deleteMeetingRoom(Integer MeetingRoomId);
 
     public BackFrontMessage addMeetingRoom(String name,String place,Integer isOccapy,Integer maxperson);
+
+    BackFrontMessage getAllMeetingRoomByStorey();
 }

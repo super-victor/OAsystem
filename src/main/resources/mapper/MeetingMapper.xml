@@ -53,4 +53,8 @@
         select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
         and appoinmentstatus=1 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
     </select>
+    <select id="getAllMeetingTimeByRoomAndTime" resultType="com.sicnu.oasystem.pojo.Meeting">
+        select starttime,endtime from meeting where meetingroomid=#{param1} and (UNIX_TIMESTAMP(starttime)>=UNIX_TIMESTAMP(#{param2}))
+        and (UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(endtime))
+    </select>
 </mapper>

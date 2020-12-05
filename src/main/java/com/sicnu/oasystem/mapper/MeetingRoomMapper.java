@@ -33,4 +33,8 @@ public interface MeetingRoomMapper {
     Integer deleteMeetingRoom(Integer MeetingRoomId);
 
     MeetingRoom getMeetingRoomByNameAndPlace(String name,String place);
+
+    List<String>getAllStorey();
+
+    List<MeetingRoom>getMeetinRoomByStorey(String place);
 }

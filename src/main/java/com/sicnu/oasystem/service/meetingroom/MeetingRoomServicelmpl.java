@@ -7,7 +7,10 @@ import com.sicnu.oasystem.service.meetingroom.MeetingRoomService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName MeetingRoomServicelmpl
@@ -104,6 +107,20 @@ public class MeetingRoomServicelmpl implements MeetingRoomService {
                 return new BackFrontMessage(200,"添加会议室成功",null);
             }
         }
+    }
+
+    @Override
+    public BackFrontMessage getAllMeetingRoomByStorey() {
+        List<String>Storeys=meetingRoomMapper.getAllStorey();
+        List<Object>infos=new ArrayList<>();
+        for (String storye:Storeys){
+            Map<String,Object>meetrooms=new HashMap<>();
+            List<MeetingRoom> meetroom=meetingRoomMapper.getMeetinRoomByStorey(storye);
+            meetrooms.put("name",storye);
+            meetrooms.put("meetroom",meetroom);
+            infos.add(meetrooms);
+        }
+        return new BackFrontMessage(200,"按楼层获取会议室信息成功",infos);
     }
 }
 

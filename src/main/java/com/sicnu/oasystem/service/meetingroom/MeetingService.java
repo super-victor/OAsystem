@@ -87,4 +87,6 @@ public interface MeetingService {
 
     BackFrontMessage getCurrentAllMeeting();
 
+    BackFrontMessage getAllMeetingTimeByRoomAndTime(Integer meetingroomid,Date starttime,Date endtime);
+
 }
