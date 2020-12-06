@@ -209,8 +209,27 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public BackFrontMessage findScheduleByScheduleId(int scheduleId) {
+        Map<String,Object> map = new HashMap<>(16);
         Schedule schedule = scheduleMapper.findScheduleByScheduleId(scheduleId);
-        return new BackFrontMessage(200,"查找日成功",schedule);
+        if (schedule == null) return new BackFrontMessage(500,"没有此日程",null);
+        map.put("startTime",schedule.getStartTime());
+        map.put("endTime",schedule.getEndTime());
+        map.put("content",schedule.getContent());
+        map.put("location",schedule.getLocation());
+        map.put("remark",schedule.getRemark());
+        map.put("type",schedule.getType());
+        if (schedule.getIsCompany() == 1){
+            map.put("leader",schedule.getLeader());
+            List<Integer> joinerList = employeeScheduleMapper.findEmployeeScheduleByScheduleId(scheduleId);
+            log.info("joinerList --> "+joinerList);
+            List<Employee> joiner = new ArrayList<>();
+            for (Integer employeeId : joinerList) {
+                Employee employee = employeeMapper.findEmployeeByEmployeeId(employeeId);
+                joiner.add(employee);
+            }
+            map.put("joiner",joiner);
+        }
+        return new BackFrontMessage(200,"查找日成功",map);
     }
 
     @Override
