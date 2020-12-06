@@ -5,9 +5,11 @@ import com.sicnu.oasystem.pojo.Equipment;
 import com.sicnu.oasystem.service.meetingroom.EquipmentServicelpml;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName EquipmentController
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Api(tags = "设备管理")
+@Validated
 public class EquipmentController {
 
     @Resource
@@ -32,8 +35,9 @@ public class EquipmentController {
      * @LastChangeDate 2020/11/20
      */
     @ApiOperation("添加设备")
+
     @PostMapping("/addEquipment")
-        public BackFrontMessage addEquipment(Equipment equipment){
+        public BackFrontMessage addEquipment(@Validated(Equipment.Add.class) Equipment equipment){
         return equipmentServicelpml.addEquipment(equipment.getEquipmentClassifyId()
                 ,equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
     }
@@ -48,9 +52,7 @@ public class EquipmentController {
      */
     @ApiOperation("修改设备")
     @PutMapping("/updateEquipment")
-    public BackFrontMessage updateEquipment(Equipment equipment){
-        System.out.println(equipment);
-        System.out.println(equipment.getEquipmentClassifyId());
+    public BackFrontMessage updateEquipment(@Validated(Equipment.update.class) Equipment equipment){
         return equipmentServicelpml.updateEquipment(equipment.getEquipmentId(),equipment.getEquipmentClassifyId(),
                 equipment.getMeetingRoomId(),equipment.getName(),equipment.getIsMaintain(),equipment.getRemark(),equipment.getNum());
     }
@@ -65,7 +67,7 @@ public class EquipmentController {
      */
     @ApiOperation("删除设备")
     @DeleteMapping("/deleteEuipment")
-    public BackFrontMessage deleteEuipment(@RequestParam Integer equipmentId){
+    public BackFrontMessage deleteEuipment(@RequestParam @Validated @NotNull(message = "设备Id不能为空") Integer equipmentId){
         return equipmentServicelpml.deleteEuipment(equipmentId);
     }
 
@@ -84,7 +86,7 @@ public class EquipmentController {
     }
 
     @GetMapping("/getEquipmentById")
-    public BackFrontMessage getEquipmentById(Integer equipmentId){
+    public BackFrontMessage getEquipmentById(@Validated @NotNull(message = "设备id不能为空") Integer equipmentId){
         return equipmentServicelpml.getEquipmentById(equipmentId);
     }
 

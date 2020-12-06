@@ -112,4 +112,7 @@ public interface MeetingMapper {
      * @LastChangeDate 2020/11/28
      */
     List<Meeting> judgeIsIsOccupy(Integer meetingroomId,Date startTime,Date endTime);
+
+
+    List<Meeting> getAllMeetingTimeByRoomAndTime(Integer meetingrommid,Date stratTime,Date endTime);
 }

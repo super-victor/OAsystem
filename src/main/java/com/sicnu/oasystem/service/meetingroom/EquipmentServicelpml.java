@@ -77,13 +77,9 @@ public class EquipmentServicelpml implements EquipmentService {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
         EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
         MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(newmeetingroomId);
-        System.out.println(meetingRoom);
-        System.out.println(equipmentClassify);
-        System.out.println(equipmentclassifyId);
-        System.out.println(newmeetingroomId);
         if (equipment==null){
             return new BackFrontMessage(500,"更新的设备不存在",null);
-        }else if(equipmentClassify==null ||meetingRoom==null){
+        }else if((equipmentClassify==null&&equipmentclassifyId!=null) ||(meetingRoom==null&&newmeetingroomId!=null)){
             return new BackFrontMessage(500,"更新数据不正确",null);
         }
         else {

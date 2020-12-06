@@ -5,9 +5,12 @@ import com.sicnu.oasystem.pojo.MeetingRoom;
 import com.sicnu.oasystem.service.meetingroom.MeetingRoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName MeetingRoomController
@@ -18,6 +21,7 @@ import javax.annotation.Resource;
  */
 @Api(tags = "会议室管理")
 @RestController
+@Validated
 public class MeetingRoomController {
 
     @Resource
@@ -41,21 +45,26 @@ public class MeetingRoomController {
 
     @PostMapping("/addMeetingRoom")
     @ApiOperation("添加会议室")
-    public BackFrontMessage addMeetingRoom(@RequestBody MeetingRoom meetingRoom){
+    public BackFrontMessage addMeetingRoom(@Validated MeetingRoom meetingRoom){
         return meetingRoomService.addMeetingRoom(meetingRoom.getName(),meetingRoom.getPlace(),
                 meetingRoom.getIsOccapy(),meetingRoom.getMaxperson());
     }
 
     @DeleteMapping("/deleteMeetingRoom")
     @ApiOperation("删除会议室")
-    public BackFrontMessage deleteMeetingRoom(Integer MeetingRoomId){
+    public BackFrontMessage deleteMeetingRoom(@Validated  @NotNull(message = "会议室id不能为空") Integer MeetingRoomId){
         return meetingRoomService.deleteMeetingRoom(MeetingRoomId);
     }
 
     @GetMapping("/getMeetingRoomById")
     @ApiOperation("通过Id获取会议室")
-    public BackFrontMessage getMeetingRoomById(Integer MeetingRoomId){
+    public BackFrontMessage getMeetingRoomById(@Validated @NotNull(message = "会议室id不能为空") Integer MeetingRoomId){
         return meetingRoomService.getMeetingRoomById(MeetingRoomId);
+    }
+    @ApiOperation("按楼层获取会议室信息")
+    @GetMapping("/getAllMeetingRoomByStorey")
+    public BackFrontMessage getAllMeetingRoomByStorey(){
+        return meetingRoomService.getAllMeetingRoomByStorey();
     }
 }
 

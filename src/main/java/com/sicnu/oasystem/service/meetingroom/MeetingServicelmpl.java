@@ -120,5 +120,10 @@ public class MeetingServicelmpl implements MeetingService {
         }
     }
 
+    @Override
+    public BackFrontMessage getAllMeetingTimeByRoomAndTime(Integer meetingroomid, Date starttime, Date endtime) {
+        List<Meeting>meetings=meetingMapper.getAllMeetingTimeByRoomAndTime(meetingroomid,starttime,endtime);
+        return new BackFrontMessage(200,"获取某一会议室莫一天的会议安排",meetings);
+    }
 }
 
