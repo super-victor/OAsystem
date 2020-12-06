@@ -112,8 +112,7 @@
           position: this.msg.card.position,
           address: this.msg.card.address,
           holder: this.msg.card.holder
-        },
-        phone:1222,
+        }, // 信息
         holders: [], // 名片夹
         rules:{
           email:[
@@ -209,11 +208,11 @@
   }
 </script>
 <style lang='less' scoped>
-@import '../../../style/common.less';
+// @import '../../../style/common.less';
   .card{
     padding: 0.5rem 1.5rem;
-    background-color: @white;
-    border-radius: @baseBorderRadius;
+    background-color: white;
+    border-radius: 4px;
     margin-bottom: 0.2rem;
     .box {
       box-sizing: border-box;
@@ -224,7 +223,7 @@
       .inner {
         width: 90%;
         height: 100%;
-        background-color: @white;
+        background-color: white;
       }
       p {
         font-size: 0.18rem;
@@ -240,7 +239,7 @@
       }
       p.name {
         font-size: 0.4rem;
-        color: @primaryText;
+        color: #303133;
       }
       p.depart {
         margin-top: 0.2rem;
@@ -266,13 +265,13 @@
       }
     }
     .share {
-      background-color:@correlateColor1;
+      background-color:#9CB7F0;
     }
     .edit {
-      background-color:@warningColor;
+      background-color:#E6A23C;
     }
     .delete {
-      background-color:@dangerColor;
+      background-color:#F56C6C;
     }
     .innerCard .el-dialog__body{
       padding: 0px;

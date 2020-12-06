@@ -36,7 +36,7 @@
           </el-select>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible2 = false;optionType = ''">取 消</el-button>
+        <el-button @click="dialogVisible2 = false;optionType = ''" class="submit">取 消</el-button>
         <el-button type="primary" @click="innerVisible = true" v-show="optionType !== ''">下一步</el-button>
       </div>
     </el-dialog>
@@ -212,7 +212,7 @@
   }
 </script>
 <style lang='less' scoped>
-@import '../../../style/common.less';
+// @import '../../../style/common.less';
   .ShareCard{
     height: 500px;
     width: 100%;
@@ -221,8 +221,8 @@
       width: 100%;
       .left {
         padding: 0.2rem 0;
-        background-color: @white;
-        border-radius: @baseBorderRadius;
+        background-color:white;
+        border-radius: 4px;
       }
       .center {
         margin-left: 0.5rem;
@@ -232,14 +232,14 @@
         padding: 0.5rem;
         width: 9rem;
         font-size: 0.3rem;
-        color: @warningColor;
-        background-color: @white;
+        color: #E6A23C;
+        background-color: white;
       }
       .new_card {
         padding: 0.5rem;
         margin-bottom: 0.5rem;
-        background-color: @white;
-        border-radius: @baseBorderRadius;
+        background-color: white;
+        border-radius: 4px;
         .submit {
           width: 2rem;
         }

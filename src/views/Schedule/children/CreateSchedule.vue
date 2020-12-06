@@ -20,8 +20,8 @@
         <el-form-item label="日程地点" prop="location" style="height:60px;width:500px">
           <el-input v-model="form.location" class="input"></el-input>
         </el-form-item>
-        <el-form-item label="参与人员" prop="joiner" style="height:60px" v-if="form.type==='公司日程'">
-          <el-select v-model="form.joiner" multiple>
+        <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px" v-if="form.type==='公司日程'">
+          <el-select v-model="form.joiner" multiple filterable style="width:5rem">
             <el-option
             v-for="item in userList"
             :key="item.id"
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import {mapMutations,mapState} from 'vuex';
+import {mapState,mapMutations} from 'vuex';
 import ScheduleApi from '@/service/schedule';
 import BackApi from '@/service/BackstageManagement'
   export default {
@@ -88,6 +88,7 @@ import BackApi from '@/service/BackstageManagement'
           ]
         },
         userList:[], //职工信息表
+        leader:0,
       };
     },
     computed: {
@@ -98,34 +99,36 @@ import BackApi from '@/service/BackstageManagement'
     watch: {},
     methods: {
       ...mapMutations(['UPDATE_BREAD','MAIN_CLICK']),
+      //提交表单
       submitForm(formName) {
         console.log(this.form.joiner);
         this.$refs[formName].validate((valid) => {
           if(valid){
-            if (this.form.type==='个人日程') {
+            if (this.form.type==='个人日程') { // 新建个人日程
               ScheduleApi.addSelfSchedule({
                 content:this.form.content,
                 startTime:this.form.startTime,
                 endTime:this.form.endTime,
                 location:this.form.location,
-                joiner:this.form.joiner,
-                leader:this.userInfo.emploeeId,
               })
               .then(res=>{
                 this.form = {};
                 this.$alert('添加成功', '通知', {
                   confirmButtonText: '确定',
                 });
-                this.$router.push({path:'/schedule/mine'});
+                this.$router.push({path:'/schedule/mine'}); // 跳转个人日程页面
                 console.log(res);
               })
               .catch(err=>{
                 console.log(err);
+                this.$message.error('添加失败');
               })
-            } else {
+            } else { // 添加公司日程
               ScheduleApi.addCompanySchedule({
                 content:this.form.content,
                 startTime:this.form.startTime,
+                leader:this.leader,
+                joiner:this.form.joiner,
                 endTime:this.form.endTime,
                 location:this.form.location
               })
@@ -134,23 +137,25 @@ import BackApi from '@/service/BackstageManagement'
                 this.$alert('添加成功', '通知', {
                   confirmButtonText: '确定',
                 });
-                this.$router.push({path:'/schedule/company-schedule'});
+                // this.$router.push({path:'/schedule/company-schedule'}); // 跳转公司日程页面
                 console.log(res);
               })
               .catch(err=>{
                 console.log(err);
+                this.$message.error('添加失败');
               })
             }
           }
         })
       },
+      // 获取所有职工
       getUser() {
         BackApi.getUserList()
         .then(res=>{
           res.object.forEach(element => {
             this.userList.push({name:element.username,id:element.employeeId});
           });
-          console.log(res);
+          // console.log(res);
         })
         .catch(err=>{
           console.log(err);
@@ -158,6 +163,7 @@ import BackApi from '@/service/BackstageManagement'
       }
     },
     created() {
+      this.leader = this.userInfo.userinfo.employeeId;
       this.getUser();
     },
     mounted() {
@@ -168,7 +174,7 @@ import BackApi from '@/service/BackstageManagement'
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .CreateSchedule{
-    height: 500px;
+    height: 200px;
     width: 60%;
     font-size: 0.2rem;
     color: @regularText;

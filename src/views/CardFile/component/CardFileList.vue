@@ -184,38 +184,37 @@
   }
 </script>
 <style lang='less' scoped>
-@import '../../../style/common.less';
+// @import '../../../style/common.less';
   .cardFileList{
     .row {
     padding: 0.15rem;
     font-size: 0.2rem;
     cursor: pointer;
+    color: #606266;
     img {
-        width: 0.3rem;
-        height: 0.3rem;
-        margin-right: 0.15rem;
+      width: 0.3rem;
+      height: 0.3rem;
+      margin-right: 0.15rem;
     }
     }
     .edit_row {
-        margin-top: 0.2rem;
-        padding: 0.15rem;
-        font-size: 0.17rem;  
-        cursor: pointer;
+      margin-top: 0.2rem;
+      padding: 0.15rem;
+      font-size: 0.17rem;  
+      cursor: pointer;
+      img {
+      width: 0.3rem;
+      height: 0.3rem;
+      }
+      .right_i {
+      margin-top: 0.15rem;
+      margin-left: 0.2rem;
+      cursor: pointer;
         img {
-        width: 0.3rem;
-        height: 0.3rem;
-        color: @regularText;
+          width: 0.35rem;
+          height: 0.35rem;
         }
-        color: @regularText;
-        .right_i {
-        margin-top: 0.15rem;
-        margin-left: 0.2rem;
-        cursor: pointer;
-            img {
-                width: 0.35rem;
-                height: 0.35rem;
-            }
-        }
+      }
     }
     .newCard .el-dialog__body {
       p {
@@ -223,15 +222,15 @@
       }
       p.warning {
         margin-bottom: 0;
-        color: @warningColor;
+        color: #E6A23C;
       }
     }
     .normal {
-      color: @primaryColor;
+      color: #303133;
     }
     .active {
-      background-color: @primaryColor;
-      color: @white;
+      background-color: #5383EC;
+      color: white;
     }
   }
 </style>

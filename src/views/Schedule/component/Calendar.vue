@@ -3,24 +3,61 @@
     <FullCalendar class="fullCalendar" ref="fullCalendar" :options="calendarOptions"/>
     <el-dialog title="日程信息" :visible.sync="dialogVisible1" class="dialog">
       <div class="row">
-        <p class="la">发起人</p>
+        <p class="in_label">发起人</p>
         <p>{{info.leader}}</p>
       </div>
       <div class="row">
-        <p class="la">日程内容</p>
+        <p class="in_label">日程内容</p>
         <p>{{info.content}}</p>
       </div>
       <div class="row">
-        <p class="la">日程地点</p>
+        <p class="in_label">参与人员</p>
+        <p>{{info.joiner}}</p>
+      </div>
+      <div class="row">
+        <p class="in_label">日程地点</p>
         <p>{{info.location}}</p>
       </div>
       <div class="row">
-        <p class="la">开始时间</p>
+        <p class="in_label">开始时间</p>
         <p>{{info.startTime}}</p>
       </div>
       <div class="row">
-        <p class="la">结束时间</p>
+        <p class="in_label">结束时间</p>
         <p>{{info.endTime}}</p>
+      </div>
+      <div slot="footer" class="dialog-footer" v-if="type==='mine'">
+        <el-button type="primary" @click="dialogVisible2=true">修改</el-button>
+        <el-button type="danger" @click="deleteInfo()">删除</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="日程信息" :visible.sync="dialogVisible2" class="dialog">
+      <el-form ref="form" :model="info" :rules="rules" label-width="80px">
+        <el-form-item label="日程内容" prop="content">
+          <el-input v-model="info.content" placeholder="请输入日程内容" class="input"></el-input>
+        </el-form-item>
+        <el-form-item label="日程地点" prop="location">
+          <el-input v-model="info.location" placeholder="请输入日程地点" class="input"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker
+            v-model="info.startTime"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="选择开始时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束时间" prop="endTime">
+          <el-date-picker
+            v-model="info.endTime"
+            type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            placeholder="选择结束时间">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="updateInfo()">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -38,12 +75,29 @@ export default {
   components: {
     FullCalendar  // 像使用自定义组件一样使用
   },
-  props:['events'],
+  props:['events','type'],
   data() {
     return {
+      scheduleId:0,
       dialogVisible1:false,
+      dialogVisible2:false,
       calendarApi: null,
+      update:true,
       info:[],
+        rules:{
+          content:[
+            { required: true, message: '请输入日程内容', trigger: 'blur' }
+          ],
+          location:[
+            { required: true, message: '请输入日程地点', trigger: 'blur' }
+          ],
+          startTime:[
+            { required: true, message: '请输入开始时间', trigger: 'blur' }
+          ],
+          endTime:[
+            { required: true, message: '请输入结束时间', trigger: 'blur' }
+          ]
+        },
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ], // 需要用哪个插件引入后放到这个数组里
         initialDate: new Date(), // 日历第一次加载时显示的初始日期。可以解析为Date的任何职包括ISO8601日期字符串，例如"2014-02-01"。
@@ -69,7 +123,7 @@ export default {
         },
         events: [{ // 将在日历上显示的事件对象， events 可以是数组、json、函数。具体可以查看官方文档
             title: '聚餐',
-            id:2,
+            id:4,
             start: '2020-12-01 16:39:01',
             end: '2020-12-05 20:00:00', // 这里要注意，end为可选参数，无end参数时该事件仅在当天展示
             backgroundColor: '#FDEBC9', // 该事件的背景颜色
@@ -101,38 +155,57 @@ export default {
     this.calendarApi = this.$refs.fullCalendar.getApi();
   },
   methods: {
+    // 点击日程触发的事件
     handleDateClick(dateClickInfo) {
       // console.log(dateClickInfo);
       if (dateClickInfo.event) {
-        const id = parseInt(dateClickInfo.event.id);
+        this.scheduleId = parseInt(dateClickInfo.event.id);
+        // console.log(dateClickInfo.event);
         scheduleAPI.getSchedule({
-          scheduleId:id
+          scheduleId:this.scheduleId
         })
         .then(res=>{
           this.dialogVisible1 = true;
           this.info = res.object;
-          // console.log(res);
+          console.log(res);
         })
         .catch(err=>{
           console.log(err);
         })
-      } else {
-        if (confirm('Would you like to add an event to ' + dateClickInfo.dateStr + ' ?')) {
-          this.calendarOptions.events.push({ // add new event data
-            title: 'New Event',
-            start: dateClickInfo.date,
-            allDay: dateClickInfo.allDay
-          })
-          this.calendarApi.refetchEvents()
-        }
       }
     },
-    handleMouseEnter(mouseEnterInfo) {
-      console.log(mouseEnterInfo.event.startStr)
-      // 提示：mouseEnterInfo.event.startStr 可以获取当前事件的开始事件
+    // 修改个人日程
+    updateInfo() {
+      scheduleAPI.updateSelfSchedule({
+        content:this.info.content,
+        startTime:this.info.startTime,
+        endTime:this.info.endTime,
+        location:this.info.location,
+        scheduleId:this.scheduleId
+      })
+      .then(res=>{
+        this.dialogVisible1=this.dialogVisible2=false;
+        // this.$router.go(0);
+        this.$message.success('修改成功');
+      })
+      .catch(err=>{
+        console.log(err);
+        this.$message.error('修改失败');
+      })
     },
-    handleMouseLeave(mouseEnterInfo) {
-      console.log(mouseEnterInfo)
+    // 删除个人日程
+    deleteInfo() {
+      scheduleAPI.deleteSelfSchedule({
+        scheduleId:this.scheduleId
+      })
+      .then(res=>{
+        this.dialogVisible1=this.dialogVisible2=false;
+        this.$router.go(0);
+        this.$message.success('删除成功');
+      })
+      .catch(err=>{
+        this.$message.error('删除失败');
+      })
     },
     todayClick(mouseEvent, htmlElement) {
       this.calendarApi.today() // 将日历移动到当前日期。
@@ -163,7 +236,7 @@ export default {
   .dialog .el-dialog__body{
     width: 100%;
     .row {
-      .la {
+      .in_label {
         font-weight: bold;
         width: 80px;
       }

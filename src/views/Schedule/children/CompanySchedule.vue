@@ -2,7 +2,7 @@
 <template>
   <div class='CompanySchedule'>
     <div class="center">
-      <Calendar :events="evs"/>
+      <Calendar :events="evs" :type="'company'"/>
     </div>
   </div>
 </template>
@@ -25,19 +25,20 @@ import scheduleAPI from '@/service/schedule';
     watch: {},
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
-    getSchedule() {
-      scheduleAPI.getCompanySchedule()
-      .then(res=>{
-        console.log(res);
-        res.object.forEach(element => {
-          this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#FDEBC9',borderColor: '#FDEBC9', textColor: '#F9AE26'})
-        });
-        this.$forceUpdate();
-      })
-      .catch(err=>{
-        console.log(err);
-      })
-    }
+      // 获取公司日程
+      getSchedule() {
+        scheduleAPI.getCompanySchedule()
+        .then(res=>{
+          console.log(res);
+          res.object.forEach(element => {
+            this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#FDEBC9',borderColor: '#FDEBC9', textColor: '#F9AE26'})
+          });
+          this.$forceUpdate();
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+      }
     },
     created() {
       this.getSchedule();

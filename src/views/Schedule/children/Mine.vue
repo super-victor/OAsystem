@@ -2,7 +2,7 @@
 <template>
   <div class='mine'>
     <div class="center">
-      <Calendar :events="evs"/>
+      <Calendar :events="evs" :type="'mine'"/>
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@ import scheduleAPI from '@/service/schedule'
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .mine{
-    height: 100px;
+    height: 500px;
     .center {
       padding: 50px;
       border-radius: @baseBorderRadius;
