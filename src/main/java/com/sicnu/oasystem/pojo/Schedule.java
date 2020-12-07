@@ -29,11 +29,9 @@ public class Schedule {
     @JsonIgnore
     private Integer isCompany;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "开始时间不能为空",groups = {Company.class, Self.class})
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "结束时间不能为空",groups = {Company.class, Self.class})
     private Date endTime;
     @NotNull(message = "领导人不能为空",groups = {Company.class})
