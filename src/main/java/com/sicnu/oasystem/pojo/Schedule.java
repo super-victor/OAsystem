@@ -29,12 +29,10 @@ public class Schedule {
     @JsonIgnore
     private Integer isCompany;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotBlank(message = "开始时间不能为空",groups = {Company.class, Self.class})
+    @NotNull(message = "开始时间不能为空",groups = {Company.class, Self.class})
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotBlank(message = "结束时间不能为空",groups = {Company.class, Self.class})
+    @NotNull(message = "结束时间不能为空",groups = {Company.class, Self.class})
     private Date endTime;
     @NotNull(message = "领导人不能为空",groups = {Company.class})
     private Integer leader;
@@ -75,21 +73,4 @@ public class Schedule {
     public interface Update{
     }
 
-    @Override
-    public String toString() {
-        return "Schedule{" +
-                "scheduleId=" + scheduleId +
-                ", isCompany=" + isCompany +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", leader=" + leader +
-                ", location='" + location + '\'' +
-                ", content='" + content + '\'' +
-                ", remark='" + remark + '\'' +
-                ", type=" + type +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", joiner=" + joiner +
-                '}';
-    }
 }
