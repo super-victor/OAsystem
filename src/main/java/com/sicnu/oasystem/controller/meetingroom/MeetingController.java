@@ -32,7 +32,7 @@ public class MeetingController {
     @Resource
     MeetingServicelmpl meetingServicelmpl;
 
-    @ApiOperation("获取所有预约成功的会议")
+    @ApiOperation("获取所有的会议")
     @GetMapping("/getAllMeetings")
     public BackFrontMessage getAllMeetings(){
         return meetingServicelmpl.getAllMeetings();

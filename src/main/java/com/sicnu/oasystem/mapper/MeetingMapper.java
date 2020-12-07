@@ -26,6 +26,8 @@ public interface MeetingMapper {
      */
     List<Meeting>getAllMeetings();
 
+    Integer completeMeetings();
+
     List<Meeting>getCurrentAllMeeting();
 
     /**

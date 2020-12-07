@@ -1,9 +1,14 @@
 package com.sicnu.oasystem.service.meetingroom;
 
+import com.alibaba.druid.sql.visitor.functions.Lpad;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.MeetingMapper;
 import com.sicnu.oasystem.pojo.Meeting;
+import com.sicnu.oasystem.pojo.Message;
 import com.sicnu.oasystem.service.meetingroom.MeetingService;
+import com.sicnu.oasystem.service.message.MessageService;
+import com.sicnu.oasystem.util.DataUtil;
+import com.sicnu.oasystem.util.LogUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +29,15 @@ public class MeetingServicelmpl implements MeetingService {
     @Resource
     MeetingMapper meetingMapper;
 
+    @Resource
+    LogUtil logUtil;
+
+    @Resource
+    MessageService messageService;
+
     @Override
     public BackFrontMessage getAllMeetings() {
+        meetingMapper.completeMeetings();
         List<Meeting>meetings=meetingMapper.getAllMeetings();
         if (meetings==null){
             return new BackFrontMessage(500,"获取所有的会议失败",null);
@@ -39,6 +51,7 @@ public class MeetingServicelmpl implements MeetingService {
 
     @Override
     public BackFrontMessage getMeetingById(Integer meetingId) {
+        meetingMapper.completeMeetings();
         Meeting meeting=meetingMapper.getMeetingById(meetingId);
         if (meeting==null){
             return new BackFrontMessage(500,"获取会议失败",null);
@@ -49,12 +62,16 @@ public class MeetingServicelmpl implements MeetingService {
 
     @Override
     public BackFrontMessage deleteMeeting(Integer meetingId) {
-
+        Meeting meeting=meetingMapper.getMeetingById(meetingId);
+        if(meeting==null){
+            return new BackFrontMessage(500,"不存在会议",null);
+        }
         int res = 0;
         res=meetingMapper.deleteMeeting(meetingId);
         if (res==0){
             return new BackFrontMessage(500,"删除会议失败",null);
         }else {
+            logUtil.deleteInfo("删除会议"+meeting);
             return new BackFrontMessage(200,"删除会议成功",null);
         }
     }
@@ -76,6 +93,9 @@ public class MeetingServicelmpl implements MeetingService {
             return new BackFrontMessage(500,"预约会议失败",null);
         }else {
 //            todo:System.out.println(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
+            logUtil.insertInfo("预约会议"+"meetingroomid:"+meetingroomid+",employeeid:"+employeeid+
+                    ",name:"+name+",startTime:"+startTime+",endtime:"+endtime+",peoplenum:"+peoplenum+",remark:"+remark);
+            messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),DataUtil.MESSAGE_TYPE_INFO,"预约会议","你已经成功预约会议");
             return new BackFrontMessage(200,"预约会议成功",null);
 
         }
@@ -91,6 +111,12 @@ public class MeetingServicelmpl implements MeetingService {
             if (res==0){
                 return new BackFrontMessage(500,"审批会议失败",null);
             }else {
+                if(appoinmentstatus==-1){
+                    messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(), DataUtil.MESSAGE_TYPE_INFO,"会议预约审核结果","你预约的会议未被通过审核");
+                }
+                if(appoinmentstatus==1){
+                    messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),DataUtil.MESSAGE_TYPE_INFO,"会议预约审核结果","你预约的会议已经通过审核");
+                }
                 return new BackFrontMessage(200,"审批会议成功",null);
             }
         }
@@ -112,6 +138,8 @@ public class MeetingServicelmpl implements MeetingService {
 
     @Override
     public BackFrontMessage getCurrentAllMeeting() {
+        meetingMapper.completeMeetings();
+        meetingMapper.completeMeetings();
         List<Meeting>meetings=meetingMapper.getCurrentAllMeeting();
         if(meetings==null||meetings.size()==0){
             return new BackFrontMessage(500,"当前没有会议",null);
