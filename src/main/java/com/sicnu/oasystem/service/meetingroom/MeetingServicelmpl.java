@@ -68,8 +68,28 @@ public class MeetingServicelmpl implements MeetingService {
         if (res==0){
             return new BackFrontMessage(500,"删除会议失败",null);
         }else {
+            messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),
+                    DataUtil.MESSAGE_TYPE_INFO,"删除会议","你已经成功删除预约的和会议");
             logUtil.deleteInfo("删除会议"+meeting);
             return new BackFrontMessage(200,"删除会议成功",null);
+        }
+    }
+
+    @Override
+    public BackFrontMessage updateOrderMeeting(Integer meetingid, Integer meetingroomid, Integer employeeid, String name, Date startTime, Date endtime, Integer peoplenum, String remark) {
+        Meeting meeting=meetingMapper.getMeetingById(meetingid);
+        if(meeting==null){
+            return new BackFrontMessage(500,"修改的会议不存在",null);
+        }else {
+            int res=0;
+            res=meetingMapper.updateOrderMeeting(meetingid,meetingroomid,employeeid,name,startTime,endtime,peoplenum,remark);
+            if(res==0){
+                return new BackFrontMessage(500,"修改会议失败",null);
+            }else{
+                messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),DataUtil.MESSAGE_TYPE_INFO,"修改预约会议","你已经成功修改预约会议");
+                logUtil.updateInfo("将"+meeting+"改为："+meetingMapper.getMeetingById(meetingid));
+                return new BackFrontMessage(200,"修改会议成功",null);
+            }
         }
     }
 
@@ -149,6 +169,23 @@ public class MeetingServicelmpl implements MeetingService {
     public BackFrontMessage getAllMeetingTimeByRoomAndTime(Integer meetingroomid, Date starttime, Date endtime) {
         List<Meeting>meetings=meetingMapper.getAllMeetingTimeByRoomAndTime(meetingroomid,starttime,endtime);
         return new BackFrontMessage(200,"获取某一会议室莫一天的会议安排",meetings);
+    }
+
+    @Override
+    public BackFrontMessage cancleApproveMeeting(Integer meetingid,Integer employeeid) {
+        Meeting meeting=meetingMapper.getMeetingById(meetingid);
+        if(meeting==null){
+            return new BackFrontMessage(500,"你要取消的预约不存在",null);
+        }
+        int res=0;
+        res=meetingMapper.cancleApproveMeeting(meetingid,employeeid);
+        if(res==0){
+            return new BackFrontMessage(500,"取消预约失败",null);
+        }else{
+            messageService.send(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),
+                    DataUtil.MESSAGE_TYPE_INFO,"取消会议","你已经成功取消了会议:"+meeting.getName());
+            return new BackFrontMessage(200,"取消预约成功",null);
+        }
     }
 }
 

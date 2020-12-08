@@ -53,7 +53,6 @@ public interface MeetingMapper {
     /**
      * @MethodName addOrderMeeting
      * @param meetingroomid
-     * @param status
      * @param employeeid
      * @param name
      * @param startTime
@@ -91,7 +90,9 @@ public interface MeetingMapper {
      * @Return java.lang.Integer
      * @LastChangeDate 2020/11/28
      */
-    Integer updateOrderMeeting(Integer meetingId,Integer status,String name, Date startTime,Date endtime,Integer peoplenum);
+    Integer updateOrderMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid,
+                               String name, Date startTime,Date endtime,
+                               Integer peoplenum,String remark);
 
     /**
      * @MethodName waitingApproveMeeting
@@ -117,4 +118,8 @@ public interface MeetingMapper {
 
 
     List<Meeting> getAllMeetingTimeByRoomAndTime(Integer meetingrommid,Date stratTime,Date endTime);
+
+    Integer cancleApproveMeeting(Integer meetingid,Integer employeeid);
+
+//    Integer modifyApproveMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid, String name, Date startTime,Date endtime,Integer peoplenum,String remark);
 }

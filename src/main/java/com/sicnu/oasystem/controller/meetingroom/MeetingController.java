@@ -2,6 +2,7 @@ package com.sicnu.oasystem.controller.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.meetingroom.MeetingServicelmpl;
+import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -104,6 +105,39 @@ public class MeetingController {
             e.printStackTrace();
         }
         return meetingServicelmpl.getAllMeetingTimeByRoomAndTime(meetingroomid,starttime,enttime);
+    }
+
+
+    @ApiOperation("删除未审批的预约会议")
+    @DeleteMapping("/cancleApproveMeeting")
+    BackFrontMessage cancleApproveMeeting(@Validated @NotNull(message = "会议Id不能为空") Integer meetingid){
+        Integer employeeid= UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
+        return meetingServicelmpl.cancleApproveMeeting(meetingid,employeeid);
+    }
+
+    @ApiOperation("修改未审批的预约会议")
+    @PutMapping("/updateOrderMeeting")
+    BackFrontMessage updateOrderMeeting(@Validated @NotNull(message = "会议Id不能为空") Integer meetingid,Integer meetingroomid,
+                                        String name, String startTime,String endtime,
+                                        Integer peoplenum,String remark){
+        Integer employeeid=UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date StartTime=null;
+        Date Endtine=null;
+        try {
+            if(startTime!=null){
+                StartTime=sdf.parse(startTime);
+            }
+            if(endtime!=null){
+                Endtine=sdf.parse(endtime);
+            }
+        } catch (ParseException e) {
+            return new BackFrontMessage(500,"修改预约会议失败",null);
+        }
+        if((startTime!=null &&endtime!=null )&&(StartTime.after(Endtine))){
+            return new BackFrontMessage(500,"修改预约会议失败",null);
+        }
+        return meetingServicelmpl.updateOrderMeeting(meetingid,meetingroomid,employeeid,name,StartTime,Endtine,peoplenum,remark);
     }
 }
 
