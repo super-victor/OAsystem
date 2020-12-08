@@ -1,11 +1,8 @@
 package com.sicnu.oasystem.service.meetingroom;
 
-import com.alibaba.druid.sql.visitor.functions.Lpad;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.MeetingMapper;
 import com.sicnu.oasystem.pojo.Meeting;
-import com.sicnu.oasystem.pojo.Message;
-import com.sicnu.oasystem.service.meetingroom.MeetingService;
 import com.sicnu.oasystem.service.message.MessageService;
 import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.LogUtil;
