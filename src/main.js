@@ -45,8 +45,6 @@ import {
   CheckboxGroup,
   Loading,
   Switch,
-<<<<<<< HEAD
-<<<<<<< HEAD
   Upload,
   Progress,
   Notification,
@@ -55,17 +53,11 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-=======
   DatePicker,
-  TimePicker
->>>>>>> zfy
-=======
+  TimePicker,
   Tree,
-  DatePicker,
   Collapse,
   CollapseItem
-
->>>>>>> hyc
 } from 'element-ui';
 
 Vue.use(Container);
@@ -78,6 +70,7 @@ Vue.use(BreadcrumbItem);
 Vue.use(Input);
 Vue.use(Link);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Divider);
 Vue.use(Dialog);
 Vue.use(Select);
@@ -90,7 +83,6 @@ Vue.use(RadioButton);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(Button);
-Vue.use(ButtonGroup);
 Vue.use(Input);
 Vue.use(Pagination);
 Vue.use(InputNumber);
@@ -108,8 +100,6 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
-<<<<<<< HEAD
-<<<<<<< HEAD
 Vue.use(Upload);
 Vue.use(Progress);
 Vue.use(Steps);
@@ -117,19 +107,12 @@ Vue.use(Step);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
-=======
 Vue.use(DatePicker);
 Vue.use(TimePicker);
->>>>>>> zfy
-=======
 Vue.use(Tree);
-Vue.use(DatePicker);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.component(CollapseTransition.name, CollapseTransition)
-
-
->>>>>>> hyc
 
 Vue.prototype.$loading = Loading.service;
 
