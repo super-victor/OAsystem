@@ -42,6 +42,7 @@ import {
   CheckboxGroup,
   Loading,
   Switch,
+<<<<<<< HEAD
   Upload,
   Progress,
   Notification,
@@ -50,6 +51,10 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+=======
+  DatePicker,
+  TimePicker
+>>>>>>> zfy
 } from 'element-ui';
 
 Vue.use(Container);
@@ -91,6 +96,7 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
+<<<<<<< HEAD
 Vue.use(Upload);
 Vue.use(Progress);
 Vue.use(Steps);
@@ -98,6 +104,10 @@ Vue.use(Step);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+=======
+Vue.use(DatePicker);
+Vue.use(TimePicker);
+>>>>>>> zfy
 
 Vue.prototype.$loading = Loading.service;
 

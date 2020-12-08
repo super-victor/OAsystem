@@ -1,16 +1,13 @@
 !<!-- ChildrenComponent1 -->
 <template>
   <div class='CompanySchedule'>
-    <Calendar/>
   </div>
 </template>
 
 <script>
 import {mapMutations} from 'vuex';
-import Calendar from '../component/Calendar';
   export default {
     components: {
-      Calendar
     },
     data() {
       return {
@@ -24,10 +21,9 @@ import Calendar from '../component/Calendar';
       ...mapMutations(['UPDATE_BREAD']),
     },
     created() {
-      console.log('a');
     },
     mounted() {
-      this.UPDATE_BREAD(['日程安排','公司日程']);
+      this.UPDATE_BREAD(['日程安排','管理日程']);
     }
   }
 </script>

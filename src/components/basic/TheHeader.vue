@@ -5,6 +5,7 @@
       <img src="@/assets/logo.png" class="logo" alt="">
     </div>
     <div class="headerBox">
+<<<<<<< HEAD
       <p class="name">协同办公平台</p>
       <div class="itemBox">
         <the-header-box>
@@ -21,6 +22,19 @@
                 <p class="name">Hi, {{userInfo.userinfo && userInfo.userinfo.username}} !</p>
                 <p class="id">ID: {{userInfo.userinfo && userInfo.userinfo.employeeId}}</p>
               </div>
+=======
+      <div class="messageBox">
+        <el-button class="button" @click="routeTo('/message')">消息</el-button>
+      </div>
+      <the-header-box @clickItem="openUserBox">
+        <img src="@/assets/user.png" class="userImg" alt="">
+        <div class="userBox" :class="{'userBoxClick':userBoxFlag}">
+          <div class="userTop">
+            <img src="@/assets/user.png" class="userImgInside" alt="">
+            <div class="titleBox">
+              <p class="name">Hi, {{userInfo.username}}!</p>
+              <p class="id">ID: {{userInfo.employeeId}}</p>
+>>>>>>> zfy
             </div>
             <el-dropdown-item
               v-for="item in userItem"
@@ -130,6 +144,7 @@
       padding-right: 25px;
       box-sizing: border-box;
       position: relative;
+<<<<<<< HEAD
       .name{
         height: 37px;
         width: 200px;
@@ -145,6 +160,18 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+=======
+      .messageBox{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-right: 10px;
+        .button {
+          height: 30px;
+          width: 50px;
+        }
+>>>>>>> zfy
       }
       .userImg{
         height: 28px;

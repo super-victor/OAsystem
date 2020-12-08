@@ -36,7 +36,7 @@
           </el-select>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible2 = false;optionType = ''">取 消</el-button>
+        <el-button @click="dialogVisible2 = false;optionType = ''" class="submit">取 消</el-button>
         <el-button type="primary" @click="innerVisible = true" v-show="optionType !== ''">下一步</el-button>
       </div>
     </el-dialog>
@@ -46,13 +46,41 @@
       :visible.sync="innerVisible"
       class="innerCard">
       <div v-if="optionType === '新建'">
-        <el-input v-model="newInfo.name" placeholder="请输入姓名"></el-input>
-        <el-input v-model="newInfo.phone" placeholder="请输入电话"></el-input>
-        <el-input v-model="newInfo.company" placeholder="请输入公司"></el-input>
-        <el-input v-model="newInfo.department" placeholder="请输入部门"></el-input>
-        <el-input v-model="newInfo.position" placeholder="请输入职位"></el-input>
-        <el-input v-model="newInfo.email" placeholder="请输入邮箱"></el-input>
-        <el-input v-model="newInfo.address" placeholder="请输入地址"></el-input>
+      <el-form ref="form" :model="newInfo" :rules="rules" label-width="80px" :inline-message=true>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="newInfo.name" placeholder="请输入姓名"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="电话" prop="phone">
+              <el-input v-model="newInfo.phone" placeholder="请输入电话"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="公司" prop="company">
+          <el-input v-model="newInfo.company" placeholder="请输入公司" class="input"></el-input>
+        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="部门" prop="department">
+              <el-input v-model="newInfo.department" placeholder="请输入部门" class="input"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="职位" prop="position">
+              <el-input v-model="newInfo.position" placeholder="请输入职位" class="input"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="newInfo.email" placeholder="请输入邮箱" class="input"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="newInfo.address" placeholder="请输入地址" class="input"></el-input>
+        </el-form-item>
+      </el-form>
       </div>
       <div v-else>
         <div class="flex-col">
@@ -62,7 +90,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="innerVisible = false;optionType =''">取 消</el-button>
-        <el-button type="primary" @click="submitOption(optionType)">确 定</el-button>
+        <el-button type="primary" @click="submitOption(optionType,'form')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -98,7 +126,32 @@
         },
         cardCode: '', // 名片导入时的共享码
         cards: [], // 名片信息
-        fileId: 0 // 分类id
+        fileId: 0, // 分类id
+        rules:{
+          email:[
+            { required: true, message: '请输入电子邮箱', trigger: 'blur' },
+            { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: '邮箱格式有误' }
+          ],
+          name:[
+            { required: true, message: '请输入姓名', trigger: 'blur' }
+          ],
+          address:[
+            { required: true, message: '请输入地址', trigger: 'blur' }
+          ],
+          company:[
+            { required: true, message: '请输入公司', trigger: 'blur' }
+          ],
+          department:[
+            { required: true, message: '请输入部门', trigger: 'blur' }
+          ],
+          position:[
+            { required: true, message: '请输入职位', trigger: 'blur' }
+          ],
+          phone:[
+            { required: true, message: '请输入电话号码'},
+            { pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '电话号码格式有误' }
+          ]
+        }
       };
     },
     computed: {
@@ -108,25 +161,30 @@
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
       // 新建或导入名片
-      submitOption(type) {
+      submitOption(type,formName) {
         if(type === '新建') {
-          cardFileAPI.addCard({
-            name: this.newInfo.name,
-            phone: this.newInfo.phone,
-            email: this.newInfo.email,
-            company: this.newInfo.company,
-            department: this.newInfo.department,
-            position: this.newInfo.position,
-            address: this.newInfo.address,
-            cardHolderId:this.fileId
-          })
-          .then(res=>{
-            this.innerVisible = false;
-            this.dialogVisible2 = false;
-          })
-          .catch(err=>{
-            this.$message.error('新建失败');
-          })
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            cardFileAPI.addCard({
+              name: this.newInfo.name,
+              phone: this.newInfo.phone,
+              email: this.newInfo.email,
+              company: this.newInfo.company,
+              department: this.newInfo.department,
+              position: this.newInfo.position,
+              address: this.newInfo.address,
+              cardHolderId:this.fileId
+            })
+            .then(res=>{
+              this.innerVisible = false;
+              this.dialogVisible2 = false;
+              this.$forceUpdate();
+            })
+            .catch(err=>{
+              this.$message.error('新建失败');
+            })
+          }
+        })
         } else {
           cardFileAPI.importCard({
             cardHolderId:this.fileId,
@@ -135,6 +193,7 @@
           .then(res=>{
             this.innerVisible = false;
             this.dialogVisible2 = false;
+            this.$forceUpdate();
           })
           .catch(err=>{
             this.$message.error('导入失败');
@@ -155,7 +214,7 @@
   }
 </script>
 <style lang='less' scoped>
-@import '../../../style/common.less';
+// @import '../../../style/common.less';
   .ShareCard{
     height: 500px;
     width: 100%;
@@ -164,8 +223,8 @@
       width: 100%;
       .left {
         padding: 0.2rem 0;
-        background-color: @white;
-        border-radius: @baseBorderRadius;
+        background-color:white;
+        border-radius: 4px;
       }
       .center {
         margin-left: 0.5rem;
@@ -175,14 +234,14 @@
         padding: 0.5rem;
         width: 9rem;
         font-size: 0.3rem;
-        color: @warningColor;
-        background-color: @white;
+        color: #E6A23C;
+        background-color: white;
       }
       .new_card {
         padding: 0.5rem;
         margin-bottom: 0.5rem;
-        background-color: @white;
-        border-radius: @baseBorderRadius;
+        background-color: white;
+        border-radius: 4px;
         .submit {
           width: 2rem;
         }
@@ -196,11 +255,14 @@
     .innerCard .el-dialog__body{
       padding: 0px;
       .el-input {
-        margin-bottom: 0.2rem;
+        margin-top: 0.1rem;
       }
       p {
         margin-bottom: 0.3rem;
       }
+    }
+    ::v-deep .form-item {
+      margin: 20px;
     }
   }
 </style>
