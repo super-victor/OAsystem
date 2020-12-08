@@ -65,7 +65,7 @@
               prop="employeeId"
               label="工号"
               sortable
-              width="100"
+              width="80"
               align="center">
             </el-table-column>
             <el-table-column
@@ -79,7 +79,7 @@
               prop="username"
               label="用户名"
               sortable
-              width="150"
+              width="170"
               align="center">
             </el-table-column>
             <el-table-column

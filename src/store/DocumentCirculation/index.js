@@ -1,8 +1,8 @@
-const UPDATE_FILEMANAGEMENTINFO = 'UPDATE_FILEMANAGEMENTINFO' //更新sendFileManagementInfo
+const UPDATE_FILEMANAGEMENTINFO = 'UPDATE_FILEMANAGEMENTINFO' //更新DocumentCirculationInfo
 
 
 const state = {
-  sendFileManagementInfo:123456
+  DocumentCirculationInfo:123456
 }
 
 const getters = {
@@ -11,7 +11,7 @@ const getters = {
 
 const mutations = {
   [UPDATE_FILEMANAGEMENTINFO](state,payload){
-    state.sendFileManagementInfo = payload;
+    state.DocumentCirculationInfo = payload;
   }
 }
 

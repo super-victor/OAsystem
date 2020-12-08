@@ -2,6 +2,7 @@ import{
   GET_TOKEN,
   GET_USERINFO,
   UPDATE_USERINFO,
+  UPLOAD_USER_PROGRESS,
   UPDATE_PAGE_PERMISSIONS,
   UPDATE_BREAD,
   ASIDE_CLICK,
@@ -20,6 +21,9 @@ export default{
     state.userInfo.email = email;
     state.userInfo.homeAddress = homeAddress;
     state.userInfo.phone = phone;
+  },
+  [UPLOAD_USER_PROGRESS](state,payload){
+    state.userUploadProgress = payload;
   },
   [UPDATE_PAGE_PERMISSIONS](state,payload){
     let authority = state.userAuthority;

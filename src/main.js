@@ -3,6 +3,8 @@ import '@/theme/index.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import 'element-ui/lib/theme-chalk/base.css';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 import {
   Container,
@@ -15,6 +17,7 @@ import {
   Input,
   Link,
   Button,
+  ButtonGroup,
   Message,
   Divider,
   Dialog,
@@ -42,8 +45,19 @@ import {
   CheckboxGroup,
   Loading,
   Switch,
+  Upload,
+  Progress,
+  Notification,
+  Steps,
+  Step,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
   DatePicker,
-  TimePicker
+  TimePicker,
+  Tree,
+  Collapse,
+  CollapseItem
 } from 'element-ui';
 
 Vue.use(Container);
@@ -56,6 +70,7 @@ Vue.use(BreadcrumbItem);
 Vue.use(Input);
 Vue.use(Link);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Divider);
 Vue.use(Dialog);
 Vue.use(Select);
@@ -85,8 +100,19 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
+Vue.use(Upload);
+Vue.use(Progress);
+Vue.use(Steps);
+Vue.use(Step);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 Vue.use(DatePicker);
 Vue.use(TimePicker);
+Vue.use(Tree);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.prototype.$loading = Loading.service;
 
@@ -98,6 +124,8 @@ Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
+
+Vue.prototype.$notify = Notification;
 
 new Vue({
   router,

@@ -4,7 +4,6 @@
   class='TheHeaderBox'>
     <div 
     class="innerBox"
-    @click="click"
     :style="{'background':flag?'#EFEFEE':'#FFFFFF'}"
     @mouseenter="flag=!flag"
     @mouseleave="flag=!flag">
@@ -25,9 +24,6 @@
     computed: {},
     watch: {},
     methods: {
-      click(){
-        this.$emit('clickItem');
-      }
     },
     created() {
       

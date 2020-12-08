@@ -19,7 +19,7 @@ export default{
    */
   async departmentRequest(){
     const res = await NetworkRequest({
-      url:'/deaprtment',
+      url:'/getAllDepartmentName',
       method:'get',
     })
     return res.data;

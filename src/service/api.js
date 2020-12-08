@@ -20,7 +20,7 @@ export const NetworkRequest = options => {
   return new Promise((resolve,reject)=>{
 
     let loading = null;
-    let {timeout,postHeaderType,throttle,url,method,data} = options;
+    let {timeout,postHeaderType,throttle,url,method,data,fileType} = options;
 
     axios.defaults.timeout = timeout || 30000;//设置超时时间
     axios.defaults.headers.post['Content-Type'] = postHeaderType || 'application/x-www-form-urlencoded';//设置post方式时的请求头
@@ -109,11 +109,25 @@ export const NetworkRequest = options => {
         params = qs.stringify(data,{indices:false});
       }
       if(method=='post'){
-        axios.post(url,params).then(res=>{
-          resolve(res);
-        }).catch(err=>{
-          reject(err);
-        })
+        if(fileType){
+          let config = {
+            onUploadProgress: progressEvent => {
+              let complete = (progressEvent.loaded / progressEvent.total * 100 | 0);
+              Store.commit('UPLOAD_USER_PROGRESS',complete);
+            }
+          }
+          axios.post(url,params,config).then(res=>{
+            resolve(res);
+          }).catch(err=>{
+            reject(err);
+          })
+        }else{
+          axios.post(url,params).then(res=>{
+            resolve(res);
+          }).catch(err=>{
+            reject(err);
+          })
+        }
       }else{
         axios.put(url,params).then(res=>{
           resolve(res);

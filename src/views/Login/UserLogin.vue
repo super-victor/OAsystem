@@ -58,7 +58,7 @@
             type: 'success'
           });
           this.pagePermissions(res.object.usershow);
-          this.$router.replace(this.$route.query.redirect);
+          this.$router.replace(this.$route.query.redirect || '/');
         })
         .catch(err=>{
           this.$message.error('登录失败');
@@ -111,6 +111,7 @@
         font-size: 22px;
         line-height: 39px;
         color: #2C3059;
+        user-select: none;
       }
     }
     .loginBox{
