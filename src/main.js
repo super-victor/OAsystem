@@ -3,6 +3,8 @@ import '@/theme/index.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import 'element-ui/lib/theme-chalk/base.css';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 import {
   Container,
@@ -15,6 +17,7 @@ import {
   Input,
   Link,
   Button,
+  ButtonGroup,
   Message,
   Divider,
   Dialog,
@@ -43,6 +46,7 @@ import {
   Loading,
   Switch,
 <<<<<<< HEAD
+<<<<<<< HEAD
   Upload,
   Progress,
   Notification,
@@ -55,6 +59,13 @@ import {
   DatePicker,
   TimePicker
 >>>>>>> zfy
+=======
+  Tree,
+  DatePicker,
+  Collapse,
+  CollapseItem
+
+>>>>>>> hyc
 } from 'element-ui';
 
 Vue.use(Container);
@@ -79,6 +90,7 @@ Vue.use(RadioButton);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Input);
 Vue.use(Pagination);
 Vue.use(InputNumber);
@@ -97,6 +109,7 @@ Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
 <<<<<<< HEAD
+<<<<<<< HEAD
 Vue.use(Upload);
 Vue.use(Progress);
 Vue.use(Steps);
@@ -108,6 +121,15 @@ Vue.use(DropdownItem);
 Vue.use(DatePicker);
 Vue.use(TimePicker);
 >>>>>>> zfy
+=======
+Vue.use(Tree);
+Vue.use(DatePicker);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
+Vue.component(CollapseTransition.name, CollapseTransition)
+
+
+>>>>>>> hyc
 
 Vue.prototype.$loading = Loading.service;
 
