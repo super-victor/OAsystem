@@ -5,7 +5,7 @@
       <p class="title">新建日程</p>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="日程类型" prop="type" style="height:60px;width:500px">
-          <el-select v-model="form.type">
+          <el-select v-model="form.type" size="medium">
             <el-option
             v-for="item in types"
             :key="item.name"
@@ -15,13 +15,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="日程内容" prop="content" style="height:60px;width:500px">
-          <el-input v-model="form.content" class="input"></el-input>
+          <el-input v-model="form.content" class="input" size="medium"></el-input>
         </el-form-item>
         <el-form-item label="日程地点" prop="location" style="height:60px;width:500px">
-          <el-input v-model="form.location" class="input"></el-input>
+          <el-input v-model="form.location" class="input" size="medium"></el-input>
         </el-form-item>
         <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px" v-if="form.type==='公司日程'">
-          <el-select v-model="form.joiner" multiple filterable style="width:5rem">
+          <el-select v-model="form.joiner" multiple filterable style="width:5rem" size="medium">
             <el-option
             v-for="item in userList"
             :key="item.id"
@@ -35,7 +35,8 @@
             v-model="form.startTime"
             type="datetime"
             value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="选择开始时间">
+            placeholder="选择开始时间"
+            size="medium">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endTime" style="height:60px;width:500px">
@@ -43,7 +44,8 @@
             v-model="form.endTime"
             type="datetime"
             value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="选择开始时间">
+            placeholder="选择开始时间"
+            size="medium">
           </el-date-picker>
         </el-form-item>
         <el-form-item>

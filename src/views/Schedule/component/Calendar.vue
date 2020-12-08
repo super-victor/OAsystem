@@ -2,7 +2,7 @@
 	<div class="item">
     <FullCalendar class="fullCalendar" ref="fullCalendar" :options="calendarOptions"/>
     <el-dialog title="日程信息" :visible.sync="dialogVisible1" class="dialog">
-      <div class="row">
+      <div class="row" v-if="type==='公司日程'">
         <p class="in_label">发起人</p>
         <p>{{info.leader}}</p>
       </div>
@@ -10,7 +10,7 @@
         <p class="in_label">日程内容</p>
         <p>{{info.content}}</p>
       </div>
-      <div class="row">
+      <div class="row" v-if="type==='公司日程'">
         <p class="in_label">参与人员</p>
         <p>{{info.joiner}}</p>
       </div>
@@ -176,6 +176,7 @@ export default {
     },
     // 修改个人日程
     updateInfo() {
+      console.log(this.info.endTime);
       scheduleAPI.updateSelfSchedule({
         content:this.info.content,
         startTime:this.info.startTime,

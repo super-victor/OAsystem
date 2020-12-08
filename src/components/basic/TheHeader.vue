@@ -5,6 +5,9 @@
       <img src="@/assets/logo.png" class="logo" alt="">
     </div>
     <div class="headerBox">
+      <div class="messageBox">
+        <el-button class="button" @click="routeTo('/message')">消息</el-button>
+      </div>
       <the-header-box @clickItem="openUserBox">
         <img src="@/assets/user.png" class="userImg" alt="">
         <div class="userBox" :class="{'userBoxClick':userBoxFlag}">
@@ -116,6 +119,17 @@
       padding-right: 25px;
       box-sizing: border-box;
       position: relative;
+      .messageBox{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-right: 10px;
+        .button {
+          height: 30px;
+          width: 50px;
+        }
+      }
       .userImg{
         height: 35px;
         width: 35px;

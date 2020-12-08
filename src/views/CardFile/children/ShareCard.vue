@@ -178,6 +178,7 @@
             .then(res=>{
               this.innerVisible = false;
               this.dialogVisible2 = false;
+              this.$forceUpdate();
             })
             .catch(err=>{
               this.$message.error('新建失败');
@@ -192,6 +193,7 @@
           .then(res=>{
             this.innerVisible = false;
             this.dialogVisible2 = false;
+            this.$forceUpdate();
           })
           .catch(err=>{
             this.$message.error('导入失败');

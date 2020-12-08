@@ -111,7 +111,7 @@
           department: this.msg.card.department,
           position: this.msg.card.position,
           address: this.msg.card.address,
-          holder: this.msg.card.holder
+          holder: this.msg.card.holder,
         }, // 信息
         holders: [], // 名片夹
         rules:{
@@ -170,13 +170,14 @@
                 department: this.newInfo.department,
                 position: this.newInfo.position,
                 address: this.newInfo.address,
-                cardHolderId:this.newHolder
+                cardHolderId:this.newInfo.holder
             })
             .then(res=>{
               this.$message.success('修改成功');
               this.msg.card=this.newInfo;
               this.msg.cardHolderId = this.newHolder;
               this.dialogVisible2 = false;
+              this.$forceUpdate();
             })
             .catch(err=>{
               console.log(err);
@@ -201,6 +202,7 @@
     },
     created() {
       this.getFileName();
+      console.log(this.msg);
     },
     mounted() {
       
