@@ -10,6 +10,9 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       web-stat-filter:
         enabled=: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 ## mybatis
 # sql语句控制台打印执行sql语句
 mybatis:

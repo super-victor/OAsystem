@@ -6,7 +6,7 @@
         values (#{param1},0,#{param2},#{param3},0,#{param4},#{param5},#{param6},#{param7})
     </insert>
     <update id="approveMeeting">
-        update meeting set appoinmentstatus=#{param2} where meetingid=#{param1}
+        update meeting set appoinmentstatus=#{param2} where meetingid=#{param1} and appoinmentstatus==0
     </update>
     <update id="updateOrderMeeting">
         update meeting set meetingid=#{param1}
@@ -28,20 +28,23 @@
             </if>
         </where>
     </update>
+    <update id="completeMeetings">
+        update meeting set appoinmentstatus=2 where CURRENT_DATE>endtime and appoinmentstatus=1
+    </update>
     <delete id="deleteMeeting">
         delete from meeting where meetingid=#{meetingId}
     </delete>
 
     <select id="getAllMeetings" resultType="com.sicnu.oasystem.pojo.Meeting">
         select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
-        and appoinmentstatus=1
+        and appoinmentstatus!=-1
     </select>
     <select id="getMeetingById" resultType="com.sicnu.oasystem.pojo.Meeting">
         select * from meeting where meetingid=#{meetingId}
     </select>
     <select id="waitingApproveMeeting" resultType="com.sicnu.oasystem.pojo.Meeting">
          select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
-        and appoinmentstatus=0 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
+        and appoinmentstatus=0 
     </select>
     <select id="judgeIsIsOccupy" resultType="com.sicnu.oasystem.pojo.Meeting">
         select * from meeting where meetingroomid=#{param1} and ((UNIX_TIMESTAMP(#{param2})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param2}))
@@ -50,7 +53,11 @@
         or(UNIX_TIMESTAMP(#{param2})>=UNIX_TIMESTAMP(starttime) and UNIX_TIMESTAMP(endtime)>=UNIX_TIMESTAMP(#{param3})))
     </select>
     <select id="getCurrentAllMeeting" resultType="com.sicnu.oasystem.pojo.Meeting">
-        select meeting.* ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
+        select meeting.meetingid ,meetingroom.name as meetingRoomName from meeting,meetingroom where meeting.meetingroomid=meetingroom.meetingroomid
         and appoinmentstatus=1 and CURRENT_DATE>startTime and endTime>CURRENT_DATE
+    </select>
+    <select id="getAllMeetingTimeByRoomAndTime" resultType="com.sicnu.oasystem.pojo.Meeting">
+        select starttime,endtime from meeting where meetingroomid=#{param1} and (UNIX_TIMESTAMP(starttime)>=UNIX_TIMESTAMP(#{param2}))
+        and (UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(endtime))
     </select>
 </mapper>

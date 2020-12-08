@@ -14,7 +14,6 @@ import java.util.Date;
  */
 @Data
 public class Meeting {
-    @JsonIgnore
     private Integer meetingId;  //会议ID
     private Integer meetingRoomId;  //会议室ID
     private Integer status;   //会议状态

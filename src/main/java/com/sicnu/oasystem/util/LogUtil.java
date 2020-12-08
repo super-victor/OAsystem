@@ -18,17 +18,19 @@ public class LogUtil {
 
     public void insertInfo(String info){
         MDC.put("type","insert");
+        info="用户ID为"+UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+info;
         logger.info(info);
     }
 
     public void updateInfo(String info){
         MDC.put("type","update");
-        info="用户ID为"+UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+"\n"+info;
+        info="用户ID为"+UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+info;
         logger.info(info);
     }
 
     public void deleteInfo(String info){
         MDC.put("type","delete");
+        info="用户ID为"+UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()+info;
         logger.info(info);
     }
 
@@ -40,6 +42,7 @@ public class LogUtil {
 
     public void customException(String info){
         MDC.put("type","customException");
+        logger.info(info);
     }
 }
 

@@ -8,7 +8,10 @@
     </insert>
 
     <update id="updateEquipment">
-        update equipment set equipmentId=#{equipmentId} ,remark=#{param6}
+        update equipment set equipmentId=#{equipmentId}
+        <if test="param6!=null">
+            ,remark=#{param6}
+        </if>
         <if test="param2 !=null">
             ,equipmentclassifyId=#{param2}
         </if>

@@ -54,6 +54,9 @@ public class EquipmentServicelpml implements EquipmentService {
             if(res==0){
                 return new BackFrontMessage(500,"添加设备失败",null);
             }else{
+                logUtil.insertInfo("添加设备"+"equipmentclassifyId:"+equipmentclassifyId+
+                        ",meetingroomId:"+meetingroomId+",name:"+name+",ismaintain:"+ismaintain+
+                        ",remark:"+remark+",num:"+num);
                 return new BackFrontMessage(200,"添加设备成功",null);
             }
         }else{
@@ -76,13 +79,9 @@ public class EquipmentServicelpml implements EquipmentService {
         Equipment equipment=equipmentMapper.getEquipmentById(equipmentId);
         EquipmentClassify equipmentClassify=equipmentClassifyMapper.getEquipmentClassifyById(equipmentclassifyId);
         MeetingRoom meetingRoom=meetingRoomMapper.getMeetingRoomById(newmeetingroomId);
-        System.out.println(meetingRoom);
-        System.out.println(equipmentClassify);
-        System.out.println(equipmentclassifyId);
-        System.out.println(newmeetingroomId);
         if (equipment==null){
             return new BackFrontMessage(500,"更新的设备不存在",null);
-        }else if(equipmentClassify==null ||meetingRoom==null){
+        }else if((equipmentClassify==null&&equipmentclassifyId!=null) ||(meetingRoom==null&&newmeetingroomId!=null)){
             return new BackFrontMessage(500,"更新数据不正确",null);
         }
         else {
@@ -135,6 +134,7 @@ public class EquipmentServicelpml implements EquipmentService {
             if(res==0){
                 return new BackFrontMessage(500,"删除设备失败",null);
             }else{
+                logUtil.deleteInfo("删除设备"+equipment);
                 return new BackFrontMessage(200,"删除设备成功",null);
             }
         }

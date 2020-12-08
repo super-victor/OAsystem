@@ -4,6 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EquipmentClassifyMapper;
 import com.sicnu.oasystem.pojo.EquipmentClassify;
 import com.sicnu.oasystem.service.meetingroom.EquipmentClassifyService;
+import com.sicnu.oasystem.util.LogUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +23,8 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService {
     @Resource
     EquipmentClassifyMapper equipmentClassifyMapper;
 
+    @Resource
+    LogUtil logUtil;
 
     @Override
     public BackFrontMessage addEquipmentClassify(String classifyName) {
@@ -32,6 +35,7 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService {
         }else {
             res=equipmentClassifyMapper.addEquipmentClassify(classifyName);
             if(res!=null){
+                logUtil.insertInfo("添加设备分类"+classifyName);
                 return new BackFrontMessage(200,"添加设备分类成功",null);
             }else {
                 return new BackFrontMessage(500,"添加设备分类失败",null);
@@ -50,6 +54,7 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService {
             if(res==0){
                 return new BackFrontMessage(500,"更新设备分类失败",null);
             }else{
+                logUtil.updateInfo("跟新设备分类,将"+equipmentClassify+"变为"+equipmentClassifyMapper.getEquipmentClassifyById(classifyId));
                 return new BackFrontMessage(200,"更新设备分类成功",null);
             }
         }
@@ -67,6 +72,7 @@ public class EquipmentClassifyServicelmpl implements EquipmentClassifyService {
             if(res==0){
                 return new BackFrontMessage(500,"删除设备分类失败",null);
             }else {
+                logUtil.deleteInfo("删除设备分类"+equipmentClassify);
                 return new BackFrontMessage(200,"删除设备分类成功",null);
             }
         }
