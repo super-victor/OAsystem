@@ -56,8 +56,10 @@ public class JwtTokenUtil implements Serializable {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
+            //登录过期
             claims = e.getClaims();
         }
+        // 还有一个parse错误异常
         return claims;
     }
 

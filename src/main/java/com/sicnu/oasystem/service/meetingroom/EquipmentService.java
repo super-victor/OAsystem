@@ -17,7 +17,6 @@ public interface EquipmentService {
 
     /**
      * @MethodName addEquipment
-     * @param equipmentId
      * @param equipmentclassifyId
      * @param meetingroomId
      * @param name
@@ -28,8 +27,7 @@ public interface EquipmentService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/16
      */
-    BackFrontMessage addEquipment(Integer equipmentclassifyId,
-                                  Integer meetingroomId, String name, Integer ismaintain, String remark,int num);
+    BackFrontMessage addEquipment(Integer equipmentclassifyId, Integer meetingroomId, String name, Integer ismaintain, String remark,int num);
 
     /**
      * @MethodName updateEquipment

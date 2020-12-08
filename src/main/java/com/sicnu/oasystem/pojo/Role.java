@@ -18,11 +18,11 @@ import java.util.List;
 @Data
 public class Role implements GrantedAuthority {
     // 权限列表
-    // 1 ROLE_Admin
-    // 2 ROLE_Censor
-    // 3 ROLE_Schedule
+    // 1 ROLE_SuperAdmin
+    // 2 ROLE_Admin
     private Integer roleId;
     private String name;
+    private int isAble;
     // 拥有此角色的用户列表
     private List<Employee> employeeList;
     @JsonIgnore

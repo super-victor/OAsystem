@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,12 +36,15 @@ public class SuperAdminController {
     @ApiOperation(value = "添加管理员")
     @PostMapping("/admin")
     BackFrontMessage addAdmin(@RequestParam List<Integer> employeeIdList){
+        if (employeeIdList == null) {
+            employeeIdList = new ArrayList<>();
+        }
         return superAdminService.updateAdminList(employeeIdList);
     }
 
     @ApiOperation(value = "锁定管理员")
     @PutMapping("/lockOrUnlockAdmin")
-    BackFrontMessage lockadmin(@RequestParam Integer employeeId, @RequestParam Integer isAccountLocked){
+    BackFrontMessage lockadmin(@RequestParam @NotNull Integer employeeId, @RequestParam @NotNull @Pattern(regexp = "0|1") Integer isAccountLocked){
         return superAdminService.lockAdmin(employeeId, isAccountLocked);
     }
 

@@ -16,7 +16,7 @@ public class ListUtil {
      * @MethodName compare
      * @param primary 原数组 (方法执行完后装的就是相对于原数组减少的部分)
      * @param current 增加删除后的数组 (方法执行完后装的就是相对于原数组增加的部分)
-     * @Description 必须保证list是arraylist的实现
+     * @Description 必须保证list是arraylist的实现，用于得出primary和current相比增加删除的部分
      * @Author JohnTang
      * @Return void
      * @LastChangeDate 2020/11/28

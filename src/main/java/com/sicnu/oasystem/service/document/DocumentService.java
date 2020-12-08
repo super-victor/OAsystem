@@ -26,34 +26,65 @@ public interface DocumentService {
     BackFrontMessage getAllCensors();
 
     /**
+     * @MethodName getSelfUnCheckDocument
+     * @param
+     * @Description 审查人获取自己需要审查的发文列表
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/1
+     */
+    BackFrontMessage getSelfInCheckDocument();
+
+    BackFrontMessage getSelfDraftBoxDocument();
+
+    BackFrontMessage getSelfUnPassDocument();
+
+    BackFrontMessage deleteDocument(Integer sendfileId);
+
+    BackFrontMessage deleteDocumentAnnex(int sendfileId,String annexUrl);
+
+    BackFrontMessage uploadDocumentAnnex(Integer sendfileId, MultipartFile file);
+
+    BackFrontMessage getDocumentDetail(Integer sendfileId);
+
+    /**
      * @MethodName createDocument
+     * @param
+     * @Description 创建空白发文返回id，有空白发文不需要创建直接返回id
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/2
+     */
+    BackFrontMessage createDocument();
+
+    /**
+     * @MethodName updateUncheckDocument
+     * @param sendfileId
      * @param type
      * @param title
      * @param content
-     * @param sendPersonNum
      * @param remark
      * @param censorId
-     * @param isUrgent
-     * @param file
-     * @Description 创建收发文
+     * @param isPublic
+     * @param accessEmployeeIdList
+     * @Description 第一次修改和草稿箱的修改复用，更新未检查的发文
      * @Author JohnTang
      * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/12
+     * @LastChangeDate 2020/12/3
      */
-    BackFrontMessage createDocument(Integer type, String title, String content, Integer sendPersonNum, String remark, Integer censorId, Integer isUrgent, MultipartFile file, List<Integer> receiverIdList);
+    BackFrontMessage updateUncheckDocument(Integer sendfileId,String type,String subject, String title, String content, String remark, Integer censorId, String urgent, Integer isPublic, List<Integer> accessEmployeeIdList);
 
-    /**
-     * @MethodName pdateNotPassDocument
-     * @param sendfileId
-     * @param title
-     * @param content
-     * @param remark
-     * @param multipartFile
-     * @Description 修改未通过发文
-     * @Author JohnTang
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/15
-     */
-    BackFrontMessage updateNotPassDocument(Integer sendfileId,String title, String content,String remark,MultipartFile multipartFile);
+    BackFrontMessage commitDocument(Integer sendfileId);
 
+    BackFrontMessage checkDocument(Integer sendfileId,int ispassed,String comment);
+
+    BackFrontMessage cancelCheck(Integer sendfileId);
+
+    BackFrontMessage needCheckDocument();
+
+    BackFrontMessage getAllPublishDocument();
+
+    BackFrontMessage getSelfPublishDocument();
+
+    BackFrontMessage putDocumentNotPassIntoDraftbox(int sendfileId);
 }

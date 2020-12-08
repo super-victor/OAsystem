@@ -1,12 +1,18 @@
 package com.sicnu.oasystem.controller.employee;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.service.employee.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 /**
@@ -49,8 +55,8 @@ public class EmployeeController {
      */
     @ApiOperation(value = "修改个人资料")
     @PutMapping("/selfprofile")
-    public BackFrontMessage changeSelfProfile(@RequestBody Map<String,String> resultMap){
-        return employeeService.changeSelfPorfile(resultMap.get("phone"), resultMap.get("email"), resultMap.get("homeAddress"));
+    public BackFrontMessage changeSelfProfile(@RequestParam @Pattern(regexp = "^[0-9]*$") String phone, @RequestParam @Email String email, @RequestParam @Size(min = 1,max = 20) String homeAddress){
+        return employeeService.changeSelfPorfile(phone, email, homeAddress);
     }
 
 }

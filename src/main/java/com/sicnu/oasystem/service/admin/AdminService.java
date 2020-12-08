@@ -3,6 +3,8 @@ package com.sicnu.oasystem.service.admin;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.Role;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ public interface AdminService {
      * @LastChangeDate 2020/11/25
      */
     BackFrontMessage getAllEmployee();
+
+    BackFrontMessage batchEmployeeByExcel(MultipartFile multipartFile);
 
     BackFrontMessage addEmployee(Employee employee);
 
@@ -161,4 +165,6 @@ public interface AdminService {
      * @LastChangeDate 2020/11/25
      */
     BackFrontMessage updateEmployeeRolelist(Integer employeeId, List<Integer> roleIdList);
+
+    BackFrontMessage copyRole(Integer copyroleId, @RequestParam String newName);
 }

@@ -2,49 +2,109 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicnu.oasystem.mapper.DocumentMapper">
 
-    <insert id="insertSendFile" useGeneratedKeys="true" keyProperty="sendfileid">
-        insert into sendfile (type, title,
-        <if test="sendFile.annexUrl != null">
-            annexUrl,
-        </if>
-        content,sendPersonNum,isUrgent
-        <if test="sendFile.remark != null">
-            remark,
-        </if>
-        senderId,censorId,status)
-        values (#{type}, #{title},
-        <if test="sendFile.annexUrl != null">
-            #{annexUrl},
-        </if>
-        #{content},#{sendPersonNum},#{isUrgent}
-        <if test="sendFile.remark != null">
-            #{remark},
-        </if>
-        #{senderId},#{censorId},#{status})
+    <insert id="insertSendFile" useGeneratedKeys="true" keyProperty="sendfileId">
+        insert into sendfile (senderId,status) values (#{senderId},#{status})
     </insert>
-    <insert id="insertReceiveFile" useGeneratedKeys="true" keyProperty="receivefileid">
-        insert into receivefile (sendfileId, receiverId, isReceived) values (#{sendfileId}, #{receiverId}, #{isReceived})
+
+    <insert id="insertDocumentAcess">
+        insert into DocumentAcess (sendfileId,employeeId) values (#{sendfileId},#{employeeId})
     </insert>
+    <insert id="insertDocumentAnnex">
+        insert into DocumentAnnex (sendfileId, annexUrl) values (#{sendfileId}, #{annexUrl})
+    </insert>
+
     <update id="updateSendFileBySendFile">
-        update sendfile set sender = #{sender}
-        <if test="sendFile.title != null">,title = #{title}</if>
-        <if test="sendFile.content != null">,content = #{content}</if>
-        <if test="sendFile.annexUrl != null">,annexUrl = #{annexUrl}</if>
-        <if test="sendFile.remark != null">,remark = #{remark}</if>
+        update sendfile set senderId = #{senderId},
+        type = #{type},
+        subject = #{subject},
+        isPublic = #{isPublic},
+        urgent = #{urgent},
+        <if test="censorId != null">censorId = #{censorId},</if>
+        title = #{title},
+        content = #{content},
+        remark = #{remark},
+        status = #{status}
         where senderId = #{senderId} and sendFileId = #{sendfileId}
     </update>
+
     <update id="updateStatusInSendFile">
         update sendfile set status = #{status} where sendfileId = #{sendfileId}
     </update>
     <update id="checkedReceiveFile">
         update receivefile set isReceived = 1 where receivefileId = #{receivefileId}
     </update>
+    <update id="updateStatusAndCommentInSendFile">
+        update sendfile set status = #{status}, cersorOpinion = #{comment} where sendfileId = #{sendfileId}
+    </update>
+    <delete id="deleteDocumentAcess">
+        delete from DocumentAcess where sendfileId = #{sendfileId}
+    </delete>
+    <delete id="deleteDocumentAcessBySendfileIdAndEmployeeId">
+        delete from DocumentAcess where sendfileId = #{sendfileId} and employeeId = #{employeeId}
+    </delete>
+    <delete id="deleteDocumentAnnexByannexUrl">
+        delete from DocumentAnnex where annexUrl = #{annexUrl}
+    </delete>
+    <delete id="deleteSendFile">
+        delete from DocumentAnnex where sendfileId = #{sendfileId};
+        delete from DocumentAcess where sendfileId = #{sendfileId};
+        delete from sendfile where sendfileId = #{sendfileId};
+    </delete>
     <select id="findSendFileByEmployeeIdAndSendfileId" resultType="com.sicnu.oasystem.pojo.SendFile">
-        select * from sendfile where employeeId = #{employeeId} and sendfileId = #{sendfileId}
+        select * from sendfile where senderId = #{employeeId} and sendfileId = #{sendfileId}
     </select>
     <select id="findUnReviewSendFile" resultType="com.sicnu.oasystem.pojo.SendFile">
         select * from sendfile where status = 0
     </select>
+    <select id="ishaveCheckAbility" resultType="java.lang.Integer">
+        select count(*)
+        from employee
+        where employeeId = #{employeeId}
+            and employeeId in
+            (select employeeId from EmployeeRole
+                where
+                roleId in (select roleId from rolemenu where menuId = 35)
+                and
+                roleId in (select roleId from rolemenu where menuId = 36))
+    </select>
 
+    <select id="gethaveCheckAbilityEmployList" resultType="com.sicnu.oasystem.pojo.limit.EmployeeLimitA">
+        select *
+        from employee
+        where employeeId in
+            (select employeeId from EmployeeRole
+                where
+                roleId in (select roleId from rolemenu where menuId = 35)
+                and
+                roleId in (select roleId from rolemenu where menuId = 36))
+    </select>
+
+    <select id="findEmptySendFileByEmployeeId" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where senderId = #{employeeId} and status = -3
+    </select>
+    <select id="findEmployeeIdsInDocumentAcess" resultType="java.lang.Integer">
+        select employeeId from DocumentAcess where sendfileId = #{sendfileId}
+    </select>
+    <select id="findAnnexUrlsBySendfileId" resultType="java.lang.String">
+        select annexUrl from DocumentAnnex where sendfileId = #{sendfileId}
+    </select>
+    <select id="findSendFileBySendfileId" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where sendfileId = #{sendfileId}
+    </select>
+    <select id="findSendFileByEmployeeIdAndStatus" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where senderId = #{employeeId} and status = #{status}
+    </select>
+    <select id="findAccessEmployeesBySendfileId" resultType="com.sicnu.oasystem.pojo.limit.EmployeeLimitA">
+        select * from employee where employeeId in (select employeeId from DocumentAcess where sendfileId = #{sendfileId})
+    </select>
+    <select id="findSendFileNeedCheck" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where censorId = #{censorId} and status = 0
+    </select>
+    <select id="findAllPublishSendFile" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where status = 1
+    </select>
+    <select id="findSelfPublishSendFile" resultType="com.sicnu.oasystem.pojo.SendFile">
+        select * from sendfile where status = 1 and senderId = #{senderId}
+    </select>
 
 </mapper>

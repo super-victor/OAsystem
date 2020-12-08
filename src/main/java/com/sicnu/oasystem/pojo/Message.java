@@ -13,13 +13,6 @@ import java.util.Date;
  */
 @Data
 public class Message {
-//    private Integer messageId;
-//    private Integer senderId;
-//    private Integer receiverId;
-//    private String content;
-//    private Integer isRead;
-//    private Date createTime;
-//    private Date updateTime;
     private Integer messageId;
     private Integer employeeId;
     private Integer type;

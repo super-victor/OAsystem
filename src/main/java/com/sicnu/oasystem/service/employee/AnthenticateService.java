@@ -41,7 +41,7 @@ public class AnthenticateService implements UserDetailsService {
         if (employee == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }
-        List<Role> roles = employeeMapper.findRolesByEmployeeId(employee.getEmployeeId());
+        List<Role> roles = employeeMapper.findAvailableRolesByEmployeeId(employee.getEmployeeId());
         employee.setAuthorities(roles);
         return employee;
     }
