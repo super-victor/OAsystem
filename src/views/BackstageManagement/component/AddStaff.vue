@@ -10,43 +10,55 @@
       style="margin-top:-70px;"
       :before-close="closeAddStaff">
       <el-form :model="formData" :rules="rules" ref="formData" label-width="100px">
-        <el-form-item label="姓名" prop="name" style="height:40px;width:300px">
-          <el-input v-model="formData.name"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="sex" style="height:40px;width:230px">
-          <el-select v-model="formData.sex" placeholder="请选择性别">
-            <el-option label="男" value="m"></el-option>
-            <el-option label="女" value="f"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="电话号码" prop="phone" style="height:40px;width:400px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="姓名" prop="name" style="height:40px;width:4rem;">
+              <el-input v-model="formData.name"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="性别" prop="sex" style="height:40px;width:4rem;">
+              <el-select v-model="formData.sex" placeholder="请选择性别">
+                <el-option label="男" value="m"></el-option>
+                <el-option label="女" value="f"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="电话号码" prop="phone" style="height:40px;width:8.65rem">
           <el-input v-model.number="formData.phone"></el-input>
         </el-form-item>
-        <el-form-item label="电子邮箱" prop="email" style="height:40px;width:400px">
+        <el-form-item label="电子邮箱" prop="email" style="height:40px;width:8.65rem">
           <el-input v-model="formData.email"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idCard" style="height:40px;width:400px">
+        <el-form-item label="身份证号" prop="idCard" style="height:40px;width:8.65rem">
           <el-input v-model="formData.idCard"></el-input>
         </el-form-item>
-        <el-form-item label="部门" prop="departmentName" style="height:40px;width:400px">
-          <el-select v-model="formData.departmentName" placeholder="请选择部门">
-            <el-option
-            v-for="item in departmentArr"
-            :key="item.departmentId"
-            :label="item.name"
-            :value="item.name"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="职位" prop="position" style="height:40px;width:400px">
-          <el-select v-model="formData.position" placeholder="请选择职位">
-            <el-option label="部门总监" value="部门总监"></el-option>
-            <el-option label="部门经理" value="部门经理"></el-option>
-            <el-option label="办公室主任" value="办公室主任"></el-option>
-            <el-option label="部门主管" value="部门主管"></el-option>
-            <el-option label="职员" value="职员"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="家庭住址" prop="homeAddress" style="height:40px;width:400px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="部门" prop="departmentName" style="height:40px;width:4rem">
+              <el-select v-model="formData.departmentName" placeholder="请选择部门">
+                <el-option
+                v-for="item in departmentArr"
+                :key="item.departmentId"
+                :label="item.name"
+                :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="职位" prop="position" style="height:40px;width:4rem">
+              <el-select v-model="formData.position" placeholder="请选择职位">
+                <el-option label="部门总监" value="部门总监"></el-option>
+                <el-option label="部门经理" value="部门经理"></el-option>
+                <el-option label="办公室主任" value="办公室主任"></el-option>
+                <el-option label="部门主管" value="部门主管"></el-option>
+                <el-option label="职员" value="职员"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="家庭住址" prop="homeAddress" style="height:40px;width:8.65rem">
           <el-input v-model="formData.homeAddress"></el-input>
         </el-form-item>
       </el-form>
