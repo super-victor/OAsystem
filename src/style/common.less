@@ -29,12 +29,16 @@
 @media screen and (min-width: 0px){
   html{
     font-size: 1000px * 100 / @designSize;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 }
 
 @media screen and (min-width: 1000px){
   html{
     font-size: 100vw * 100 / @designSize;//响应式尺寸
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 }
 
@@ -61,3 +65,4 @@ ul li {
   padding: 0px;
   margin: 0px;
 }
+

@@ -2,6 +2,7 @@
 export const GET_TOKEN = 'GET_TOKEN' //获取用户token
 export const GET_USERINFO = 'GET_USERINFO' //获取用户info
 export const UPDATE_USERINFO = 'UPDATE_USERINFO' //修改用户info
+export const UPLOAD_USER_PROGRESS = 'UPLOAD_USER_PROGRESS' //修改用户进度条
 export const UPDATE_PAGE_PERMISSIONS = 'UPDATE_PAGE_PERMISSIONS'//初始化页面权限
 //****全局面包屑mutation
 export const UPDATE_BREAD = 'UPDATE_BREAD' //修改面包屑

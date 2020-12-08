@@ -5,42 +5,48 @@
       <img src="@/assets/logo.png" class="logo" alt="">
     </div>
     <div class="headerBox">
-      <the-header-box @clickItem="openUserBox">
-        <img src="@/assets/user.png" class="userImg" alt="">
-        <div class="userBox" :class="{'userBoxClick':userBoxFlag}">
-          <div class="userTop">
-            <img src="@/assets/user.png" class="userImgInside" alt="">
-            <div class="titleBox">
-              <p class="name">Hi, {{userInfo.username}}!</p>
-              <p class="id">ID: {{userInfo.employeeId}}</p>
+      <p class="name">协同办公平台</p>
+      <div class="itemBox">
+        <the-header-box>
+          <img src="@/assets/message.png" class="userImg" alt="">
+        </the-header-box>
+        <el-dropdown @command="handleCommand">
+          <the-header-box>
+            <img src="@/assets/user.png" class="userImg2" alt="">
+          </the-header-box>
+          <el-dropdown-menu slot="dropdown">
+            <div class="userTop">
+              <img src="@/assets/user.png" class="userImgInside" alt="">
+              <div class="titleBox">
+                <p class="name">Hi, {{userInfo.userinfo && userInfo.userinfo.username}} !</p>
+                <p class="id">ID: {{userInfo.userinfo && userInfo.userinfo.employeeId}}</p>
+              </div>
             </div>
-          </div>
-          <div class="userBottom">
-            <div 
-            class="item"
-            @click.stop="routeTo(item.route)"
-            v-for="item in userItem"
-            :key="item.index">
-              <p class="text">{{item.text}}</p>
-              <img :src="require(`@/assets/header/${item.src}.png`)" class="img" alt="">
-            </div>
-          </div>
-        </div>
-      </the-header-box>
+            <el-dropdown-item
+              v-for="item in userItem"
+              :key="item.index"
+              :command="item">
+              <div class="item">
+                <p class="text">{{item.text}}</p>
+                <img :src="require(`@/assets/header/${item.src}.png`)" class="img" alt="">
+              </div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import TheHeaderBox from '@/components/control/TheHeaderBox';
-  import {mapState} from 'vuex';
+  import {mapState,mapMutations} from 'vuex';
   export default {
     components: {
       TheHeaderBox
     },
     data() {
       return {
-        userBoxFlag:false,
         userItem:[
           {
             index:1,
@@ -52,13 +58,13 @@
             index:2,
             text:'设置',
             src:'setting',
-            route:'/psetting'
+            route:'/setting'
           },
           {
             index:3,
             text:'退出登录',
             src:'logout',
-            route:null
+            route:'/login'
           }
         ]
       };
@@ -70,14 +76,22 @@
     },
     watch: {},
     methods: {
-      openUserBox(){
-        this.userBoxFlag = !this.userBoxFlag;
-      },
-      routeTo(route){
-        this.userBoxFlag = false;
-        if(route) this.$router.push(route);
-        else console.log(111)
-        
+      ...mapMutations(['GET_TOKEN']),
+      handleCommand(command) {
+        if(command.index===1){
+          this.$router.push(command.route);
+        }else if(command.index===2){
+
+        }else{
+          this.$confirm('确认要退出登录吗', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'error'
+          }).then(() => {
+            this.GET_TOKEN(null);
+            this.$router.push(command.route);
+          }).catch(() => {});
+        }
       }
     },
     created() {
@@ -112,98 +126,96 @@
       min-width: 880px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       padding-right: 25px;
       box-sizing: border-box;
       position: relative;
+      .name{
+        height: 37px;
+        width: 200px;
+        margin-left: 20px;
+        font-size: 22px;
+        line-height: 39px;
+        color: #2C3059;
+        user-select: none;
+      }
+      .itemBox{
+        height: 100%;
+        width: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
       .userImg{
+        height: 28px;
+        width: 28px;
+      }
+      .userImg2{
         height: 35px;
         width: 35px;
       }
-      .userBox{
-        transition: all .2s;
-        height: 200px;
-        width: 240px;
-        position: fixed;
-        top: 66px;
-        right: 30px;
-        background-color: @white;
-        box-shadow: 1px 0 4px 0 #E7EBF2;
-        box-shadow: @baseBorderRadius;
-        cursor: auto !important;
-        visibility: hidden;
-        opacity: 0;
-        .userTop{
-          height: 65px;
-          width: 100%;
-          box-sizing: border-box;
-          background-color: #FDFBFF;
-          border-bottom: 1px solid #e9ecef;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          .userImgInside{
-            height: 39px;
-            width: 39px;
-          }
-          .titleBox{
-            margin-left: 15px;
-            height: 39px;
-            width: 153.5px;
-            .name{
-              height: 23px;
-              width: 100%;
-              font-size: 13px;
-              font-weight: bolder;
-              line-height: 23px;
-              color: @primaryText;
-            }
-            .id{
-              height: 16px;
-              width: 100%;
-              font-size: 9px;
-              line-height: 16px;
-              color: @secondaryText;
-            }
-          }
-        }
-        .userBottom{
-          height: 135px;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          .item{
-            height: 40px;
-            width: 100%;
-            padding: 0 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-sizing: border-box;
-            cursor: pointer;
-            .text{
-              height: 20px;
-              width: 150px;
-              font-size: 13px;
-              line-height: 20px;
-              color: @primaryText;
-            }
-            .img{
-              height: 20px;
-              width: 20px;
-            }
-          }
-          .item:hover{
-            background-color: @background;
-          }
-        }
+    }
+  }
+  ::v-deep .el-dropdown-menu__item{
+    width: 240px;
+    height: 50px;
+  }
+  ::v-deep .el-dropdown-menu__item--divided:before{
+    width: 240px;
+    margin: 0;
+  }
+  .userTop{
+    height: 65px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #FDFBFF;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .userImgInside{
+      height: 39px;
+      width: 39px;
+    }
+    .titleBox{
+      margin-left: 15px;
+      height: 39px;
+      width: 153.5px;
+      .name{
+        height: 23px;
+        width: 100%;
+        font-size: 13px;
+        font-weight: bolder;
+        line-height: 23px;
+        color: @primaryText;
       }
-      .userBoxClick{
-        top: 60px;
-        opacity: 100;
-        visibility: visible;
+      .id{
+        height: 16px;
+        width: 100%;
+        font-size: 9px;
+        line-height: 16px;
+        color: @secondaryText;
       }
+    }
+  }
+  .item{
+    height: 100%;
+    width: 100%;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    .text{
+      height: 20px;
+      width: 150px;
+      font-size: 13px;
+      line-height: 20px;
+      color: @primaryText;
+    }
+    .img{
+      height: 20px;
+      width: 20px;
     }
   }
 </style>

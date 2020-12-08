@@ -1,5 +1,6 @@
 export default{
   //****全局用户信息
+  userUploadProgress:0,
   userToken:null,
   userInfo:{},
   userAuthority:{
@@ -115,32 +116,6 @@ export default{
         }
       }
     },
-    todo:{
-      name:"待办事项",
-      show:false,
-      children:{
-        todolist:{
-          name:"待办清单",
-          show:false,
-          role:{}
-        },
-        addition:{
-          name:"添加待办",
-          show:false,
-          role:{}
-        },
-        messagelist:{
-          name:"留言清单",
-          show:false,
-          role:{}
-        },
-        send:{
-          name:"发送留言",
-          show:false,
-          role:{}
-        }
-      }
-    },
     meetingroommanagement:{
       name:"会议室管理",
       show:false,
@@ -222,7 +197,7 @@ export default{
       role:{}
     },
     sendfilemanagement:{
-      name:"发文管理",
+      name:"公文流转",
       show:false,
       children:{
         querydraft:{
@@ -231,41 +206,15 @@ export default{
           role:{}
         },
         senddraft:{
-          name:"发送拟稿",
+          name:"新建拟稿",
           show:false,
           role:{}
         },
         distribution:{
-          name:"文件分发",
+          name:"公文一览",
           show:false,
           role:{}
         }
-      }
-    },
-    receivefilemanagement:{
-      name:"收文管理",
-      show:false,
-      children:{
-        signforofficialdocument:{
-          name:"公文签收",
-          show:false,
-          role:{}
-        },
-        officialdocumentrecord:{
-          name:"收文记录",
-          show:false,
-          role:{}
-        },
-        leaderinstructions:{
-          name:"领导批示",
-          show:false,
-          role:{}
-        },
-        collectionmonitoring:{
-          name:"收文监控",
-          show:false,
-          role:{}
-        },
       }
     },
     backstagemanagement:{
@@ -344,30 +293,6 @@ export default{
       ]
     },
     {
-      img:'todo',
-      title:'代办事项',
-      clickMark:4,
-      route:'to-do',
-      children:[
-        {
-          name:'代办清单',
-          route:'to-do-list'
-        },
-        {
-          name:'添加待办',
-          route:'addition'
-        },
-        {
-          name:'留言清单',
-          route:'message-list'
-        },
-        {
-          name:'发送留言',
-          route:'send'
-        }
-      ]
-    },
-    {
       img:'meetingroom',
       title:'会议室管理',
       clickMark:5,
@@ -401,46 +326,26 @@ export default{
     },
     {
       img:'send_file',
-      title:'发文管理',
+      title:'公文流转',
       clickMark:8,
-      route:'send-file-management',
+      route:'document-circulation',
       children:[
         {
           name:'查询拟稿',
           route:'query-draft'
         },
         {
-          name:'发送拟稿',
-          route:'send-draft'
+          name:'新建拟稿',
+          route:'create-draft'
         },
         {
-          name:'文件分发',
-          route:'distribution'
-        }
-      ]
-    },
-    {
-      img:'receive_file',
-      title:'收文管理',
-      clickMark:9,
-      route:'receive-file-management',
-      children:[
-        {
-          name:'公文签收',
-          route:'sign-for-official-document'
+          name:'公文一览',
+          route:'view-draft-list'
         },
         {
-          name:'收文记录',
-          route:'official-document-record'
+          name:'拟稿审核',
+          route:'check-draft'
         },
-        {
-          name:'领导批示',
-          route:'leader-instructions'
-        },
-        {
-          name:'收文监控',
-          route:'collection-monitoring'
-        }
       ]
     },
     {

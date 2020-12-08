@@ -2,6 +2,7 @@ const path = require('path');
 
 const ip1 = '192.168.31.116';//局域网
 const ip2 = '121.196.40.164';//服务器
+const ip3 = '192.168.43.245';
 
 function resolve(dir){
     return path.join(__dirname,dir)
