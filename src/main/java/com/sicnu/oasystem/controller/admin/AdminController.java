@@ -5,9 +5,16 @@ import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.service.admin.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +71,10 @@ public class AdminController {
      */
     @ApiOperation(value = "更新指定角色下所有用户")
     @PutMapping("/roleEmployeelist")
-    BackFrontMessage updateRoleEmployeelist(@RequestParam Integer roleId, @RequestParam List<Integer> employeeIdList){
+    BackFrontMessage updateRoleEmployeelist(@RequestParam @NotNull Integer roleId, @RequestParam List<Integer> employeeIdList){
+        if (employeeIdList == null) {
+            employeeIdList = new ArrayList<>();
+        }
         return adminService.updateRoleEmployeelist(roleId, employeeIdList);
     }
 
@@ -93,7 +103,10 @@ public class AdminController {
      */
     @ApiOperation(value = "通过codelist更新指定角色下所有功能")
     @PutMapping("roleMenulist")
-    BackFrontMessage updateRoleMenulist(@RequestParam Integer roleId, @RequestParam List<String> codeList){
+    BackFrontMessage updateRoleMenulist(@RequestParam @NotNull Integer roleId, @RequestParam List<String> codeList){
+        if (codeList == null) {
+            codeList = new ArrayList<>();
+        }
         return adminService.updateRoleMenulist(roleId,codeList);
     }
 
@@ -108,7 +121,7 @@ public class AdminController {
      */
     @ApiOperation(value = "锁定或者解锁职工账户")
     @PutMapping("/lockOrUnlockEmployee")
-    BackFrontMessage lockOrUnlockEmployee(@RequestParam Integer employeeId, @RequestParam Integer isAccountLocked){
+    BackFrontMessage lockOrUnlockEmployee(@RequestParam @NotNull Integer employeeId, @RequestParam @NotNull @Pattern(regexp = "0|1") Integer isAccountLocked){
         return adminService.lockOrUnlockEmployee(employeeId, isAccountLocked);
     }
 
@@ -137,14 +150,23 @@ public class AdminController {
      */
     @ApiOperation(value = "更新用户拥有的角色列表")
     @PutMapping("/employeeRolelist")
-    BackFrontMessage updateEmployeeRolelist(@RequestParam Integer employeeId, @RequestParam List<Integer> roleIdList){
+    BackFrontMessage updateEmployeeRolelist(@RequestParam @NotNull Integer employeeId, @RequestParam List<Integer> roleIdList){
+        if (roleIdList == null) {
+            roleIdList = new ArrayList<>();
+        }
         return adminService.updateEmployeeRolelist(employeeId, roleIdList);
     }
 
     @ApiOperation(value = "添加职工")
     @PostMapping("/employee")
-    BackFrontMessage addEmployee(Employee employee){
+    BackFrontMessage addEmployee(@Validated Employee employee){
         return adminService.addEmployee(employee);
+    }
+
+    @ApiOperation(value = "通过excel批量导入职工")
+    @PostMapping("/batchEmployeeByExcel")
+    BackFrontMessage batchEmployeeByExcel(@RequestParam MultipartFile multipartFile) {
+        return adminService.batchEmployeeByExcel(multipartFile);
     }
 
     @ApiOperation(value = "删除职工")
@@ -155,7 +177,7 @@ public class AdminController {
 
     @ApiOperation(value = "添加角色")
     @PostMapping("/role")
-    BackFrontMessage addRole(@RequestParam String roleName){
+    BackFrontMessage addRole(@RequestParam @Size(min = 1,max = 10) @NotNull String roleName){
         return adminService.addRole(roleName);
     }
 
@@ -163,6 +185,12 @@ public class AdminController {
     @DeleteMapping("/role")
     BackFrontMessage deleteRole(@RequestParam Integer roleId){
         return adminService.deleteRole(roleId);
+    }
+
+    @ApiOperation(value = "复制角色")
+    @PostMapping("/copyrole")
+    BackFrontMessage copyrole(@RequestParam Integer copyroleId, @RequestParam  @Size(min = 1,max = 10) @NotNull String newName){
+        return adminService.copyRole(copyroleId,newName);
     }
 
 }

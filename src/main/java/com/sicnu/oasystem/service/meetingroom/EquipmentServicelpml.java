@@ -38,8 +38,7 @@ public class EquipmentServicelpml implements EquipmentService {
     LogUtil logUtil;
 
     @Override
-    public BackFrontMessage addEquipment(Integer equipmentclassifyId,
-                                         Integer meetingroomId, String name, Integer ismaintain, String remark,int num) {
+    public BackFrontMessage addEquipment(Integer equipmentclassifyId, Integer meetingroomId, String name, Integer ismaintain, String remark,int num) {
         if(equipmentclassifyId==null || equipmentclassifyId<=0 ||meetingroomId==null ||meetingroomId<=0 || name==null){
             return new BackFrontMessage(500,"添加设备失败",null);
         }
@@ -55,6 +54,9 @@ public class EquipmentServicelpml implements EquipmentService {
             if(res==0){
                 return new BackFrontMessage(500,"添加设备失败",null);
             }else{
+                logUtil.insertInfo("添加设备"+"equipmentclassifyId:"+equipmentclassifyId+
+                        ",meetingroomId:"+meetingroomId+",name:"+name+",ismaintain:"+ismaintain+
+                        ",remark:"+remark+",num:"+num);
                 return new BackFrontMessage(200,"添加设备成功",null);
             }
         }else{
@@ -132,6 +134,7 @@ public class EquipmentServicelpml implements EquipmentService {
             if(res==0){
                 return new BackFrontMessage(500,"删除设备失败",null);
             }else{
+                logUtil.deleteInfo("删除设备"+equipment);
                 return new BackFrontMessage(200,"删除设备成功",null);
             }
         }

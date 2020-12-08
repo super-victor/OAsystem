@@ -89,4 +89,10 @@ public interface MeetingService {
 
     BackFrontMessage getAllMeetingTimeByRoomAndTime(Integer meetingroomid,Date starttime,Date endtime);
 
+
+    BackFrontMessage cancleApproveMeeting(Integer meetingid,Integer employeeid);
+
+    BackFrontMessage updateOrderMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid,
+                       String name, Date startTime,Date endtime,
+                       Integer peoplenum,String remark);
 }

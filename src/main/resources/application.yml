@@ -3,13 +3,10 @@ server:
 # 数据库配置
 spring:
   datasource:
-    druid:
-      url: jdbc:mysql://101.201.254.63:3306/oaDB?serverTimezone=GMT%2B8&useAffectedRows=true
-      username: oasystem
-      password: tangliyi123
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      web-stat-filter:
-        enabled=: true
+    url: jdbc:mysql://101.201.254.63:3306/oaDB?serverTimezone=GMT%2B8&useAffectedRows=true&allowMultiQueries=true
+    username: oasystem
+    password: tangliyi123
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -48,3 +45,4 @@ global-security-config:
     - "/swagger-resources"
     - "/swagger-ui**"
     - "/webjars/**"
+    - "/download/**"

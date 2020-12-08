@@ -3,6 +3,7 @@ package com.sicnu.oasystem.mapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.Menu;
 import com.sicnu.oasystem.pojo.Role;
+import com.sicnu.oasystem.pojo.SendFile;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,10 +21,12 @@ import java.util.Map;
 
 @Mapper
 public interface EmployeeMapper {
-
+    // todo 所有的detele的操作都要把其他表外键关联的字段都删除完了，才能删除，同时需要执行多个sql语句
     int insertEmployee(Employee employee);
 
     int deleteEmployee(int employeeId);
+
+
 
     /**
      * @MethodName findEmployeeByUsername
@@ -35,6 +38,7 @@ public interface EmployeeMapper {
      */
     Employee findEmployeeByUsername(String username);
 
+    List<Employee> findEmployeesByDepartmentId(int departmentId);
 
     /**
      * @MethodName findEmployeeByEmployeeId
@@ -55,6 +59,8 @@ public interface EmployeeMapper {
      * @LastChangeDate 2020/11/5
      */
     List<Role> findRolesByEmployeeId(int employeeId);
+
+    List<Role> findAvailableRolesByEmployeeId(int employeeId);
 
     /**
      * @MethodName updatePartlyEmployeeByEmployeeId
@@ -192,6 +198,16 @@ public interface EmployeeMapper {
     List<Role> findAllRoles();
 
     /**
+     * @MethodName findAllRolesExceptA
+     * @param
+     * @Description 获取除了超级管理员和管理员的所有角色
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Role>
+     * @LastChangeDate 2020/11/30
+     */
+    List<Role> findAllRolesExceptA();
+
+    /**
      * @MethodName findAllRolesWithEmpolyeeList
      * @param
      * @Description 找出所有的角色以及角色对应的拥有角色的员工
@@ -318,7 +334,13 @@ public interface EmployeeMapper {
      */
     int deleteAdmin(int employeeId);
 
-    int insertRole(String roleName);
+    int insertRole(Role role);
 
     int deleteRole(int roleId);
+
+    Role findRoleByRoleId(int roleId);
+
+    List<Menu> findMenusByRoleId(int roleId);
+
+
 }

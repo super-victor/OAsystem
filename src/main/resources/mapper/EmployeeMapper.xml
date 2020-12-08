@@ -36,10 +36,10 @@
         insert into EmployeeRole (employeeId, roleId) values (#{employeeId},2)
     </insert>
 
-    <insert id="insertEmployee">
+    <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="employeeId">
         insert into employee (username, name, password, phone, email, idCard, sex, departmentName,birthday, position, homeAddress, isAccountLocked) values (#{username}, #{name}, #{password}, #{phone}, #{email}, #{idCard}, #{sex}, #{departmentName}, #{birthday}, #{position}, #{homeAddress}, 0);
     </insert>
-    <insert id="insertRole">
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
         insert into role (name) values (#{name})
     </insert>
 
@@ -58,10 +58,22 @@
     </delete>
 
     <delete id="deleteEmployee">
-        delete from employee where employeeId = #{employeeId}
+        delete from Message where employeeId = #{employeeId};
+        delete from Meeting where employeeId = #{employeeId};
+        delete from EmployeeRole where employeeId = #{employeeId};
+        delete from receiveFile where sendfileId in (select sendfileId from sendfile where senderId = #{employeeId});
+        delete from sendFile where employeeId = #{employeeId};
+        delete from EmployeeTodo where employeeId = #{employeeId};
+        delete from CardHolder where ownerId = #{employeeId};
+        delete from card where ownerId = #{employeeId};
+        delete from EmployeeSchedule where employeeId = #{employeeId};
+        delete from employee where employeeId = #{employeeId};
+        delete from employee where employeeId = #{employeeId};
     </delete>
     <delete id="deleteRole">
-        delete from role where roleId = #{roleId}
+        delete from EmployeeRole where roleId = #{roleId};
+        delete from RoleMenu where roleId = #{roleId};
+        delete from role where roleId = #{roleId};
     </delete>
 
 
@@ -153,6 +165,22 @@
     <select id="findAllAdmin" resultType="com.sicnu.oasystem.pojo.Employee">
         select * from employee where employeeId in (select employeeId from EmployeeRole where roleId = 2)
     </select>
+    <select id="findRoleByRoleId" resultType="com.sicnu.oasystem.pojo.Role">
+        select * from role where roleId = #{roleId}
+    </select>
+    <select id="findMenusByRoleId" resultType="com.sicnu.oasystem.pojo.Menu">
+        select * from menu where menuId in (select menuId from roleMenu where roleId = #{roleId})
+    </select>
+    <select id="findAllRolesExceptA" resultType="com.sicnu.oasystem.pojo.Role">
+        select * from role where roleId != 1 and roleId != 2
+    </select>
+    <select id="findAvailableRolesByEmployeeId" resultType="com.sicnu.oasystem.pojo.Role">
+        select * from role where isable = 1 and roleId in (select roleId from EmployeeRole where employeeId = #{employeeId})
+    </select>
+    <select id="findEmployeesByDepartmentId" resultType="com.sicnu.oasystem.pojo.Employee">
+        select * from employee where departmentName in (select name from department where departmentId = #{departmentId})
+    </select>
+
 
 
 </mapper>

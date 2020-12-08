@@ -1,5 +1,8 @@
 package com.sicnu.oasystem.service.message;
 
+import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.util.DataUtil;
+
 /**
  * @InterfaceName MessageService
  * @Description 添加描述
@@ -22,4 +25,11 @@ public interface MessageService {
      * @LastChangeDate 2020/11/25
      */
     int send(int employeeId, int type, String title, String content);
+
+
+    BackFrontMessage getSelfAllMessage();
+
+    BackFrontMessage getSelfAllUnReadMessage();
+
+    BackFrontMessage setSelfMessageRead(int messageId);
 }

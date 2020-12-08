@@ -5,4 +5,17 @@
     <insert id="insertMessage">
         insert into message (employeeId, type, title, content, isRead) values (#{employeeId}, #{type}, #{title}, #{content}, 0)
     </insert>
+    <update id="updateIsReadInMessage">
+        update message set isRead = #{isRead} where employeeId = #{employeeId} and messageId = #{messageId}
+    </update>
+    <select id="findMessageByEmployeeId" resultType="com.sicnu.oasystem.pojo.Message">
+        select * from message where employeeId = #{employeeId}
+    </select>
+    <select id="findMessageByEmployeeIdAndIsRead" resultType="com.sicnu.oasystem.pojo.Message">
+        select * from message where employeeId = #{employeeId} and isRead = #{isRead}
+    </select>
+
+
+
+
 </mapper>

@@ -31,4 +31,6 @@ public interface EmployeeService {
      * @LastChangeDate 2020/11/6
      */
     BackFrontMessage changeSelfPorfile(String phone, String email, String homeAddress);
+
+    BackFrontMessage getAllEmployees();
 }

@@ -39,9 +39,10 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        //todo
+        // todo
         // 1.检查token在用户修改密码后签发
-        // 2.如果token快要过期刷新token，防止用户在访问页面时突然未登录
+        // 2.如果token快要过期刷新token，
+        // 3.捕捉过期和解析失败异常
 
         // 判断系统全局允许名单
         boolean flag = true;

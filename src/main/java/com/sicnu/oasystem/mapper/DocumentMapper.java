@@ -1,8 +1,10 @@
 package com.sicnu.oasystem.mapper;
 
-import com.sicnu.oasystem.pojo.ReceiveFile;
+import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.SendFile;
+import com.sicnu.oasystem.pojo.limit.EmployeeLimitA;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.aop.target.SingletonTargetSource;
 
 import java.util.List;
 
@@ -27,15 +29,21 @@ public interface DocumentMapper {
      */
     int insertSendFile(SendFile sendFile);
 
-    /**
-     * @MethodName insertReceiveFile
-     * @param receiveFile
-     * @Description 添加收文
-     * @Author JohnTang
-     * @Return int
-     * @LastChangeDate 2020/11/18
-     */
-    int insertReceiveFile(ReceiveFile receiveFile);
+    SendFile findEmptySendFileByEmployeeId(int employeeId);
+
+    List<Integer> findEmployeeIdsInDocumentAcess(int sendfileId);
+
+    List<EmployeeLimitA> gethaveCheckAbilityEmployList();
+
+    int ishaveCheckAbility(int employeeId);
+
+    int insertDocumentAcess(int sendfileId,int employeeId);
+
+    int deleteDocumentAcess(int sendfileId);
+
+    int deleteDocumentAcessBySendfileIdAndEmployeeId(int sendfileId,int employeeId);
+
+    int updateStatusAndCommentInSendFile(int sendfileId,int status, String comment);
 
     /**
      * @MethodName updateSendFileBySendFile
@@ -46,6 +54,14 @@ public interface DocumentMapper {
      * @LastChangeDate 2020/11/18
      */
     int updateSendFileBySendFile(SendFile sendFile);
+
+    List<SendFile> findSendFileNeedCheck(int censorId);
+
+    List<String> findAnnexUrlsBySendfileId(Integer sendfileId);
+
+    int deleteDocumentAnnexByannexUrl(String annexUrl);
+
+    int insertDocumentAnnex(int sendfileId, String annexUrl);
 
     /**
      * @MethodName findSendFileByEmployeeIdAndSendfileId
@@ -71,4 +87,16 @@ public interface DocumentMapper {
      * @LastChangeDate 2020/11/28
      */
     int checkedReceiveFile(int receivefileId);
+
+    SendFile findSendFileBySendfileId(int sendfileId);
+
+    List<SendFile> findSendFileByEmployeeIdAndStatus(int employeeId, int status);
+
+    List<EmployeeLimitA> findAccessEmployeesBySendfileId(int sendfileId);
+
+    int deleteSendFile(int sendfileId);
+
+    List<SendFile> findAllPublishSendFile();
+
+    List<SendFile> findSelfPublishSendFile(int senderId);
 }
