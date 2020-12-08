@@ -7,7 +7,7 @@
       <div class="message_box">
         <p class="title">未读消息</p>
         <el-table
-            ref="multipleTable"
+            ref="multipleTable1"
             :data="tableDataUnread"
             style="width: 100%"
             tooltip-effect="dark"
@@ -41,7 +41,7 @@
       <div class="message_box">
         <p class="title">已读消息</p>
         <el-table
-            ref="multipleTable"
+            ref="multipleTable2"
             :data="tableDataRead"
             style="width: 100%"
             tooltip-effect="dark"
@@ -123,7 +123,7 @@
       },
       // 取消选择
       toggleSelection() {
-        this.$refs.multipleTable.clearSelection();
+        this.$refs.multipleTable1.clearSelection();
       },
       // 返回上一页
       routeTo() {
