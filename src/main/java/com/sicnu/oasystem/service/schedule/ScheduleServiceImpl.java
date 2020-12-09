@@ -157,7 +157,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         int result = scheduleMapper.updateScheduleByScheduleId(schedule);
         if (result <= 0){
-            logUtil.customException("修改日程失败");
+            logUtil.updateInfo("修改日程失败");
             return new BackFrontMessage(500,"修改日程失败",null);
         }else{
             logUtil.updateInfo("修改日程成功，修改内容为："+schedule);
@@ -219,13 +219,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         map.put("remark",schedule.getRemark());
         map.put("type",schedule.getType());
         if (schedule.getIsCompany() == 1){
-            map.put("leader",schedule.getLeader());
+            map.put("leader",employeeMapper.findEmployeeByEmployeeId(schedule.getLeader()).getName());
             List<Integer> joinerList = employeeScheduleMapper.findEmployeeScheduleByScheduleId(scheduleId);
             log.info("joinerList --> "+joinerList);
-            List<Employee> joiner = new ArrayList<>();
+            List<String> joiner = new ArrayList<>();
             for (Integer employeeId : joinerList) {
                 Employee employee = employeeMapper.findEmployeeByEmployeeId(employeeId);
-                joiner.add(employee);
+                joiner.add(employee.getName());
             }
             map.put("joiner",joiner);
         }
