@@ -211,7 +211,21 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
             Map<String,Object> map = new HashMap<>(16);
             map.put("scheduleId",scheduleId);
             Schedule schedule = scheduleMapper.findScheduleByScheduleId(scheduleId);
-            map.put("schedule",schedule);
+            map.put("startTime",schedule.getStartTime());
+            map.put("endTime",schedule.getEndTime());
+            map.put("content",schedule.getContent());
+            map.put("location",schedule.getLocation());
+            map.put("remark",schedule.getRemark());
+            map.put("type",schedule.getType());
+            map.put("leader",employeeMapper.findEmployeeByEmployeeId(schedule.getLeader()).getName());
+            List<Integer> joinerList = employeeScheduleMapper.findEmployeeScheduleByScheduleId(scheduleId);
+            log.info("joinerList --> "+joinerList);
+            List<String> joiner = new ArrayList<>();
+            for (Integer employeeId : joinerList) {
+                Employee employee = employeeMapper.findEmployeeByEmployeeId(employeeId);
+                joiner.add(employee.getName());
+            }
+            map.put("joiner",joiner);
             resultMap.add(map);
         }
         return resultMap;
