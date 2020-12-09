@@ -29,7 +29,7 @@ import scheduleAPI from '@/service/schedule'
       scheduleAPI.getSelfSchedule()
       .then(res=>{
         res.object.forEach(element => {
-          this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#FDEBC9',borderColor: '#FDEBC9', textColor: '#F9AE26'})
+          this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#9CB7F0',borderColor: '#9CB7F0', textColor: '#303133'})
         });
         this.$forceUpdate();
       })
@@ -49,11 +49,16 @@ import scheduleAPI from '@/service/schedule'
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .mine{
-    height: 500px;
+    height: 600px;
+    width: 100%;
+    overflow-y: scroll;
     .center {
       padding: 50px;
       border-radius: @baseBorderRadius;
       background-color: @white;
     }
+  }
+  .mine::-webkit-scrollbar{
+    display: none;
   }
 </style>

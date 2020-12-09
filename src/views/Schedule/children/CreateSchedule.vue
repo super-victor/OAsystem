@@ -176,8 +176,8 @@ import BackApi from '@/service/BackstageManagement'
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .CreateSchedule{
-    height: 200px;
-    width: 60%;
+    height: 100%;
+    width: 100%;
     font-size: 0.2rem;
     color: @regularText;
     .center {

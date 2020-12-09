@@ -31,7 +31,7 @@ import scheduleAPI from '@/service/schedule';
         .then(res=>{
           console.log(res);
           res.object.forEach(element => {
-            this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#FDEBC9',borderColor: '#FDEBC9', textColor: '#F9AE26'})
+            this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#9CB7F0',borderColor: '#9CB7F0', textColor: '#606266'})
           });
           this.$forceUpdate();
         })
@@ -52,10 +52,15 @@ import scheduleAPI from '@/service/schedule';
 @import '../../../style/common.less';
   .CompanySchedule{
     height: 600px;
+    width: 100%;
+    overflow-y: scroll;
     .center {
       padding: 50px;
       border-radius: @baseBorderRadius;
       background-color: @white;
     }
+  }
+  .CompanySchedule::-webkit-scrollbar{
+    display: none;
   }
 </style>
