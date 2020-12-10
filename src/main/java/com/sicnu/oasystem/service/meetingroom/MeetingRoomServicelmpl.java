@@ -32,7 +32,7 @@ public class MeetingRoomServicelmpl implements MeetingRoomService {
     @Override
     public BackFrontMessage getMeetRoomInfo(String place, Integer isOccapy, String MeetingRoomName) {
         this.updateMeetingRoomIsOccapy();
-        this.uodateMeetingRoomNotIsOccapy();
+        this.updateMeetingRoomNotIsOccapy();
         List<MeetingRoom>meetingRooms=meetingRoomMapper.getAllMeetingRoom(place,isOccapy,MeetingRoomName);
         if(meetingRooms==null){
             return new BackFrontMessage(500,"获取所有会议室信息失败",null);
@@ -47,7 +47,7 @@ public class MeetingRoomServicelmpl implements MeetingRoomService {
     }
 
     @Override
-    public Integer uodateMeetingRoomNotIsOccapy() {
+    public Integer updateMeetingRoomNotIsOccapy() {
         return meetingRoomMapper.updateMettingRoomNotIsOccapy();
     }
 

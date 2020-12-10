@@ -16,12 +16,12 @@ import java.util.List;
 public interface EquipmentMapper {
     /**
      * @MethodName addEquipment
-     * @param equipmentId
-     * @param equipmentclassifyId
-     * @param meetingroomId
-     * @param name
-     * @param ismaintain
-     * @param num
+     * @param
+     * @param equipmentclassifyId 设备分类Id
+     * @param meetingroomId 会议室Id
+     * @param name 会议名称
+     * @param ismaintain 是否维修
+     * @param num 设备数量
      * @Description 添加设备
      * @Author pan
      * @Return java.lang.Integer
@@ -32,12 +32,12 @@ public interface EquipmentMapper {
 
     /**
      * @MethodName updateEquipment
-     * @param equipmentId
-     * @param equipmentclassifyId
-     * @param newmeetingroomId
-     * @param newname
-     * @param newismaintain
-     * @param newnum
+     * @param equipmentId 设备名称
+     * @param equipmentclassifyId 设备分类Id
+     * @param newmeetingroomId 新的会议室Id
+     * @param newname 新的设备名称
+     * @param newismaintain 是否被占用
+     * @param newnum 新的设备名称
      * @Description 根据设备Id更改设备信息
      * @Author pan
      * @Return java.lang.Integer
@@ -49,7 +49,7 @@ public interface EquipmentMapper {
     Integer updateeq(Integer equipmentId);
     /**
      * @MethodName deleteEuipment
-     * @param equipmentId
+     * @param equipmentId 设备Id
      * @Description 根据设备Id删除设备
      * @Author pan
      * @Return java.lang.Integer
@@ -69,7 +69,7 @@ public interface EquipmentMapper {
 
     /**
      * @MethodName getEquipmentById
-     * @param equipmentId
+     * @param equipmentId 设备Id
      * @Description 根据设备Id获取设备信息
      * @Author pan
      * @Return com.sicnu.oasystem.pojo.Equipment
@@ -77,7 +77,27 @@ public interface EquipmentMapper {
      */
     Equipment getEquipmentById(Integer equipmentId);
 
+    /**
+     * @MethodName getEquipmentByclassifyAndRoomAndname
+     * @param equipmentclassifyId 设备分类Id
+     * @param meetingroomId 会议室Id
+     * @param name 会议室名称
+     * @Description 按分类Id或会议室Id或设备名称获取设备
+     * @Author pan
+     * @Return com.sicnu.oasystem.pojo.Equipment
+     * @LastChangeDate 2020/12/10
+     */
     Equipment getEquipmentByclassifyAndRoomAndname(Integer equipmentclassifyId, Integer meetingroomId, String name);
 
+    /**
+     * @MethodName getEquipmentByCondition
+     * @param meetingroomid 会议室Id
+     * @param equipmentclassifyId 设备分类Id
+     * @param name  设备名称
+     * @Description 按条件获取设备
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Equipment>
+     * @LastChangeDate 2020/12/10
+     */
     List<Equipment> getEquipmentByCondition(Integer meetingroomid,Integer equipmentclassifyId,String name);
 }

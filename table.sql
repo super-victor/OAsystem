@@ -422,6 +422,17 @@ insert into menu (name, url ,code) values ('审稿人获取自己未审稿','GET
 insert into menu (name, url ,code) values ('审稿人审稿','PUT /CheckDocument','0015');
 insert into menu (name, url ,code) values ('获取该员工一段时间的个人日程','GET /findSelfSchedule','0016');
 insert into menu (name, url ,code) values ('获取该员工一段时间的公司日程','GET /findCompanySchedule','0017');
+insert into menu (name, url ,code) values ('按条件获取设备信息','GET /getEquipmentByCondition','0018');
+insert into menu (name, url ,code) values ('按楼层获取会议室信息','GET /getAllMeetingRoomByStorey','0019');
+insert into menu (name, url ,code) values ('获取所有的会议','GET /getAllMeetings','0020');
+insert into menu (name, url ,code) values ('获取当前的所有会议','GET /getCurrentAllMeeting','0021');
+insert into menu (name, url ,code) values ('查询会议','GET /getMeetingById','0022');
+insert into menu (name, url ,code) values ('审批会议','PUT /approveMeeting','0023');
+insert into menu (name, url ,code) values ('获取未被审批的会议','GET /getNotApprovedMeeting','0024');
+insert into menu (name, url ,code) values ('预约会议','POST /addOrderMeeting','0025');
+insert into menu (name, url ,code) values ('获取某一天某一个会议室的会议预约','POST /getAllMeetingTimeByRoomAndTime','0026');
+insert into menu (name, url ,code) values ('删除未审批的预约会议','DELETE /cancleApproveMeeting','0027');
+insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT /updateOrderMeeting','0028');
 
 
 

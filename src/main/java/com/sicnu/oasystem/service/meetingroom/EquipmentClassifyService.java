@@ -20,7 +20,7 @@ public interface EquipmentClassifyService {
 
     /**
      * @MethodName addEquipmentClassify
-     * @param classifyName
+     * @param classifyName 设备名称
      * @Description 添加设备分类
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -30,8 +30,8 @@ public interface EquipmentClassifyService {
 
     /**
      * @MethodName updateEquipmentClassify
-     * @param classifyId
-     * @param newClassifyName
+     * @param classifyId 设备Id
+     * @param newClassifyName 新的设备名称
      * @Description 修改设备分类
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -41,7 +41,7 @@ public interface EquipmentClassifyService {
 
     /**
      * @MethodName deleteEquipmentClassify
-     * @param ClassifyId
+     * @param ClassifyId 设备Id
      * @Description 删除设备分类
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage

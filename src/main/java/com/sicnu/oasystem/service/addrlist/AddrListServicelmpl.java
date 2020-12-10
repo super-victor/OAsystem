@@ -64,8 +64,8 @@ public class AddrListServicelmpl implements AddrListService {
 
     /**
      * @MethodName getEmployeeBypage
-     * @param currentPageNum
-     * @param pageSize
+     * @param currentPageNum 当前页数
+     * @param pageSize 每页的大小
      * @Description 使用分页获取通讯录
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -89,8 +89,8 @@ public class AddrListServicelmpl implements AddrListService {
 
     /**
      * @MethodName getEmployeeByCondition
-     * @param name
-     * @param sex
+     * @param name 员工的姓名
+     * @param sex  员工的性别
      * @Description 按条件获取员工通讯录
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage

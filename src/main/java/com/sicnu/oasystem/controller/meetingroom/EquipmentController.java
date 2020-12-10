@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName EquipmentController
- * @Description
+ * @Description 设备控制器
  * @Author pan
  * @LastChangeDate 2020/11/19 20:15
  * @Version v1.0
@@ -28,14 +28,13 @@ public class EquipmentController {
 
     /**
      * @MethodName addEquipment
-     * @param equipment
+     * @param equipment 设备
      * @Description 添加设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/20
      */
     @ApiOperation("添加设备")
-
     @PostMapping("/addEquipment")
         public BackFrontMessage addEquipment(@Validated(Equipment.Add.class) Equipment equipment){
         return equipmentServicelpml.addEquipment(equipment.getEquipmentClassifyId()
@@ -44,7 +43,7 @@ public class EquipmentController {
 
     /**
      * @MethodName updateEquipment
-     * @param equipment
+     * @param equipment 设备
      * @Description 修改设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -59,7 +58,7 @@ public class EquipmentController {
 
     /**
      * @MethodName deleteEuipment
-     * @param equipmentId
+     * @param equipmentId 设备Id
      * @Description 删除设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -85,11 +84,31 @@ public class EquipmentController {
         return equipmentServicelpml.getallEquipment();
     }
 
+    /**
+     * @MethodName getEquipmentById
+     * @param equipmentId 设备Id
+     * @Description 通过设备Id获取设备
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
+    @ApiOperation("通过设备Id获取设备信息")
     @GetMapping("/getEquipmentById")
     public BackFrontMessage getEquipmentById(@Validated @NotNull(message = "设备id不能为空") Integer equipmentId){
         return equipmentServicelpml.getEquipmentById(equipmentId);
     }
 
+    /**
+     * @MethodName getEquipmentByCondition
+     * @param meetingroomid 会议室Id
+     * @param equipmentclassifyId 设备分类Id
+     * @param name 设备名称
+     * @Description 按条件获取设备
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
+    @ApiOperation("按条件获取设备信息")
     @GetMapping("/getEquipmentByCondition") //todo 未添加权限
     public BackFrontMessage getEquipmentByCondition(Integer meetingroomid, Integer equipmentclassifyId, String name){
         return equipmentServicelpml.getEquipmentByCondition(meetingroomid,equipmentclassifyId,name);

@@ -17,11 +17,11 @@ public interface EquipmentService {
 
     /**
      * @MethodName addEquipment
-     * @param equipmentclassifyId
-     * @param meetingroomId
-     * @param name
-     * @param ismaintain
-     * @param num
+     * @param equipmentclassifyId 设备分类Id
+     * @param meetingroomId 会议室Id
+     * @param name  设备名称
+     * @param ismaintain 是否维修
+     * @param num 数量
      * @Description 添加设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -31,12 +31,12 @@ public interface EquipmentService {
 
     /**
      * @MethodName updateEquipment
-     * @param equipmentId
-     * @param equipmentclassifyId
-     * @param newmeetingroomId
-     * @param newname
-     * @param newismaintain
-     * @param newnum
+     * @param equipmentId 设备Id
+     * @param equipmentclassifyId 设备分类Id
+     * @param newmeetingroomId 新的会议室Id
+     * @param newname 新的设备名称
+     * @param newismaintain 是否被占用
+     * @param newnum 新的数量
      * @Description 更新设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -47,7 +47,7 @@ public interface EquipmentService {
 
     /**
      * @MethodName deleteEuipment
-     * @param equipmentId
+     * @param equipmentId 设备Id
      * @Description 删除设备
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -67,7 +67,7 @@ public interface EquipmentService {
 
     /**
      * @MethodName getEquipmentById
-     * @param equipmentId
+     * @param equipmentId 设备Id
      * @Description 根据设备Id获取设备信息
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -75,5 +75,15 @@ public interface EquipmentService {
      */
     BackFrontMessage getEquipmentById(Integer equipmentId);
 
+    /**
+     * @MethodName getEquipmentByCondition
+     * @param meetingroomid 会议室Id
+     * @param equipmentclassifyId 设备分类Id
+     * @param name  设备名称
+     * @Description 按条件获取设备
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     BackFrontMessage getEquipmentByCondition(Integer meetingroomid,Integer equipmentclassifyId,String name);
 }

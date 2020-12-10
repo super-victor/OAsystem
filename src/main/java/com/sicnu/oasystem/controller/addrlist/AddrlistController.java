@@ -53,9 +53,7 @@ public class AddrlistController {
     @ApiOperation(value = "获取所有部门的部门名称")
     @GetMapping("/getAllDepartmentName")
     public BackFrontMessage getDepartmentName(){
-        System.out.println(1/0);
         return addrListService.getDeparmentName();
-//        return addrListService.getDeparmentname();
     }
 
     /**

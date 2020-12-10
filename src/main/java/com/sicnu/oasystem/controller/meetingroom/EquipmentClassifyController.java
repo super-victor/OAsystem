@@ -25,7 +25,7 @@ public class EquipmentClassifyController {
 
     /**
      * @MethodName addEquipmentClassify
-     * @param classifyName
+     * @param classifyName 设备分类名称
      * @Description 添加设备分类
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -39,8 +39,8 @@ public class EquipmentClassifyController {
 
     /**
      * @MethodName updateEquipmentClassify
-     * @param classifyId
-     * @param newClassifyName
+     * @param classifyId 设备分类Id
+     * @param newClassifyName 新的设备分类名称
      * @Description 修改设备分类信息
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage
@@ -68,7 +68,7 @@ public class EquipmentClassifyController {
 
     /**
      * @MethodName deleteEquipmentClassify
-     * @param ClassifyId
+     * @param ClassifyId 设备分类Id
      * @Description 删除设备分类
      * @Author pan
      * @Return com.sicnu.oasystem.json.BackFrontMessage

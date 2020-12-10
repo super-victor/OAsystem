@@ -27,12 +27,20 @@ public interface DepartmentMapper {
      */
     List<String> getAllDepartmentName();
 
+    //获取所有的部门
     List<Department> findAllDepartment();
-
+    //添加部门
     int addDepartment(Department department);
-
+    //更新部门信息
     int updateDepartment(Department department);
-
+    /**
+     * @MethodName deleteDepartment
+     * @param departmentId 部门Id
+     * @Description 删除部门
+     * @Author pan
+     * @Return int
+     * @LastChangeDate 2020/12/10
+     */
     int deleteDepartment(int departmentId);
 
     /***

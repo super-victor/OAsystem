@@ -34,12 +34,7 @@
     <update id="completeMeetings">
         update meeting set appoinmentstatus=2 where CURRENT_DATE>endtime and appoinmentstatus=1
     </update>
-    <update id="modifyApproveMeeting">
-        update meeting set meetingid=#{param1}
 
-
-
-    </update>
     <delete id="deleteMeeting">
         delete from meeting where meetingid=#{meetingId}
     </delete>

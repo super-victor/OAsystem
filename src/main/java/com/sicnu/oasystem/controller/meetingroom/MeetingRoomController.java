@@ -43,6 +43,14 @@ public class MeetingRoomController {
         return meetingRoomService.getMeetRoomInfo(place,isOccapy,MeetingRoomName);
     }
 
+    /**
+     * @MethodName addMeetingRoom
+     * @param meetingRoom
+     * @Description 添加会议室
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @PostMapping("/addMeetingRoom")
     @ApiOperation("添加会议室")
     public BackFrontMessage addMeetingRoom(@Validated MeetingRoom meetingRoom){
@@ -50,17 +58,41 @@ public class MeetingRoomController {
                 meetingRoom.getIsOccapy(),meetingRoom.getMaxperson());
     }
 
+    /**
+     * @MethodName deleteMeetingRoom
+     * @param MeetingRoomId 会议室Id
+     * @Description 删除会议室
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @DeleteMapping("/deleteMeetingRoom")
     @ApiOperation("删除会议室")
     public BackFrontMessage deleteMeetingRoom(@Validated  @NotNull(message = "会议室id不能为空") Integer MeetingRoomId){
         return meetingRoomService.deleteMeetingRoom(MeetingRoomId);
     }
 
+    /**
+     * @MethodName getMeetingRoomById
+     * @param MeetingRoomId 会议室Id
+     * @Description 通过会议室Id获取会议室信息
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @GetMapping("/getMeetingRoomById")
     @ApiOperation("通过Id获取会议室")
     public BackFrontMessage getMeetingRoomById(@Validated @NotNull(message = "会议室id不能为空") Integer MeetingRoomId){
         return meetingRoomService.getMeetingRoomById(MeetingRoomId);
     }
+    /**
+     * @MethodName getAllMeetingRoomByStorey
+     * @param
+     * @Description 按楼层获取会议室信息
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("按楼层获取会议室信息")
     @GetMapping("/getAllMeetingRoomByStorey")
     public BackFrontMessage getAllMeetingRoomByStorey(){

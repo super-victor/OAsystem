@@ -20,11 +20,12 @@ public class GlobalExceptionHand {
 
     Logger logger= Logger.getLogger("error");
 
+    //捕获全局未catch的异常并使用log4j插入到数据库
     @ExceptionHandler
     public BackFrontMessage geterror(Exception e){
         MDC.put("type","SystemException");
         e.printStackTrace();
-        logger.error(e.getMessage());
+        logger.error("出现异常："+e.getMessage());
         return new BackFrontMessage(500,"服务器异常",e.getMessage());
     }
 }

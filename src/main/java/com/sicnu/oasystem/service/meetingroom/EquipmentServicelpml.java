@@ -60,9 +60,6 @@ public class EquipmentServicelpml implements EquipmentService {
                 return new BackFrontMessage(200,"添加设备成功",null);
             }
         }else{
-//            if(equipment!=null){
-//                return new BackFrontMessage(500,"设备已存在",null);
-//            }
             if(equipmentClassify==null){
                 return new BackFrontMessage(500,"设备分类不存在",null);
             }
@@ -108,9 +105,6 @@ public class EquipmentServicelpml implements EquipmentService {
 
     @Override
     public BackFrontMessage getEquipmentByCondition(Integer meetingroomid, Integer equipmentclassifyId, String name) {
-//        if(meetingroomid==null||meetingroomid<=0||equipmentclassifyId==null||equipmentclassifyId<=0||name==null){
-//            return new BackFrontMessage(500,"按条件查找设备失败",null);
-//        }
         List<Equipment> equipments=equipmentMapper.getEquipmentByCondition(meetingroomid,equipmentclassifyId,name);
         if (equipments==null){
             return new BackFrontMessage(500,"按条件查找设备失败",null);

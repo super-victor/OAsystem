@@ -33,35 +33,91 @@ public class MeetingController {
     @Resource
     MeetingServicelmpl meetingServicelmpl;
 
+    /**
+     * @MethodName getAllMeetings
+     * @param
+     * @Description 获取所有的会议信息
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("获取所有的会议")
     @GetMapping("/getAllMeetings")
     public BackFrontMessage getAllMeetings(){
         return meetingServicelmpl.getAllMeetings();
     };
 
+    /**
+     * @MethodName getCurrentAllMeeting
+     * @param
+     * @Description 获取当前的所有会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
+    @ApiOperation("获取当前的所有会议")
     @GetMapping("/getCurrentAllMeeting")
     public  BackFrontMessage getCurrentAllMeeting(){
         return meetingServicelmpl.getCurrentAllMeeting();
     }
 
+    /**
+     * @MethodName getMeetingById
+     * @param meetingId 会议Id
+     * @Description 按会议Id获取会议信息
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @GetMapping("/getMeetingById")
     @ApiOperation("按会议Id获取会议信息")
     public BackFrontMessage getMeetingById(@Validated @NotNull(message = "会议Id不能为空") Integer meetingId){
         return meetingServicelmpl.getMeetingById(meetingId);
     }
 
-    @ApiOperation("会议审批会议")
+    /**
+     * @MethodName approveMeeting
+     * @param meetingid 会议Id
+     * @param appoinmentstatus 会议预约状态
+     * @Description 审批会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
+    @ApiOperation("审批会议")
     @PutMapping("/approveMeeting")
     public BackFrontMessage approveMeeting(@RequestParam @Validated @NotNull(message = "会议Id不能为空") Integer meetingid, @RequestParam @Validated @NotNull(message = "会议预约信息不能为空") Integer appoinmentstatus){
         return meetingServicelmpl.approveMeeting(meetingid,appoinmentstatus);
     }
 
+    /**
+     * @MethodName getNotApprovedMeeting
+     * @param
+     * @Description 获取预约的但未被审批的会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("获取未被审批的会议")
     @GetMapping("/getNotApprovedMeeting")
     public BackFrontMessage getNotApprovedMeeting(){
         return meetingServicelmpl.getNotApprovedMeeting();
     }
 
+    /**
+     * @MethodName addOrderMeeting
+     * @param meetingroomid 会议室Id
+     * @param employeeid 员工Id
+     * @param name 会议名称
+     * @param startTime 开始时间
+     * @param endtime 结束时间
+     * @param peoplenum 会议人数
+     * @param remark  备注
+     * @Description 预约会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("预约会议")
     @PostMapping("/addOrderMeeting")
     public BackFrontMessage addOrderMeeting(@RequestParam @Validated @NotNull(message = "会议是Id不能为空") Integer meetingroomid,
@@ -85,8 +141,16 @@ public class MeetingController {
         }
         return meetingServicelmpl.addOrderMeeting(meetingroomid,employeeid,name,StartTime,Endtine,peoplenum,remark);
     }
-    //todo 查询某一天会议占用情况。
 
+    /**
+     * @MethodName getAllMeetingTimeByRoomAndTime
+     * @param meetingroomid 会议室Id
+     * @param date  时间
+     * @Description 获取某一天某一天会议室的会议预约
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("获取某一天某一个会议室的会议预约")
     @PostMapping("/getAllMeetingTimeByRoomAndTime")
     BackFrontMessage getAllMeetingTimeByRoomAndTime(@Validated @NotNull(message = "会议室id不能为空") Integer meetingroomid,
@@ -107,7 +171,14 @@ public class MeetingController {
         return meetingServicelmpl.getAllMeetingTimeByRoomAndTime(meetingroomid,starttime,enttime);
     }
 
-
+    /**
+     * @MethodName cancleApproveMeeting
+     * @param meetingid 会议Id
+     * @Description 删除未审批的预约会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("删除未审批的预约会议")
     @DeleteMapping("/cancleApproveMeeting")
     BackFrontMessage cancleApproveMeeting(@Validated @NotNull(message = "会议Id不能为空") Integer meetingid){
@@ -115,6 +186,20 @@ public class MeetingController {
         return meetingServicelmpl.cancleApproveMeeting(meetingid,employeeid);
     }
 
+    /**
+     * @MethodName updateOrderMeeting
+     * @param meetingid 会议Id
+     * @param meetingroomid 会议室Id
+     * @param name 名称
+     * @param startTime 开始时间
+     * @param endtime 结束时间
+     * @param peoplenum 会议人数
+     * @param remark 备注
+     * @Description 修改未审批的预约会议
+     * @Author pan
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/10
+     */
     @ApiOperation("修改未审批的预约会议")
     @PutMapping("/updateOrderMeeting")
     BackFrontMessage updateOrderMeeting(@Validated @NotNull(message = "会议Id不能为空") Integer meetingid,Integer meetingroomid,

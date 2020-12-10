@@ -18,7 +18,7 @@ public interface EquipmentClassifyMapper {
 
     /**
      * @MethodName addEquipmentClassify
-     * @param classifyName
+     * @param classifyName  分类名称
      * @Description 添加一个设备分类
      * @Author pan
      * @Return java.lang.Integer
@@ -28,7 +28,7 @@ public interface EquipmentClassifyMapper {
 
     /**
      * @MethodName updateEquipmentClassify
-     * @param classifyId
+     * @param classifyId  分类Id
      * @param newClassifyName 设备分类新名称
      * @Description 添加通过id修改设备分类名称
      * @Author pan
@@ -39,7 +39,7 @@ public interface EquipmentClassifyMapper {
 
     /**
      * @MethodName deleteEquipmentClassify
-     * @param ClassifyId
+     * @param ClassifyId  分类Id
      * @Description 通过设备分类ID删除设备分类
      * @Author pan
      * @Return java.lang.Integer
@@ -49,7 +49,7 @@ public interface EquipmentClassifyMapper {
 
     /**
      * @MethodName EquipmentClassifyIfExitByName
-     * @param ClassifyName
+     * @param ClassifyName 分类名称
      * @Description 判断一个设备分类是否存在，如果存在则返回ID
      * @Author pan
      * @Return java.lang.Integer
@@ -69,7 +69,7 @@ public interface EquipmentClassifyMapper {
 
     /**
      * @MethodName getEquipmentClassify
-     * @param ClassifyId
+     * @param ClassifyId 分类Id
      * @Description 通过Id查找EquipmentClassify
      * @Author pan
      * @Return com.sicnu.oasystem.pojo.EquipmentClassify

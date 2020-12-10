@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @InterfaceName MeetingMapper
- * @Description
+ * @Description 会议的Mapper
  * @Author pan
  * @LastChangeDate 2020/11/24 23:06
  * @Version v1.0
@@ -26,14 +26,30 @@ public interface MeetingMapper {
      */
     List<Meeting>getAllMeetings();
 
+    /**
+     * @MethodName completeMeetings
+     * @param
+     * @Description 将完成的会议更改状态
+     * @Author pan
+     * @Return java.lang.Integer
+     * @LastChangeDate 2020/12/10
+     */
     Integer completeMeetings();
 
+    /**
+     * @MethodName getCurrentAllMeeting
+     * @param
+     * @Description 获取当前所以会议
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Meeting>
+     * @LastChangeDate 2020/12/10
+     */
     List<Meeting>getCurrentAllMeeting();
 
     /**
      * @MethodName getMeetingById
-     * @param meetingId
-     * @Description 添加描述
+     * @param meetingId 会议Id
+     * @Description 通过会议Id获得会议信息
      * @Author pan
      * @Return com.sicnu.oasystem.pojo.Meeting
      * @LastChangeDate 2020/11/28
@@ -42,7 +58,7 @@ public interface MeetingMapper {
 
     /**
      * @MethodName deleteMeeting
-     * @param meetingId
+     * @param meetingId 会议ID
      * @Description 通过删除会议
      * @Author pan
      * @Return java.lang.Integer
@@ -52,13 +68,13 @@ public interface MeetingMapper {
 
     /**
      * @MethodName addOrderMeeting
-     * @param meetingroomid
-     * @param employeeid
-     * @param name
-     * @param startTime
-     * @param endtime
-     * @param peoplenum
-     * @param remark
+     * @param meetingroomid 会议室Id
+     * @param employeeid 员工Id
+     * @param name 会议名称
+     * @param startTime 开始时间
+     * @param endtime 结束时间
+     * @param peoplenum 会议人数
+     * @param remark 备注
      * @Description 预约会议
      * @Author pan
      * @Return java.lang.Integer
@@ -68,8 +84,8 @@ public interface MeetingMapper {
 
     /**
      * @MethodName approveMeeting
-     * @param meeting
-     * @param appoinmentstatus
+     * @param meeting 会议Id
+     * @param appoinmentstatus 会议预约状态
      * @Description 审批会议
      * @Author pan
      * @Return java.lang.Integer
@@ -79,16 +95,18 @@ public interface MeetingMapper {
 
     /**
      * @MethodName updateOrderMeeting
-     * @param meetingId
-     * @param status
-     * @param name
-     * @param startTime
-     * @param endtime
-     * @param peoplenum
+     * @param meetingid 会议Id
+     * @param meetingroomid 会议室Id
+     * @param employeeid 员工Id
+     * @param name 会议名称
+     * @param startTime 开始时间
+     * @param endtime 结束时间
+     * @param peoplenum 会议人数
+     * @param remark 会议备注
      * @Description 更新会议信息
      * @Author pan
      * @Return java.lang.Integer
-     * @LastChangeDate 2020/11/28
+     * @LastChangeDate 2020/12/10
      */
     Integer updateOrderMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid,
                                String name, Date startTime,Date endtime,
@@ -106,9 +124,9 @@ public interface MeetingMapper {
 
     /**
      * @MethodName judgeIsIsOccupy
-     * @param meetingroomId
-     * @param startTime
-     * @param endTime
+     * @param meetingroomId 会议室Id
+     * @param startTime 开始时间
+     * @param endTime 结束时间
      * @Description 判断当前时间是否已经占用
      * @Author pan
      * @Return java.util.List<com.sicnu.oasystem.pojo.Meeting>
@@ -116,10 +134,27 @@ public interface MeetingMapper {
      */
     List<Meeting> judgeIsIsOccupy(Integer meetingroomId,Date startTime,Date endTime);
 
-
+    /**
+     * @MethodName getAllMeetingTimeByRoomAndTime
+     * @param meetingrommid 会议室Id
+     * @param stratTime 开始时间
+     * @param endTime  结束时间
+     * @Description 通过会议室和时间查找会议
+     * @Author pan
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Meeting>
+     * @LastChangeDate 2020/12/10
+     */
     List<Meeting> getAllMeetingTimeByRoomAndTime(Integer meetingrommid,Date stratTime,Date endTime);
 
+    /**
+     * @MethodName cancleApproveMeeting
+     * @param meetingid 会议Id
+     * @param employeeid 员工Id
+     * @Description 取消已经预约但未审批的会议
+     * @Author pan
+     * @Return java.lang.Integer
+     * @LastChangeDate 2020/12/10
+     */
     Integer cancleApproveMeeting(Integer meetingid,Integer employeeid);
 
-//    Integer modifyApproveMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid, String name, Date startTime,Date endtime,Integer peoplenum,String remark);
 }
