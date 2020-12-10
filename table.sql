@@ -352,7 +352,23 @@ insert into cardholder (name, ownerId) values ('默认名片夹', 3);
 insert into cardholder (name, ownerId) values ('默认名片夹', 4);
 insert into cardholder (name, ownerId) values ('默认名片夹', 5);
 insert into cardholder (name, ownerId) values ('后端', 2);
+insert into cardholder (name, ownerId) values ('同事', 1);
+insert into cardholder (name, ownerId) values ('好友', 2);
+insert into cardholder (name, ownerId) values ('财务部', 3);
+insert into cardholder (name, ownerId) values ('后勤部', 4);
+insert into cardholder (name, ownerId) values ('好友', 4);
+insert into cardholder (name, ownerId) values ('后勤部', 4);
 
+
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 8, '小花', '10086', '2238192070@qq.com', '四川师范大学', '腾讯' , '财务部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 8, '李四', '12345678910', '115645284@qq.com', '四川师范大学', '腾讯' , '后勤部', '管理员');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '王红', '12345678910', '12456385@qq.com', '四川师范大学', '腾讯' ,'后勤部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 10, '王红', '12345678910', '12456385@qq.com', '四川师范大学', '腾讯' ,'后勤部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (1, 7, '张三', '12345678910', '968561352@qq.com', '四川师范大学', '腾讯' ,'财务部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (3, 9, '小花', '10086', '2238192070@qq.com', '四川师范大学', '腾讯' ,'财务部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 4, '小花', '10086', '2238192070@qq.com', '四川师范大学', '腾讯' ,'财务部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (3, 3, '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯' ,'后勤部', '普通员工');
+insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 10, '小明', '10086', '2238192070@qq.com', '四川师范大学', '腾讯' ,'后勤部', '普通员工');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (2, 2, '张三', '1122334455', '11223344@qq.com', '四川师范大学', '腾讯', '人事部', '普通员工');
 insert into card (ownerId, cardHolderId, name, phone, email, address, company, department, position) values (4, 5, '张一', '13348943243', 'Yu@163.com', '成龙', 'Sicnu', '人事部', '职员');
