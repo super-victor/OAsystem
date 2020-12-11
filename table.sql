@@ -387,16 +387,33 @@ INSERT INTO `equipment` VALUES ('1', '1', '1', '机器', '0', null, '20', '2020-
 
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-11-27 11:03:22', '2020-11-27 21:00:22', 2, '实验室', '我的日程', '完成日程接口', 4);
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-11-29 16:38:01', '2020-11-30 04:38:01', 4, '公司', '协同办公平台', '完成项目50%功能', 4);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-12-06 15:00:00', '2020-12-06 15:23:00', 2, '家', '测试参数异常', null, 4);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-04 13:00:00', '2020-12-04 22:00:00', 1, '小吃街', '吃饭', null, 1);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-12-07 00:00:00', '2020-12-11 00:00:00', 1, '龙泉', '出差', '出差四天', 7);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-09 00:00:00', '2020-12-11 00:00:00', 1, '实验室', '学习', '前端相关技术', 8);
 
 insert into employeeschedule(scheduleId, employeeId) values (1, 2);
+insert into employeeschedule(scheduleId, employeeId) values (2, 2);
+insert into employeeschedule(scheduleId, employeeId) values (2, 3);
+insert into employeeschedule(scheduleId, employeeId) values (2, 4);
+insert into employeeschedule(scheduleId, employeeId) values (2, 5);
+insert into employeeschedule(scheduleId, employeeId) values (3, 2);
+insert into employeeschedule(scheduleId, employeeId) values (3, 4);
+insert into employeeschedule(scheduleId, employeeId) values (3, 5);
+insert into employeeschedule(scheduleId, employeeId) values (4, 1);
+insert into employeeschedule(scheduleId, employeeId) values (5, 1);
+insert into employeeschedule(scheduleId, employeeId) values (5, 3);
+insert into employeeschedule(scheduleId, employeeId) values (6, 1);
 
 insert into role (name) values ('超级管理员');
 insert into role (name) values ('管理员');
 insert into role (name) values ('审稿人');
+insert into role (name) values ('日程管理员');
 
-insert into employeerole (employeeId, roleId) values (1,1);
-insert into employeerole (employeeId, roleId) values (2,2);
-insert into employeerole (employeeId, roleId) values (3,3);
+insert into employeerole (employeeId, roleId) values (1, 1);
+insert into employeerole (employeeId, roleId) values (2, 2);
+insert into employeerole (employeeId, roleId) values (3, 3);
+insert into employeerole (employeeId, roleId) values (1, 4);
 
 insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
 insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
@@ -436,8 +453,8 @@ insert into menu (name, url ,code) values ('修改个人日程信息','PUT /Self
 insert into menu (name, url ,code) values ('删除个人日程','DELETE /SelfSchedule','0013');
 insert into menu (name, url ,code) values ('审稿人获取自己未审稿','GET /UnCheckDocument','0014');
 insert into menu (name, url ,code) values ('审稿人审稿','PUT /CheckDocument','0015');
-insert into menu (name, url ,code) values ('获取该员工一段时间的个人日程','GET /findSelfSchedule','0016');
-insert into menu (name, url ,code) values ('获取该员工一段时间的公司日程','GET /findCompanySchedule','0017');
+insert into menu (name, url ,code) values ('获取该员工所有的个人日程','GET /findSelfSchedule','0016');
+insert into menu (name, url ,code) values ('获取该员工所有的公司日程','GET /findCompanySchedule','0017');
 insert into menu (name, url ,code) values ('按条件获取设备信息','GET /getEquipmentByCondition','0018');
 insert into menu (name, url ,code) values ('按楼层获取会议室信息','GET /getAllMeetingRoomByStorey','0019');
 insert into menu (name, url ,code) values ('获取所有的会议','GET /getAllMeetings','0020');
@@ -449,11 +466,14 @@ insert into menu (name, url ,code) values ('预约会议','POST /addOrderMeeting
 insert into menu (name, url ,code) values ('获取某一天某一个会议室的会议预约','POST /getAllMeetingTimeByRoomAndTime','0026');
 insert into menu (name, url ,code) values ('删除未审批的预约会议','DELETE /cancleApproveMeeting','0027');
 insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT /updateOrderMeeting','0028');
+insert into menu (name, url, code) values ('通过日程id获取日程信息', 'GET /findScheduleByScheduleId', '0018');
 
 
 
 insert into rolemenu (roleId, menuId) VALUES (3, 35);
 insert into rolemenu (roleId, menuId) VALUES (3, 36);
+insert into rolemenu (menuId, roleId) values (29, 4);
+insert into rolemenu (menuId, roleId) values (31, 4);
 
 insert into message (employeeId, type, title, content, sendTime, isRead) values (1, 1, '发文审核', '标题为xxx的发文审核已通过', '2020-11-25 22:38:12', 0);
 insert into message (employeeId, type, title, content, sendTime, isRead) values (2, 2, '公司日程', '您收到了一个关于公司日程的日程', '2020-11-27 21:45:44', 0);
