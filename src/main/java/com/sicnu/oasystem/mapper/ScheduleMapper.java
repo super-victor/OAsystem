@@ -1,9 +1,11 @@
 package com.sicnu.oasystem.mapper;
 
+import com.sicnu.oasystem.pojo.DataSeeAbleA;
 import com.sicnu.oasystem.pojo.Schedule;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @InterfaceName ScheduleMapper
@@ -55,4 +57,15 @@ public interface ScheduleMapper {
      * @LastChangeDate 2020/11/17
      */
     int deleteScheduleByScheduleId(int scheduleId);
+
+    /**
+     * @MethodName findCompanyScheduleByDate
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @Description 获取startTime到endTime之间的日程
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/12/14
+     */
+    int findCompanyScheduleByDate(Date startTime, Date endTime);
 }

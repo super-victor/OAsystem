@@ -1,7 +1,13 @@
 package com.sicnu.oasystem.service.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.pojo.DataSeeAbleA;
 import com.sicnu.oasystem.pojo.Schedule;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @InterfaceName ScheduleService
  * @Description 日程表服务类接口
@@ -64,5 +70,15 @@ public interface ScheduleService {
      * @LastChangeDate 2020/11/17
      */
     BackFrontMessage findScheduleByScheduleId(int scheduleId);
+
+    /**
+     * @MethodName findCompanyScheduleNumber
+     * @Description 获取十五天以内，公司日程每天的个数
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/14
+     */
+    List<DataSeeAbleA> findCompanyScheduleNumber();
+
 
 }
