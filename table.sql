@@ -474,7 +474,6 @@ insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT
 insert into menu (name, url, code) values ('个人日程界面获取日程信息', 'GET /Self/findScheduleByScheduleId', '001A');
 insert into menu (name, url, code) values ('公司日程界面获取日程信息', 'GET /Company/findScheduleByScheduleId', '002X');
 
-insert into menu (name, url ,code) values ('发文时获取所有员工','GET /document/allEmployees','0029');
 insert into menu (name, url ,code) values ('发文时获取所有审查人','GET /allCensor','002A');
 insert into menu (name, url ,code) values ('上传发文附件','POST /DocumentAnnex','002B');
 insert into menu (name, url ,code) values ('删除发文附件','DELETE /DocumentAnnex','002C');
@@ -490,6 +489,10 @@ insert into menu (name, url ,code) values ('取消自己提交的审核','PUT /c
 insert into menu (name, url ,code) values ('获取所有已发布的发文','GET /allPublishDocument','002T');
 insert into menu (name, url ,code) values ('获取自己已发布的公文','GET /selfPublishDocument','002U');
 insert into menu (name, url ,code) values ('将审查未通过的设置成草稿箱','PUT /putDocumentNotPassIntoDraftbox','002W');
+insert into menu (name, url ,code) values ('在新建拟稿界面修改发文','PUT /a/document','002X');
+insert into menu (name, url ,code) values ('在新建拟稿界面获取所有审查人','GET /a/allCensor','002Y');
+insert into menu (name, url ,code) values ('在新建拟稿界面上传发文附件','POST /a/DocumentAnnex','002Z');
+insert into menu (name, url ,code) values ('在拟稿审核界面上传发文附件','POST /b/DocumentAnnex','0031');
 
 
 
