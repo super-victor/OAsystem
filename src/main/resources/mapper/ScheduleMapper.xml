@@ -29,28 +29,4 @@
     <select id="findScheduleByScheduleId" resultType="com.sicnu.oasystem.pojo.Schedule">
         select * from Schedule where scheduleId = #{scheduleId}
     </select>
-
-    <select id="findReadyToStartSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{startTime} >= startTime and startTime > #{nowTime}
-    </select>
-
-    <select id="findReadyToEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{endTime} >= endTime and endTime > #{nowTime}
-    </select>
-
-    <select id="findDoingSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{nowTime} >= startTime and endTime > #{nowTime}
-    </select>
-
-    <select id="findEndSchedule" resultType="com.sicnu.oasystem.pojo.Schedule">
-        select * from Schedule where #{nowTime} >= endTime
-    </select>
-
-    <select id="findContentByScheduleId" resultType="java.lang.String">
-        select content from Schedule where scheduleId = #{scheduleId}
-    </select>
-
-    <select id="findDateByScheduleId" resultType="java.util.Date">
-        select startTime from Schedule where scheduleId = #{scheduleId}
-    </select>
 </mapper>

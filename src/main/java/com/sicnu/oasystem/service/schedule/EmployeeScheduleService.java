@@ -1,7 +1,6 @@
 package com.sicnu.oasystem.service.schedule;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
-import com.sicnu.oasystem.pojo.EmployeeSchedule;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -15,26 +14,6 @@ import java.util.Date;
  */
 
 public interface EmployeeScheduleService {
-
-    /**
-     * @MethodName insertEmployeeSchedule
-     * @param employeeSchedule 职工日程
-     * @Description 添加职工日程对应
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage insertEmployeeSchedule(EmployeeSchedule employeeSchedule);
-
-    /**
-     * @MethodName deleteEmployeeSchedule
-     * @param employeeScheduleId 日程id
-     * @Description 删除日程by日程id
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage deleteEmployeeSchedule(int employeeScheduleId);
 
     /**
      * @MethodName findEmployeeScheduleByEmployeeId
@@ -95,41 +74,4 @@ public interface EmployeeScheduleService {
      */
     BackFrontMessage findEmployeeScheduleByScheduleId(int scheduleId);
 
-    /**
-     * @MethodName findReadyToStartEmployeeSchedule
-     * @param intervalTime 离开始时间的间隔时间
-     * @Description 查找某一职工快要开始的日程信息
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage findReadyToStartEmployeeSchedule(long intervalTime);
-
-    /**
-     * @MethodName findDoingEmployeeSchedule
-     * @Description 查找某一职工正在进行的日程
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage findDoingEmployeeSchedule();
-
-    /**
-     * @MethodName findBeReadyToEndEmployeeSchedule
-     * @param intervaTime 离结束时间的间隔时间
-     * @Description 查找某一职工快要结束的日程
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage findBeReadyToEndEmployeeSchedule(long intervaTime);
-
-    /**
-     * @MethodName findEndEmployeeSchedule
-     * @Description 查询某一职工快要截至的日程
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.json.BackFrontMessage
-     * @LastChangeDate 2020/11/20
-     */
-    BackFrontMessage findEndEmployeeSchedule();
 }

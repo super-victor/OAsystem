@@ -31,7 +31,6 @@ public class CardServiceImpl implements CardService {
     @Resource
     CardMapper cardMapper;
 
-
     @Resource
     CardHolderMapper cardHolderMapper;
 
@@ -41,7 +40,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public BackFrontMessage insertCard(Card card, Integer cardHolderId){
         //添加名片夹时先判断是不是它的名片夹
-        if (!hasCardHolder(cardHolderId)) { //不含此名片夹
+        if (notHasCardHolder(cardHolderId)) { //不含此名片夹
             return new BackFrontMessage(500,"您没有此名片夹，不能选择此名片夹!",null);
         }
         if (hasOwnedCardByPhone(card.getPhone())){
@@ -62,8 +61,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BackFrontMessage deleteCard(int cardId) {
-        Integer employeeId = UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId();
-        if (!hasOwnedCardByCardId(cardId)) {
+        if (notHasOwnedCardByCardId(cardId)) {
             return new BackFrontMessage(500,"您没有此名片",null);
         }
         int result = cardMapper.deleteCardByCardId(cardId);
@@ -78,7 +76,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BackFrontMessage updateCard(Card card, int cardId) {
-        if (!hasOwnedCardByCardId(cardId)) {
+        if (notHasOwnedCardByCardId(cardId)) {
             return new BackFrontMessage(500,"您没有此名片",null);
         }
         card.setCardId(cardId);
@@ -95,7 +93,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public BackFrontMessage shareCard(int cardId, int cardHolderId) {
         //添加名片夹时先判断是不是它的名片夹
-        if (!hasCardHolder(cardHolderId)) { //不含此名片夹
+        if (notHasCardHolder(cardHolderId)) { //不含此名片夹
             return new BackFrontMessage(500,"您没有此名片夹，不能放在次名片夹!",null);
         }
         Card card = cardMapper.findCardByCardId(cardId);
@@ -118,7 +116,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BackFrontMessage findCardByCardHolderId(int cardHolderId) {
-        if (!hasCardHolder(cardHolderId)) {
+        if (notHasCardHolder(cardHolderId)) {
             return new BackFrontMessage(500, "您没有此名片夹", null);
         }
         List<Map<String,Object>> cardList = new ArrayList<>();
@@ -149,29 +147,29 @@ public class CardServiceImpl implements CardService {
     /**
      * @MethodName hasOwnedCardByCardId
      * @param cardId 名片id
-     * @Description 通过名片id判断用户是否拥有名片
+     * @Description 通过名片id判断用户是否没有拥有名片
      * @Author Waynejwei
      * @Return boolean
      * @LastChangeDate 2020/11/25
      */
-    private boolean hasOwnedCardByCardId(int cardId){
+    private boolean notHasOwnedCardByCardId(int cardId){
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         Card card = cardMapper.findCardByCardIdAndEmployeeId(cardId, currentEmployee.getEmployeeId());
-        return card != null;
+        return card == null;
     }
 
     /**
      * @MethodName hasCardHolder
      * @param cardHolderId 名片夹id
-     * @Description 判断职工是否拥有名片夹
+     * @Description 判断职工是否没有拥有名片夹
      * @Author Waynejwei
      * @Return boolean
      * @LastChangeDate 2020/11/16
      */
-    private boolean hasCardHolder(Integer cardHolderId) {
+    private boolean notHasCardHolder(Integer cardHolderId) {
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         com.sicnu.oasystem.pojo.CardHolder cardHolder = cardHolderMapper.findCardHolderByCardHolderIdAndEmployeeId(
                 cardHolderId, currentEmployee.getEmployeeId());
-        return cardHolder != null;
+        return cardHolder == null;
     }
 }

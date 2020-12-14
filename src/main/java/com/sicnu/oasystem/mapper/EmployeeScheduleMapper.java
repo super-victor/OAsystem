@@ -1,6 +1,5 @@
 package com.sicnu.oasystem.mapper;
 
-import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,16 +26,6 @@ public interface EmployeeScheduleMapper {
      * @LastChangeDate 2020/11/20
      */
     int insertEmployeeSchedule(EmployeeSchedule employeeSchedule);
-
-    /**
-     * @MethodName deleteEmployeeScheduleByEmployeeScheduleId
-     * @param employeeScheduleId 职工日程id
-     * @Description 删除职工日程映射by职工日程id
-     * @Author Waynejwei
-     * @Return int
-     * @LastChangeDate 2020/11/20
-     */
-    int deleteEmployeeScheduleByEmployeeScheduleId(int employeeScheduleId);
 
     /**
      * @MethodName deleteEmployeeScheduleByScheduleId
@@ -78,16 +67,6 @@ public interface EmployeeScheduleMapper {
      * @LastChangeDate 2020/11/20
      */
     EmployeeSchedule findEmployeeScheduleByEmployeeIdAndScheduleId(int employeeId, int scheduleId);
-
-    /**
-     * @MethodName findEmployeeScheduleByEmployeeScheduleId
-     * @param employeeScheduleId 职工日程id
-     * @Description 查找职工日程by职工日程id
-     * @Author Waynejwei
-     * @Return com.sicnu.oasystem.pojo.EmployeeSchedule
-     * @LastChangeDate 2020/11/20
-     */
-    EmployeeSchedule findEmployeeScheduleByEmployeeScheduleId(int employeeScheduleId);
 
     /**
      * @MethodName findSelfScheduleByDate

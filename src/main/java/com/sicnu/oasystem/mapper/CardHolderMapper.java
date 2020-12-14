@@ -1,6 +1,5 @@
 package com.sicnu.oasystem.mapper;
 
-import com.sicnu.oasystem.pojo.CardHolder;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

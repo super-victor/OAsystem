@@ -47,7 +47,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Resource
     LogUtil logUtil;
 
-
     @Transactional(rollbackFor = Exception.class)
     @Override
     public BackFrontMessage insertSelfSchedule(Schedule schedule) {
@@ -232,36 +231,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new BackFrontMessage(200,"查找日成功",map);
     }
 
-    @Override
-    public List<Schedule> findReadyToStartSchedule(long intervalTime) {
-        intervalTime = intervalTime * 1000 * 60;  //化为以分钟为单位
-        long nowTime = new Date().getTime();
-        Date startTime = new Date(nowTime + intervalTime);
-        return scheduleMapper.findReadyToStartSchedule(startTime, new Date());
-    }
-
-    @Override
-    public List<Schedule> findDoingSchedule() {
-        return scheduleMapper.findDoingSchedule(new Date());
-    }
-
-    @Override
-    public List<Schedule> findEndSchedule() {
-        return scheduleMapper.findEndSchedule(new Date());
-    }
-
-    @Override
-    public List<Schedule> findReadyToEndSchedule(long intervalTime) {
-        intervalTime = intervalTime * 1000 * 60;  //化为以分钟为单位
-        long nowTime = new Date().getTime();
-        Date endTime = new Date(nowTime + intervalTime);
-        return scheduleMapper.findReadyToEndSchedule(endTime, new Date());
-    }
-
     /**
      * @MethodName hasRoleToManageSchedule
      * @param scheduleId 日程id
-     * @Description 是否有权操作日程，没有权限返回true
+     * @Description 是否无权操作日程，没有权限返回true
      * @Author Waynejwei
      * @Return boolean
      * @LastChangeDate 2020/11/19
