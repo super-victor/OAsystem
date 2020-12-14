@@ -112,14 +112,28 @@ public class ScheduleController {
     /**
      * @MethodName findScheduleByScheduleId
      * @param scheduleId 日程id
-     * @Description 通过日程id查找日程
+     * @Description 公司日程界面通过日程id获取日程信息
      * @Author Waynejwei
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/11/19
      */
-    @ApiOperation(value = "通过日程id获取日程信息")
-    @GetMapping("/findScheduleByScheduleId")
-    public BackFrontMessage findScheduleByScheduleId(@RequestParam int scheduleId){
+    @ApiOperation(value = "公司日程界面通过日程id获取日程信息")
+    @GetMapping("/Company/findScheduleByScheduleId")
+    public BackFrontMessage findScheduleByScheduleIdInCompany(@RequestParam int scheduleId){
+        return scheduleService.findScheduleByScheduleId(scheduleId);
+    }
+
+    /**
+     * @MethodName findScheduleByScheduleIdInSelf
+     * @param scheduleId 日程id
+     * @Description 个人日程界面通过日程id获取日程信息
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/14
+     */
+    @ApiOperation(value = "个人日程界面通过日程id获取日程信息")
+    @GetMapping("/Self/findScheduleByScheduleId")
+    public BackFrontMessage findScheduleByScheduleIdInSelf(@RequestParam int scheduleId){
         return scheduleService.findScheduleByScheduleId(scheduleId);
     }
 }

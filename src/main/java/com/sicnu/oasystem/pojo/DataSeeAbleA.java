@@ -2,6 +2,7 @@ package com.sicnu.oasystem.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.models.auth.In;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 
 @Data
+@AllArgsConstructor
 public class DataSeeAbleA {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date recordDate;

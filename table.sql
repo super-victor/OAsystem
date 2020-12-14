@@ -466,8 +466,8 @@ insert into menu (name, url ,code) values ('预约会议','POST /addOrderMeeting
 insert into menu (name, url ,code) values ('获取某一天某一个会议室的会议预约','POST /getAllMeetingTimeByRoomAndTime','0026');
 insert into menu (name, url ,code) values ('删除未审批的预约会议','DELETE /cancleApproveMeeting','0027');
 insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT /updateOrderMeeting','0028');
-insert into menu (name, url, code) values ('通过日程id获取日程信息', 'GET /findScheduleByScheduleId', '0018');
-
+insert into menu (name, url, code) values ('个人日程界面获取日程信息', 'GET /Self/findScheduleByScheduleId', '001A');
+insert into menu (name, url, code) values ('公司日程界面获取日程信息', 'GET /Company/findScheduleByScheduleId', '002X');
 
 
 insert into rolemenu (roleId, menuId) VALUES (3, 35);

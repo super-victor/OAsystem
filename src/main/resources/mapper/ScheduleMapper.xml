@@ -29,4 +29,10 @@
     <select id="findScheduleByScheduleId" resultType="com.sicnu.oasystem.pojo.Schedule">
         select * from Schedule where scheduleId = #{scheduleId}
     </select>
+
+    <select id="findCompanyScheduleByDate" resultType="java.lang.Integer">
+        select count(*) from Schedule where isCompany = 1 and ((startTime >= #{startTime} and #{endTime} > startTime)
+            or (endTime > #{startTime} and #{endTime} >= endTime));
+    </select>
+
 </mapper>
