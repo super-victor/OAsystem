@@ -418,15 +418,15 @@ insert into employeerole (employeeId, roleId) values (1, 4);
 insert into menu (name, url, code) values ('获取个人资料', 'GET /selfprofile', '0001');
 insert into menu (name, url, code) values ('修改个人资料', 'PUT /selfprofile', '0002');
 
-insert into menu (name, url, code) values ('获取职工所拥有的名片夹', 'GET /CardHolder', '0003');
-insert into menu (name, url, code) values ('通过名片夹id删除名片夹', 'DELETE /CardHolder', '0004');
+insert into menu (name, url, code) values ('获取自己所拥有的名片夹', 'GET /CardHolder', '0003');
+insert into menu (name, url, code) values ('删除名片夹', 'DELETE /CardHolder', '0004');
 insert into menu (name, url, code) values ('增加名片夹', 'POST /CardHolder', '0005');
 insert into menu (name, url, code) values ('修改名片夹名称', 'PUT /CardHolder', '0006');
 insert into menu (name, url, code) values ('直接手动添加名片', 'POST /Card', '0007');
-insert into menu (name, url, code) values ('修改名片相关内容', 'PUT /Card', '0008');
+insert into menu (name, url, code) values ('修改名片', 'PUT /Card', '0008');
 insert into menu (name, url, code) values ('分享名片', 'POST /shareCard', '0009');
-insert into menu (name, url, code) values ('通过名片id删除名片', 'DELETE /Card', '000A');
-insert into menu (name, url, code) values ('通过名片夹id查找名片', 'GET /Card', '000B');
+insert into menu (name, url, code) values ('删除名片', 'DELETE /Card', '000A');
+insert into menu (name, url, code) values ('查找名片', 'GET /Card', '000B');
 
 insert into menu (name, url, code) values ('获取所有员工的通讯录','GET /addressbook','000E');
 insert into menu (name, url, code) values ('获取所有部门的部门名称','GET /getAllDepartmentName','000F');
@@ -451,11 +451,16 @@ insert into menu (name, url ,code) values ('删除公司日程','DELETE /Company
 insert into menu (name, url ,code) values ('添加个人日程','POST /SelfSchedule','0011');
 insert into menu (name, url ,code) values ('修改个人日程信息','PUT /SelfSchedule','0012');
 insert into menu (name, url ,code) values ('删除个人日程','DELETE /SelfSchedule','0013');
-insert into menu (name, url ,code) values ('审稿人获取自己未审稿','GET /UnCheckDocument','0014');
+
+insert into menu (name, url ,code) values ('审稿人获取自己未审稿','GET /needCheckDocument','0014');
 insert into menu (name, url ,code) values ('审稿人审稿','PUT /CheckDocument','0015');
-insert into menu (name, url ,code) values ('获取该员工所有的个人日程','GET /findSelfSchedule','0016');
-insert into menu (name, url ,code) values ('获取该员工所有的公司日程','GET /findCompanySchedule','0017');
+
+insert into menu (name, url ,code) values ('获取自己所有的个人日程','GET /findSelfSchedule','0016');
+insert into menu (name, url ,code) values ('获取自己所有的公司日程','GET /findCompanySchedule','0017');
+insert into menu (name, url, code) values ('获取日程信息', 'GET /findScheduleByScheduleId', '001A');
+
 insert into menu (name, url ,code) values ('按条件获取设备信息','GET /getEquipmentByCondition','0018');
+
 insert into menu (name, url ,code) values ('按楼层获取会议室信息','GET /getAllMeetingRoomByStorey','0019');
 insert into menu (name, url ,code) values ('获取所有的会议','GET /getAllMeetings','0020');
 insert into menu (name, url ,code) values ('获取当前的所有会议','GET /getCurrentAllMeeting','0021');
@@ -468,6 +473,27 @@ insert into menu (name, url ,code) values ('删除未审批的预约会议','DEL
 insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT /updateOrderMeeting','0028');
 insert into menu (name, url, code) values ('个人日程界面获取日程信息', 'GET /Self/findScheduleByScheduleId', '002H');
 insert into menu (name, url, code) values ('公司日程界面获取日程信息', 'GET /Company/findScheduleByScheduleId', '002X');
+
+insert into menu (name, url ,code) values ('发文时获取所有审查人','GET /allCensor','002A');
+insert into menu (name, url ,code) values ('上传发文附件','POST /DocumentAnnex','002B');
+insert into menu (name, url ,code) values ('删除发文附件','DELETE /DocumentAnnex','002C');
+insert into menu (name, url ,code) values ('获取或创建空白发文','GET /emptydocument','002D');
+insert into menu (name, url ,code) values ('修改发文','PUT /document','002E');
+insert into menu (name, url ,code) values ('提交发文审稿','PUT /commitDocument','002F');
+insert into menu (name, url ,code) values ('获取草稿箱','GET /draftbox','002H');
+insert into menu (name, url ,code) values ('获取自己正在审核的发文','GET /documentInCheck','002L');
+insert into menu (name, url ,code) values ('获取未通过的发文','GET /documementNotPassed','002M');
+insert into menu (name, url ,code) values ('获取发文详情','GET /document','002N');
+insert into menu (name, url ,code) values ('删除公文','DELETE /document','002I');
+insert into menu (name, url ,code) values ('取消自己提交的审核','PUT /cancelCheck','002S');
+insert into menu (name, url ,code) values ('获取所有已发布的发文','GET /allPublishDocument','002T');
+insert into menu (name, url ,code) values ('获取自己已发布的公文','GET /selfPublishDocument','002U');
+insert into menu (name, url ,code) values ('将审查未通过的设置成草稿箱','PUT /putDocumentNotPassIntoDraftbox','002W');
+insert into menu (name, url ,code) values ('在新建拟稿界面修改发文','PUT /a/document','002X');
+insert into menu (name, url ,code) values ('在新建拟稿界面获取所有审查人','GET /a/allCensor','002Y');
+insert into menu (name, url ,code) values ('在新建拟稿界面上传发文附件','POST /a/DocumentAnnex','002Z');
+insert into menu (name, url ,code) values ('在拟稿审核界面上传发文附件','POST /b/DocumentAnnex','0031');
+
 
 
 insert into rolemenu (roleId, menuId) VALUES (3, 35);
