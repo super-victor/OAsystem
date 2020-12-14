@@ -21,12 +21,26 @@ import java.util.Map;
 
 @Mapper
 public interface EmployeeMapper {
-    // todo 所有的detele的操作都要把其他表外键关联的字段都删除完了，才能删除，同时需要执行多个sql语句
+
+    /**
+     * @MethodName insertEmployee
+     * @param employee
+     * @Description 添加员工
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/14
+     */
     int insertEmployee(Employee employee);
 
+    /**
+     * @MethodName deleteEmployee
+     * @param employeeId
+     * @Description 删除员工
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/14
+     */
     int deleteEmployee(int employeeId);
-
-
 
     /**
      * @MethodName findEmployeeByUsername
@@ -38,6 +52,14 @@ public interface EmployeeMapper {
      */
     Employee findEmployeeByUsername(String username);
 
+    /**
+     * @MethodName findEmployeesByDepartmentId
+     * @param departmentId
+     * @Description 根据部门id找出所有员工
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Employee>
+     * @LastChangeDate 2020/12/14
+     */
     List<Employee> findEmployeesByDepartmentId(int departmentId);
 
     /**
@@ -60,6 +82,14 @@ public interface EmployeeMapper {
      */
     List<Role> findRolesByEmployeeId(int employeeId);
 
+    /**
+     * @MethodName findAvailableRolesByEmployeeId
+     * @param employeeId
+     * @Description 找出当前员工所有的可用角色
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Role>
+     * @LastChangeDate 2020/12/14
+     */
     List<Role> findAvailableRolesByEmployeeId(int employeeId);
 
     /**
@@ -334,12 +364,44 @@ public interface EmployeeMapper {
      */
     int deleteAdmin(int employeeId);
 
+    /**
+     * @MethodName insertRole
+     * @param role
+     * @Description 添加角色
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/14
+     */
     int insertRole(Role role);
 
+    /**
+     * @MethodName deleteRole
+     * @param roleId
+     * @Description 删除角色
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/14
+     */
     int deleteRole(int roleId);
 
+    /**
+     * @MethodName findRoleByRoleId
+     * @param roleId
+     * @Description 根据角色id找角色
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.pojo.Role
+     * @LastChangeDate 2020/12/14
+     */
     Role findRoleByRoleId(int roleId);
 
+    /**
+     * @MethodName findMenusByRoleId
+     * @param roleId
+     * @Description 找出角色id对应的所有功能
+     * @Author JohnTang
+     * @Return java.util.List<com.sicnu.oasystem.pojo.Menu>
+     * @LastChangeDate 2020/12/14
+     */
     List<Menu> findMenusByRoleId(int roleId);
 
 

@@ -46,3 +46,4 @@ global-security-config:
     - "/swagger-ui**"
     - "/webjars/**"
     - "/download/**"
+    - "/download/**"

@@ -154,7 +154,7 @@
         select * from role
     </select>
     <select id="findAllEmployee" resultType="com.sicnu.oasystem.pojo.Employee">
-        select * from employee
+        select * from employee where employeeId != 1
     </select>
     <select id="findCodesByRoleId" resultType="java.lang.String">
         select code from menu where menuId in (select menuId from rolemenu where roleId = #{roleId})

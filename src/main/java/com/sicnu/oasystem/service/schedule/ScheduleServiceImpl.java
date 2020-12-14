@@ -4,6 +4,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.mapper.EmployeeScheduleMapper;
 import com.sicnu.oasystem.mapper.ScheduleMapper;
+import com.sicnu.oasystem.pojo.DataSeeAbleA;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
 import com.sicnu.oasystem.pojo.Schedule;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -229,6 +232,35 @@ public class ScheduleServiceImpl implements ScheduleService {
             map.put("joiner",joiner);
         }
         return new BackFrontMessage(200,"查找日成功",map);
+    }
+
+    @Override
+    public List<DataSeeAbleA> findCompanyScheduleNumber() {
+        // 获取今天凌晨的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String dayTimeStr = sdf.format(date) + " 00:00:00";
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dayTime = null;
+        try {
+            dayTime = sdf1.parse(dayTimeStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = new GregorianCalendar();
+        assert dayTime != null;
+        calendar.setTime(dayTime);
+        Date nextDate = dayTime;
+        List<DataSeeAbleA> countList = new ArrayList<>();
+        for (int i = -1; i >= -15; i--) {
+            calendar.add(Calendar.DATE, -1); //把日期往前推动一天
+            nextDate=calendar.getTime();
+            int count = scheduleMapper.findCompanyScheduleByDate(nextDate, dayTime);
+            DataSeeAbleA dataSeeAbleA = new DataSeeAbleA(nextDate, count);
+            countList.add(dataSeeAbleA);
+            dayTime = nextDate;
+        }
+        return countList;
     }
 
     /**

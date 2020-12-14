@@ -3,6 +3,7 @@ package com.sicnu.oasystem.service.document;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.DocumentMapper;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
+import com.sicnu.oasystem.pojo.DataSeeAbleA;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.pojo.SendFile;
 import com.sicnu.oasystem.pojo.limit.EmployeeLimitA;
@@ -16,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName DocumentServiceImpl
@@ -395,6 +398,25 @@ public class DocumentServiceImpl implements DocumentService {
         } else {
             return new BackFrontMessage(500,"修改失败",null);
         }
+    }
+
+    @Override
+    public Map<String, List> documentSeeAbleData() {
+        List<DataSeeAbleA> dataSeeAbleAList = documentMapper.findDateAndCountAboutPublishDocuments();
+        List<DataSeeAbleA> resultSeeAbleList = new ArrayList<>();
+        Date startDate = DateUtil.subDay(new Date(),14);
+        for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+            while (true) {
+                if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                    resultSeeAbleList.add(dataSeeAbleA);
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        }
+
+        return null;
     }
 
 

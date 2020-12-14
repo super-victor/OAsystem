@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.controller.document;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.service.department.DepartmentService;
 import com.sicnu.oasystem.service.document.DocumentService;
 import com.sicnu.oasystem.service.employee.EmployeeService;
 import io.swagger.annotations.Api;
@@ -31,6 +32,25 @@ public class DocumentController {
 
     @Resource
     EmployeeService employeeService;
+
+    @Resource
+    DepartmentService departmentService;
+
+    @ApiOperation("获取所有部门")
+    @GetMapping("/document/allDepartment")
+    BackFrontMessage getAllDepartment(){
+        return departmentService.getAllDepartment();
+    }
+
+
+    @Resource
+    DepartmentService departmentService;
+
+    @ApiOperation(value = "获取所有部门")
+    @GetMapping("/document/allDepartment")
+    BackFrontMessage getAllDepartment(){
+        return departmentService.getAllDepartment();
+    }
 
     @ApiOperation("获取所有员工")
     @GetMapping("/document/allEmployees")
@@ -141,6 +161,35 @@ public class DocumentController {
     @PutMapping("/putDocumentNotPassIntoDraftbox")
     public BackFrontMessage putDocumentNotPassIntoDraftbox(int sendfileId) {
         return documentService.putDocumentNotPassIntoDraftbox(sendfileId);
+    }
+
+    //复用
+
+    @ApiOperation("在新建拟稿界面修改发文")
+    @PutMapping("/a/document")
+    public BackFrontMessage aupdateDocument(@RequestParam Integer sendfileId, @RequestParam @Size(max = 20) String subject, @RequestParam @Size(max = 20) String type, @RequestParam @Size(max = 20) String title, @RequestParam String content, @RequestParam @Size(max = 100) String remark, @RequestParam Integer censorId, @RequestParam @Size(max = 20) String urgent, @RequestParam Integer isPublic, @RequestParam(required = false) List<Integer> accessEmployeeIdList) {
+        if (accessEmployeeIdList == null) {
+            accessEmployeeIdList = new ArrayList<>();
+        }
+        return documentService.updateUncheckDocument(sendfileId, type, subject, title, content, remark, censorId, urgent, isPublic, accessEmployeeIdList);
+    }
+
+    @ApiOperation("在新建拟稿界面获取所有审查人")
+    @GetMapping("/a/allCensor")
+    public BackFrontMessage agetAllCensor(){
+        return documentService.getAllCensors();
+    }
+
+    @ApiOperation("在新建拟稿界面上传发文附件")
+    @PostMapping("/a/DocumentAnnex")
+    public BackFrontMessage auploadDocumentAnnex(@RequestParam Integer sendfileId, @RequestParam MultipartFile multipartFile){
+        return documentService.uploadDocumentAnnex(sendfileId, multipartFile);
+    }
+
+    @ApiOperation("在拟稿审核界面上传发文附件")
+    @PostMapping("/b/DocumentAnnex")
+    public BackFrontMessage buploadDocumentAnnex(@RequestParam Integer sendfileId, @RequestParam MultipartFile multipartFile){
+        return documentService.uploadDocumentAnnex(sendfileId, multipartFile);
     }
 
 }
