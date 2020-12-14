@@ -43,15 +43,6 @@ public class DocumentController {
     }
 
 
-    @Resource
-    DepartmentService departmentService;
-
-    @ApiOperation(value = "获取所有部门")
-    @GetMapping("/document/allDepartment")
-    BackFrontMessage getAllDepartment(){
-        return departmentService.getAllDepartment();
-    }
-
     @ApiOperation("获取所有员工")
     @GetMapping("/document/allEmployees")
     public BackFrontMessage getAllEmployees(){

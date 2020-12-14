@@ -471,7 +471,7 @@ insert into menu (name, url ,code) values ('预约会议','POST /addOrderMeeting
 insert into menu (name, url ,code) values ('获取某一天某一个会议室的会议预约','POST /getAllMeetingTimeByRoomAndTime','0026');
 insert into menu (name, url ,code) values ('删除未审批的预约会议','DELETE /cancleApproveMeeting','0027');
 insert into menu (name, url ,code) values ('修改未审批的预约会议','PUT /updateOrderMeeting','0028');
-insert into menu (name, url, code) values ('个人日程界面获取日程信息', 'GET /Self/findScheduleByScheduleId', '001A');
+insert into menu (name, url, code) values ('个人日程界面获取日程信息', 'GET /Self/findScheduleByScheduleId', '002H');
 insert into menu (name, url, code) values ('公司日程界面获取日程信息', 'GET /Company/findScheduleByScheduleId', '002X');
 
 insert into menu (name, url ,code) values ('发文时获取所有审查人','GET /allCensor','002A');
@@ -480,7 +480,7 @@ insert into menu (name, url ,code) values ('删除发文附件','DELETE /Documen
 insert into menu (name, url ,code) values ('获取或创建空白发文','GET /emptydocument','002D');
 insert into menu (name, url ,code) values ('修改发文','PUT /document','002E');
 insert into menu (name, url ,code) values ('提交发文审稿','PUT /commitDocument','002F');
-insert into menu (name, url ,code) values ('获取草稿箱','GET /draftbox','002H');
+insert into menu (name, url ,code) values ('获取草稿箱','GET /draftbox','002G');
 insert into menu (name, url ,code) values ('获取自己正在审核的发文','GET /documentInCheck','002L');
 insert into menu (name, url ,code) values ('获取未通过的发文','GET /documementNotPassed','002M');
 insert into menu (name, url ,code) values ('获取发文详情','GET /document','002N');
@@ -489,7 +489,7 @@ insert into menu (name, url ,code) values ('取消自己提交的审核','PUT /c
 insert into menu (name, url ,code) values ('获取所有已发布的发文','GET /allPublishDocument','002T');
 insert into menu (name, url ,code) values ('获取自己已发布的公文','GET /selfPublishDocument','002U');
 insert into menu (name, url ,code) values ('将审查未通过的设置成草稿箱','PUT /putDocumentNotPassIntoDraftbox','002W');
-insert into menu (name, url ,code) values ('在新建拟稿界面修改发文','PUT /a/document','002X');
+insert into menu (name, url ,code) values ('在新建拟稿界面修改发文','PUT /a/document','002J');
 insert into menu (name, url ,code) values ('在新建拟稿界面获取所有审查人','GET /a/allCensor','002Y');
 insert into menu (name, url ,code) values ('在新建拟稿界面上传发文附件','POST /a/DocumentAnnex','002Z');
 insert into menu (name, url ,code) values ('在拟稿审核界面上传发文附件','POST /b/DocumentAnnex','0031');

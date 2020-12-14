@@ -3,14 +3,11 @@ package com.sicnu.oasystem.aop;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @ClassName RoleAop
