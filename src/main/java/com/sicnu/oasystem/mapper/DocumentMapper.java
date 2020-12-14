@@ -266,4 +266,14 @@ public interface DocumentMapper {
     List<SendFile> findSelfPublishSendFile(int senderId);
 
     List<DataSeeAbleA> findDateAndCountAboutPublishDocuments();
+
+    List<DataSeeAbleA> findDateAndCountAboutPublishDocumentsByDepartmentName(String departmentName);
+
+    List<DataSeeAbleA> findDateAndCountAboutDraftBoxDocuments();
+
+    List<DataSeeAbleA> findDateAndCountAboutDraftBoxDocumentsByDepartmentName(String departmentName);
+
+    List<DataSeeAbleA> findDateAndCountAboutSelfPublishDocuments(int employeeId);
+
+    List<DataSeeAbleA> findDateAndCountAboutSelfDraftBoxDocuments(int employeeId);
 }

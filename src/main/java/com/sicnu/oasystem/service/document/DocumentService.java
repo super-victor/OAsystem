@@ -197,5 +197,7 @@ public interface DocumentService {
      */
     BackFrontMessage putDocumentNotPassIntoDraftbox(int sendfileId);
 
-    Map<String,List> documentSeeAbleData();
+    Map<String,Object> getSystemDocumentSeeAbleData();
+
+    Map<String,List> getSelfDocumentSeeAbleData();
 }

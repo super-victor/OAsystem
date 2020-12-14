@@ -1,18 +1,18 @@
 package com.sicnu.oasystem.service.data;
 
-import org.springframework.stereotype.Service;
+import com.sicnu.oasystem.json.BackFrontMessage;
 
 /**
- * @ClassName DataService
+ * @InterfaceName DataService
  * @Description 添加描述
  * @Author JohnTang
- * @LastChangeDate 2020/12/14 10:11
+ * @LastChangeDate 2020/12/14 23:54
  * @Version v1.0
  */
 
-@Service
-public class DataService {
+public interface DataService {
 
+    BackFrontMessage getSystemData();
 
-
+    BackFrontMessage getSelfData();
 }

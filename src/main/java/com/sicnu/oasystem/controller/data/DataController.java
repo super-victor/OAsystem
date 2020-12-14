@@ -1,12 +1,15 @@
 package com.sicnu.oasystem.controller.data;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.service.data.DataService;
+import com.sicnu.oasystem.service.document.DocumentService;
 import com.sicnu.oasystem.util.DataUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +24,11 @@ import java.util.Map;
 @Api(tags = "数据可视化")
 @RestController
 public class DataController {
+    @Resource
+    DataService dataService;
 
     @ApiOperation("系统总访问量和当天访问量")
-    @GetMapping("/systemViews")
+    @GetMapping("/data/systemViews")
     public BackFrontMessage getSystemViews(){
         Map<String,Integer> map = new HashMap<>(2);
         map.put("totalViews", DataUtil.Data_Total_Views);
@@ -31,5 +36,19 @@ public class DataController {
         return new BackFrontMessage(200,"获取成功", map);
     }
 
+
+    @ApiOperation("系统总的数据统计")
+    @GetMapping("/data/system")
+    public BackFrontMessage getSystemData(){
+
+        return dataService.getSystemData();
+    }
+
+    @ApiOperation("个人的数据统计")
+    @GetMapping("/data/person")
+    public BackFrontMessage getPersonData(){
+
+        return dataService.getSelfData();
+    }
 
 }

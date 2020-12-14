@@ -492,9 +492,10 @@ insert into menu (name, url ,code) values ('将审查未通过的设置成草稿
 insert into menu (name, url ,code) values ('在新建拟稿界面修改发文','PUT /a/document','002J');
 insert into menu (name, url ,code) values ('在新建拟稿界面获取所有审查人','GET /a/allCensor','002Y');
 insert into menu (name, url ,code) values ('在新建拟稿界面上传发文附件','POST /a/DocumentAnnex','002Z');
-insert into menu (name, url ,code) values ('在拟稿审核界面上传发文附件','POST /b/DocumentAnnex','0031');
+insert into menu (name, url ,code) values ('在拟稿审核界面获取发文详情','GET /b/document','0031');
 insert into menu (name, url ,code) values ('获取所有会议室信息','GET /getAllMeetingRoomInfo','0032');
 insert into menu (name, url ,code) values ('获取所有员工通讯录','GET /AddressbookInfo','0033');
+insert into menu (name, url ,code) values ('在新建拟稿界面删除发文附件','DELETE /a/DocumentAnnex','0034');
 
 
 insert into rolemenu (roleId, menuId) VALUES (3, 35);

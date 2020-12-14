@@ -42,7 +42,6 @@ public class DocumentController {
         return departmentService.getAllDepartment();
     }
 
-
     @ApiOperation("获取所有员工")
     @GetMapping("/document/allEmployees")
     public BackFrontMessage getAllEmployees(){
@@ -177,10 +176,19 @@ public class DocumentController {
         return documentService.uploadDocumentAnnex(sendfileId, multipartFile);
     }
 
-    @ApiOperation("在拟稿审核界面上传发文附件")
-    @PostMapping("/b/DocumentAnnex")
-    public BackFrontMessage buploadDocumentAnnex(@RequestParam Integer sendfileId, @RequestParam MultipartFile multipartFile){
-        return documentService.uploadDocumentAnnex(sendfileId, multipartFile);
+    @ApiOperation("在新建拟稿界面删除发文附件")
+    @DeleteMapping("/a/DocumentAnnex")
+    public BackFrontMessage bdeleteDocumentAnnex(@RequestParam Integer sendfileId, @RequestParam @NotNull String annexUrl) {
+        return documentService.deleteDocumentAnnex(sendfileId, annexUrl);
     }
+
+    @ApiOperation("在拟稿审核界面获取发文详情")
+    @GetMapping("/b/document")
+    public BackFrontMessage bgetDocumentDetail(@RequestParam Integer sendfileId){
+        return documentService.getDocumentDetail(sendfileId);
+    }
+
+
+
 
 }
