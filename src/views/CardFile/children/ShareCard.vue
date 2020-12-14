@@ -15,19 +15,31 @@
       <!-- 中间名片部分 -->
       <div
         v-if="cards.length !== 0"
-        class="center flex-col">
+        class="center flex-col"
+        v-loading="loading">
         <div class="card"
-        v-for="(item, index) in cards"
+        v-for="(item, index) in cards.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         :key="item.position">
           <Card :msg="cards[index]"></Card>
         </div>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[5, 10, 20, 30]"
+          :page-size="pageSize"
+          layout="sizes, prev, pager, next"
+          :total="totalCount"
+          v-if="this.totalCount !== 0"
+          class="pagination">
+        </el-pagination>
       </div>
       <div v-else>
         <p class="tip_info">该分类下暂无名片，请进行新建或导入名片操作！</p>
       </div>
     </div>
     <!-- 新建/导入名片 -->
-    <el-dialog title="新建名片" :visible.sync="dialogVisible2" class="newCard">
+    <el-dialog title="新建名片" :visible.sync="dialogVisible2" class="newCard" width="30%">
       <div class="step1 flex-col">
           <p>请选择您想要进行的操作:</p>
           <el-select v-model="optionType">
@@ -47,37 +59,37 @@
       class="innerCard">
       <div v-if="optionType === '新建'">
       <el-form ref="form" :model="newInfo" :rules="rules" label-width="80px" :inline-message=true>
-        <el-row>
+        <el-row style="height:50px">
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
+            <el-form-item label="姓名" prop="name" style="height:50px">
               <el-input v-model="newInfo.name" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电话" prop="phone">
+            <el-form-item label="电话" prop="phone" style="height:50px">
               <el-input v-model="newInfo.phone" placeholder="请输入电话"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="公司" prop="company">
+        <el-form-item label="公司" prop="company" style="height:70px">
           <el-input v-model="newInfo.company" placeholder="请输入公司" class="input"></el-input>
         </el-form-item>
-        <el-row>
+        <el-row style="height:50px">
           <el-col :span="12">
-            <el-form-item label="部门" prop="department">
+            <el-form-item label="部门" prop="department" style="height:50px">
               <el-input v-model="newInfo.department" placeholder="请输入部门" class="input"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="职位" prop="position">
+            <el-form-item label="职位" prop="position" style="height:50px">
               <el-input v-model="newInfo.position" placeholder="请输入职位" class="input"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="邮箱" prop="email" style="height:70px">
           <el-input v-model="newInfo.email" placeholder="请输入邮箱" class="input"></el-input>
         </el-form-item>
-        <el-form-item label="地址" prop="address">
+        <el-form-item label="地址" prop="address" style="height:70px">
           <el-input v-model="newInfo.address" placeholder="请输入地址" class="input"></el-input>
         </el-form-item>
       </el-form>
@@ -90,7 +102,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="innerVisible = false;optionType =''">取 消</el-button>
-        <el-button type="primary" @click="submitOption(optionType,'form')">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitOption(optionType,'form')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -113,6 +125,8 @@
         dialogVisible1: false, // 添加分类
         dialogVisible2: false, // 添加名片
         innerVisible: false, //内层输入信息
+        loading:true,
+        buttonLoading:false,
         // 新建名片信息
         newInfo:{
           name: '',
@@ -127,6 +141,9 @@
         cardCode: '', // 名片导入时的共享码
         cards: [], // 名片信息
         fileId: 0, // 分类id
+        currentPage:1,
+        pageSize:5,
+        totalCount: 0,
         rules:{
           email:[
             { required: true, message: '请输入电子邮箱', trigger: 'blur' },
@@ -162,6 +179,7 @@
       ...mapMutations(['UPDATE_BREAD']),
       // 新建或导入名片
       submitOption(type,formName) {
+        this.buttonLoadng = true;
         if(type === '新建') {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -179,6 +197,7 @@
               this.innerVisible = false;
               this.dialogVisible2 = false;
               this.$forceUpdate();
+              this.buttonLoadng = false;
             })
             .catch(err=>{
               this.$message.error('新建失败');
@@ -194,6 +213,7 @@
             this.innerVisible = false;
             this.dialogVisible2 = false;
             this.$forceUpdate();
+            this.buttonLoadng = false;
           })
           .catch(err=>{
             this.$message.error('导入失败');
@@ -203,10 +223,20 @@
       // 获取某一分类下的名片
       getCard(data) {
         this.cards = data.info;
+        this.totalCount = data.info.length;
         this.fileId = data.fileId;
+        this.loading=false;
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+      },
+      handleCurrentChange(val) {
+        // console.log(`当前页: ${val}`);
+        this.currentPage = val;
       }
     },
     created() {
+      // console.log(this.cards);
     },
     mounted() {
       this.UPDATE_BREAD(['名片夹','共享名片']);
@@ -216,18 +246,40 @@
 <style lang='less' scoped>
 // @import '../../../style/common.less';
   .ShareCard{
-    height: 500px;
+    height: 100%;
     width: 100%;
     font-size: 30px;
     .msgBox{
       width: 100%;
+      height: 100%;
       .left {
+        height: 100%;
         padding: 0.2rem 0;
         background-color:white;
         border-radius: 4px;
+        overflow-y: scroll;
+      }
+      .left::-webkit-scrollbar{
+        display: none;
       }
       .center {
         margin-left: 0.5rem;
+        width: 100%;
+        height: 550px;
+        background-color: white;
+        border-radius: 4px;
+        padding: 30px 0;
+        overflow-y: scroll;
+        .card{
+          margin: 0 auto;
+          margin-bottom: 0.2rem;
+        }
+        .pagination {
+          margin: 0 auto;
+        }
+      }
+      .center::-webkit-scrollbar{
+        display: none;
       }
       .tip_info {
         margin-left: 0.5rem;
@@ -254,9 +306,6 @@
     }
     .innerCard .el-dialog__body{
       padding: 0px;
-      .el-input {
-        margin-top: 0.1rem;
-      }
       p {
         margin-bottom: 0.3rem;
       }

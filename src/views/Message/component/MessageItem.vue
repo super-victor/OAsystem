@@ -67,20 +67,23 @@
 @import '../../../style/common.less';
   .messageItem{
     width: 100%;
-    height: 80px;
+    height: 120px;
     border-bottom: 1px solid @lighterBorder;
     cursor: pointer;
+    margin: 10px 0;
     .message_box {
-        padding: 10px;
+        padding: 20px 10px;
         .title {
             font-size: 20px;
             line-height: 30px;
+            color: @primaryText;
         }
         .content {
             font-size: 14px;
             padding: 5px;
             margin-top: 10px;
             margin-left: 55px;
+            color: @regularText;
         }
     }
     .tag {

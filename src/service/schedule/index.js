@@ -11,7 +11,7 @@ export default{
     const res = await NetworkRequest({
       url:'/findSelfSchedule',
       method:'get',
-      throttle:true,
+      // throttle:true,
     })
     return res.data;
   },
@@ -25,21 +25,36 @@ export default{
   const res = await NetworkRequest({
     url:'/findCompanySchedule',
     method:'get',
-    throttle:true,
+    // throttle:true,
   })
   return res.data;
   },
   /**
-   * 通过id查找日程
+   * 通过id查找日程(个人)
    * @param {Object} data 用户数据   scheduleId:日程id
    *                                
    * @returns {Promise<Object>} 
   */
- async getSchedule(data){
+ async SelfSchedule(data){
   const res = await NetworkRequest({
-    url:'/findScheduleByScheduleId',
+    url:'/Self/findScheduleByScheduleId',
     method:'get',
-    throttle:true,
+    // throttle:true,
+    data
+  })
+  return res.data;
+  },
+  /**
+   * 通过id查找日程(公司)
+   * @param {Object} data 用户数据   scheduleId:日程id
+   *                                
+   * @returns {Promise<Object>} 
+  */
+ async CompanySchedule(data){
+  const res = await NetworkRequest({
+    url:'/Company/findScheduleByScheduleId',
+    method:'get',
+    // throttle:true,
     data
   })
   return res.data;
@@ -54,7 +69,7 @@ export default{
   const res = await NetworkRequest({
     url:'/SelfSchedule',
     method:'post',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;
@@ -69,7 +84,7 @@ export default{
   const res = await NetworkRequest({
     url:'/SelfSchedule',
     method:'put',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;
@@ -84,7 +99,7 @@ export default{
   const res = await NetworkRequest({
     url:'/SelfSchedule',
     method:'delete',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;
@@ -99,7 +114,7 @@ export default{
   const res = await NetworkRequest({
     url:'/CompanySchedule',
     method:'post',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;
@@ -114,7 +129,7 @@ export default{
   const res = await NetworkRequest({
     url:'/CompanySchedule',
     method:'put',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;
@@ -129,7 +144,7 @@ export default{
   const res = await NetworkRequest({
     url:'/CompanySchedule',
     method:'delete',
-    throttle:true,
+    // throttle:true,
     data
   })
   return res.data;

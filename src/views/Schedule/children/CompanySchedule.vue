@@ -1,7 +1,7 @@
 !<!-- ChildrenComponent1 -->
 <template>
   <div class='CompanySchedule'>
-    <div class="center">
+    <div class="center" v-loading="loading">
       <Calendar :events="evs" :type="'company'"/>
     </div>
   </div>
@@ -18,6 +18,7 @@ import scheduleAPI from '@/service/schedule';
     data() {
       return {
         evs:[],
+        loading:true,
       };
     },
     computed: {
@@ -31,9 +32,10 @@ import scheduleAPI from '@/service/schedule';
         .then(res=>{
           console.log(res);
           res.object.forEach(element => {
-            this.evs.push({id:element.scheduleId,title:element.schedule.content,start:element.schedule.startTime,end:element.schedule.endTime,backgroundColor: '#9CB7F0',borderColor: '#9CB7F0', textColor: '#606266'})
+            this.evs.push({id:element.scheduleId,title:element.content,start:element.startTime,end:element.endTime,backgroundColor: '#9CB7F0',borderColor: '#9CB7F0', textColor: '#606266'})
           });
           this.$forceUpdate();
+          this.loading=false;
         })
         .catch(err=>{
           console.log(err);

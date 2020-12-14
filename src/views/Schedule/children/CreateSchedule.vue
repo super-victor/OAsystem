@@ -4,8 +4,8 @@
     <div class="center flex-col">
       <p class="title">新建日程</p>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="日程类型" prop="type" style="height:60px;width:500px">
-          <el-select v-model="form.type" size="medium">
+        <el-form-item label="日程类型" prop="type" style="height:70px;width:400px">
+          <el-select v-model="form.type" size="medium" style="height:70px;width:400px">
             <el-option
             v-for="item in types"
             :key="item.name"
@@ -14,14 +14,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="日程内容" prop="content" style="height:60px;width:500px">
-          <el-input v-model="form.content" class="input" size="medium"></el-input>
+        <el-form-item label="日程内容" prop="content" style="height:70px;width:400px">
+          <el-input v-model="form.content" class="input" size="medium" style="width:400px"></el-input>
         </el-form-item>
-        <el-form-item label="日程地点" prop="location" style="height:60px;width:500px">
-          <el-input v-model="form.location" class="input" size="medium"></el-input>
+        <el-form-item label="日程地点" prop="location" style="height:70px;width:400px">
+          <el-input v-model="form.location" class="input" size="medium" style="width:400px"></el-input>
         </el-form-item>
-        <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px" v-if="form.type==='公司日程'">
-          <el-select v-model="form.joiner" multiple filterable style="width:5rem" size="medium">
+        <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px;height:70px" v-if="form.type==='公司日程'">
+          <el-select v-model="form.joiner" multiple filterable style="width:400px" size="medium">
             <el-option
             v-for="item in userList"
             :key="item.id"
@@ -30,24 +30,28 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间" prop="startTime" style="height:60px;width:500px">
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="选择开始时间"
-            size="medium">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束时间" prop="endTime" style="height:60px;width:500px">
-          <el-date-picker
-            v-model="form.endTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="选择开始时间"
-            size="medium">
-          </el-date-picker>
-        </el-form-item>
+        <div class="flex flex-row">
+          <el-form-item label="开始时间" prop="startTime" style="height:70px;width:500px">
+            <el-date-picker
+              v-model="form.startTime"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择开始时间"
+              size="medium"
+              style="width:300px">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="结束时间" prop="endTime" style="height:70px;width:300px">
+            <el-date-picker
+              v-model="form.endTime"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择结束时间"
+              size="medium"
+              style="width:300px">
+            </el-date-picker>
+          </el-form-item>
+        </div>
         <el-form-item>
           <el-button type="primary" class="button" @click="submitForm('form')">提交信息</el-button>
         </el-form-item>
@@ -115,9 +119,7 @@ import BackApi from '@/service/BackstageManagement'
               })
               .then(res=>{
                 this.form = {};
-                this.$alert('添加成功', '通知', {
-                  confirmButtonText: '确定',
-                });
+                this.$message.success('添加成功');
                 this.$router.push({path:'/schedule/mine'}); // 跳转个人日程页面
                 console.log(res);
               })
@@ -136,10 +138,8 @@ import BackApi from '@/service/BackstageManagement'
               })
               .then(res=>{
                 this.form = {};
-                this.$alert('添加成功', '通知', {
-                  confirmButtonText: '确定',
-                });
-                // this.$router.push({path:'/schedule/company-schedule'}); // 跳转公司日程页面
+                this.$message.success('添加成功');
+                this.$router.push({path:'/schedule/company-schedule'}); // 跳转公司日程页面
                 console.log(res);
               })
               .catch(err=>{
@@ -176,11 +176,11 @@ import BackApi from '@/service/BackstageManagement'
 <style lang='less' scoped>
 @import '../../../style/common.less';
   .CreateSchedule{
-    height: 100%;
     width: 100%;
     font-size: 0.2rem;
     color: @regularText;
     .center {
+      height: 500px;
       padding: 50px;
       border-radius: @baseBorderRadius;
       background-color: @white;
@@ -188,7 +188,7 @@ import BackApi from '@/service/BackstageManagement'
         color: @primaryText;
         font-weight: bold;
         font-size: 0.25rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.7rem;
       }
       .button{
         margin-top: 30px;

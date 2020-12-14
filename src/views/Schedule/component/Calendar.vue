@@ -57,7 +57,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updateInfo()">确定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="updateInfo()">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -85,6 +85,7 @@ export default {
       update:true,
       info:[],
       joinerName:[],
+      buttonLoading:false,
       rules:{
         content:[
           { required: true, message: '请输入日程内容', trigger: 'blur' }
@@ -162,24 +163,41 @@ export default {
       if (dateClickInfo.event) {
         this.scheduleId = parseInt(dateClickInfo.event.id);
         // console.log(dateClickInfo.event);
-        scheduleAPI.getSchedule({
+      if (this.type==='mine') {
+        scheduleAPI.SelfSchedule({
           scheduleId:this.scheduleId
         })
         .then(res=>{
           this.dialogVisible1 = true;
           this.info = res.object;
-          res.object.joiner.forEach(element => {
-            this.joinerName.push(element.name);
-          });
-          // console.log(res.object.joiner);
+          // console.log(res.object);
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+      } else {
+        scheduleAPI.CompanySchedule({
+          scheduleId:this.scheduleId
+        })
+        .then(res=>{
+          this.dialogVisible1 = true;
+          this.info = res.object;
+          if (res.object.joiner) {
+            res.object.joiner.forEach(element => {
+              this.joinerName.push(element);
+            });
+          }
+          // console.log(res.object);
         })
         .catch(err=>{
           console.log(err);
         })
       }
+      }
     },
     // 修改个人日程
     updateInfo() {
+      this.buttonLoading = true;
       console.log(this.info.endTime);
       scheduleAPI.updateSelfSchedule({
         content:this.info.content,
@@ -191,6 +209,7 @@ export default {
       .then(res=>{
         this.dialogVisible1=this.dialogVisible2=false;
         // this.$router.go(0);
+        this.buttonLoading = false;
         this.$message.success('修改成功');
       })
       .catch(err=>{

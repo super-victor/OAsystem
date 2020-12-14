@@ -4,36 +4,43 @@
     @click="selectClassfy(item)"
     v-for="item in fileName"
     :key="item.id"
-    :class="{active: select.id === item.id,normal: select.id !== item.id}">
+    :class="{active: select.id === item.id,normal: select.id !== item.id}"
+    v-loading="loading">
     <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
     <p>{{ item.name }}</p>
     </div>
     <div class="flex-col edit_row">
     <p class="tip">管理分类</p>
     <div class="flex-row">
-        <div class="right_i" title="添加分类" @click="dialogVisible1 = true;">
+        <div class="right_i" @click="dialogVisible1 = true;">
+          <el-tooltip content="添加分类" placement="bottom" effect="light">
             <img src="@/assets/Card/f_add.png" alt="">
+          </el-tooltip>
         </div>
         <div class="right_i" title="修改分类名">
-        <img src="@/assets/Card/f_edit.png" alt="" @click="dialogVisible2 = true">
+          <el-tooltip content="修改分类名称" placement="bottom" effect="light">
+            <img src="@/assets/Card/f_edit.png" alt="" @click="dialogVisible2 = true">
+          </el-tooltip>
         </div>
         <div class="right_i" title="删除分类" @click="dialogVisible3 = true">
-        <img src="@/assets/Card/f_delete.png" alt="">
+          <el-tooltip content="删除分类" placement="bottom" effect="light">
+            <img src="@/assets/Card/f_delete.png" alt="">
+          </el-tooltip>
         </div>
     </div>
     </div>
     <!-- dialog-新建名片夹分类 -->
-    <el-dialog title="新建分类" :visible.sync="dialogVisible1">
+    <el-dialog title="新建分类" :visible.sync="dialogVisible1" width="30%">
       <el-input v-model="newName" placeholder="请输入名片夹分类名"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="addFile">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
     <!-- dialog-修改名片夹分类 -->
-    <el-dialog title="修改分类名字" :visible.sync="dialogVisible2" class="newCard">
+    <el-dialog title="修改分类名字" :visible.sync="dialogVisible2" class="newCard" width="40%">
         <p>请选择要修改的分类</p>
-        <el-select v-model="updateFile" placeholder="请选择">
+        <el-select v-model="updateFile" placeholder="请选择" style="width:100%">
             <el-option
             v-for="item in fileName"
             :key="item.id"
@@ -47,13 +54,13 @@
         </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false;updateFile = '';updateName = ''">取 消</el-button>
-        <el-button type="primary" @click="submitUpdate">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitUpdate">确 定</el-button>
       </div>
     </el-dialog>
     <!-- dialog-删除名片夹分类 -->
-    <el-dialog title="删除分类" :visible.sync="dialogVisible3" class="newCard">
+    <el-dialog title="删除分类" :visible.sync="dialogVisible3" class="newCard" width="40%">
         <p>请选择要删除的分类</p>
-        <el-select v-model="deleteFile" placeholder="请选择">
+        <el-select v-model="deleteFile" placeholder="请选择" style="width:100%">
             <el-option
             v-for="item in fileName"
             :key="item.id"
@@ -64,7 +71,7 @@
         <p class="warning" v-if="deleteFile">该分类将被删除，该分类下的名片将转移到默认分类下！</p>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false;deleteFile = ''">取 消</el-button>
-        <el-button type="primary" @click="submitDelete()">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitDelete()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -84,6 +91,8 @@
         deleteFile: '', // 删除分类
         updateFile: '', // 修改分类
         updateName: '', // 修改的新名
+        loading:true,
+        buttonLoading:false,
       };
     },
     computed: {},
@@ -98,6 +107,7 @@
           });
           this.getCard(res.object[0].cardHolderId);
           this.select.id = res.object[0].cardHolderId;
+          this.loading = false;
         })
         .catch(err=>{
           console.log(err);
@@ -125,6 +135,7 @@
     },
       // 添加名片夹分类
       addFile () {
+        this.buttonLoadng = true;
         cardFileAPI.addCardFile({
           name: this.newName
         })
@@ -133,6 +144,7 @@
           this.fileName.push({name: this.newName,id:res.object});
           this.newName = '';
           this.dialogVisible1 = false;
+          this.buttonLoadng = false;
         })
         .catch(err=>{
           console.log(err);
@@ -141,6 +153,7 @@
       },
       // 修改分类名
       submitUpdate () {
+        this.buttonLoadng = true;
         cardFileAPI.updateCardFile({
           cardHolderId: this.updateFile,
           name: this.updateName
@@ -151,6 +164,7 @@
           this.getFileName();
           this.updateName = '';
           this.dialogVisible2 = false;
+          this.buttonLoadng = false;
         })
         .catch(err=>{
           console.log(err);
@@ -159,6 +173,7 @@
       },
       // 删除分类
       submitDelete() {
+        this.buttonLoadng = true;
         console.log(this.deleteFile);
         cardFileAPI.deleteCardFile({
           cardHolderId: this.deleteFile
@@ -168,6 +183,7 @@
           this.fileName=[];
           this.getFileName();
           this.dialogVisible3 = false;
+          this.buttonLoadng = false;
         })
         .catch(err=>{
           console.log(err);
@@ -186,6 +202,7 @@
 <style lang='less' scoped>
 // @import '../../../style/common.less';
   .cardFileList{
+    height: 100%;
     .row {
     padding: 0.15rem;
     font-size: 0.2rem;

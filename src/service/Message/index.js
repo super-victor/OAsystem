@@ -11,7 +11,7 @@ export default{
     const res = await NetworkRequest({
       url:'/message',
       method:'get',
-      throttle:true,
+      // throttle:true,
     })
     return res.data;
   },
@@ -25,7 +25,7 @@ export default{
     const res = await NetworkRequest({
       url:'/messageNotRead',
       method:'get',
-      throttle:true,
+      // throttle:true,
     })
     return res.data;
   },
