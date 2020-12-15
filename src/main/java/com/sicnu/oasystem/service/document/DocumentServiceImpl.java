@@ -1,22 +1,22 @@
 package com.sicnu.oasystem.service.document;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.DepartmentMapper;
 import com.sicnu.oasystem.mapper.DocumentMapper;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
-import com.sicnu.oasystem.pojo.Employee;
+import com.sicnu.oasystem.pojo.DataSeeAbleA;
+import com.sicnu.oasystem.pojo.Department;
 import com.sicnu.oasystem.pojo.SendFile;
 import com.sicnu.oasystem.pojo.limit.EmployeeLimitA;
 import com.sicnu.oasystem.service.message.MessageService;
 import com.sicnu.oasystem.util.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName DocumentServiceImpl
@@ -43,6 +43,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Resource
     MessageService messageService;
+
+    @Resource
+    DepartmentMapper departmentMapper;
 
     /**
      * @MethodName getAllCensors
@@ -395,6 +398,237 @@ public class DocumentServiceImpl implements DocumentService {
         } else {
             return new BackFrontMessage(500,"修改失败",null);
         }
+    }
+
+    @Override
+    public Map<String, Object> getSystemDocumentSeeAbleData() {
+        // 总的发布公文
+        Map<String,Object> map = new HashMap<>(16);
+
+        List<DataSeeAbleA> dataSeeAbleAList = documentMapper.findDateAndCountAboutPublishDocuments();
+        List<DataSeeAbleA> resultSeeAbleList = new ArrayList<>();
+        Date endDate = new Date();
+        Date startDate = DateUtil.subDay(endDate,14);
+        // 如果查出来的数据不为空
+        if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                while (true) {
+                    if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                        resultSeeAbleList.add(dataSeeAbleA);
+                        startDate = DateUtil.addDay(startDate,1);
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        } else {
+            // 如果查出来的数据为空
+            for (int i = 0; i < 15; i++) {
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        }
+
+        map.put("totalPublishDocument",resultSeeAbleList);
+
+        // 各部门发布公文
+        List<Department> departments = departmentMapper.findAllDepartment();
+        Map<String,List<DataSeeAbleA>> map1 = new HashMap<>();
+        for (Department department:departments) {
+            dataSeeAbleAList = documentMapper.findDateAndCountAboutPublishDocumentsByDepartmentName(department.getName());
+            resultSeeAbleList = new ArrayList<>();
+            startDate = DateUtil.subDay(endDate,14);
+            // 如果查出来的数据不为空
+            if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+                for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                    while (true) {
+                        if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                            resultSeeAbleList.add(dataSeeAbleA);
+                            startDate = DateUtil.addDay(startDate,1);
+                            break;
+                        }
+                        resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                        startDate = DateUtil.addDay(startDate,1);
+                    }
+                }
+                while (true) {
+                    if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            } else {
+                // 如果查出来的数据为空
+                for (int i = 0; i < 15; i++) {
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+
+            map1.put(department.getName(),resultSeeAbleList);
+        }
+
+        map.put("depertmentPublishDocument",map1);
+
+        // 草稿箱
+
+        dataSeeAbleAList = documentMapper.findDateAndCountAboutDraftBoxDocuments();
+        resultSeeAbleList = new ArrayList<>();
+        startDate = DateUtil.subDay(endDate,14);
+        // 如果查出来的数据不为空
+        if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                while (true) {
+                    if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                        resultSeeAbleList.add(dataSeeAbleA);
+                        startDate = DateUtil.addDay(startDate,1);
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        } else {
+            // 如果查出来的数据为空
+            for (int i = 0; i < 15; i++) {
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        }
+
+        map.put("totalDraftBoxDocument",resultSeeAbleList);
+
+        // 各部门发布公文
+        departments = departmentMapper.findAllDepartment();
+        map1 = new HashMap<>();
+        for (Department department:departments) {
+            dataSeeAbleAList = documentMapper.findDateAndCountAboutDraftBoxDocumentsByDepartmentName(department.getName());
+            resultSeeAbleList = new ArrayList<>();
+            startDate = DateUtil.subDay(endDate,14);
+            // 如果查出来的数据不为空
+            if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+                for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                    while (true) {
+                        if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                            resultSeeAbleList.add(dataSeeAbleA);
+                            startDate = DateUtil.addDay(startDate,1);
+                            break;
+                        }
+                        resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                        startDate = DateUtil.addDay(startDate,1);
+                    }
+                }
+                while (true) {
+                    if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            } else {
+                // 如果查出来的数据为空
+                for (int i = 0; i < 15; i++) {
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+
+            map1.put(department.getName(),resultSeeAbleList);
+        }
+
+        map.put("depertmentDraftBoxDocument",map1);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, List> getSelfDocumentSeeAbleData() {
+        Map<String,List> map = new HashMap<>(16);
+
+        List<DataSeeAbleA> dataSeeAbleAList = documentMapper.findDateAndCountAboutSelfPublishDocuments(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
+        List<DataSeeAbleA> resultSeeAbleList = new ArrayList<>();
+        Date endDate = new Date();
+        Date startDate = DateUtil.subDay(endDate,14);
+        // 如果查出来的数据不为空
+        if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                while (true) {
+                    if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                        resultSeeAbleList.add(dataSeeAbleA);
+                        startDate = DateUtil.addDay(startDate,1);
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        } else {
+            // 如果查出来的数据为空
+            for (int i = 0; i < 15; i++) {
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        }
+
+        map.put("selfPublishDocument",resultSeeAbleList);
+
+        dataSeeAbleAList = documentMapper.findDateAndCountAboutSelfDraftBoxDocuments(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
+        resultSeeAbleList = new ArrayList<>();
+
+        startDate = DateUtil.subDay(endDate,14);
+        // 如果查出来的数据不为空
+        if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
+                while (true) {
+                    if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
+                        resultSeeAbleList.add(dataSeeAbleA);
+                        startDate = DateUtil.addDay(startDate,1);
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
+                }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        } else {
+            // 如果查出来的数据为空
+            for (int i = 0; i < 15; i++) {
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
+            }
+        }
+
+        map.put("selfDraftBoxDocument",resultSeeAbleList);
+        return map;
     }
 
 

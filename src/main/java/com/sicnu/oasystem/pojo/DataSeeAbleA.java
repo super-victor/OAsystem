@@ -1,7 +1,7 @@
 package com.sicnu.oasystem.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.models.auth.In;
+import lombok.AllArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

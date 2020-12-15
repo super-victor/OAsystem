@@ -28,14 +28,54 @@ public interface AdminService {
      */
     BackFrontMessage getAllEmployee();
 
+    /**
+     * @MethodName batchEmployeeByExcel
+     * @param multipartFile
+     * @Description 通过excel导入员工信息
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage batchEmployeeByExcel(MultipartFile multipartFile);
 
+    /**
+     * @MethodName addEmployee
+     * @param employee
+     * @Description 添加职工
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage addEmployee(Employee employee);
 
+    /**
+     * @MethodName deleteEmployee
+     * @param employeeId
+     * @Description 删除职工
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage deleteEmployee(int employeeId);
 
+    /**
+     * @MethodName addRole
+     * @param roleName
+     * @Description 添加角色
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage addRole(String roleName);
 
+    /**
+     * @MethodName deleteRole
+     * @param roleId
+     * @Description 删除角色
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage deleteRole(int roleId);
 
     /**
@@ -166,5 +206,14 @@ public interface AdminService {
      */
     BackFrontMessage updateEmployeeRolelist(Integer employeeId, List<Integer> roleIdList);
 
+    /**
+     * @MethodName copyRole
+     * @param copyroleId
+     * @param newName
+     * @Description 复制角色
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage copyRole(Integer copyroleId, @RequestParam String newName);
 }

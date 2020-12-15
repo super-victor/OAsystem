@@ -25,4 +25,7 @@
     <select id="findAllDepartment" resultType="com.sicnu.oasystem.pojo.Department">
         select * from department
     </select>
+    <select id="findPeopleNumByDepartmentName" resultType="java.lang.Integer">
+        select count(*) from employee where departmentName = #{departmentName}
+    </select>
 </mapper>

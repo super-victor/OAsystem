@@ -26,10 +26,33 @@ public interface MessageService {
      */
     int send(int employeeId, int type, String title, String content);
 
-
+    /**
+     * @MethodName getSelfAllMessage
+     * @param
+     * @Description 获取自己所有的消息
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage getSelfAllMessage();
 
+    /**
+     * @MethodName getSelfAllUnReadMessage
+     * @param
+     * @Description 获取自己所有的未读消息
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage getSelfAllUnReadMessage();
 
+    /**
+     * @MethodName setSelfMessageRead
+     * @param messageId
+     * @Description 将自己的消息设置成已读
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage setSelfMessageRead(int messageId);
 }

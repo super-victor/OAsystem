@@ -3,13 +3,14 @@ package com.sicnu.oasystem.service.admin;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
-import com.sicnu.oasystem.service.admin.SuperAdminService;
+import com.sicnu.oasystem.pojo.Role;
 import com.sicnu.oasystem.util.ListUtil;
 import com.sicnu.oasystem.util.UserAuthenticationUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,19 +21,21 @@ import java.util.List;
  * @Version v1.0
  */
 
+
 @Component
+
 public class SuperAdminServiceImpl implements SuperAdminService {
     @Resource
     EmployeeMapper employeeMapper;
 
     @Override
     public BackFrontMessage getAllAdmin() {
+
         return new BackFrontMessage(200,"获取成功",employeeMapper.findAllAdmin());
     }
 
     @Override
     public BackFrontMessage updateAdminList(List<Integer> employeeIdList) {
-
         List<Employee> primaryEmployeeList = employeeMapper.findAllAdmin();
         List<Integer> primaryEmployeeIdList = new ArrayList<>(primaryEmployeeList.size());
 
@@ -55,6 +58,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 
     @Override
     public BackFrontMessage lockAdmin(int employeeId,Integer isAccountLocked) {
+
         // 不能锁自己
         if (employeeId == UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId()) {
             return new BackFrontMessage(500,"修改失败",null);
