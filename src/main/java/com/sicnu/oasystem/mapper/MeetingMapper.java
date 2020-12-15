@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @InterfaceName MeetingMapper
@@ -157,4 +158,9 @@ public interface MeetingMapper {
      */
     Integer cancleApproveMeeting(Integer meetingid,Integer employeeid);
 
+
+
+    List<Map<String,Object>>getMeetingTrend(String departmentName);
+
+    Integer getMeetingTrendnums(String departmentName);
 }
