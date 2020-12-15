@@ -404,6 +404,24 @@ public interface EmployeeMapper {
      */
     List<Menu> findMenusByRoleId(int roleId);
 
+    /**
+     * @MethodName findMenuIsExist
+     * @param url
+     * @Description 判断menu是否存在
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/15
+     */
+    int findMenuIsExist(String url);
+
+    /**
+     * @MethodName findTotalEmployeeNum
+     * @param
+     * @Description 找出所有员工的数量
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/15
+     */
     int findTotalEmployeeNum();
 
 

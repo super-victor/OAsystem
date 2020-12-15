@@ -4,6 +4,7 @@ import com.sicnu.oasystem.config.GlobalSecurityConfig;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Role;
 import com.sicnu.oasystem.util.NotLoginException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -51,11 +52,18 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         }
         String urlPatten = request.getMethod() + " " + request.getRequestURI();
         System.out.println(urlPatten);
-        List<String> needRoleIds = employeeMapper.findRoleIdsByUrlPattern(urlPatten);
-        // 如果当前url需要的角色为空,返回空
-        if (needRoleIds == null) {
+
+        // 如果url不在menu表里说明任何人都可以访问
+        if (employeeMapper.findMenuIsExist(urlPatten) == 0) {
             return null;
         }
+
+        List<String> needRoleIds = employeeMapper.findRoleIdsByUrlPattern(urlPatten);
+        // 如果当前Url对应的角色为空,返回空 说明没有用户拥有这个功能 直接返回权限不足
+        if (needRoleIds.isEmpty()) {
+            throw new AccessDeniedException("权限不足3");
+        }
+
         String[] needRoleIdsCopy = new String[needRoleIds.size()];
         return SecurityConfig.createList(needRoleIds.toArray(needRoleIdsCopy));
     }
