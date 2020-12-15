@@ -3,8 +3,8 @@
     <div class="alert">
       <!-- 添加弹框 -->
       <el-dialog class="dialog" title="添加设备" :visible.sync="addEquipment" > 
-        <el-form class="form" :model="form" label-width="90px" :rules="rules">
-          <el-form-item label="会议室号:" style="width:80%;padding-bottom:20px;" prop="roomId">
+        <el-form class="form" ref="form" :model="form" label-width="90px" :rules="rules">
+          <el-form-item label="会议室号:" style="width:100%;padding-bottom:20px;" prop="roomId">
               <el-select v-model.number="form.roomId" placeholder="请选择">
                 <el-option
                   v-for="item in MeetingroomData"
@@ -14,7 +14,7 @@
                 </el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="类别:" style="width:40%;padding-bottom:0px;" prop="types">
+          <el-form-item label="类别:" style="width:100%;padding-bottom:20px;" prop="types">
               <el-select v-model.number="form.types" placeholder="请选择">
                 <el-option
                   v-for="item in ClassifyData"
@@ -24,29 +24,29 @@
                 </el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="设备名称：" :label-width="formLabelWidth" style="margin-bottom:20px" prop="name">
-            <el-input v-model="form.name" autocomplete="off" style="width:40%"></el-input>
-          </el-form-item>
-          <el-form-item label="是否维修" style="width:40%;padding-bottom:20px;">
+          <el-form-item label="是否维修" style="width:100%;padding-bottom:20px;">
             <el-switch v-model="form.isMaintain" active-value="1" inactive-value="0"></el-switch>
           </el-form-item>
-          <el-form-item label="数量：" :label-width="formLabelWidth" style="margin-bottom:20px" prop="num">
+           <el-form-item label="设备名称:"  style="padding-bottom:20px" prop="name">
+            <el-input v-model="form.name" autocomplete="off" style="width:40%"></el-input>
+          </el-form-item>
+          <el-form-item label="数量："  style="padding-bottom:20px" prop="num">
             <el-input v-model.number="form.num" autocomplete="off" style="width:40%"></el-input>
           </el-form-item>
-           <el-form-item label="备注:" style="width:80%">
+           <el-form-item label="备注:" style="width:65%">
             <el-input type="textarea" v-model="form.remark"></el-input>
           </el-form-item>
         </el-form>
         
         <div slot="footer" class="dialog-footer">
           <el-button @click="addEquipment = false">取 消</el-button>
-          <el-button type="primary" @click="getAddEquipment">确 定</el-button>
+          <el-button type="primary" @click="getAddEquipment('form')">确 定</el-button>
         </div>
       </el-dialog>
       <!-- 修改弹框 -->
       <el-dialog class="updateDialog" title="修改设备信息" :visible.sync="updateEquipment" > 
-        <el-form class="updateForm" :model="updateForm" label-width="90px" >
-          <el-form-item label="会议室号:" style="width:80%;padding-bottom:20px;" prop="roomId">
+        <el-form class="updateForm" ref="updateForm" :model="updateForm" label-width="90px" :rules="rules" >
+          <el-form-item label="会议室号:" style="width:100%;padding-bottom:20px;" prop="roomId">
               <el-select v-model="updateForm.roomId" placeholder="请选择">
                 <el-option
                   v-for="item in MeetingroomData"
@@ -56,7 +56,7 @@
                 </el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="类别:" style="width:40%;padding-bottom:0px;" prop="types">
+          <el-form-item label="类别:" style="width:100%;padding-bottom:20px;" prop="types">
               <el-select v-model.number="updateForm.types" placeholder="请选择">
                 <el-option
                   v-for="item in ClassifyData"
@@ -66,22 +66,22 @@
                 </el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="设备名称：" :label-width="formLabelWidth" style="margin-bottom:20px" prop="name">
-            <el-input v-model="updateForm.name" autocomplete="off" style="width:40%"></el-input>
-          </el-form-item>
-          <el-form-item label="是否维修" style="width:40%;padding-bottom:20px;">
+          <el-form-item label="是否维修" style="width:100%;padding-bottom:20px;">
             <el-switch v-model="updateForm.isMaintain" active-value="1" inactive-value="0"></el-switch>
           </el-form-item>
-          <el-form-item label="数量：" :label-width="formLabelWidth" style="margin-bottom:20px" prop="num">
+              <el-form-item label="设备名称:"  style="padding-bottom:20px" prop="name">
+            <el-input v-model="updateForm.name" autocomplete="off" style="width:40%"></el-input>
+          </el-form-item>
+          <el-form-item label="数量："  style="padding-bottom:20px" prop="num">
             <el-input v-model.number="updateForm.num" autocomplete="off" style="width:40%"></el-input>
           </el-form-item>
-           <el-form-item label="备注:" style="width:80%">
+           <el-form-item label="备注:" style="width:65%">
             <el-input type="textarea" v-model="updateForm.remark"></el-input>
           </el-form-item>
         </el-form>
          <div slot="footer" class="dialog-footer">
           <el-button @click="updateEquipment = false">取 消</el-button>
-          <el-button type="primary" @click="UpdateEquipment">确 定</el-button>
+          <el-button type="primary" @click="UpdateEquipment('updateForm')">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -228,6 +228,11 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       })
     },
     data() {
+      var checkNum = (rule,value,callback) =>{
+        if(!value){
+          return callback(new Error('数量不能为空'))
+        }else callback();
+      }
       return {
         roomID:'',
         category: '',
@@ -271,7 +276,8 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
             {  required: true, message: '请选择会议室号', trigger: 'change' }
           ],
           num: [
-            {  type: 'number', required: true, message: '请输入设备数量', trigger: 'blur' }
+            {  type: 'number', required: true, message: '必须为数值', trigger: 'blur' },
+            {  validator : checkNum ,trigger :'blur' }
           ],
           types: [
             {required: true, message: '请选择类别', trigger: 'change' }
@@ -297,16 +303,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
 
         })
       },
-      handleSizeChange() {
 
-      },
-      handleCurrentChange() {
-
-      },
-      // //添加设备
-      // addEquipment(){
-
-      // }
 
       //删除操作
       deleteMessage(Id){
@@ -336,7 +333,12 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.updateForm.remark = mes.remark;
         this.updateForm.num = mes.num;
       },
-      UpdateEquipment(){
+      UpdateEquipment(formName){
+
+         this.$refs[formName].validate((valid)=>{
+          if(!valid){
+            console.log(valid)
+          }else{
         console.log( this.updateForm.equipmentId,typeof(this.updateForm.equipmentId),
           this.updateForm.types,typeof(this.updateForm.types),
           this.updateForm.roomId,typeof(this.updateForm.roomId),
@@ -364,6 +366,10 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.$message.error('修改失败');
         console.log("equipmentUpdateAPI:",err)
         })
+           
+          }
+        })
+       
       },
       
       //类别筛选
@@ -402,8 +408,13 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       },
 
       //表单确认
-      getAddEquipment(){
-        this.loading = true
+      getAddEquipment(formName){
+  
+        this.$refs[formName].validate((valid)=>{
+          if(!valid){
+            console.log(valid)
+          }else{
+             this.loading = true
         this.addEquipment = false;
  
         console.log(this.form.types,typeof(this.form.types),
@@ -420,7 +431,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
           isMaintain:this.form.isMaintain,
           remark:this.form.remark,
           num:this.form.num,
-        }).then(
+        }).then(  
           setTimeout(() => {
         this.getData()
      }, 1000))
@@ -429,7 +440,10 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         console.log("equipmentInsertAPI:",err)
       })
         
-      },
+          }
+        })
+       
+        },
 
       getData(){
         console.log("执行getData")
@@ -463,14 +477,14 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       .dialog{
         .form{
           display: flex;
-          width:800px;
+          width:100%;
           flex-wrap:wrap;
         }
       }
       .updateDialog{
         .updateForm{
           display: flex;
-          width:800px;
+          width:100%;
           flex-wrap:wrap;
         }
       }

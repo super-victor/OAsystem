@@ -88,17 +88,7 @@ export default{
   return res.data;
   
 },
- /**
-  * 
-  *  @returns {Promise<Object>}
-  */
- async getAllMeetings(){
-   const res = await NetworkRequest({
-     url:'/getAllMeetings',
-     method:'get',
-   })
-  return res.data;
-},
+
 
  /**
   * 

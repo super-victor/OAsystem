@@ -1,8 +1,7 @@
 <template>
-  <div class='room'>
-    
+  <div class='room' @click="currentRow2 = {};isClick =[];Timeout = false">
     <div class="alert">
-      
+
       <!-- 弹框 -->
       <el-dialog title="会议预约" :visible.sync="dialogFormVisible">
         <el-form :model="form" style="display:flex;flex-wrap: wrap;">
@@ -20,25 +19,23 @@
               style="width:90px"></el-input-number>
           </el-form-item>
           <el-form-item label="选择日期" :label-width="formLabelWidth" style="width:30%;padding-right:50%">
-            <el-date-picker
-              v-model="dateSelect"
-              type="date"
-              placeholder="选择日期" >
+            <el-date-picker v-model="dateSelect" type="date" placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="今日预约" :label-width="formLabelWidth" style="width:100%" v-if="dateSelect" >
-            <el-button-group >
-              <el-button :class="(i == getSelect.filter(item=>{if(item == i) return item}))?'red':(((startTime <= i && i<= endTime)||startTime == i)?'blue':'white')" 
-              v-for="i in timeList"  :key="i" @click="getIndex(i)"
-              :disabled ="(i == getSelect.filter(item=>{if(item == i) return item}))?true:false"
-                 style='color:black' >{{i}}</el-button>
+          <el-form-item label="今日预约" :label-width="formLabelWidth" style="width:65%" v-if="dateSelect">
+            <el-button-group>
+              <el-button
+                :class="(i == getSelect.filter(item=>{if(item == i) return item}))?'red':(((startTime <= i && i<= endTime)||startTime == i)?'blue':'white')"
+                v-for="i in 24" :key="i" @click="getIndex(i)"
+                :disabled="(i == getSelect.filter(item=>{if(item == i) return item}))?true:false" style='color:black'>
+                {{i}}</el-button>
             </el-button-group>
             <div class="colorRemark">
               <div class="remarks">
                 <div class="white"></div>
-              <div >可预约</div>
-              <div class="red" ></div>
-              <div >已预约</div>
+                <div>可预约</div>
+                <div class="red"></div>
+                <div>已预约</div>
               </div>
               <div class="btn">
                 <el-button size="small" style="width:60px" @click="reselect">重选</el-button>
@@ -51,7 +48,7 @@
 
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="dialogFormVisible = false ,isClick = []">取 消</el-button>
           <el-button type="primary" @click="meetingComfirm()">确 定</el-button>
         </div>
       </el-dialog>
@@ -61,79 +58,75 @@
       <!-- 会议室筛选 -->
 
 
-      
+
       <!-- 左侧树 -->
       <div class="content">
         <div class="tree">
           <div class="title">
-            <span>
+            <span @click="tableFilterData = tableData;isClick = []" style="cursor:pointer">
               楼层信息
             </span>
           </div>
-          <div class="elTree">
+          <div class="elTree" v-loading="loading1">
             <el-tree :data="storeyData" :props="defaultProps" accordion @node-click="handleNodeClick">
             </el-tree>
+
           </div>
+
         </div>
 
         <!-- 表格 -->
-        <div class="table" :style="!RoomMessage?'width:80%':'width:50%'">
+        <div class="table" style="width:100%">
           <template>
-            <el-table :data="tableFilterData" stripe border height="550"
-              highlight-current-row @current-change="handleCurrentChange">
-              <el-table-column prop="name" label="会议室号" >
-              </el-table-column>
-              <el-table-column  label="状态">
-                <template slot-scope="scope">
-                  {{scope.row.meeting?'会议中':'空闲'}}
-                </template>
-              </el-table-column>  
-              <el-table-column prop="meeting.name" label="会议名称" v-if="!RoomMessage">
-              </el-table-column>
-              <el-table-column  label="开始时间" v-if="!RoomMessage">
-                <template slot-scope="scope">
-                  {{scope.row.meeting?scope.row.meeting.startTime.substr(0,10)+' '+scope.row.meeting.startTime.substr(11,8):''}}
-                </template>
-              </el-table-column>
-              <el-table-column  label="结束时间" v-if="!RoomMessage">
-                <template slot-scope="scope">
-                  {{scope.row.meeting?scope.row.meeting.endTime.substr(0,10)+' '+scope.row.meeting.endTime.substr(11,8):''}}
-                </template>
-              </el-table-column>
-              <el-table-column prop="" label="会议预约">
-                <template>
-                  <el-button type="primary" icon="el-icon-plus" circle @click="addappointment()"></el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-        </div>
-        <div class="roomMessage">
-          <el-button style="float: right; padding: 3px 0" type="text" @click="RoomMessage = !RoomMessage" v-if="!RoomMessage">展开</el-button>
-           <el-collapse-transition>
-          <div v-show="RoomMessage">
-            <el-card class="box-card" :style="RoomMessage?'width:100%':'width:30%'" >
-              <div v-if="!RoomMessage">
-                <el-button @click="RoomMessage = !RoomMessage" icon="el-icon-arrow-right" style="margin:auto"></el-button>
-              </div>
-           <div  v-if="RoomMessage"> 
-            <div slot="header" class="clearfix">
-              <span>会议室信息</span>
-              <el-button style="float: right; padding: 3px 0" type="text" @click="RoomMessage = !RoomMessage">收起</el-button>
-            </div>
-            <div class="text">
-              <p style="margin-top:20px">会议室号为：{{this.currentRow.name}}</p>
-              <p style="margin-top:20px">当前状态：{{this.currentRow.meeting?'会议中':'空闲'}}</p>
-              <p style="margin:20px 0" v-show="isShow">会议名称：{{this.currentRow.meeting?this.currentRow.meeting.name:''}}</p>
-              <p style="margin:20px 30px 0 0" v-show='isShow'>开始时间：{{this.currentRow.meeting?this.currentRow.meeting.startTime.substr(0,10)+' '+this.currentRow.meeting.startTime.substr(11,8):''}}</p>
-              <p style="margin-top:20px" v-show='isShow'>结束时间：{{this.currentRow.meeting?this.currentRow.meeting.endTime.substr(0,10)+' '+this.currentRow.meeting.endTime.substr(11,8):''}}</p>
-     
+            <div class="btn" v-loading="loading2">
+              <el-button  style="padding:50px"
+                v-for='i in tableFilterData.length' :key="i" @click.stop="handleCurrentChange(i-1)">
+                <img :src="require(tableFilterData[i-1].meeting?'@/assets/MeetingRoomManagement/red.png':'@/assets/MeetingRoomManagement/green.png')" alt="" v-if="!isClick[i-1]">
+                <i class="el-icon-circle-plus-outline" v-show="isClick[i-1]"></i>
+                <p style="padding-top:10px">{{tableFilterData[i-1].name}}</p>
+              </el-button>
+
 
             </div>
-           </div>
+          </template>
+        </div>
+        <div class="roomMessage" :class="{'roomMessage2':currentRow2.name}">
+          <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="RoomMessage = !RoomMessage" v-if="!RoomMessage">展开</el-button> -->
+          <el-card class="box-card">
+            <!-- <div class='EmptyBox' v-if="!currentRow.name">
+              <img src="@/assets/noData.png" alt="">
+              <p class="noData">暂无内容</p>
+            </div> -->
+            <div :style="{'display':Timeout?'block':'none'}">
+              <div slot="header" class="clearfix">
+                <span>会议室信息</span>
+
+              </div>
+              <div class="text">
+
+                <p style="margin-top:20px">会议室号为：{{this.currentRow.name}}</p>
+                <p style="margin-top:20px">当前状态：{{this.currentRow.meeting?'会议中':'空闲'}}</p>
+                <p style="margin:20px 0" v-show="isShow">
+                  会议名称：{{this.currentRow.meeting?this.currentRow.meeting.name:''}}</p>
+                <p style="margin:20px 30px 0 0" v-show='isShow'>
+                  开始时间：{{this.currentRow.meeting?this.currentRow.meeting.startTime.substr(0,10)+' '+this.currentRow.meeting.startTime.substr(11,8):''}}
+                </p>
+                <p style="margin-top:20px" v-show='isShow'>
+                  结束时间：{{this.currentRow.meeting?this.currentRow.meeting.endTime.substr(0,10)+' '+this.currentRow.meeting.endTime.substr(11,8):''}}
+                </p>
+                <div class="colorRemark">
+                  <div class="remarks">
+                    <div>注：</div>
+                    <div class="red"></div>
+                    <div>为会议中的会议室</div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
           </el-card>
-          </div>
-           </el-collapse-transition>
         </div>
       </div>
       <!-- 分页 -->
@@ -152,8 +145,8 @@
 </template>
 
 <script>
-import getMeetingsAPI from '@/service/MeetingRoomManagement';
-import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
+  import getMeetingsAPI from '@/service/MeetingRoomManagement';
+  import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
   import {
     mapState,
     mapMutations
@@ -173,24 +166,26 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
           desc: '',
           num: 0,
 
-        },     
-        RoomMessage:true,
-        dateSelect:'',
-        startTime:-1,
-        endTime:-1, 
+        },
+        Timeout:false,
+        isClick: [],
+        loading1: true,
+        loading2: true,
+        RoomMessage: true,
+        dateSelect: '',
+        startTime: -1,
+        endTime: -1,
         input: '',
         total: 1,
-        timeList:[1,2,3,4,5,6,7
-        ,8,9,10,11,12,13,
-        14,15,16,17,18,19,20,21,22,23],
-        getSelect:[],
-        currentRow: [],
-        isShow:false,
+        getSelect: [],
+        currentRow: {},
+        currentRow2: {},
+        isShow: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
         tableData: [],
-        tableFilterData:[],
-        DateData:[],
+        tableFilterData: [],
+        DateData: [],
         storeyData: [],
         defaultProps: {
           children: 'meetroom',
@@ -204,74 +199,86 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
         'userInfo'
       ])
     },
-    watch:{
-      dateSelect(val){
+    watch: {
+      dateSelect(val) {
         this.startTime = -1
         this.endTime = -1
         this.getSelect = []
-        if(val){
-          let newTime = ' 00:00:00'
+        if (val) {
+          let newTime = ' 00:00:00';
+          console.log(val.toLocaleDateString().substr(9) ?
+              val.toLocaleDateString().replace(/\//g, "-") +
+              newTime : val.toLocaleDateString().replace(/\//g, "-").substr(0, 8) +
+              '0' +
+              val.toLocaleDateString().replace(/\//g, "-").substr(8) +
+              newTime,this.currentRow.meetingRoomId)
           addOrderMeetingAPI.getAllMeetingTimeByRoomAndTime({
-            date:val.toLocaleDateString().substr(9)?
-            val.toLocaleDateString().replace(/\//g,"-")
-            +newTime:val.toLocaleDateString().replace(/\//g,"-").substr(0,8)
-            +'0'
-            +val.toLocaleDateString().replace(/\//g,"-").substr(8)
-            +newTime,
-            meetingroomid:this.currentRow.meetingRoomId,
-          }).then(res=>{
+            date: val.toLocaleDateString().substr(9) ?
+              val.toLocaleDateString().replace(/\//g, "-") +
+              newTime : val.toLocaleDateString().replace(/\//g, "-").substr(0, 8) +
+              '0' +
+              val.toLocaleDateString().replace(/\//g, "-").substr(8) +
+              newTime,
+            meetingroomid: this.currentRow.meetingRoomId,
+          }).then(res => {
             this.DateData = res.object
             console.log(res.object)
-            this.DateData.map((item,index)=>{
-              if(item.startTime){
-                for(var i = 0;i<24;i++){
-                  (item.startTime.substr(11,2)<=i)&& (i<=item.endTime.substr(11,2))?this.getSelect.push(i):'';
-                 
+            this.DateData.map((item, index) => {
+              if (item.startTime) {
+                for (var i = 0; i < 24; i++) {
+                  (item.startTime.substr(11, 2) <= i) && (i <= item.endTime.substr(11, 2)) ? this.getSelect
+                    .push(i): '';
+
                 }
-                console.log(this.getSelect.filter(item=>{if(item == 12) return item}))
-                
+                console.log(this.getSelect.filter(item => {
+                  if (item == 12) return item
+                }))
+
               }
             })
-          }).catch(err=>{
+          }).catch(err => {
             this.$message.error('获取失败!')
-            console.log("getAllMeetingTimeByRoomAndTime",err)
+            console.log("getAllMeetingTimeByRoomAndTime", err)
           })
         }
-        
+
       }
     },
-    created(){
+    created() {
       //获取预约成功的会议
-      getMeetingsAPI.getAllMeetings()
-      .then(res=>{
-        console.log(res.object)  
-      }).catch(err=>{
-        this.$message.error('获取失败')
-        console.log('getAllMeetings:',err)
-      }),
+      // getMeetingsAPI.getAllMeetings()
+      // .then(res=>{
+      //   console.log(res.object)  
+      // }).catch(err=>{
+      //   this.$message.error('获取失败')
+      //   console.log('getAllMeetings:',err)
+      // }),
+
       //获取会议室信息
       getMeetingsAPI.getAllMeetingRoom()
-      .then(res=>{
-        console.log(res)
-        this.tableData = res.object;
-        this.tableFilterData = this.tableData
-        this.tableData.map((item,index)=>{
-            console.log(item.name)
-        })
+        .then(res => {
+          this.loading2 = false;
+          console.log(res)
+          this.tableData = res.object;
+          this.tableFilterData = this.tableData
+          this.tableData.map((item, index) => {
+            console.log(item)
+          })
 
-      }).catch(err=>{
-        this.$message.error('获取失败')
-        console.log('getAllMeetingRoom',err)
-      }),
-      //获取左侧树的信息
-      getMeetingsAPI.getAllMeetingRoomByStorey()
-      .then(res=>{
-        console.log("storeyData:",res.object)
-        this.storeyData = res.object;
-      }).catch(err=>{
-        this.$message.error('获取失败')
-        console.log('getAllMeetingRoomByStorey',err)
-      })
+        }).catch(err => {
+          this.$message.error('获取失败')
+          console.log('getAllMeetingRoom', err)
+        }),
+        //获取左侧树的信息
+        getMeetingsAPI.getAllMeetingRoomByStorey()
+        .then(res => {
+          this.loading1 = false;
+          console.log("storeyData:", res.object)
+          this.storeyData = res.object;
+        }).catch(err => {
+          this.$message.error('获取失败')
+          console.log('getAllMeetingRoomByStorey', err)
+        })
     },
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
@@ -279,66 +286,91 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
         console.log("receive", this.userInfo)
       },
       //重选
-      reselect(){
+      reselect() {
         this.startTime = -1;
         this.endTime = -1;
       },
-      handleCurrentChange(val,oldval) {
-        if(val !=null){
-          this.currentRow = val;
+      //选取会议室
+      handleCurrentChange(res) {
+        // if(val !=null){
+        //   this.currentRow = val;
+        // }
+        // else val == null;
+        // if(this.currentRow.meeting) this.isShow = true;
+        // else this.isShow = false
+        //console.log(res)
+        console.log(this.currentRow)
+        if (this.isClick[res]) this.addappointment();
+        for (var i = 0; i < this.tableFilterData.length; i++) {
+          i == res ? this.isClick[i] = true : this.isClick[i] = false;
         }
-        else val == null;
-        if(this.currentRow.meeting) this.isShow = true;
+        setTimeout(()=>{
+          this.Timeout = true;  
+        },500)
+        this.currentRow = this.tableFilterData[res]
+        this.currentRow2 = this.tableFilterData[res]
+        console.log(this.currentRow)
+        if (this.currentRow.meeting) this.isShow = true;
         else this.isShow = false
+
       },
       // 会议预约
       addappointment() {
         this.dialogFormVisible = true
         this.dateSelect = ''
-      
+
       },
       //左侧筛选会议室
       handleNodeClick(data) {
         //console.log(data.label);
         // this.tableFilterData = [],
         // console.log(this.tableData)
-        this.tableFilterData = this.tableData.filter((item,index)=>{
+        this.isClick = []
+        this.tableFilterData = this.tableData.filter((item, index) => {
           return (item.place == data.name || item.name == data.name)
         })
 
       },
-      getIndex(i){
-        if(this.startTime == -1){
+      test() {
+        console.log("123")
+      },
+      getIndex(i) {
+        if (this.startTime == -1) {
           this.startTime = i;
-        }
-        else if(this.startTime != -1 && (this.endTime == -1 || this.endTime >= this.startTime)){
+        } else if (this.startTime != -1 && (this.endTime == -1 || this.endTime >= this.startTime)) {
           this.endTime = i
-          if(this.endTime >this.startTime){
-            this.getSelect.map((item,index)=>{
-              (this.startTime < item) && (this.endTime > item)?(this.startTime = i,this.endTime =-1):''
+          if (this.endTime > this.startTime) {
+            this.getSelect.map((item, index) => {
+              (this.startTime < item) && (this.endTime > item) ? (this.startTime = i, this.endTime = -1) : ''
             })
           }
-          if(this.endTime < this.startTime) this.startTime = i,this.endTime= -1
+          if (this.endTime < this.startTime) this.startTime = i, this.endTime = -1
 
         }
       },
-      meetingComfirm(){
+      //会议预约
+      meetingComfirm() {
         this.dialogFormVisible = false;
-        console.log(this.currentRow.meetingRoomId,typeof(this.currentRow.meetingRoomId))
+        this.isClick = [];
+        console.log(this.currentRow.meetingRoomId, typeof (this.currentRow.meetingRoomId))
         console.log(this.form.remark)
         addOrderMeetingAPI.addOrderMeeting({
-          employeeid:this.userInfo.userinfo.employeeId,
-          meetingroomid:this.currentRow.meetingRoomId,
-          name:this.form.name,
-          peoplenum:this.form.num, 
-          startTime:this.startTime<10?this.dateSelect.toLocaleDateString().replace(/\//g,'-')+' 0'+this.startTime+':00:00':this.dateSelect.toLocaleDateString().replace(/\//g,'-')+' '+this.startTime+':00:00',
-          endtime:this.endTime<10?this.dateSelect.toLocaleDateString().replace(/\//g,'-')+' 0'+this.endTime+':00:00':this.dateSelect.toLocaleDateString().replace(/\//g,'-')+' '+this.endTime+':00:00',
-          remark:this.form.remark?this.form.remark:'',
-        }).then(res=>{
+          employeeid: this.userInfo.userinfo.employeeId,
+          meetingroomid: this.currentRow.meetingRoomId,
+          name: this.form.name,
+          peoplenum: this.form.num,
+          startTime: this.startTime < 10 ? this.dateSelect.toLocaleDateString().replace(/\//g, '-') + ' 0' + this
+            .startTime + ':00:00' : this.dateSelect.toLocaleDateString().replace(/\//g, '-') + ' ' + this
+            .startTime + ':00:00',
+          endtime: this.endTime < 10 ? this.dateSelect.toLocaleDateString().replace(/\//g, '-') + ' 0' + this
+            .endTime + ':00:00' : this.dateSelect.toLocaleDateString().replace(/\//g, '-') + ' ' + this.endTime +
+            ':00:00',
+          remark: this.form.remark ? this.form.remark : '',
+        }).then(res => {
           console.log('预约成功!');
-        }).catch(err=>{
+        }).catch(err => {
           this.$message.error("预约失败")
-          console.log('addOrderMeeting:',err)
+          console.log('addOrderMeeting:', err)
         })
       }
     },
@@ -358,40 +390,65 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
     box-sizing: border-box;
 
     .alert {
-      .el-button {
+      ::v-deep .el-dialog__header {
+        padding: 0 30px;
+        font-size: 50px;
+      }
+
+      ::v-deep .el-dialog__body {
+        padding: 0px;
+      }
+
+      ::v-deep .el-button {
         width: 98px;
         height: 40px;
       }
-      .red{
-        background:#F56C6C;
+
+      .red {
+        background: #F56C6C;
       }
-      .blue{
+
+      .blue {
         background: #5383EC;
       }
-      .white{
-        background:#FFFFFF;
+
+      .white {
+        background: #FFFFFF;
       }
-      .colorRemark{
+
+      .colorRemark {
         display: flex;
         justify-content: space-evenly;
-        .remarks{
+
+        .remarks {
           display: flex;
-          .blue{
-          margin:13px 5px 0px;height:15px;width:15px;
+
+          .blue {
+            margin: 13px 5px 0px;
+            height: 15px;
+            width: 15px;
+          }
+
+          .red {
+            margin: 13px 5px 0px;
+            height: 15px;
+            width: 15px;
+          }
+
+          .white {
+            margin: 12.5px 5px 0px;
+            height: 13.5px;
+            width: 13.5px;
+            border: 0.5px solid black;
+          }
         }
-        .red{
-          margin:13px 5px 0px;height:15px;width:15px;
-        }
-        .white{
-          margin:12.5px 5px 0px;height:13.5px;width:13.5px;border:0.5px solid black;
-        }
-        }
-        
+
       }
+
       .el-form-item {
         padding-top: 20px;
 
-        .el-button {
+        ::v-deep .el-button {
           width: 30px;
           height: 30px;
 
@@ -406,7 +463,7 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
       display: flex;
       flex-wrap: wrap;
 
-      
+
 
       .content {
         width: 100%;
@@ -421,6 +478,7 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
           font-weight: bolder;
           box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
           border-radius: @baseBorderRadius;
+
           .title {
             background: white;
             text-align: center;
@@ -443,23 +501,81 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
           border-radius: @baseBorderRadius;
           margin-top: 20px;
           padding: 0 10px;
-          .el-table{
-            height:550px;padding:0 25px;
+
+          // .el-table{
+          //   height:550px;padding:0 25px;
+          // }
+          .btn {
+            width: 100%;
+            height: 550px;
+            box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
+            border-radius: @baseBorderRadius;
+            background: white;
+
+            .red {
+              background: #F56C6C;
+            }
+
+            .blue {
+              background: #5383EC;
+            }
+
+            .white {
+              background: #FFFFFF;
+            }
+           
+            ::v-deep .el-button {
+              margin:20px
+              
+            }
+            ::v-deep .el-icon-circle-plus-outline{
+              font-size:90px;
+            }
           }
         }
 
         .roomMessage {
-          width: 50%;
+          width: 0;
+          transition: all 0.5s;
           height: 550px;
           margin-top: 20px;
-
+          opacity: 0;
           .box-card {
+
             height: 550px;
 
             .text {
               font-size: 15px;
+
+              .colorRemark {
+                margin-top: 108%;
+
+                .remarks {
+                  display: flex;
+
+                  .red {
+                    margin: 3px;
+                    height: 15px;
+                    width: 15px;
+                    background-color: #F56C6C;
+                  }
+
+                  .white {
+                    margin: 3px;
+                    height: 13.5px;
+                    width: 13.5px;
+                    border: 0.5px solid black;
+                    background-color: #FFF;
+                  }
+                }
+
+              }
             }
           }
+        }
+        .roomMessage2 {
+          width: 40%;
+          opacity: 100;
         }
       }
 
@@ -474,5 +590,21 @@ import addOrderMeetingAPI from '@/service/MeetingRoomManagement'
     padding: 0 20px;
     font-size: 14px;
   }
-  
+
+  .EmptyBox {
+    height: 450px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .noData {
+      height: 20px;
+      width: 200px;
+      font-size: 0.18rem;
+      text-align: center;
+      color: #C0C4CC;
+    }
+  }
 </style>
