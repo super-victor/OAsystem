@@ -42,10 +42,6 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        // todo
-        // 1.检查token在用户修改密码后签发
-        // 2.如果token快要过期刷新token，
-
         // 访问量
         DataUtil.Data_Total_Views++;
         if ( !DateUtil.isSameDay(DataUtil.Data_Date,new Date())) {
