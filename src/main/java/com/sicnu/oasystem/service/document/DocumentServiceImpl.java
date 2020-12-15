@@ -407,7 +407,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         List<DataSeeAbleA> dataSeeAbleAList = documentMapper.findDateAndCountAboutPublishDocuments();
         List<DataSeeAbleA> resultSeeAbleList = new ArrayList<>();
-        Date startDate = DateUtil.subDay(new Date(),14);
+        Date endDate = new Date();
+        Date startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -420,6 +421,13 @@ public class DocumentServiceImpl implements DocumentService {
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
                 }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
             }
         } else {
             // 如果查出来的数据为空
@@ -437,7 +445,7 @@ public class DocumentServiceImpl implements DocumentService {
         for (Department department:departments) {
             dataSeeAbleAList = documentMapper.findDateAndCountAboutPublishDocumentsByDepartmentName(department.getName());
             resultSeeAbleList = new ArrayList<>();
-            startDate = DateUtil.subDay(new Date(),14);
+            startDate = DateUtil.subDay(endDate,14);
             // 如果查出来的数据不为空
             if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
                 for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -450,6 +458,13 @@ public class DocumentServiceImpl implements DocumentService {
                         resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                         startDate = DateUtil.addDay(startDate,1);
                     }
+                }
+                while (true) {
+                    if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
                 }
             } else {
                 // 如果查出来的数据为空
@@ -468,7 +483,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         dataSeeAbleAList = documentMapper.findDateAndCountAboutDraftBoxDocuments();
         resultSeeAbleList = new ArrayList<>();
-        startDate = DateUtil.subDay(new Date(),14);
+        startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -481,6 +496,13 @@ public class DocumentServiceImpl implements DocumentService {
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
                 }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
             }
         } else {
             // 如果查出来的数据为空
@@ -498,7 +520,7 @@ public class DocumentServiceImpl implements DocumentService {
         for (Department department:departments) {
             dataSeeAbleAList = documentMapper.findDateAndCountAboutDraftBoxDocumentsByDepartmentName(department.getName());
             resultSeeAbleList = new ArrayList<>();
-            startDate = DateUtil.subDay(new Date(),14);
+            startDate = DateUtil.subDay(endDate,14);
             // 如果查出来的数据不为空
             if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
                 for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -511,6 +533,13 @@ public class DocumentServiceImpl implements DocumentService {
                         resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                         startDate = DateUtil.addDay(startDate,1);
                     }
+                }
+                while (true) {
+                    if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                        break;
+                    }
+                    resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                    startDate = DateUtil.addDay(startDate,1);
                 }
             } else {
                 // 如果查出来的数据为空
@@ -534,7 +563,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         List<DataSeeAbleA> dataSeeAbleAList = documentMapper.findDateAndCountAboutSelfPublishDocuments(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
         List<DataSeeAbleA> resultSeeAbleList = new ArrayList<>();
-        Date startDate = DateUtil.subDay(new Date(),14);
+        Date endDate = new Date();
+        Date startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -547,6 +577,13 @@ public class DocumentServiceImpl implements DocumentService {
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
                 }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
             }
         } else {
             // 如果查出来的数据为空
@@ -560,7 +597,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         dataSeeAbleAList = documentMapper.findDateAndCountAboutSelfDraftBoxDocuments(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId());
         resultSeeAbleList = new ArrayList<>();
-        startDate = DateUtil.subDay(new Date(),14);
+
+        startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
@@ -573,6 +611,13 @@ public class DocumentServiceImpl implements DocumentService {
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
                 }
+            }
+            while (true) {
+                if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
+                    break;
+                }
+                resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
+                startDate = DateUtil.addDay(startDate,1);
             }
         } else {
             // 如果查出来的数据为空

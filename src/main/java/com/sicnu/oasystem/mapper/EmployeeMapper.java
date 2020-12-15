@@ -404,5 +404,7 @@ public interface EmployeeMapper {
      */
     List<Menu> findMenusByRoleId(int roleId);
 
+    int findTotalEmployeeNum();
+
 
 }

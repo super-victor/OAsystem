@@ -180,7 +180,9 @@
     <select id="findEmployeesByDepartmentId" resultType="com.sicnu.oasystem.pojo.Employee">
         select * from employee where departmentName in (select name from department where departmentId = #{departmentId})
     </select>
-
+    <select id="findTotalEmployeeNum" resultType="java.lang.Integer">
+        select count(*) from employee
+    </select>
 
 
 </mapper>

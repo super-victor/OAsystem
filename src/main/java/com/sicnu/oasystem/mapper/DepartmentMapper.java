@@ -52,4 +52,6 @@ public interface DepartmentMapper {
      * @LastChangeDate 2020/11/8
      */
     Department findDepartmentByDepartmentId(int departmentId);
+
+    int findPeopleNumByDepartmentName(String departmentName);
 }

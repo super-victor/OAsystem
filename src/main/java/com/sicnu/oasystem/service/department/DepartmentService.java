@@ -2,6 +2,8 @@ package com.sicnu.oasystem.service.department;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 
+import java.util.Map;
+
 /**
  * @InterfaceName DepartmentService
  * @Description 添加描述
@@ -54,5 +56,15 @@ public interface DepartmentService {
      * @LastChangeDate 2020/12/15
      */
     BackFrontMessage updateDepartment(Integer departmentId,String departmentName, String phone);
+
+    /**
+     * @MethodName getDepartmentSeeAbleData
+     * @param
+     * @Description 获取部门有关可视化数据
+     * @Author JohnTang
+     * @Return java.util.Map<java.lang.String,java.lang.Object>
+     * @LastChangeDate 2020/12/15
+     */
+    Map<String, Object> getDepartmentSeeAbleData();
 }
 
