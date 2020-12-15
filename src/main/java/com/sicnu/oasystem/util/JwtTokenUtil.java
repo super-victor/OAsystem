@@ -1,9 +1,7 @@
 package com.sicnu.oasystem.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.sicnu.oasystem.pojo.Employee;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,67 +16,57 @@ import java.util.function.Function;
  * @ClassName JwtTokenUtil
  * @Description jwt-token的工具类，用于签发token，验证token等
  * @Author JohnTang
- * @LastChangeDate 2020/11/4 22:54
- * @Version v1.0
+ * @LastChangeDate 2020/12/15
+ * @Version v2.0
  */
 
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    // 密钥
     @Value("${jwt.secret}")
     private String secret;
 
+    // 过期时间
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+    /**
+     * @MethodName getUsername
+     * @param token
+     * @Description 从token中获取用户名
+     * @Author JohnTang
+     * @Return java.lang.String
+     * @LastChangeDate 2020/12/15
+     */
+    public String getUsername(String token){
+        return parseToken(token).getSubject();
     }
 
-    public Date getIssuedAtDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getIssuedAt);
+    /**
+     * @MethodName calculateExpirationDate
+     * @param createdDate
+     * @Description 计算过期时间
+     * @Author JohnTang
+     * @Return java.util.Date
+     * @LastChangeDate 2020/12/15
+     */
+    private Date calculateExpirationDate(Date createdDate) {
+        return new Date(createdDate.getTime() + expiration * 1000);
     }
 
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims getAllClaimsFromToken(String token) {
-        Claims claims;
-        try {
-            claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            //登录过期
-            claims = e.getClaims();
-        }
-        // 还有一个parse错误异常
-        return claims;
-    }
-
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-
-    public String generateToken(UserDetails userDetails) {
+    /**
+     * @MethodName generateToken
+     * @param subject 一般是用户名
+     * @Description 生成token
+     * @Author JohnTang
+     * @Return java.lang.String
+     * @LastChangeDate 2020/12/15
+     */
+    public String generateToken(String subject) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate(createdDate);
-
-        System.out.println("doGenerateToken " + createdDate);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -88,11 +76,52 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
+    /**
+     * @MethodName parseToken
+     * @param token
+     * @Description 解析token
+     * @Author JohnTang
+     * @Return io.jsonwebtoken.Claims
+     * @LastChangeDate 2020/12/15
+     */
+    private Claims parseToken(String token) throws ExpiredJwtException, SignatureException {
+        Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+        return claims;
+    }
+
+    /**
+     * @MethodName isTokenExpired
+     * @param claims
+     * @param passwordChangeDate 用户最后一次修改密码的时间
+     * @Description token是否过期
+     * @Author JohnTang
+     * @Return java.lang.Boolean
+     * @LastChangeDate 2020/12/15
+     */
+    private Boolean isTokenExpired(Claims claims, Date passwordChangeDate) {
+        Date expirationDate = claims.getExpiration();
+        Date createDate = new Date(expirationDate.getTime() - expiration * 1000);
+
+        // 如果签发的token未过期并且token在最后一次密码之后签发
+        return expirationDate.before(new Date()) && createDate.after(passwordChangeDate);
+    }
+
+    /**
+     * @MethodName refreshToken
+     * @param token
+     * @Description 刷新toekn
+     * @Author JohnTang
+     * @Return java.lang.String
+     * @LastChangeDate 2020/12/15
+     */
     public String refreshToken(String token) {
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate(createdDate);
 
-        final Claims claims = getAllClaimsFromToken(token);
+        final Claims claims = parseToken(token);
         claims.setIssuedAt(createdDate);
         claims.setExpiration(expirationDate);
 
@@ -102,15 +131,19 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (
-                username.equals(userDetails.getUsername())
-                        && !isTokenExpired(token)
-        );
+    /**
+     * @MethodName validateToken
+     * @param token
+     * @param userDetails
+     * @Description 验证token根据自己的需求自定义，这里是token的格式和是否过期和是否是本人
+     * @Author JohnTang
+     * @Return int
+     * @LastChangeDate 2020/12/15
+     */
+    public Boolean validateToken(String token, UserDetails userDetails) throws ExpiredJwtException, SignatureException {
+        Claims claims = parseToken(token);
+        String username = claims.getSubject();
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(claims, ((Employee)userDetails).getPasswordChangeDate()));
     }
 
-    private Date calculateExpirationDate(Date createdDate) {
-        return new Date(createdDate.getTime() + expiration * 1000);
-    }
 }

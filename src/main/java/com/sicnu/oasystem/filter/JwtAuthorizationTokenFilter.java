@@ -1,14 +1,14 @@
 package com.sicnu.oasystem.filter;
 
 import com.sicnu.oasystem.config.GlobalSecurityConfig;
+import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.DateUtil;
 import com.sicnu.oasystem.util.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,7 +18,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Date;
 
@@ -66,17 +65,20 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         String token = httpServletRequest.getHeader("token");
         if (token != null && flag) {
             try {
-                String username = jwtTokenUtil.getUsernameFromToken(token);
+                String username = jwtTokenUtil.getUsername(token);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    if (jwtTokenUtil.validateToken(token, userDetails)) {
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    Employee employeeDetail = (Employee)userDetailsService.loadUserByUsername(username);
+                    if (jwtTokenUtil.validateToken(token, employeeDetail)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(employeeDetail, null, employeeDetail.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }
                 }
-            // 捕捉过期和解析失败异常
-            } catch (Exception e){
-
+            // 捕捉过期异常
+            } catch (ExpiredJwtException e){
+                e.printStackTrace();
+            // 捕捉解析失败等异常
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

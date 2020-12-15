@@ -25,6 +25,8 @@ jwt:
   secret: tangliyi123fddsafasgkahgjdhgkjfhago9gjoasjglkkdsanglkjnfadlkgjnlfkangl;afdngafdng;
   # 过期时间
   expiration: 604800
+  # 距离过期多久时刷新,0表示不刷新
+  refreshWhenRemain: 60
 
 ##swagger
 myswagger:
