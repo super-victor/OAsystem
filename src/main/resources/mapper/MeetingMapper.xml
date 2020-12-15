@@ -6,7 +6,7 @@
         values (#{param1},0,#{param2},#{param3},0,#{param4},#{param5},#{param6},#{param7})
     </insert>
     <update id="approveMeeting">
-        update meeting set appoinmentstatus=#{param2} where meetingid=#{param1} and appoinmentstatus==0
+        update meeting set appoinmentstatus=#{param2} where meetingid=#{param1} and appoinmentstatus=0
     </update>
     <update id="updateOrderMeeting">
         update meeting set meetingid=#{param1}
@@ -66,5 +66,39 @@
     <select id="getAllMeetingTimeByRoomAndTime" resultType="com.sicnu.oasystem.pojo.Meeting">
         select starttime,endtime from meeting where meetingroomid=#{param1} and (UNIX_TIMESTAMP(starttime)>=UNIX_TIMESTAMP(#{param2}))
         and (UNIX_TIMESTAMP(#{param3})>=UNIX_TIMESTAMP(endtime))
+    </select>
+    <select id="getMeetingTrend" resultType="java.util.Map">
+        SELECT test as time,IF(sun is NULL,0,sun) as sum, If(departmentName is null,#{departmentName},departmentName) as departmentName from (SELECT
+        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 3 DAY),
+        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 4 ) DAY
+        ) as test
+        FROM
+        mysql.help_topic
+        WHERE
+        DAY ( last_day( curdate( ) )-16 )> help_topic_id
+        ORDER BY
+        help_topic_id)  as a LEFT  JOIN
+        (SELECT COUNT(*) as sun,DATE_FORMAT(meeting.createTime,'%Y-%m-%d') as Time,departmentName
+        FROM meeting,employee
+        where  date(meeting.createTime)>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+        and meeting.appoinmentStatus>0 and employee.employeeId=meeting.employeeId and employee.departmentName=#{departmentName}
+        GROUP BY departmentName,time) as b on a.test=b.Time
+    </select>
+    <select id="getMeetingTrendnums" resultType="java.lang.Integer">
+        SELECT count(sun) from (SELECT
+        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 3 DAY),
+        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 4 ) DAY
+        ) as test
+        FROM
+        mysql.help_topic
+        WHERE
+        DAY ( last_day( curdate( ) )-16 )> help_topic_id
+        ORDER BY
+        help_topic_id)  as a LEFT  JOIN
+        (SELECT COUNT(*) as sun,DATE_FORMAT(meeting.createTime,'%Y-%m-%d') as Time,departmentName
+        FROM meeting,employee
+        where  date(meeting.createTime)>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+        and meeting.appoinmentStatus>0 and employee.employeeId=meeting.employeeId and employee.departmentName=#{departmentName}
+        GROUP BY departmentName,time) as b on a.test=b.Time
     </select>
 </mapper>

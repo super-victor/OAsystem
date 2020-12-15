@@ -224,5 +224,10 @@ public class MeetingController {
         }
         return meetingServicelmpl.updateOrderMeeting(meetingid,meetingroomid,employeeid,name,StartTime,Endtine,peoplenum,remark);
     }
+
+    @GetMapping("/getall")
+    public BackFrontMessage getaaa(){
+        return new BackFrontMessage(200,"撒大大",meetingServicelmpl.MeetingTrendInfo());
+    }
 }
 

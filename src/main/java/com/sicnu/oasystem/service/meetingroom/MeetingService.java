@@ -5,6 +5,7 @@ import com.sicnu.oasystem.pojo.Meeting;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @InterfaceName MeetingService
@@ -135,4 +136,6 @@ public interface MeetingService {
     BackFrontMessage updateOrderMeeting(Integer meetingid,Integer meetingroomid, Integer employeeid,
                        String name, Date startTime,Date endtime,
                        Integer peoplenum,String remark);
+
+    Map<String,Object> MeetingTrendInfo();
 }
