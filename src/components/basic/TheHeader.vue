@@ -78,7 +78,7 @@
     },
     watch: {},
     methods: {
-      ...mapMutations(['GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU']),
+      ...mapMutations(['GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU','GET_USERINFO','UPDATE_USERROLE']),
       handleCommand(command) {
         if(command.index===1){
           this.$router.push(command.route);
@@ -91,6 +91,8 @@
             type: 'error'
           }).then(() => {
             this.GET_TOKEN(null);
+            this.GET_USERINFO({});
+            this.UPDATE_USERROLE('');
             this.RESET_PAGE_PERMISSIONS(this.userAuthorityTemple);
             this.RESET_ASIDE_MENU(this.asideMenuTemple);
             this.$router.push(command.route);

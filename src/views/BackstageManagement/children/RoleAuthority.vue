@@ -69,7 +69,7 @@
     },
     watch: {},
     methods: {
-      ...mapMutations(['UPDATE_BREAD','GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU']),
+      ...mapMutations(['UPDATE_BREAD','GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU','GET_USERINFO','UPDATE_USERROLE']),
       handleCheckAllChange(val,obj) {
         obj.currentAuthority = val ? obj.totalAuthority : [];
         obj.isIndeterminate = false;
@@ -137,6 +137,8 @@
               type: 'warning'
             }).then(() => {
               this.GET_TOKEN(null);
+              this.GET_USERINFO({});
+              this.UPDATE_USERROLE('');
               this.RESET_PAGE_PERMISSIONS(this.userAuthorityTemple);
               this.RESET_ASIDE_MENU(this.asideMenuTemple);
               this.$router.push("/login");

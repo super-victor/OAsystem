@@ -69,7 +69,7 @@ export default{
     }
   },
   [RESET_PAGE_PERMISSIONS](state,payload){
-    state.userAuthority = payload;
+    state.userAuthority = JSON.parse(JSON.stringify(payload));
   },
   [UPDATE_BREAD](state,payload){
     state.currentBread = payload;
@@ -110,6 +110,6 @@ export default{
     state.asideMenu = updateAsideMenu;
   },
   [RESET_ASIDE_MENU](state,payload){
-    state.asideMenu = payload;
+    state.asideMenu = JSON.parse(JSON.stringify(payload));
   },
 }
