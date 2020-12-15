@@ -1,100 +1,74 @@
 !<!-- SendFileManagement -->
 <template>
   <div class='message' @click="mainBoxClick">
-      <div class="return_button">
-        <img src="@/assets/return.png" alt="" @click="routeTo">
-      </div>
-      <div class="message_box">
-        <p class="title">未读消息</p>
-        <el-table
-            ref="multipleTable"
-            :data="tableDataUnread"
-            style="width: 100%"
-            tooltip-effect="dark"
-            :row-class-name="tableRowClassName"
-            @selection-change="handleSelectionChange">
-            <el-table-column
-            type="selection"
-            width="55">
-            </el-table-column>
-            <el-table-column
-            prop="date"
-            label="时间"
-            width="180">
-                <template slot-scope="scope">{{ scope.row.date }}</template>
-            </el-table-column>
-            <el-table-column
-            prop="type"
-            label="类型"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="message"
-            label="消息">
-            </el-table-column>
-        </el-table>
-        <div>
-            <el-button @click="toggleSelection()" class="button" v-if="multipleSelection.length!==0">取消选择</el-button>
-            <el-button type="primary" @click="selectAlready()" class="button" v-if="multipleSelection.length!==0">标记已读</el-button>
-        </div>
-      </div>
-      <div class="message_box">
-        <p class="title">已读消息</p>
-        <el-table
-            ref="multipleTable"
-            :data="tableDataRead"
-            style="width: 100%"
-            tooltip-effect="dark"
-            :row-class-name="tableRowClassName">
-            <el-table-column
-            prop="date"
-            label="时间"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="type"
-            label="类型"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="message"
-            label="消息">
-            </el-table-column>
-        </el-table>
-      </div>
+    <img src="@/assets/return.png" alt="" @click="routeTo">
+    <div class="message_box">
+      <el-tabs type="border-card" v-model="theLabel">
+        <el-tab-pane label="所有消息" name="所有消息">
+          <div class="center" v-loading="loading">
+            <message-item
+            v-for="item in messageR.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :key="item.messageId"
+            :msg="item"/>
+            <el-pagination
+              @size-change="handleSizeChangeO"
+              @current-change="handleCurrentChangeO"
+              :current-page.sync="currentPage"
+              :page-sizes="[5, 10, 20, 30]"
+              :page-size="pageSize"
+              layout="sizes, prev, pager, next"
+              :total="totalCount"
+              v-if="this.totalCount !== 0"
+              class="pagination">
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="未读消息" name="未读消息">
+          <div class="message_box">
+            <div class="center" v-loading="loading">
+              <message-item
+              v-for="item in messageNoR.slice((currentPage2-1)*pageSize2,currentPage2*pageSize2)"
+              :key="item.messageId"
+              :msg="item"/>
+              <el-pagination
+                @size-change="handleSizeChangeT"
+                @current-change="handleCurrentChangeT"
+                :current-page.sync="currentPage2"
+                :page-sizes="[5, 10, 20, 30]"
+                :page-size="pageSize2"
+                layout="sizes, prev, pager, next"
+                :total="totalCount2"
+                v-if="this.totalCount2 !== 0"
+                class="pagination">
+              </el-pagination>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex';
+  import messageApi from '@/service/Message';
+  import MessageItem from './component/MessageItem';
   export default {
     components: {
+      MessageItem
     },
     data() {
       return {
-        tableDataUnread: [{
-          date: '2020-12-07',
-          type: 'success',
-          message: '添加修改日程',
-        }, {
-          date: '2020-12-07',
-          type: 'warning',
-          message: '获取个人日程的参数有问题',
-        },{
-          date: '2020-12-07',
-          type: 'error',
-          message: '获取个人日程的参数处理失败',
-        }, {
-          date: '2020-12-07',
-          type: 'info',
-          message: '用户加一',
-        }],
-        tableDataRead: [{
-          date: '2020-12-07',
-          type: 'success',
-          message: '添加修改名片',
-        }],
-        multipleSelection:[],
+        messageNoR:[],
+        messageR:[],
+        theLabel:'所有消息',
+        currentPage:1,
+        pageSize:5,
+        totalCount: 0,
+        currentPage2:1,
+        pageSize2:5,
+        totalCount2: 0,
+        loading:true,
       }
     },
     computed: {},
@@ -104,79 +78,93 @@
       mainBoxClick(){
         this.MAIN_CLICK(false);
       },
-      // 渲染每行颜色
-      tableRowClassName({row, rowIndex}) {
-        if (row.type==='warning') {
-          return 'warning-row';
-        } else if (row.type==='success') {
-          return 'success-row';
-        } else if (row.type==='info') {
-            return 'info-row';
-        } else if (row.type==='error') {
-            return 'danger-row';
-        }
-        return '';
+      getMessage(){
+        messageApi.getMessage()
+        .then(res=>{
+          this.messageR = res.object;
+          // console.log(res);
+          this.totalCount = this.messageR.length;
+          this.loading = false;
+        })
+        .catch(err=>{
+          console.log(err);
+        })
       },
-      // 选择
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
-      // 取消选择
-      toggleSelection() {
-        this.$refs.multipleTable.clearSelection();
+      getMessageNot(){
+        messageApi.getMessageNotRead()
+        .then(res=>{
+          this.messageNoR = res.object;
+          this.totalCount2 = this.messageNoR.length;
+          // console.log(res);
+          this.loading = false;
+        })
+        .catch(err=>{
+          console.log(err);
+        })
       },
       // 返回上一页
       routeTo() {
         this.$router.go(-1);
       },
-      selectAlready(){},
+      handleSizeChangeO(val) {
+        this.pageSize = val;
+      },
+      handleCurrentChangeO(val) {
+        // console.log(`当前页: ${val}`);
+        this.currentPage = val;
+      },
+      handleSizeChangeT(val) {
+        this.pageSize2 = val;
+      },
+      handleCurrentChangeT(val) {
+        // console.log(`当前页: ${val}`);
+        this.currentPage2 = val;
+      }
     },
     created() {
-      
+      this.getMessage();
+      this.getMessageNot();
     },
     mounted() {
-      this.UPDATE_BREAD(['消息','消息']);
+      this.UPDATE_BREAD(['消息']);
     }
   }
 </script>
 <style lang='less' scoped>
-@import '../../style/common.less';
+// @import '../../style/common.less';
   .message{
     height: 100%;//这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部子路由组件高度不超过该组件高度，不然会出现bug
     width: 100%;
-    background-color: @lighterBackground;
-    .return_button{
-        img {
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-        }
+    padding: 0 30px;
+    box-sizing: border-box;
+    background-color: #F5F7FA;
+    font-size: 30px;
+    .message_box {
+      height: 500px;
+      width: 100%;
+      ::v-deep .el-tabs__nav{
+        margin-top: -6px;
+      }
     }
-    .message_box{
-        width: 10rem;
-        margin-left: 40px;
-        background-color: @white;
-        border-radius: @baseBorderRadius;
-        padding: 10px;
-        margin-bottom: 40px;
-        p.title {
-            margin: 10px;
-            font-size:0.3rem;
-            color: @primaryText;
-        }
+    img {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      margin: 10px 0;
     }
-    ::v-deep .el-table .warning-row {
-        color: @warningColor;
+    .center{
+      width: 100%;
+      padding: 10px 30px;
+      height: 500px;
+      background-color: #fff;
+      border-radius: 4px;
+      overflow-y: scroll;
+      .pagination {
+        margin: 0 auto;
+      }
     }
-    ::v-deep .el-table .success-row {
-        color: @successColor;
-    }
-    ::v-deep .el-table .danger-row {
-        color: @dangerColor;
-    }
-    button {
-        width: 100px;
-        height: 40px;
+    .center::-webkit-scrollbar{
+      display: none;
     }
   }
 </style>

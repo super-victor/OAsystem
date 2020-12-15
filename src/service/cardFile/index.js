@@ -12,7 +12,7 @@ export default{
       url:'/CardHolder',
       method:'get',
       postHeaderType:'application/x-www-form-urlencoded',
-      throttle:true,
+      // throttle:true,
     })
     return res.data;
   },
@@ -27,7 +27,7 @@ export default{
     const res = await NetworkRequest({
         url:'/CardHolder',
         method:'post',
-        throttle:true,
+        // throttle:true,
         data
     });
     return res.data;
@@ -43,7 +43,7 @@ export default{
     const res = await NetworkRequest({
         url:'/CardHolder',
         method:'delete',
-        throttle:true,
+        // throttle:true,
         data
     });
     return res.data;
@@ -59,7 +59,7 @@ export default{
     const res = await NetworkRequest({
         url:'/CardHolder',
         method:'put',
-        throttle:true,
+        // throttle:true,
         data
     });
     return res.data;
@@ -76,7 +76,7 @@ export default{
         url:'/Card',
         method:'get',
         postHeaderType:'multipart/form-data',
-        throttle:true,
+        // throttle:true,
         data
       })
       return res.data;
@@ -91,7 +91,7 @@ export default{
     const res = await NetworkRequest({
       url:'/Card',
       method:'post',
-      throttle:true,
+      // throttle:true,
       data
     })
     return res.data;
@@ -106,7 +106,7 @@ export default{
     const res = await NetworkRequest({
       url:'/shareCard',
       method:'post',
-      throttle:true,
+      // throttle:true,
       data
     })
     return res.data;
@@ -121,7 +121,7 @@ export default{
     const res = await NetworkRequest({
       url:'/Card',
       method:'put',
-      throttle:true,
+      // throttle:true,
       data
     })
     return res.data;
@@ -136,7 +136,7 @@ export default{
     const res = await NetworkRequest({
       url:'/Card',
       method:'delete',
-      throttle:true,
+      // throttle:true,
       data
     })
     return res.data;

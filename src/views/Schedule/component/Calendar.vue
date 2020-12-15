@@ -2,7 +2,7 @@
 	<div class="item">
     <FullCalendar class="fullCalendar" ref="fullCalendar" :options="calendarOptions"/>
     <el-dialog title="日程信息" :visible.sync="dialogVisible1" class="dialog">
-      <div class="row" v-if="type==='公司日程'">
+      <div class="row" v-if="type==='company'">
         <p class="in_label">发起人</p>
         <p>{{info.leader}}</p>
       </div>
@@ -10,9 +10,9 @@
         <p class="in_label">日程内容</p>
         <p>{{info.content}}</p>
       </div>
-      <div class="row" v-if="type==='公司日程'">
+      <div class="row" v-if="type==='company'">
         <p class="in_label">参与人员</p>
-        <p>{{info.joiner}}</p>
+        <p>{{joinerName}}</p>
       </div>
       <div class="row">
         <p class="in_label">日程地点</p>
@@ -57,7 +57,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updateInfo()">确定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="updateInfo()">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -84,20 +84,22 @@ export default {
       calendarApi: null,
       update:true,
       info:[],
-        rules:{
-          content:[
-            { required: true, message: '请输入日程内容', trigger: 'blur' }
-          ],
-          location:[
-            { required: true, message: '请输入日程地点', trigger: 'blur' }
-          ],
-          startTime:[
-            { required: true, message: '请输入开始时间', trigger: 'blur' }
-          ],
-          endTime:[
-            { required: true, message: '请输入结束时间', trigger: 'blur' }
-          ]
-        },
+      joinerName:[],
+      buttonLoading:false,
+      rules:{
+        content:[
+          { required: true, message: '请输入日程内容', trigger: 'blur' }
+        ],
+        location:[
+          { required: true, message: '请输入日程地点', trigger: 'blur' }
+        ],
+        startTime:[
+          { required: true, message: '请输入开始时间', trigger: 'blur' }
+        ],
+        endTime:[
+          { required: true, message: '请输入结束时间', trigger: 'blur' }
+        ]
+      },
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ], // 需要用哪个插件引入后放到这个数组里
         initialDate: new Date(), // 日历第一次加载时显示的初始日期。可以解析为Date的任何职包括ISO8601日期字符串，例如"2014-02-01"。
@@ -161,21 +163,41 @@ export default {
       if (dateClickInfo.event) {
         this.scheduleId = parseInt(dateClickInfo.event.id);
         // console.log(dateClickInfo.event);
-        scheduleAPI.getSchedule({
+      if (this.type==='mine') {
+        scheduleAPI.SelfSchedule({
           scheduleId:this.scheduleId
         })
         .then(res=>{
           this.dialogVisible1 = true;
           this.info = res.object;
-          console.log(res);
+          // console.log(res.object);
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+      } else {
+        scheduleAPI.CompanySchedule({
+          scheduleId:this.scheduleId
+        })
+        .then(res=>{
+          this.dialogVisible1 = true;
+          this.info = res.object;
+          if (res.object.joiner) {
+            res.object.joiner.forEach(element => {
+              this.joinerName.push(element);
+            });
+          }
+          // console.log(res.object);
         })
         .catch(err=>{
           console.log(err);
         })
       }
+      }
     },
     // 修改个人日程
     updateInfo() {
+      this.buttonLoading = true;
       console.log(this.info.endTime);
       scheduleAPI.updateSelfSchedule({
         content:this.info.content,
@@ -187,6 +209,7 @@ export default {
       .then(res=>{
         this.dialogVisible1=this.dialogVisible2=false;
         // this.$router.go(0);
+        this.buttonLoading = false;
         this.$message.success('修改成功');
       })
       .catch(err=>{
@@ -227,7 +250,6 @@ export default {
   },
   created() {
     this.calendarOptions.events = this.events;
-    // console.log(this.calendarOptions.initialDate);
   }
 }
 </script>
@@ -235,7 +257,6 @@ export default {
 <style lang="less" scoped>
 .item {
   .dialog .el-dialog__body{
-    width: 100%;
     .row {
       .in_label {
         font-weight: bold;
@@ -246,5 +267,28 @@ export default {
       margin-bottom: 10px;
     }
   }
+/deep/.fc-daygrid-event{
+  cursor: pointer;
+}
+/deep/.fc-daygrid-event :hover{
+  opacity: .8;
+}
+/deep/.fc .fc-toolbar > * > * {
+  button {
+    background-color: #578BFA;
+    border-color: #4A76D4;
+  }
+}
+/deep/.fc th, .fc td{
+  font-weight: normal;
+  color: #565A66;
+}
+/deep/.fc-state-default{
+  background: #fff;
+  box-shadow:none;
+  border-color: #D9D9D9;
+  color:#000;
+  font-size: 14px;
+}
 }
 </style>

@@ -59,7 +59,9 @@ import {
   TimePicker,
   Tree,
   Collapse,
-  CollapseItem
+  CollapseItem,
+  Badge,
+  Tooltip
 } from 'element-ui';
 
 Vue.use(Container);
@@ -115,6 +117,8 @@ Vue.use(TimePicker);
 Vue.use(Tree);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
+Vue.use(Badge);
+Vue.use(Tooltip);
 Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.prototype.$loading = Loading.service;
