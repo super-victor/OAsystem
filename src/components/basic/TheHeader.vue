@@ -2,7 +2,7 @@
 <template>
   <div class='header' @mousewheel.prevent>
     <div class="logoBox">
-      <img src="@/assets/logo.png" class="logo" alt="">
+      <img src="@/assets/logo.png" class="logo" alt="" @click="toHome">
     </div>
     <div class="headerBox">
       <p class="name">协同办公平台</p>
@@ -71,12 +71,14 @@
     },
     computed: {
       ...mapState([
-        'userInfo'
+        'userInfo',
+        'userAuthorityTemple',
+        'asideMenuTemple'
       ])
     },
     watch: {},
     methods: {
-      ...mapMutations(['GET_TOKEN']),
+      ...mapMutations(['GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU']),
       handleCommand(command) {
         if(command.index===1){
           this.$router.push(command.route);
@@ -89,12 +91,17 @@
             type: 'error'
           }).then(() => {
             this.GET_TOKEN(null);
+            this.RESET_PAGE_PERMISSIONS(this.userAuthorityTemple);
+            this.RESET_ASIDE_MENU(this.asideMenuTemple);
             this.$router.push(command.route);
           }).catch(() => {});
         }
       },
       toMessage(){
         this.$router.push('/message');
+      },
+      toHome(){
+        this.$router.push('/');
       }
     },
     created() {
@@ -121,6 +128,7 @@
       .logo{
         height: 32px;
         width: 37px;
+        cursor: pointer;
       }
     }
     .headerBox{

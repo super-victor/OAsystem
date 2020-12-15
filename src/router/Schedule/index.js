@@ -26,7 +26,7 @@ import ManagementSchedule from '@/views/Schedule/children/ManagementSchedule'
             component:CreateSchedule
         },
         {
-            path:'management-schedule',
+            path:'schedule-management',
             name:'ManagementSchedule',
             component:ManagementSchedule
         }

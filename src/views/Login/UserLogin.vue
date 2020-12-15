@@ -17,7 +17,7 @@
 
 <script>
   import loginAPI from '@/service/userLogin';
-  import {mapMutations} from 'vuex';
+  import {mapState,mapMutations} from 'vuex';
   export default {
     components: {},
     data() {
@@ -28,6 +28,7 @@
       };
     },
     computed: {
+      ...mapState(['userInfo','userRole']),
       inputStatus(){
         return this.userName!='' && this.passWord!='';
       }
@@ -38,7 +39,7 @@
       }
     },
     methods: {
-      ...mapMutations(['GET_USERINFO','UPDATE_PAGE_PERMISSIONS']),
+      ...mapMutations(['GET_USERINFO','UPDATE_PAGE_PERMISSIONS','UPDATE_USERROLE','UPDATE_ASIDE_MENU']),
       login(){
         if(!this.flag){
           this.$message({
@@ -53,12 +54,14 @@
         })
         .then(res=>{
           this.GET_USERINFO(res.object);
+          this.UPDATE_USERROLE(this.userInfo.userinfo.authorities.some(item=>item.roleId===1)?'administrator':(this.userInfo.userinfo.authorities.some(item=>item.roleId===2)?'normalAdministrator':'staff'));
           this.$message({
             message: '登录成功',
             type: 'success'
           });
           this.pagePermissions(res.object.usershow);
-          this.$router.replace(this.$route.query.redirect || '/');
+          this.UPDATE_ASIDE_MENU();
+          this.$router.replace(this.userRole=='administrator'?'/administrator':this.$route.query.redirect || '/');
         })
         .catch(err=>{
           this.$message.error('登录失败');

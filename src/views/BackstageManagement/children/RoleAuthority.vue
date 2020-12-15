@@ -65,11 +65,11 @@
       };
     },
     computed: {
-      ...mapState(['userAuthority'])
+      ...mapState(['userAuthority','userInfo','userAuthorityTemple','asideMenuTemple'])
     },
     watch: {},
     methods: {
-      ...mapMutations(['UPDATE_BREAD']),
+      ...mapMutations(['UPDATE_BREAD','GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU']),
       handleCheckAllChange(val,obj) {
         obj.currentAuthority = val ? obj.totalAuthority : [];
         obj.isIndeterminate = false;
@@ -126,6 +126,23 @@
             type: 'success'
           });
           this.buttonLoading = false;
+          let roleArr = [];
+          for(let item of this.userInfo.userinfo.authorities){
+            roleArr.push(item.roleId);
+          }
+          if(roleArr.includes(Number(this.roleId))){
+            this.$confirm('监测到与您有关的角色权限已发生变化，请重新登录系统，是否立即跳转到登录页面?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.GET_TOKEN(null);
+              this.RESET_PAGE_PERMISSIONS(this.userAuthorityTemple);
+              this.RESET_ASIDE_MENU(this.asideMenuTemple);
+              this.$router.push("/login");
+            }).catch(() => {       
+            });
+          }
         })
         .catch(err=>{
           this.$message.error('修改失败');

@@ -50,6 +50,7 @@ export const NetworkRequest = options => {
       let {data,headers} = response;
       if(throttle){
         loading.close();
+        throttle = null;
       }
       //这里判断自定义错误，进行页面跳转等，抛出异常
       if(data.status===301){

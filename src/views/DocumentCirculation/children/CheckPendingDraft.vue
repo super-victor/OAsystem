@@ -7,7 +7,7 @@
     </div>
     <div class="optionBox">
       <div class="optionBoxInner">
-        <div style="height: 580px;width:90%;margin:15px 0 0 5%">
+        <div class="stepBox">
           <el-steps :space="1000" :active="2" direction="vertical" finish-status="success">
             <el-step title="编写拟稿" description="已完成对公文拟稿的编写"></el-step>
             <el-step title="确认拟稿" description="已完成对公文拟稿的确认"></el-step>
@@ -134,6 +134,11 @@
         }
         ::v-deep .el-step__description.is-wait{
           color: @regularText;
+        }
+        .stepBox{
+          height: calc(100vh - 240px);
+          width:90%;
+          margin:15px 0 0 5%;
         }
         .buttonBox{
           height: 40px;

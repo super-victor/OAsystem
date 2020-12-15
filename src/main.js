@@ -3,6 +3,7 @@ import '@/theme/index.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import authority from '@/authority/authority.js'
 import 'element-ui/lib/theme-chalk/base.css';
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
@@ -42,6 +43,7 @@ import {
   Popover,
   MessageBox,
   Checkbox,
+  CheckboxButton,
   CheckboxGroup,
   Loading,
   Switch,
@@ -97,6 +99,7 @@ Vue.use(TabPane);
 Vue.use(Tag);
 Vue.use(Popover);
 Vue.use(Checkbox);
+Vue.use(CheckboxButton);
 Vue.use(CheckboxGroup);
 Vue.use(Loading.directive);
 Vue.use(Switch);
@@ -126,6 +129,8 @@ Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 
 Vue.prototype.$notify = Notification;
+
+Vue.prototype.$authority = authority;
 
 new Vue({
   router,

@@ -109,7 +109,6 @@
               label="入职登记时间"
               :formatter="getEntryTime"
               sortable
-              width="160"
               align="center">
             </el-table-column>
             <el-table-column 
@@ -401,6 +400,9 @@ import {mapMutations} from 'vuex';
           background-color: @correlateColor1 !important;
           color: @white;
         }
+      }
+      .departmentList::-webkit-scrollbar{
+        display: none;
       }
     }
     .roleBox{

@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div v-if="$store.state.userToken!==null">
+    <div v-if="$store.state.userToken!==null && $store.state.userRole=='administrator'">
+      <router-view/>
+    </div>
+    <div v-else-if="$store.state.userToken!==null">
       <el-container class="container">
         <el-header>
           <the-header></the-header>

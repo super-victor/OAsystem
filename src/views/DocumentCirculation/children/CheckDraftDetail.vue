@@ -7,7 +7,7 @@
     </div>
     <div class="optionBox">
       <div class="optionBoxInner">
-        <div style="height: 580px;width:90%;margin:15px 0 0 5%">
+        <div class="stepBox">
           <div class="checkBox">
             <p class="title">审稿结论：</p>
             <div class="button">
@@ -170,50 +170,55 @@
         ::v-deep .el-step__description.is-wait{
           color: @regularText;
         }
-        .checkBox{
-          height: 20%;
-          width: 100%;
-          .title{
-            height: 25%;
+        .stepBox{
+          height: calc(100vh - 240px);
+          width:90%;
+          margin:15px 0 0 5%;
+          .checkBox{
+            height: 20%;
             width: 100%;
-            color: @primaryText;
-            font-size: 0.26rem;
-          }
-          .button{
-            height: 75%;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            .circleButton{
-              height:0.7rem;
-              width:0.7rem;
-              font-size:0.3rem;
+            .title{
+              height: 25%;
+              width: 100%;
+              color: @primaryText;
+              font-size: 0.26rem;
             }
-            ::v-deep .el-button.is-circle{
-              padding: 0;
+            .button{
+              height: 75%;
+              width: 100%;
               display: flex;
               align-items: center;
-              justify-content: center;
+              justify-content: space-around;
+              .circleButton{
+                height:0.7rem;
+                width:0.7rem;
+                font-size:0.3rem;
+              }
+              ::v-deep .el-button.is-circle{
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
             }
           }
-        }
-        .textBox{
-          height: 70%;
-          width: 100%;
-          margin-top: 0.1rem;
-          .title{
-            height: 12%;
+          .textBox{
+            height: 70%;
             width: 100%;
-            color: @primaryText;
-            font-size: 0.26rem;
-          }
-          .text{
-            height: 88%;
-            width: 98%;
-            margin-left: 1%;
-            display: flex;
-            align-items: flex-start;
+            margin-top: 0.1rem;
+            .title{
+              height: 12%;
+              width: 100%;
+              color: @primaryText;
+              font-size: 0.26rem;
+            }
+            .text{
+              height: 88%;
+              width: 98%;
+              margin-left: 1%;
+              display: flex;
+              align-items: flex-start;
+            }
           }
         }
         .buttonBox{

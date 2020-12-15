@@ -70,7 +70,7 @@ export default{
   },
 
   /**
-   * 获取或创建空白发文
+   * 获取审查人
    * @returns {Promise<Object>} 
   */
   async getAllCensor(){

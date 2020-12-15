@@ -1,7 +1,7 @@
 <!-- ProFile -->
 <template>
   <div class='ProFile' @click="mainBoxClick">
-    <div class="profileBox">
+    <div class="profileBox" v-show="checkFlag">
       <div class="imgBox">
         <img src="@/assets/user.png" alt="" class="img">
         <div class="nameBox">
@@ -49,16 +49,16 @@
             </el-col>
           </el-row>
           <el-form-item label="电子邮箱" prop="email" style="height:60px;width:500px">
-            <el-input v-model="formData.email"></el-input>
+            <el-input :disabled="!updateFlag" v-model="formData.email"></el-input>
           </el-form-item>
           <el-form-item label="家庭住址" prop="homeAddress" style="height:60px;width:500px">
-            <el-input v-model="formData.homeAddress"></el-input>
+            <el-input :disabled="!updateFlag" v-model="formData.homeAddress"></el-input>
           </el-form-item>
           <el-form-item label="电话号码" prop="phone" style="height:60px;width:500px">
-            <el-input v-model.number="formData.phone"></el-input>
+            <el-input :disabled="!updateFlag" v-model.number="formData.phone"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="button" @click="submitForm('formData')">保存信息</el-button>
+            <el-button type="primary" class="button" @click="submitForm('formData')" v-show="updateFlag">保存信息</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -87,7 +87,9 @@
             { required: true, message: '请输入电话号码', trigger: 'blur' },
             { pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '电话号码格式有误' }
           ]
-        }
+        },
+        checkFlag:false,
+        updateFlag:false
       };
     },
     computed: {
@@ -139,6 +141,9 @@
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('user').role;
+      if(role['0001'].own) this.checkFlag = true;
+      if(role['0002'].own) this.updateFlag = true;
       let {email,homeAddress,phone} = this.userInfo.userinfo;
       this.formData = {
         email,

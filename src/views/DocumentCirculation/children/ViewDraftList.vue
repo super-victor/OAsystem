@@ -19,14 +19,14 @@
         >
         <el-table-column
           prop="title"
-          label="拟稿标题"
+          label="公文标题"
           sortable
           width="170"
           align="center">
         </el-table-column>
         <el-table-column
           prop="type"
-          label="拟稿种类"
+          label="公文种类"
           sortable
           align="center">
         </el-table-column>
@@ -63,7 +63,7 @@
               placement="top-start"
               trigger="hover"
               :open-delay="500"
-              content="查看拟稿">
+              content="查看公文">
                 <el-button slot="reference" type="primary" icon="el-icon-view" circle @click="checkDraftInfo(scope.row)"></el-button>
             </el-popover>
           </template>
@@ -124,7 +124,7 @@
         this.loading = false;
       })
       .catch(err=>{
-        this.$message.error('获取拟稿失败');
+        this.$message.error('获取公文失败');
       })
     }
   }

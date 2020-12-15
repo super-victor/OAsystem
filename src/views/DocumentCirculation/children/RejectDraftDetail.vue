@@ -7,7 +7,7 @@
     </div>
     <div class="optionBox">
       <div class="optionBoxInner">
-        <div style="height: 580px;width:90%;margin:15px 0 0 5%">
+        <div class="stepBox">
           <div class="checkBox">
             <p class="title">发布失败理由：</p>
             <div class="text">
@@ -155,27 +155,32 @@
         ::v-deep .el-step__description.is-wait{
           color: @regularText;
         }
-        .checkBox{
-          height: 90%;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          align-items: center;
-          .title{
-            height: 5%;
-            width: 100%;
-            color: @primaryText;
-            font-size: 0.26rem;
-          }
-          .text{
+        .stepBox{
+          height: calc(100vh - 240px);
+          width:90%;
+          margin:15px 0 0 5%;
+          .checkBox{
             height: 90%;
-            width: 98%;
-            word-break:break-all;
-            color: @regularText;
-            font-size: 0.18rem;
-            padding: 10px;
-            box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            .title{
+              height: 5%;
+              width: 100%;
+              color: @primaryText;
+              font-size: 0.26rem;
+            }
+            .text{
+              height: 90%;
+              width: 98%;
+              word-break:break-all;
+              color: @regularText;
+              font-size: 0.18rem;
+              padding: 10px;
+              box-sizing: border-box;
+            }
           }
         }
         .buttonBox{

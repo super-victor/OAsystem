@@ -2,11 +2,11 @@
 <template>
   <div class='QueryDraft'>
     <div class="topBox">
-      <query-drafts></query-drafts>
-      <query-reject></query-reject>
+      <query-drafts v-show="draftsFlag"></query-drafts>
+      <query-reject v-show="rejectFlag"></query-reject>
     </div>
     <div class="bottomBox">
-      <query-verify></query-verify>
+      <query-verify v-show="verifyFlag"></query-verify>
     </div>
   </div>
 </template>
@@ -24,6 +24,9 @@
     },
     data() {
       return {
+        draftsFlag:false,
+        rejectFlag:false,
+        verifyFlag:false
       };
     },
     computed: {
@@ -33,7 +36,11 @@
       ...mapMutations(['UPDATE_BREAD'])
     },
     created() {
-      
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      console.log(role)
+      if(role['002G'].own) this.draftsFlag = true;
+      if(role['002M'].own) this.rejectFlag = true;
+      if(role['002L'].own) this.verifyFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','查询拟稿']);

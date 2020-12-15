@@ -53,7 +53,7 @@
                 </el-col>
               </el-row>
               <el-form-item label="审查人" prop="censorId" style="height:60px;width:5rem;">
-                <el-select @visible-change="censorChange" v-model="formData.censorId" placeholder="请选择审查者">
+                <el-select v-model="formData.censorId" placeholder="请选择审查者">
                     <el-option
                       v-for="item in censorList"
                       :key="item.employeeId"
@@ -420,17 +420,6 @@
             return false;
           }
         });
-      },
-      censorChange(flag){
-        if(flag && this.censorList.length==0){
-          sendFileAPI.getAllCensor()
-          .then(res=>{
-            this.censorList = res.object;
-          })
-          .catch(err=>{
-            this.$message.error('获取审查人失败');
-          })
-        }
       },
       //文件上传
       beforeUpload(f){
