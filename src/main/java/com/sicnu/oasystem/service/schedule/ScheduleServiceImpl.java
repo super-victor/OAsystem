@@ -250,15 +250,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         Calendar calendar = new GregorianCalendar();
         assert dayTime != null;
         calendar.setTime(dayTime);
-        Date nextDate = dayTime;
+        Date nextDate;
         List<DataSeeAbleA> countList = new ArrayList<>();
-        for (int i = -1; i >= -15; i--) {
-            calendar.add(Calendar.DATE, -1); //把日期往前推动一天
+        for (int i = 1; i <= 15; i++) {
             nextDate=calendar.getTime();
             int count = scheduleMapper.findCompanyScheduleByDate(nextDate, dayTime);
             DataSeeAbleA dataSeeAbleA = new DataSeeAbleA(nextDate, count);
             countList.add(dataSeeAbleA);
             dayTime = nextDate;
+            calendar.add(Calendar.DATE, -1); //把日期往前推动一天
         }
         return countList;
     }
