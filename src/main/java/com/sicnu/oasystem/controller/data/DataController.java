@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.controller.data;
 
+import com.sicnu.oasystem.aop.Role;
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.service.data.DataService;
 import com.sicnu.oasystem.service.document.DocumentService;
@@ -28,6 +29,7 @@ public class DataController {
     DataService dataService;
 
     @ApiOperation("系统总访问量和当天访问量")
+    @Role(id = 1)
     @GetMapping("/data/systemViews")
     public BackFrontMessage getSystemViews(){
         Map<String,Integer> map = new HashMap<>(2);
@@ -38,16 +40,15 @@ public class DataController {
 
 
     @ApiOperation("系统总的数据统计")
+    @Role(id = 1)
     @GetMapping("/data/system")
     public BackFrontMessage getSystemData(){
-
         return dataService.getSystemData();
     }
 
     @ApiOperation("个人的数据统计")
     @GetMapping("/data/person")
     public BackFrontMessage getPersonData(){
-
         return dataService.getSelfData();
     }
 

@@ -35,6 +35,8 @@ public class DataServiceImpl implements DataService{
 
     @Override
     public BackFrontMessage getSelfData() {
-        return null;
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("document",documentService.getSelfDocumentSeeAbleData());
+        return new BackFrontMessage(200, "获取成功",map);
     }
 }

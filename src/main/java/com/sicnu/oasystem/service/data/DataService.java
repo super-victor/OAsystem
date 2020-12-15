@@ -12,7 +12,23 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 
 public interface DataService {
 
+    /**
+     * @MethodName getSystemData
+     * @param
+     * @Description 获取系统可视化数据
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/15
+     */
     BackFrontMessage getSystemData();
 
+    /**
+     * @MethodName getSelfData
+     * @param
+     * @Description 获取个人可视化数据
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/15
+     */
     BackFrontMessage getSelfData();
 }

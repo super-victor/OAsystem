@@ -197,7 +197,23 @@ public interface DocumentService {
      */
     BackFrontMessage putDocumentNotPassIntoDraftbox(int sendfileId);
 
+    /**
+     * @MethodName getSystemDocumentSeeAbleData
+     * @param
+     * @Description 获取系统公文的可视化数据
+     * @Author JohnTang
+     * @Return java.util.Map<java.lang.String,java.lang.Object>
+     * @LastChangeDate 2020/12/15
+     */
     Map<String,Object> getSystemDocumentSeeAbleData();
 
+    /**
+     * @MethodName getSelfDocumentSeeAbleData
+     * @param
+     * @Description 获取自己公文的可视化数据
+     * @Author JohnTang
+     * @Return java.util.Map<java.lang.String,java.util.List>
+     * @LastChangeDate 2020/12/15
+     */
     Map<String,List> getSelfDocumentSeeAbleData();
 }

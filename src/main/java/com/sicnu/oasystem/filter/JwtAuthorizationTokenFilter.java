@@ -46,7 +46,6 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         // todo
         // 1.检查token在用户修改密码后签发
         // 2.如果token快要过期刷新token，
-        // 3.捕捉过期和解析失败异常
 
         // 访问量
         DataUtil.Data_Total_Views++;
@@ -66,13 +65,18 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
         String token = httpServletRequest.getHeader("token");
         if (token != null && flag) {
-            String username = jwtTokenUtil.getUsernameFromToken(token);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (jwtTokenUtil.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            try {
+                String username = jwtTokenUtil.getUsernameFromToken(token);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (jwtTokenUtil.validateToken(token, userDetails)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
                 }
+            // 捕捉过期和解析失败异常
+            } catch (Exception e){
+
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

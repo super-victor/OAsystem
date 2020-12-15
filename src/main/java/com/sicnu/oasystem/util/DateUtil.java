@@ -13,6 +13,16 @@ import java.util.GregorianCalendar;
  */
 
 public class DateUtil {
+
+    /**
+     * @MethodName isSameDay
+     * @param date1
+     * @param date2
+     * @Description 判断两个date是否在同一天
+     * @Author JohnTang
+     * @Return boolean
+     * @LastChangeDate 2020/12/15
+     */
     public static boolean isSameDay(Date date1, Date date2) {
         if(date1 != null && date2 != null) {
             Calendar cal1 = Calendar.getInstance();
@@ -33,7 +43,15 @@ public class DateUtil {
         }
     }
 
-    // 增加daynum天
+    /**
+     * @MethodName addDay
+     * @param date
+     * @param dayNum
+     * @Description 将date增加daynum天
+     * @Author JohnTang
+     * @Return java.util.Date
+     * @LastChangeDate 2020/12/15
+     */
     public static Date addDay(Date date, int dayNum) {
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
@@ -41,7 +59,15 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    // 减少daynum天
+    /**
+     * @MethodName subDay
+     * @param date
+     * @param dayNum
+     * @Description 将date减少dayNum天
+     * @Author JohnTang
+     * @Return java.util.Date
+     * @LastChangeDate 2020/12/15
+     */
     public static Date subDay(Date date, int dayNum) {
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
