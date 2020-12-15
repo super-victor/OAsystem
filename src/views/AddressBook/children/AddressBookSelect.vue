@@ -9,7 +9,7 @@
           <!-- 部门筛选 -->
           <div class="chooses">
             <div class="choose">
-              <el-input placeholder="请输入部门名称搜索" prefix-icon="el-icon-search" v-model="department" @input="filter()"
+              <el-input placeholder="请输入部门名称搜索" v-model="department" @input="filter()"
                 @blur="message()">
               </el-input>
             </div>
@@ -38,15 +38,15 @@
             </div>
             <!-- 表格内容 -->
             <el-table class="el_table" style="width:100%;" :data="tablefilterData" stripe v-loading ="loading" >
-              <el-table-column prop="name" label="姓名" min-width="80px" sortable>
+              <el-table-column prop="name" label="姓名" width="120px" min-width="80px" sortable>
               </el-table-column>
-              <el-table-column prop="sex" label="性别" min-width="80px" sortable>
+              <el-table-column prop="sex" label="性别" width="100px" min-width="80px" sortable>
               </el-table-column>
               <el-table-column prop="phone" label="电话号码" min-width="80px" sortable>
               </el-table-column>
-              <el-table-column prop="email" label="邮箱" min-width="80px" sortable>
+              <el-table-column prop="email" label="邮箱" width="220px" min-width="80px" sortable>
               </el-table-column>
-              <el-table-column prop="department.name" label="部门" min-width="80px" sortable>
+              <el-table-column prop="department.name" width="150px" label="部门" min-width="80px" sortable>
               </el-table-column>
               <el-table-column prop="position" label="职位" min-width="80px" sortable>
               </el-table-column>
@@ -203,8 +203,9 @@
       },
       //重置
       reset() {
-        // this.input = null;
-        // this.department = null;
+         this.input = null;
+         this.department = null;
+         this.tablefilterData = this.tableData
         // this.tablefilterData = this.getpagesize[this.pageSize]
       },
       //点击左侧部门
@@ -301,7 +302,7 @@
 <style lang='less' scoped>
   @import '../../../style/common.less';
   .addressBook {
-    height: 100%; //这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部msgBox高度不超过exampleBox高度，不然会出现bug
+    height:100%; //这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部msgBox高度不超过exampleBox高度，不然会出现bug
     width: 100%;
     padding: 30px;
     box-sizing: border-box;
@@ -323,18 +324,21 @@
           display: flex;
           height: 600px;
           .chooses {
-            background: white;
+            width: 5rem;
             box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
             border-radius: @baseBorderRadius;
             .choose {
-              margin-bottom: 0.15rem;
+              display: flex;
+                height:10%;
             }
           ::v-deep .box-card {
+              height:90%;
               cursor: pointer;
               box-shadow: none;
               border:none;
               .text {
                 font-size: 15px;
+              
               }
               .item {
                 padding: 18px 0;
@@ -343,18 +347,15 @@
                 border-bottom:1px solid #EBEEF5
               }
             }
-            .choose {
-              display: flex;
-            }
             margin-right: 0.5rem;
           }
           .table {
-            width:100%;
+            width: 100%;
             display: flex;
             flex-direction: column;
             .search {
               width: 5rem;
-              margin-bottom: 0.3rem;
+              margin-bottom: 0.25rem;
               display: flex;
               box-shadow: 0 0 13px 10px rgba(82, 63, 105, 0.05);
               border-radius: @baseBorderRadius;
@@ -375,11 +376,7 @@
           }
         }
         .block {
-          // display: flex;
-          // .block_page{
-          //   width: 40%;
-          //   align-self: end;
-          // }
+          padding-top:20px;
         }
       }
     }

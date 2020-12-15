@@ -5,7 +5,7 @@
             <!-- 待进行会议 -->
             <div class="pending" >
                 <div class="btn">
-                  <el-button @focus="">待进行会议</el-button>
+                  <el-button>待进行会议</el-button>
                  
                 </div>
                 <div class="CollapsePending" >
@@ -25,8 +25,13 @@
             <!-- 历史会议 -->
             <div class="history">
                 <div class="title">
-                  <p>历史会议<el-button style="float: right;" type="text" @click='CollapseRecordList=[]'>清空</el-button></p>
-                  
+                  <p>历史会议
+                    <!-- <el-radio-group>
+                      <el-radio-button label='一周内'></el-radio-button>
+                      <el-radio-button label='一个月内'></el-radio-button>
+                      <el-radio-button label='三个月内'></el-radio-button>
+                    </el-radio-group> -->
+                  </p>
                 </div>
                 <div class="CollapseRecord">
                   <el-collapse accordion @change="handleChange" >
@@ -59,8 +64,8 @@
                     <div>{{"开始时间："+CollapseAppointmentList[i-1].startTime.substr(0,10)+' '+CollapseAppointmentList[i-1].startTime.substr(11,8)}}</div>
                     <div>{{"结束时间："+CollapseAppointmentList[i-1].endTime.substr(0,10)+' '+CollapseAppointmentList[i-1].endTime.substr(11,8)}}</div>
                     <div>{{"参会人数："+CollapseAppointmentList[i-1].peopleNum}}</div>
-                    <el-button style="float: right; padding: 3px 5px" type="text">取消预约</el-button>
-                    <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
+                    <el-button style="float: right; padding: 3px 5px" type="text" @click="deleteorderMeeting(i-1)">取消预约</el-button>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="updateorderMeeting(i-1)">编辑</el-button>
                   </el-collapse-item>
                 </el-collapse>
             </div>
@@ -75,7 +80,8 @@
    mapState,
     mapMutations
   } from 'vuex';
-  import getMeetingAPI from '@/service/MeetingRoomManagement'
+  import getMeetingAPI from '@/service/MeetingManagement'
+  import ApproveMeetingAPI from '@/service/MeetingManagement'
 export default {
     data(){
       return {
@@ -114,6 +120,25 @@ export default {
           this.$message.error('请求失败')
           console.log("getAllMeetings",err)
         })
+      },
+      //修改还未审批的预约会议
+      updateorderMeeting(data){
+        ApproveMeetingAPI.updateOrderMeeting({
+          endtime:this.CollapseAppointmentList[data].endTime,
+          meetingid:this.CollapseAppointmentList[data].meetingId,
+          meetingroomid:this.CollapseAppointmentList[data].meetingroomId,
+          name:this.CollapseAppointmentList[data].name,
+          peoplenum:this.CollapseAppointmentList[data].peopleNum,
+          remark:this.CollapseAppointmentList[data].remark,
+          startTime:this.CollapseAppointmentList[data].startTime
+        }).then(res=>{
+          console.log("修改成功!")
+        })
+        // console.log(this.CollapseAppointmentList[data])
+      },
+      //删除还未审批的预约会议
+      deleteorderMeeting(){
+
       },
       handleChange(val){
         console.log(val)
@@ -176,6 +201,9 @@ export default {
                         background:white; 
                       }
                     }
+                    .CollapsePending::-webkit-scrollbar {
+            display: none;
+        }
                     
                 }
                 .history{
@@ -197,10 +225,15 @@ export default {
                         }
                       }
                     }
-                    .CollapseRecord{
-                      max-height: 70%;
+       
+                    .CollapseRecord {
+                      max-height: 76%;
                       overflow: auto;
+                      
                     }
+                    .CollapseRecord::-webkit-scrollbar {
+            display: none;
+        }
                 }
             }   
             .Appointment{

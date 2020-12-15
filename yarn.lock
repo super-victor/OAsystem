@@ -10007,7 +10007,7 @@ walker@^1.0.7, walker@~1.0.5:
 
 wangeditor@^4.5.2:
   version "4.5.2"
-  resolved "https://registry.npm.taobao.org/wangeditor/download/wangeditor-4.5.2.tgz?cache=0&sync_timestamp=1606453585854&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwangeditor%2Fdownload%2Fwangeditor-4.5.2.tgz#3c12d60a6300f39b5bf69b67f2d77d74aa4677e7"
+  resolved "https://registry.npm.taobao.org/wangeditor/download/wangeditor-4.5.2.tgz?cache=0&sync_timestamp=1606453900934&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwangeditor%2Fdownload%2Fwangeditor-4.5.2.tgz#3c12d60a6300f39b5bf69b67f2d77d74aa4677e7"
   integrity sha1-PBLWCmMA85tb9ptn8td9dKpGd+c=
   dependencies:
     "@babel/runtime" "^7.11.2"
