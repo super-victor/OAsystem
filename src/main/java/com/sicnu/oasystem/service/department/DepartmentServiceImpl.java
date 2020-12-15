@@ -2,10 +2,14 @@ package com.sicnu.oasystem.service.department;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.DepartmentMapper;
+import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Department;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName DepartmentServiceImpl
@@ -19,6 +23,9 @@ import javax.annotation.Resource;
 public class DepartmentServiceImpl implements DepartmentService{
     @Resource
     DepartmentMapper departmentMapper;
+
+    @Resource
+    EmployeeMapper employeeMapper;
 
     @Override
     public BackFrontMessage getAllDepartment() {
@@ -59,4 +66,19 @@ public class DepartmentServiceImpl implements DepartmentService{
             return new BackFrontMessage(500,"修改失败",null);
         }
     }
+
+
+    @Override
+    public Map<String, Object> getDepartmentSeeAbleData() {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("totalNum",employeeMapper.findTotalEmployeeNum());
+        Map<String, Object> map1 = new HashMap<>(16);
+        List<Department> departments = departmentMapper.findAllDepartment();
+        for (Department department:departments) {
+            map1.put(department.getName(), departmentMapper.findPeopleNumByDepartmentName(department.getName()));
+        }
+        map.put("eachDepartmentNum",map1);
+        return map;
+    }
+
 }

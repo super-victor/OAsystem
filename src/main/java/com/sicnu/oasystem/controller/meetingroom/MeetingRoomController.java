@@ -43,6 +43,12 @@ public class MeetingRoomController {
         return meetingRoomService.getMeetRoomInfo(place,isOccapy,MeetingRoomName);
     }
 
+    @GetMapping("/getAllMeetingRoomInfo")
+    @ApiOperation("获取所有的会议室信息")
+    public BackFrontMessage getAllMeetingRoomInfo(String place,Integer isOccapy,String MeetingRoomName){
+        return meetingRoomService.getMeetRoomInfo(place,isOccapy,MeetingRoomName);
+    }
+
     /**
      * @MethodName addMeetingRoom
      * @param meetingRoom
@@ -98,5 +104,6 @@ public class MeetingRoomController {
     public BackFrontMessage getAllMeetingRoomByStorey(){
         return meetingRoomService.getAllMeetingRoomByStorey();
     }
+
 }
 

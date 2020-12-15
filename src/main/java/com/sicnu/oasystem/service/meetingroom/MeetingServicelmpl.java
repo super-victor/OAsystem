@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.service.meetingroom;
 
 import com.sicnu.oasystem.json.BackFrontMessage;
+import com.sicnu.oasystem.mapper.DepartmentMapper;
 import com.sicnu.oasystem.mapper.MeetingMapper;
 import com.sicnu.oasystem.pojo.Meeting;
 import com.sicnu.oasystem.service.message.MessageService;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName MeetingServicelmpl
@@ -31,6 +34,9 @@ public class MeetingServicelmpl implements MeetingService {
 
     @Resource
     MessageService messageService;
+
+    @Resource
+    DepartmentMapper departmentMapper;
 
     @Override
     public BackFrontMessage getAllMeetings() {
@@ -91,6 +97,22 @@ public class MeetingServicelmpl implements MeetingService {
                 return new BackFrontMessage(200,"修改会议成功",null);
             }
         }
+    }
+
+    @Override
+    public Map<String, Object> MeetingTrendInfo() {
+        Map<String,Object>res=new HashMap<>();
+        Map<String,Object>depa=new HashMap<>();
+        List<String>departmentNames=departmentMapper.getAllDepartmentName();
+        for (String departmentName :departmentNames){
+            Map<String,Object>l=new HashMap<>();
+            l.put("totalnum",meetingMapper.getMeetingTrendnums(departmentName));
+            List<Map<String,Object>>m=meetingMapper.getMeetingTrend(departmentName);
+            l.put("info",m);
+            depa.put(departmentName,l);
+        }
+        res.put("meeting",depa);
+        return res;
     }
 
     @Override

@@ -44,6 +44,14 @@ public class FileUtil {
         return newFileName;
     }
 
+    /**
+     * @MethodName delete
+     * @param path
+     * @Description 删除文件或者目录及目录下的所有文件
+     * @Author JohnTang
+     * @Return boolean
+     * @LastChangeDate 2020/12/11
+     */
     public static boolean delete(String path) {
         File file = new File(path);
         if (!file.exists()) {

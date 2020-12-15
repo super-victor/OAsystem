@@ -32,5 +32,13 @@ public interface EmployeeService {
      */
     BackFrontMessage changeSelfPorfile(String phone, String email, String homeAddress);
 
+    /**
+     * @MethodName getAllEmployees
+     * @param
+     * @Description 获取所有职工信息
+     * @Author JohnTang
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/11
+     */
     BackFrontMessage getAllEmployees();
 }

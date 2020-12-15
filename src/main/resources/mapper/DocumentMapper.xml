@@ -106,5 +106,42 @@
     <select id="findSelfPublishSendFile" resultType="com.sicnu.oasystem.pojo.SendFile">
         select * from sendfile where status = 1 and senderId = #{senderId}
     </select>
+    <select id="findDateAndCountAboutPublishDocuments" resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+        select recordDate,count(*) num
+        from (select date_format(updateTime, '%Y-%m-%d') recordDate from sendfile where status = 1 and TO_DAYS(now()) - TO_DAYS(updateTime) &lt; 15 ) record
+        group by recordDate
+        order by recordDate
+    </select>
+    <select id="findDateAndCountAboutPublishDocumentsByDepartmentName" resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+        select recordDate,count(*) num
+        from (select date_format(updateTime, '%Y-%m-%d') recordDate from sendfile where status = 1 and senderId in (select employeeId from employee where departmentName = #{departmentName}) and TO_DAYS(now()) - TO_DAYS(updateTime) &lt; 15) record
+        group by recordDate
+        order by recordDate
+    </select>
+    <select id="findDateAndCountAboutDraftBoxDocuments" resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+        select recordDate,count(*) num
+        from (select date_format(createTime, '%Y-%m-%d') recordDate from sendfile where status = -1 and TO_DAYS(now()) - TO_DAYS(createTime) &lt; 15 ) record
+        group by recordDate
+        order by recordDate
+    </select>
+    <select id="findDateAndCountAboutDraftBoxDocumentsByDepartmentName"
+            resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+         select recordDate,count(*) num
+        from (select date_format(createTime, '%Y-%m-%d') recordDate from sendfile where status = -1 and senderId in (select employeeId from employee where departmentName = #{departmentName}) and TO_DAYS(now()) - TO_DAYS(createTime) &lt; 15) record
+        group by recordDate
+        order by recordDate
+    </select>
+    <select id="findDateAndCountAboutSelfPublishDocuments" resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+        select recordDate,count(*) num
+        from (select date_format(updateTime, '%Y-%m-%d') recordDate from sendfile where status = 1 and senderId = #{employeeId} and TO_DAYS(now()) - TO_DAYS(updateTime) &lt; 15 ) record
+        group by recordDate
+        order by recordDate
+    </select>
+    <select id="findDateAndCountAboutSelfDraftBoxDocuments" resultType="com.sicnu.oasystem.pojo.DataSeeAbleA">
+        select recordDate,count(*) num
+        from (select date_format(createTime, '%Y-%m-%d') recordDate from sendfile where status = -1 and senderId = #{employeeId} and TO_DAYS(now()) - TO_DAYS(createTime) &lt; 15 ) record
+        group by recordDate
+        order by recordDate
+    </select>
 
 </mapper>

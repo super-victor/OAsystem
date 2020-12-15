@@ -42,6 +42,12 @@ public class AddrlistController {
         return addrListService.getAllEmplyeAddr();
     }
 
+
+    @ApiOperation(value = "获取所有员工的通讯录")
+    @GetMapping("/AddressbookInfo")
+    public BackFrontMessage getAddrList(){
+        return addrListService.getAllEmplyeAddr();
+    }
     /**
      * @MethodName getdepartmentname
      * @param
