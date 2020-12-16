@@ -146,6 +146,7 @@
     <select id="findCodesByEmployeeId" resultType="java.lang.String">
         select code from menu where menuId in (select menuId from RoleMenu where roleId in (select roleId from EmployeeRole where employeeId = #{employeeId}))
     </select>
+
     <select id="findAllMenus" resultType="com.sicnu.oasystem.pojo.Menu">
         select * from menu
     </select>
@@ -182,6 +183,9 @@
     </select>
     <select id="findTotalEmployeeNum" resultType="java.lang.Integer">
         select count(*) from employee
+    </select>
+    <select id="findMenuIsExist" resultType="java.lang.Integer">
+        select count(*) from menu where url = #{url}
     </select>
 
 

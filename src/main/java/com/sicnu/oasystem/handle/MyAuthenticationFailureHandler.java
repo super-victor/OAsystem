@@ -2,8 +2,10 @@ package com.sicnu.oasystem.handle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sicnu.oasystem.json.BackFrontMessage;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,8 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         BackFrontMessage authMessage;
         if (exception instanceof LockedException) {
             authMessage = new BackFrontMessage(300, "账户被锁定", null);
+        } else if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException){
+            authMessage = new BackFrontMessage(500,"用户名密码错误", null);
         } else {
             authMessage = new BackFrontMessage(500,"登录失败", null);
         }

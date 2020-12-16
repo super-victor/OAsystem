@@ -69,8 +69,8 @@
     </select>
     <select id="getMeetingTrend" resultType="java.util.Map">
         SELECT test as time,IF(sun is NULL,0,sun) as sum, If(departmentName is null,#{departmentName},departmentName) as departmentName from (SELECT
-        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 3 DAY),
-        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 4 ) DAY
+        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 2 DAY),
+        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 1 ) DAY
         ) as test
         FROM
         mysql.help_topic
@@ -86,8 +86,8 @@
     </select>
     <select id="getMeetingTrendnums" resultType="java.lang.Integer">
         SELECT count(sun) from (SELECT
-        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 3 DAY),
-        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 4 ) DAY
+        date_add(DATE_ADD(curdate() , INTERVAL - DAY(curdate()) + 2 DAY),
+        INTERVAL (cast( help_topic_id AS signed INTEGER ) - 1 ) DAY
         ) as test
         FROM
         mysql.help_topic
