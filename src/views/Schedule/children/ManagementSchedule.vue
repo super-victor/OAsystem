@@ -183,9 +183,14 @@ import ScheduleApi from '@/service/schedule';
     },
     created() {
       let role = this.$authority.getPageAuthority('schedule','schedulemanagement').role;
+      let roleN = this.$authority.getPageAuthority('schedule','companyschedule').role;
+      if (roleN['0017'].own) {
+        this.getSchedule();
+      } else {
+        this.$message.error('您没有获取日程的权限！');
+      }
       if(role['000Y'].own) this.editFlag=true;
       if(role['000Z'].own) this.deleteFlag=true;
-      this.getSchedule();
     },
     mounted() {
       this.UPDATE_BREAD(['日程安排','管理日程']);
