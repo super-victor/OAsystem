@@ -88,6 +88,33 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
         return new BackFrontMessage(200,"查找成功",employeeList);
     }
 
+    @Override
+    public BackFrontMessage findEmployeeScheduleCount() {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        int companyScheduleCount = employeeScheduleMapper
+                .findEmployeeCompanyScheduleCount(currentEmployee.getEmployeeId());
+        int selfScheduleCount = employeeScheduleMapper
+                .findEmployeeSelfScheduleCount(currentEmployee.getEmployeeId());
+        Map<String, Integer> map = new HashMap<>();
+        map.put("companyScheduleCount", companyScheduleCount);
+        map.put("selfScheduleCount", selfScheduleCount);
+        return new BackFrontMessage(200, null, map);
+    }
+
+    @Override
+    public BackFrontMessage findEmployeeScheduleNotStart() {
+        Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
+        Date date = new Date();
+        Schedule companySchedule = employeeScheduleMapper
+                .findEmployeeCompanySchedule(currentEmployee.getEmployeeId(), date);
+        Schedule selfSchedule = employeeScheduleMapper
+                .findEmployeeSelfSchedule(currentEmployee.getEmployeeId(), date);
+        Map<String, Schedule> map = new HashMap<>();
+        map.put("companyScheule", companySchedule);
+        map.put("selfSchedule", selfSchedule);
+        return new BackFrontMessage(200, null, map);
+    }
+
     /**
      * @MethodName getScheduleListByEmployeeSchduleList
      * @param scheduleIdList 职工日程列表

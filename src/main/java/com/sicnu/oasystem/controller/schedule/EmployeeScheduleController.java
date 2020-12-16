@@ -117,4 +117,30 @@ public class EmployeeScheduleController {
     public BackFrontMessage findSelfSchedule(){
         return employeeScheduleService.findSelfScheduleByEmployeeId();
     }
+
+    /**
+     * @MethodName findEmployeeScheduleCount
+     * @Description 获取职工所有日程数目
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/16
+     */
+    @ApiOperation(value = "获取职工所有日程数目")
+    @GetMapping("/findScheduleCount")
+    public BackFrontMessage findEmployeeScheduleCount(){
+        return employeeScheduleService.findEmployeeScheduleCount();
+    }
+
+    /**
+     * @MethodName findEmployeeSchedule
+     * @Description 获取职工最近一个未开始的日程信息
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/16
+     */
+    @ApiOperation(value = "获取职工最近一个未开始的日程信息")
+    @GetMapping("/findSchedule")
+    public BackFrontMessage findEmployeeSchedule(){
+        return employeeScheduleService.findEmployeeScheduleNotStart();
+    }
 }

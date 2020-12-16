@@ -74,4 +74,22 @@ public interface EmployeeScheduleService {
      */
     BackFrontMessage findEmployeeScheduleByScheduleId(int scheduleId);
 
+    /**
+     * @MethodName findEmployeeScheduleCount
+     * @Description 获取职工日程数量(公司日程和个人日程)
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/16
+     */
+    BackFrontMessage findEmployeeScheduleCount();
+
+    /**
+     * @MethodName findEmployeeScheduleNotStart
+     * @Description 获取职工最近未开始的日程信息(公司/个人)
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.json.BackFrontMessage
+     * @LastChangeDate 2020/12/16
+     */
+    BackFrontMessage findEmployeeScheduleNotStart();
+
 }

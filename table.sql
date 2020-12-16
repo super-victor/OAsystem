@@ -391,6 +391,9 @@ insert into schedule (isCompany, startTime, endTime, leader, location, content, 
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-04 13:00:00', '2020-12-04 22:00:00', 1, '小吃街', '吃饭', null, 1);
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-12-07 00:00:00', '2020-12-11 00:00:00', 1, '龙泉', '出差', '出差四天', 7);
 insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-09 00:00:00', '2020-12-11 00:00:00', 1, '实验室', '学习', '前端相关技术', 8);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (1, '2020-12-25 18:00:00', '2020-12-25 22:00:00', 2, '师大花园', '聚餐', '庆祝圣诞节', 1);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-25 14:00:00', '2020-12-25 17:00:00', 2, '办公室', '布置环境', '庆祝圣诞节', null);
+insert into schedule (isCompany, startTime, endTime, leader, location, content, remark, type) values (0, '2020-12-25 14:00:00', '2020-12-25 17:00:00', 1, '办公室', '带领员工庆祝圣诞节', '庆祝圣诞节', null);
 
 insert into employeeschedule(scheduleId, employeeId) values (1, 2);
 insert into employeeschedule(scheduleId, employeeId) values (2, 2);
@@ -404,6 +407,13 @@ insert into employeeschedule(scheduleId, employeeId) values (4, 1);
 insert into employeeschedule(scheduleId, employeeId) values (5, 1);
 insert into employeeschedule(scheduleId, employeeId) values (5, 3);
 insert into employeeschedule(scheduleId, employeeId) values (6, 1);
+insert into employeeschedule (scheduleId, employeeId) values (13, 1);
+insert into employeeschedule (scheduleId, employeeId) values (13, 2);
+insert into employeeschedule (scheduleId, employeeId) values (13, 3);
+insert into employeeschedule (scheduleId, employeeId) values (13, 4);
+insert into employeeschedule (scheduleId, employeeId) values (13, 5);
+insert into employeeschedule (scheduleId, employeeId) values (14, 2);
+insert into employeeschedule (scheduleId, employeeId) values (15, 1);
 
 insert into role (name) values ('超级管理员');
 insert into role (name) values ('管理员');

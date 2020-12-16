@@ -1,11 +1,9 @@
 package com.sicnu.oasystem.mapper;
 
-import com.sicnu.oasystem.pojo.DataSeeAbleA;
 import com.sicnu.oasystem.pojo.Schedule;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @InterfaceName ScheduleMapper

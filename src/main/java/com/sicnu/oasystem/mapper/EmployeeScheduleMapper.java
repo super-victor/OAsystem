@@ -1,6 +1,7 @@
 package com.sicnu.oasystem.mapper;
 
 import com.sicnu.oasystem.pojo.EmployeeSchedule;
+import com.sicnu.oasystem.pojo.Schedule;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
@@ -102,4 +103,46 @@ public interface EmployeeScheduleMapper {
      * @LastChangeDate 2020/12/1
      */
     List<Integer> findScheduleByEmployeeIdAndIsCompany(int employeeId, int isCompany);
+
+    /**
+     * @MethodName findEmployeeCompanyScheduleCount
+     * @param employeeId 职工id
+     * @Description 获取员工公司日程数量
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/12/16
+     */
+    int findEmployeeCompanyScheduleCount(int employeeId);
+
+    /**
+     * @MethodName findEmployeeSelfScheduleCount
+     * @param employeeId 职工id
+     * @Description 获取员工个人日程数量
+     * @Author Waynejwei
+     * @Return int
+     * @LastChangeDate 2020/12/16
+     */
+    int findEmployeeSelfScheduleCount(int employeeId);
+
+    /**
+     * @MethodName findEmployeeCompanySchedule
+     * @param employeeId 职工id
+     * @param nowTime 当前时间
+     * @Description 获取职工最近一个未开始的公司日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.pojo.Schedule
+     * @LastChangeDate 2020/12/16
+     */
+    Schedule findEmployeeCompanySchedule(int employeeId, Date nowTime);
+
+    /**
+     * @MethodName findEmployeeSelfSchedule
+     * @param employeeId 职工id
+     * @param nowTime 当前时间
+     * @Description 获取职工最近一个未开始的个人日程
+     * @Author Waynejwei
+     * @Return com.sicnu.oasystem.pojo.Schedule
+     * @LastChangeDate 2020/12/16
+     */
+    Schedule findEmployeeSelfSchedule(int employeeId, Date nowTime);
 }
