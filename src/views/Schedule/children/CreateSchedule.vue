@@ -80,6 +80,9 @@ import BackApi from '@/service/BackstageManagement'
           startTime:[
             { required: true, message: '请输入开始时间', trigger: 'blur' }
           ],
+          joiner:[
+            { required: true, message: '请选择参与人员', trigger: 'blur' }
+          ],
           endTime:[
             { required: true, message: '请输入结束时间', trigger: 'blur' }
           ]

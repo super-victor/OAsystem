@@ -223,4 +223,9 @@ import ScheduleApi from '@/service/schedule';
   .managementSchedule::-webkit-scrollbar{
     display: none;
   }
+  ::v-deep .el-button.is-circle{
+    padding: 7px;
+    font-size: 5px;
+    margin-left: 7px;
+  }
 </style>
