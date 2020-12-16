@@ -3,9 +3,9 @@
   <div class='ShareCard'>
     <div class="msgBox flex-row">
       <!-- 左侧名片夹分类 -->
-      <div class="flex-col">
+      <div class="flex-col left_box">
         <!-- 新建名片 -->
-        <div class="new_card flex-col">
+        <div class="new_card flex-col" v-show="addCardFlag || shareCardFlag">
           <el-button class="submit" round type="primary" @click="dialogVisible2 = true">+ 新建名片</el-button>
         </div>
         <div class="left">
@@ -16,7 +16,8 @@
       <div
         v-if="cards.length !== 0"
         class="center flex-col"
-        v-loading="loading">
+        v-loading="loading"
+        v-show="cardFlag">
         <div class="card"
         v-for="(item, index) in cards.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         :key="item.position">
@@ -34,7 +35,7 @@
           class="pagination">
         </el-pagination>
       </div>
-      <div v-else>
+      <div v-else v-show="cardFlag">
         <p class="tip_info">该分类下暂无名片，请进行新建或导入名片操作！</p>
       </div>
     </div>
@@ -43,8 +44,8 @@
       <div class="step1 flex-col">
           <p>请选择您想要进行的操作:</p>
           <el-select v-model="optionType">
-            <el-option label="新建" value="新建"></el-option>
-            <el-option label="导入" value="导入"></el-option>
+            <el-option label="新建" value="新建" v-show="addCardFlag"></el-option>
+            <el-option label="导入" value="导入" v-show="shareCardFlag"></el-option>
           </el-select>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -127,6 +128,9 @@
         innerVisible: false, //内层输入信息
         loading:true,
         buttonLoading:false,
+        addCardFlag: false,
+        shareCardFlag: false,
+        cardFlag:false,
         // 新建名片信息
         newInfo:{
           name: '',
@@ -237,6 +241,10 @@
     },
     created() {
       // console.log(this.cards);
+      let role = this.$authority.getPageAuthority('businesscardholder').role;
+      if(role['0007'].own) this.addCardFlag = true;
+      if(role['0009'].own) this.shareCardFlag = true;
+      if(role['000B'].own) this.cardFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['名片夹','共享名片']);
@@ -252,6 +260,9 @@
     .msgBox{
       width: 100%;
       height: 100%;
+      .left_box {
+        width: 3rem;
+      }
       .left {
         height: 100%;
         padding: 0.2rem 0;

@@ -43,7 +43,12 @@ import scheduleAPI from '@/service/schedule';
       }
     },
     created() {
-      this.getSchedule();
+      let role = this.$authority.getPageAuthority('schedule','companyschedule').role;
+      if (role['0017'].own) {
+        this.getSchedule();
+      } else {
+        this.$message.error('您没有获取日程的权限！');
+      }
     },
     mounted() {
       this.UPDATE_BREAD(['日程安排','公司日程']);

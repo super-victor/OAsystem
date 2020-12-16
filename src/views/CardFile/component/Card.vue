@@ -30,12 +30,12 @@
           <img src="@/assets/Card/Share.png" alt="" @click="dialogVisible1 = true">
         </el-tooltip>
       </div>
-      <div class="right_i edit" title="编辑">
+      <div class="right_i edit" title="编辑" v-show="updateFlag">
         <el-tooltip content="编辑名片" placement="right" effect="light">
           <img src="@/assets/Card/Edit.png" alt="" @click="dialogVisible2 = true">
         </el-tooltip>
       </div>
-      <div class="right_i delete" title="删除">
+      <div class="right_i delete" title="删除" v-show="deleteFlag">
         <el-tooltip content="删除名片" placement="right" effect="light">
           <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardId)">
         </el-tooltip>
@@ -121,6 +121,8 @@
           holder: this.msg.card.cardHolderId,
         }, // 信息
         holders: [], // 名片夹
+        updateFlag:false,
+        deleteFlag:false,
         rules:{
           email:[
             { required: true, message: '请输入电子邮箱', trigger: 'blur' },
@@ -210,6 +212,9 @@
       },
     },
     created() {
+      let role = this.$authority.getPageAuthority('businesscardholder').role;
+      if (role['0008'].own) this.updateFlag = true;
+      if (role['000A'].own) this.deleteFlag = true;
       this.getFileName();
       // console.log(this.msg);
     },

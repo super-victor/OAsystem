@@ -41,8 +41,20 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="Edit(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button type="text" size="small" @click="deleteSchedule(scope.row)">删除</el-button>
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                :open-delay="500"
+                content="编辑">
+                  <el-button slot="reference" type="primary" icon="el-icon-edit-outline" circle @click="Edit(scope.row)"></el-button>
+              </el-popover>
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                :open-delay="500"
+                content="删除">
+                  <el-button slot="reference" type="danger" icon="el-icon-delete" circle @click="deleteSchedule(scope.row)"></el-button>
+              </el-popover>
             </template>
           </el-table-column>
       </el-table>
@@ -170,6 +182,9 @@ import ScheduleApi from '@/service/schedule';
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('schedule','schedulemanagement').role;
+      if(role['000Y'].own) this.editFlag=true;
+      if(role['000Z'].own) this.deleteFlag=true;
       this.getSchedule();
     },
     mounted() {

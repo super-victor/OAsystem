@@ -5,24 +5,25 @@
     v-for="item in fileName"
     :key="item.id"
     :class="{active: select.id === item.id,normal: select.id !== item.id}"
-    v-loading="loading">
+    v-loading="loading"
+     v-show="fileFlag">
     <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
     <p>{{ item.name }}</p>
     </div>
     <div class="flex-col edit_row">
     <p class="tip">管理分类</p>
     <div class="flex-row">
-        <div class="right_i" @click="dialogVisible1 = true;">
+        <div class="right_i" @click="dialogVisible1 = true" v-show="addFlag">
           <el-tooltip content="添加分类" placement="bottom" effect="light">
             <img src="@/assets/Card/f_add.png" alt="">
           </el-tooltip>
         </div>
-        <div class="right_i" title="修改分类名">
+        <div class="right_i" title="修改分类名" v-show="updateFlag">
           <el-tooltip content="修改分类名称" placement="bottom" effect="light">
             <img src="@/assets/Card/f_edit.png" alt="" @click="dialogVisible2 = true">
           </el-tooltip>
         </div>
-        <div class="right_i" title="删除分类" @click="dialogVisible3 = true">
+        <div class="right_i" title="删除分类" @click="dialogVisible3 = true" v-show="deleteFlag">
           <el-tooltip content="删除分类" placement="bottom" effect="light">
             <img src="@/assets/Card/f_delete.png" alt="">
           </el-tooltip>
@@ -93,6 +94,10 @@
         updateName: '', // 修改的新名
         loading:true,
         buttonLoading:false,
+        fileFlag:false,
+        addFlag:false,
+        updateFlag:false,
+        deleteFlag:false,
       };
     },
     computed: {},
@@ -192,6 +197,11 @@
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('businesscardholder').role;
+      if (role['0003'].own) this.fileFlag = true;
+      if (role['0004'].own) this.deleteFlag = true;
+      if (role['0005'].own) this.addFlag = true;
+      if (role['0006'].own) this.updateFlag = true;
       this.getFileName();
     },
     mounted() {

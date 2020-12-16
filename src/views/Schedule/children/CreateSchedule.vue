@@ -6,12 +6,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="日程类型" prop="type" style="height:70px;width:400px">
           <el-select v-model="form.type" size="medium" style="height:70px;width:400px">
-            <el-option
-            v-for="item in types"
-            :key="item.name"
-            :label="item.name"
-            :value="item.name">
-            </el-option>
+            <el-option label="个人日程" value="个人日程" v-show="selfFlag"></el-option>
+            <el-option label="公司日程" value="公司日程" v-show="companyFlag"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日程内容" prop="content" style="height:70px;width:400px">
@@ -38,7 +34,7 @@
               value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="选择开始时间"
               size="medium"
-              style="width:300px">
+              style="width:200px">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="结束时间" prop="endTime" style="height:70px;width:300px">
@@ -48,7 +44,7 @@
               value-format="yyyy-MM-dd HH:mm:ss"
               placeholder="选择结束时间"
               size="medium"
-              style="width:300px">
+              style="width:200px">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -71,11 +67,6 @@ import BackApi from '@/service/BackstageManagement'
         form:{
           type:'个人日程'
         },// 表单
-        types:[{
-          name:'个人日程'
-        },{
-          name:'公司日程'
-        }],
         rules:{
           type:[
             { required: true, message: '请选择日程类型', trigger: 'blur' }
@@ -95,6 +86,8 @@ import BackApi from '@/service/BackstageManagement'
         },
         userList:[], //职工信息表
         leader:0,
+        companyFlag:false,
+        selfFlag:false,
       };
     },
     computed: {
@@ -165,6 +158,12 @@ import BackApi from '@/service/BackstageManagement'
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('schedule','createschedule').role;
+      if (role['0011'].own) this.selfFlag = true;
+      if (role['000X'].own) this.companyFlag = true;
+      if (!(this.selfFlag || this.companyFlag)) {
+        this.$message.error('无权限添加日程');
+      }
       this.leader = this.userInfo.userinfo.employeeId;
       this.getUser();
     },

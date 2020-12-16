@@ -27,8 +27,8 @@
         <p>{{info.endTime}}</p>
       </div>
       <div slot="footer" class="dialog-footer" v-if="type==='mine'">
-        <el-button type="primary" @click="dialogVisible2=true">修改</el-button>
-        <el-button type="danger" @click="deleteInfo()">删除</el-button>
+        <el-button type="primary" @click="dialogVisible2=true" v-show="updateFlag">修改</el-button>
+        <el-button type="danger" @click="deleteInfo()" v-show="deleteFlag">删除</el-button>
       </div>
     </el-dialog>
     <el-dialog title="日程信息" :visible.sync="dialogVisible2" class="dialog">
@@ -86,6 +86,10 @@ export default {
       info:[],
       joinerName:[],
       buttonLoading:false,
+      updateFlag:false,
+      deleteFlag:false,
+      getSFlag:false,
+      getCFlag:false,
       rules:{
         content:[
           { required: true, message: '请输入日程内容', trigger: 'blur' }
@@ -168,8 +172,13 @@ export default {
           scheduleId:this.scheduleId
         })
         .then(res=>{
-          this.dialogVisible1 = true;
-          this.info = res.object;
+          if(this.getSFlag) {
+            this.dialogVisible1 = true;
+            this.info = res.object;
+          } else {
+            this.dialogVisible1 = false;
+            this.$message.error('您没有权限获得日程信息！');
+          }
           // console.log(res.object);
         })
         .catch(err=>{
@@ -180,12 +189,17 @@ export default {
           scheduleId:this.scheduleId
         })
         .then(res=>{
-          this.dialogVisible1 = true;
-          this.info = res.object;
-          if (res.object.joiner) {
-            res.object.joiner.forEach(element => {
-              this.joinerName.push(element);
-            });
+          if (this.getCFlag) {
+            this.dialogVisible1 = true;
+            this.info = res.object;
+            if (res.object.joiner) {
+              res.object.joiner.forEach(element => {
+                this.joinerName.push(element);
+              });
+            }
+          } else {
+            this.dialogVisible1 = false;
+            this.$message.error('您没有权限获得日程信息！');
           }
           // console.log(res.object);
         })
@@ -249,6 +263,13 @@ export default {
     },
   },
   created() {
+    let role = this.$authority.getPageAuthority('schedule','mine').role;
+    let roleN = this.$authority.getPageAuthority('schedule','companyschedule').role;
+    if (role['0012'].own) this.updateFlag= true;
+    if (role['0013'].own) this.deleteFlag= true;
+    if (role['002H'].own) this.getSFlag= true;
+    if (roleN['002X'].own) this.getCFlag= true;
+    console.log(this.getSFlag);
     this.calendarOptions.events = this.events;
   }
 }
