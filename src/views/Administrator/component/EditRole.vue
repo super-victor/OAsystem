@@ -95,7 +95,6 @@
             sendFileAPI.getUserList()
             .then(res=>{
               this.staffList = res.object;
-              console.log(this.staffList)
               this.initData();
               this.loading = false;
             })
@@ -104,7 +103,6 @@
             })
           })
           .catch(err=>{
-            console.log(err)
             this.$message.error('获取部门和职工信息失败');
           })
         }else{

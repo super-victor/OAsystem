@@ -17,8 +17,8 @@
         </div>
         <div class="buttonBox">
           <el-button class="button" style="width:1rem;" icon="el-icon-back" @click="goBack">返回</el-button>
-          <el-button type="primary" class="button" style="width:1.6rem;" icon="el-icon-finished" @click="backToDraft">放回草稿箱</el-button>
-          <el-button type="danger" class="button" style="width:1rem;" icon="el-icon-finished" @click="deleteDraft">删除</el-button>
+          <el-button type="primary" class="button" style="width:1.6rem;" icon="el-icon-finished" @click="backToDraft" v-show="editFlag">放回草稿箱</el-button>
+          <el-button type="danger" class="button" style="width:1rem;" icon="el-icon-finished" @click="deleteDraft" v-show="deleteFlag">删除</el-button>
         </div>
       </div>
     </div>
@@ -39,7 +39,9 @@
         fileInfo:{},
         ispassed:-1,
         comment:'',
-        defaultComment:'公文符合规定，审核通过'
+        defaultComment:'公文符合规定，审核通过',
+        editFlag:false,
+        deleteFlag:false
       };
     },
     computed: {
@@ -90,7 +92,9 @@
       }
     },
     created() {
-      
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      if(role['002W'].own) this.editFlag = true;
+      if(role['002I'].own) this.deleteFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','失败详情']);
@@ -98,7 +102,6 @@
         sendfileId:this.$route.params.sendfileId
       })
       .then(res=>{
-        console.log(res)
         this.fileInfo = res.object;
         this.loading = false;
       })

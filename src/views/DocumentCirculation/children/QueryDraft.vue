@@ -37,7 +37,6 @@
     },
     created() {
       let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
-      console.log(role)
       if(role['002G'].own) this.draftsFlag = true;
       if(role['002M'].own) this.rejectFlag = true;
       if(role['002L'].own) this.verifyFlag = true;

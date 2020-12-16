@@ -25,6 +25,7 @@
         align="center">
       </el-table-column>
       <el-table-column
+        v-if="editFlag"
         label="操作"
         align="center"
         width="130">
@@ -52,7 +53,8 @@
     data() {
       return {
         loading:true,
-        tableData:[]
+        tableData:[],
+        editFlag:false
       };
     },
     computed: {},
@@ -63,7 +65,8 @@
       }
     },
     created() {
-      
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      if(role['002N'].own) this.editFlag = true;
     },
     mounted() {
       sendFileAPI.getDocumementNotPassed()
@@ -74,7 +77,6 @@
           return item;
         });
         this.loading = false;
-        console.log(res);
       })
       .catch(err=>{
         this.$message.error('获取未过审拟稿失败');
@@ -102,6 +104,11 @@
       line-height: 40px;
       text-align: center;
       user-select: none;
+    }
+    ::v-deep .el-button.is-circle{
+      padding: 7px;
+      font-size: 5px;
+      margin-left: 7px;
     }
   }
 </style>

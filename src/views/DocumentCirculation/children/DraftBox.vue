@@ -112,7 +112,7 @@
               <el-form-item label="正文" prop="content" style="height:60px;width:500px">
                 <el-link type="primary" style="margin-left:10px;" @click="theLabel = '正文'">前往编辑正文</el-link>
               </el-form-item>
-              <el-form-item label="附件" style="height:60px;width:500px">
+              <el-form-item label="附件" style="height:60px;width:500px" v-if="uploadFlag">
                 <el-link type="primary" style="margin-left:10px;" @click="theLabel = '附件'">前往编辑附件</el-link>
               </el-form-item>
               <el-form-item label="备注" prop="remark" style="height:150px;width:14.45rem;">
@@ -127,8 +127,8 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="warning" class="button" icon="el-icon-upload" :loading="saveDocumentLoading" @click="saveDocument">保存到草稿箱</el-button>
-                <el-button type="primary" class="button" icon="el-icon-s-promotion" :loading="saveDocumentLoading" @click="submitForm('formData')" style="margin-left:40px;">发布公文</el-button>
+                <el-button type="warning" class="button" icon="el-icon-upload" :loading="saveDocumentLoading" @click="saveDocument" v-show="updateFlag">保存到草稿箱</el-button>
+                <el-button type="primary" class="button" icon="el-icon-s-promotion" :loading="saveDocumentLoading" @click="submitForm('formData')" style="margin-left:40px;" v-show="submitFlag">发布公文</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -136,7 +136,7 @@
         <el-tab-pane label="正文" name="正文">
           <div id="text" class="textBox"></div>
         </el-tab-pane>
-        <el-tab-pane label="附件" name="附件">
+        <el-tab-pane label="附件" name="附件" v-if="uploadFlag">
           <div class="annexBox">
               <el-upload
               action="/file/upload"
@@ -286,7 +286,11 @@
         canOut:false,
         inputVisible:false,
         inputAllVisible:false,
-        inputValue:''
+        inputValue:'',
+        updateFlag:false,
+        submitFlag:false,
+        uploadFlag:false,
+        deleteFileFlag:false
       };
     },
     computed: {
@@ -442,6 +446,10 @@
           this.fileFlag = false;
           return true;
         }
+        if(!this.deleteFileFlag){
+          this.$message.error('暂无权限');
+          return false;
+        }
         return new Promise((resolve,reject)=>{
           this.$confirm('确认删除此附件吗?', '提示', {
             confirmButtonText: '确定',
@@ -457,7 +465,7 @@
                 message: '删除成功',
                 type: 'success'
               });
-              this.fileList.filter(item=>item.url!=f.url);
+              this.fileList = this.fileList.filter(item=>item.url!=f.url);
               resolve();
             })
             .catch(err=>{
@@ -505,6 +513,11 @@
       //文件上传
     },
     created() {
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      if(role['002E'].own) this.updateFlag = true;
+      if(role['002F'].own) this.submitFlag = true;
+      if(role['002B'].own) this.uploadFlag = true;
+      if(role['002C'].own) this.deleteFileFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','拟稿详情']);

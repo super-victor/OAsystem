@@ -36,7 +36,6 @@
         sendfileId:this.$route.params.sendfileId
       })
       .then(res=>{
-        console.log(res)
         this.fileInfo = res.object;
         this.loading = false;
       })

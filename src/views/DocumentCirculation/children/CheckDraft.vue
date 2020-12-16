@@ -1,6 +1,6 @@
 !<!-- CheckDraft -->
 <template>
-  <div class='CheckDraft' v-loading="loading">
+  <div class='CheckDraft' v-loading="loading" v-show="viewFlag">
     <empty-box v-if="tableData.length==0"></empty-box>
     <div class="tableBox" v-else>
       <el-table
@@ -48,6 +48,7 @@
           align="center">
         </el-table-column>
         <el-table-column
+          v-if="checkFlag"
           label="操作"
           align="center"
           width="80">
@@ -77,7 +78,9 @@
     data() {
       return {
         loading:true,
-        tableData:[]
+        tableData:[],
+        viewFlag:false,
+        checkFlag:false
       };
     },
     computed: {},
@@ -89,6 +92,9 @@
       },
     },
     created() {
+      let role = this.$authority.getPageAuthority('documentcirculation','checkdraft').role;
+      if(role['0014'].own) this.viewFlag = true;
+      if(role['0015'].own && role['0031'].own) this.checkFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','拟稿审核']);

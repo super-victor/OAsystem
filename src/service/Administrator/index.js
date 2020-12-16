@@ -52,4 +52,28 @@ export default{
     })
     return res.data;
   },
+
+  /**
+   * 获取系统总访问量和当天访问量
+   * @returns {Promise<Object>}
+  */
+  async getSystemViews(){
+    const res = await NetworkRequest({
+      url:'/data/systemViews',
+      method:'get'
+    })
+    return res.data;
+  },
+
+  /**
+   * 获取系统总的数据统计
+   * @returns {Promise<Object>}
+  */
+  async getSystemInfo(){
+    const res = await NetworkRequest({
+      url:'/data/system',
+      method:'get'
+    })
+    return res.data;
+  },
 }

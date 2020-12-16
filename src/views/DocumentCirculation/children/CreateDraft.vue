@@ -1,6 +1,6 @@
 !<!-- CreateDraft -->
 <template>
-  <div class='CreateDraft' v-loading="loading">
+  <div class='CreateDraft' v-loading="loading" v-show="viewFlag">
     <el-tabs type="border-card" v-model="theLabel" style="height:100%;">
       <el-tab-pane label="拟稿表单" name="拟稿表单">
         <div class="tableBox">
@@ -107,7 +107,7 @@
             <el-form-item label="正文" prop="content" style="height:60px;width:500px">
               <el-link type="primary" style="margin-left:10px;" @click="theLabel = '正文'">前往编辑正文</el-link>
             </el-form-item>
-            <el-form-item label="附件" style="height:60px;width:500px">
+            <el-form-item label="附件" style="height:60px;width:500px" v-if="uploadFlag">
               <el-link type="primary" style="margin-left:10px;" @click="theLabel = '附件'">前往编辑附件</el-link>
             </el-form-item>
             <el-form-item label="备注" prop="remark" style="height:150px;width:14.45rem;">
@@ -131,7 +131,7 @@
       <el-tab-pane label="正文" name="正文">
         <div id="text" class="textBox"></div>
       </el-tab-pane>
-      <el-tab-pane label="附件" name="附件">
+      <el-tab-pane label="附件" name="附件" v-if="uploadFlag">
         <div class="annexBox">
             <el-upload
             action="/file/upload"
@@ -278,7 +278,10 @@
         canOut:false,
         inputVisible:false,
         inputAllVisible:true,
-        inputValue:''
+        inputValue:'',
+        viewFlag:false,
+        uploadFlag:false,
+        deleteFileFlag:false
       };
     },
     computed: {
@@ -442,6 +445,10 @@
           this.fileFlag = false;
           return true;
         }
+        if(!this.deleteFileFlag){
+          this.$message.error('暂无权限');
+          return false;
+        }
         return new Promise((resolve,reject)=>{
           this.$confirm('确认删除此附件吗?', '提示', {
             confirmButtonText: '确定',
@@ -502,6 +509,10 @@
       //文件上传
     },
     created() {
+      let role = this.$authority.getPageAuthority('documentcirculation','createdraft').role;
+      if(role['002D'].own && role['002J'].own && role['002Y'].own) this.viewFlag = true;
+      if(role['002Z'].own) this.uploadFlag = true;
+      if(role['0034'].own) this.deleteFileFlag = true;
       this.formData.senderId = this.userInfo.userinfo.employeeId;
     },
     mounted() {
@@ -523,7 +534,6 @@
       };
       sendFileAPI.emptyDocument()
       .then(res=>{
-        console.log(res);
         this.sendfileId = res.object;
         this.loading = false;
       })
@@ -538,7 +548,7 @@
       window.onbeforeunload = null
     },
     beforeRouteLeave(to, from, next) {
-      if(this.canOut){
+      if(this.canOut || !this.viewFlag){
         next(true);
       }else{
         this.$confirm('确认离开吗？系统将不会保存您尚未保存的内容', '提示', {

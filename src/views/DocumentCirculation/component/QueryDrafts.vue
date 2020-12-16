@@ -25,11 +25,13 @@
         align="center">
       </el-table-column>
       <el-table-column
+      v-if="editFlag || deleteFlag"
         label="操作"
         align="center"
         width="130">
         <template slot-scope="scope">
           <el-popover
+            v-show="editFlag"
             placement="top-start"
             trigger="hover"
             :open-delay="500"
@@ -37,6 +39,7 @@
               <el-button slot="reference" type="primary" icon="el-icon-edit-outline" circle @click="editDraftInfo(scope.row)"></el-button>
           </el-popover>
           <el-popover
+            v-show="deleteFlag"
             placement="top-start"
             trigger="hover"
             :open-delay="500"
@@ -59,7 +62,9 @@
     data() {
       return {
         loading:true,
-        tableData:[]
+        tableData:[],
+        editFlag:false,
+        deleteFlag:false
       };
     },
     computed: {},
@@ -100,7 +105,6 @@
             return item;
           });
           this.loading = false;
-          console.log(res);
         })
         .catch(err=>{
           this.$message.error('获取草稿箱失败');
@@ -108,7 +112,9 @@
       }
     },
     created() {
-      
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      if(role['002N'].own && role['002A'].own && (role['002F'].own || role['002E'].own)) this.editFlag = true;
+      if(role['002I'].own) this.deleteFlag = true;
     },
     mounted() {
       this.getDraft();

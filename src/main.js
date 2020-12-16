@@ -6,6 +6,7 @@ import store from './store'
 import authority from '@/authority/authority.js'
 import 'element-ui/lib/theme-chalk/base.css';
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+import * as echarts from 'echarts'
 
 import {
   Container,
@@ -135,6 +136,8 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 
 Vue.prototype.$authority = authority;
+
+Vue.prototype.$echarts = echarts
 
 new Vue({
   router,

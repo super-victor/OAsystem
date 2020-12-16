@@ -1,10 +1,11 @@
 !<!-- ViewDraftList -->
 <template>
-  <div class='ViewDraftList' v-loading="loading">
+  <div class='ViewDraftList' v-loading="loading" v-show="allFlag">
     <empty-box v-if="tableData.length==0"></empty-box>
     <div class="tableBox" v-else>
       <div class="buttonBox">
         <el-switch
+          v-show="mineFlag"
           v-model="onlyMe"
           @change="change"
           active-text="只看自己的发文">
@@ -86,7 +87,9 @@
         loading:true,
         tableData:[],
         onlyMe:false,
-        currentTableData:[]
+        currentTableData:[],
+        allFlag:false,
+        mineFlag:false
       };
     },
     computed: {
@@ -109,6 +112,9 @@
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('documentcirculation','viewdraftlist').role;
+      if(role['002T'].own) this.allFlag = true;
+      if(role['002U'].own) this.mineFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','公文一览']);

@@ -17,7 +17,7 @@
         </div>
         <div class="buttonBox">
           <el-button class="button" icon="el-icon-back" @click="goBack">返回</el-button>
-          <el-button type="danger" class="button" icon="el-icon-close" @click="cancelCheck">取消审核</el-button>
+          <el-button type="danger" class="button" icon="el-icon-close" @click="cancelCheck" v-show="cancelFlag">取消审核</el-button>
         </div>
       </div>
     </div>
@@ -35,7 +35,8 @@
     data() {
       return {
         loading:true,
-        fileInfo:{}
+        fileInfo:{},
+        cancelFlag:false
       };
     },
     computed: {
@@ -70,7 +71,8 @@
       }
     },
     created() {
-      
+      let role = this.$authority.getPageAuthority('documentcirculation','querydraft').role;
+      if(role['002S'].own) this.cancelFlag = true;
     },
     mounted() {
       this.UPDATE_BREAD(['公文流转','待审拟稿']);
@@ -78,7 +80,6 @@
         sendfileId:this.$route.params.sendfileId
       })
       .then(res=>{
-        console.log(res)
         this.fileInfo = res.object;
         this.loading = false;
       })
