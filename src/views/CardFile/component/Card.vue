@@ -81,7 +81,7 @@
         <el-form-item label="地址" prop="address" style="height:50px">
           <el-input v-model="newInfo.address" placeholder="请输入地址" class="input"></el-input>
         </el-form-item>
-        <el-form-item label="分类" prop="type" style="height:70px">
+        <el-form-item label="分类" prop="type" style="height:30px">
           <el-select v-model="newInfo.holder" placeholder="请选择分类">
               <el-option
               v-for="item in holders"
@@ -142,6 +142,9 @@
           ],
           position:[
             { required: true, message: '请输入职位', trigger: 'blur' }
+          ],
+          type:[
+            { required: true, message: '请选择分类', trigger: 'blur' }
           ],
           phone:[
             { required: true, message: '请输入电话号码'},

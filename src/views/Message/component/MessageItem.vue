@@ -3,9 +3,9 @@
   <div class='messageItem'>
     <div class="message_box flex flex-col" @click="Read">
         <div class="title flex flex-row">
-            <el-tag :type="tagType" class="tag">成功</el-tag>
             <p>{{this.msg.title}}</p>
             <el-badge :is-dot=isRead class="item"/>
+            <p class="tag" :style="{backgroundColor:type}">{{ this.info }}</p>
         </div>
         <div class="content">
             <p>{{this.msg.content}}</p>
@@ -24,6 +24,8 @@
       return {
         tagType: 'success',
         isRead:0,
+        info:'',
+        type:'',
       }
     },
     props:['msg'],
@@ -46,12 +48,20 @@
     created() {
         if (this.msg.type===0) {
             this.tagType ='danger';
+            this.info = '失败';
+            this.type="#F56C6C";
         } else if (this.msg.type===1) {
             this.tagType ='success';
-        } else if (this.msg.type===3) {
+            this.info = '成功';
+            this.type="#67C23A";
+        } else if (this.msg.type===2) {
             this.tagType ='info';
-        } else if (this.msg.type===4) {
+            this.info = '信息';
+            this.type = '#909399';
+        } else if (this.msg.type===3) {
             this.tagType ='warning';
+            this.info = '警告';
+            this.type= '#E6A23C';
         }
         if (this.msg.isRead === 0) {
             this.isRead = true;
@@ -80,16 +90,22 @@
         }
         .content {
             font-size: 14px;
-            padding: 5px;
+            padding: 5px 0;
             margin-top: 10px;
-            margin-left: 55px;
             color: @regularText;
+            width: 100%;
+            word-wrap:break-word;
         }
     }
     .tag {
         width: 40px;
         text-align: center;
-        margin-right: 20px;
+        margin-left: 20px;
+        font-size: 0.15rem;
+        font-weight: bold;
+        color: @white;
+        border-radius: @smallBorderRadius;
+        // background-color: @dangerColor;
     }
   }
   .messageItem :hover {

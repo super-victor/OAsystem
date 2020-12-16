@@ -16,7 +16,7 @@
         <el-form-item label="日程地点" prop="location" style="height:70px;width:400px">
           <el-input v-model="form.location" class="input" size="medium" style="width:400px"></el-input>
         </el-form-item>
-        <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px;height:70px" v-if="form.type==='公司日程'">
+        <el-form-item label="参与人员" prop="joiner" style="margin-bottom:20px;height:50px" v-if="form.type==='公司日程'">
           <el-select v-model="form.joiner" multiple filterable style="width:400px" size="medium">
             <el-option
             v-for="item in userList"
