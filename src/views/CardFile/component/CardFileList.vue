@@ -5,24 +5,25 @@
     v-for="item in fileName"
     :key="item.id"
     :class="{active: select.id === item.id,normal: select.id !== item.id}"
-    v-loading="loading">
+    v-loading="loading"
+     v-show="fileFlag">
     <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
     <p>{{ item.name }}</p>
     </div>
     <div class="flex-col edit_row">
     <p class="tip">管理分类</p>
     <div class="flex-row">
-        <div class="right_i" @click="dialogVisible1 = true;">
+        <div class="right_i" @click="dialogVisible1 = true" v-show="addFlag">
           <el-tooltip content="添加分类" placement="bottom" effect="light">
             <img src="@/assets/Card/f_add.png" alt="">
           </el-tooltip>
         </div>
-        <div class="right_i" title="修改分类名">
+        <div class="right_i" title="修改分类名" v-show="updateFlag">
           <el-tooltip content="修改分类名称" placement="bottom" effect="light">
             <img src="@/assets/Card/f_edit.png" alt="" @click="dialogVisible2 = true">
           </el-tooltip>
         </div>
-        <div class="right_i" title="删除分类" @click="dialogVisible3 = true">
+        <div class="right_i" title="删除分类" @click="dialogVisible3 = true" v-show="deleteFlag">
           <el-tooltip content="删除分类" placement="bottom" effect="light">
             <img src="@/assets/Card/f_delete.png" alt="">
           </el-tooltip>
@@ -39,22 +40,24 @@
     </el-dialog>
     <!-- dialog-修改名片夹分类 -->
     <el-dialog title="修改分类名字" :visible.sync="dialogVisible2" class="newCard" width="40%">
-        <p>请选择要修改的分类</p>
-        <el-select v-model="updateFile" placeholder="请选择" style="width:100%">
+      <el-form ref="form" :model="newInfo" :rules="rules" label-width="80px" :inline-message=true>
+        <el-form-item label="分类" prop="file" style="height:70px">
+          <el-select v-model="newInfo.file" placeholder="请选择" style="width:100%">
             <el-option
             v-for="item in fileName"
             :key="item.id"
             :label="item.name"
             :value="item.id">
             </el-option>
-        </el-select>
-        <div v-if="updateFile">
-            <p>请输入新的分类名</p>
-            <el-input v-model="updateName"></el-input>
-        </div>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="新分类名" prop="newName" style="height:40px">
+          <el-input v-model="newInfo.newName" placeholder="请输入新的分类名"></el-input>
+        </el-form-item>
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false;updateFile = '';updateName = ''">取 消</el-button>
-        <el-button :loading="buttonLoading" type="primary" @click="submitUpdate">确 定</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitUpdate('form')">确 定</el-button>
       </div>
     </el-dialog>
     <!-- dialog-删除名片夹分类 -->
@@ -83,6 +86,7 @@
     data() {
       return {
         fileName: [],
+        newInfo:{},
         select: [], // 选中的名片夹分类
         dialogVisible1: false, //新建分类dialog
         dialogVisible2: false, //修改分类dialog
@@ -93,6 +97,18 @@
         updateName: '', // 修改的新名
         loading:true,
         buttonLoading:false,
+        fileFlag:false,
+        addFlag:false,
+        updateFlag:false,
+        deleteFlag:false,
+        rules:{
+          file:[
+            { required: true, message: '请选择分类', trigger: 'blur' }
+          ],
+          newName:[
+            { required: true, message: '请输入新分类名', trigger: 'blur' }
+          ],
+        },
       };
     },
     computed: {},
@@ -152,23 +168,27 @@
         })
       },
       // 修改分类名
-      submitUpdate () {
-        this.buttonLoadng = true;
-        cardFileAPI.updateCardFile({
-          cardHolderId: this.updateFile,
-          name: this.updateName
-        })
-        .then(res=>{
-          this.$message.success('修改成功');
-          this.fileName = [];
-          this.getFileName();
-          this.updateName = '';
-          this.dialogVisible2 = false;
-          this.buttonLoadng = false;
-        })
-        .catch(err=>{
-          console.log(err);
-          this.$message.error('发生错误');
+      submitUpdate (formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.buttonLoadng = true;
+            cardFileAPI.updateCardFile({
+              cardHolderId: this.newInfo.file,
+              name: this.newInfo.newName
+            })
+            .then(res=>{
+              this.$message.success('修改成功');
+              this.fileName = [];
+              this.getFileName();
+              this.updateName = '';
+              this.dialogVisible2 = false;
+              this.buttonLoadng = false;
+            })
+            .catch(err=>{
+              console.log(err);
+              this.$message.error('发生错误');
+            })
+          }
         })
       },
       // 删除分类
@@ -192,6 +212,11 @@
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('businesscardholder').role;
+      if (role['0003'].own) this.fileFlag = true;
+      if (role['0004'].own) this.deleteFlag = true;
+      if (role['0005'].own) this.addFlag = true;
+      if (role['0006'].own) this.updateFlag = true;
       this.getFileName();
     },
     mounted() {

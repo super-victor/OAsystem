@@ -30,12 +30,12 @@
           <img src="@/assets/Card/Share.png" alt="" @click="dialogVisible1 = true">
         </el-tooltip>
       </div>
-      <div class="right_i edit" title="编辑">
+      <div class="right_i edit" title="编辑" v-show="updateFlag">
         <el-tooltip content="编辑名片" placement="right" effect="light">
           <img src="@/assets/Card/Edit.png" alt="" @click="dialogVisible2 = true">
         </el-tooltip>
       </div>
-      <div class="right_i delete" title="删除">
+      <div class="right_i delete" title="删除" v-show="deleteFlag">
         <el-tooltip content="删除名片" placement="right" effect="light">
           <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardId)">
         </el-tooltip>
@@ -81,7 +81,7 @@
         <el-form-item label="地址" prop="address" style="height:50px">
           <el-input v-model="newInfo.address" placeholder="请输入地址" class="input"></el-input>
         </el-form-item>
-        <el-form-item label="分类" prop="type" style="height:70px">
+        <el-form-item label="分类" prop="type" style="height:30px">
           <el-select v-model="newInfo.holder" placeholder="请选择分类">
               <el-option
               v-for="item in holders"
@@ -121,6 +121,8 @@
           holder: this.msg.card.cardHolderId,
         }, // 信息
         holders: [], // 名片夹
+        updateFlag:false,
+        deleteFlag:false,
         rules:{
           email:[
             { required: true, message: '请输入电子邮箱', trigger: 'blur' },
@@ -140,6 +142,9 @@
           ],
           position:[
             { required: true, message: '请输入职位', trigger: 'blur' }
+          ],
+          type:[
+            { required: true, message: '请选择分类', trigger: 'blur' }
           ],
           phone:[
             { required: true, message: '请输入电话号码'},
@@ -210,6 +215,9 @@
       },
     },
     created() {
+      let role = this.$authority.getPageAuthority('businesscardholder').role;
+      if (role['0008'].own) this.updateFlag = true;
+      if (role['000A'].own) this.deleteFlag = true;
       this.getFileName();
       // console.log(this.msg);
     },
