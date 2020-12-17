@@ -43,12 +43,14 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // 访问量
-        DataUtil.Data_Total_Views++;
-        if ( !DateUtil.isSameDay(DataUtil.Data_Date,new Date())) {
-            DataUtil.Data_Date = new Date();
-            DataUtil.Data_Daily_Views = 0;
+        if (httpServletRequest.getRequestURI().equals("/login")) {
+            DataUtil.Data_Total_Views++;
+            if ( !DateUtil.isSameDay(DataUtil.Data_Date,new Date())) {
+                DataUtil.Data_Date = new Date();
+                DataUtil.Data_Daily_Views = 0;
+            }
+            DataUtil.Data_Daily_Views++;
         }
-        DataUtil.Data_Daily_Views++;
 
         // 判断系统全局允许名单
         boolean flag = true;

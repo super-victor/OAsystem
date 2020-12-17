@@ -32,8 +32,6 @@ public class DataServiceImpl implements DataService{
     @Resource
     MeetingService meetingService;
 
-    @Resource
-    DepartmentService departmentService;
 
     @Override
     public BackFrontMessage getSystemData() {
@@ -41,7 +39,6 @@ public class DataServiceImpl implements DataService{
         map.put("document",documentService.getSystemDocumentSeeAbleData());
         map.put("schedule",scheduleService.findCompanyScheduleNumber());
         map.put("meeting",meetingService.MeetingTrendInfo());
-        map.put("department",departmentService.getDepartmentSeeAbleData());
         return new BackFrontMessage(200, "获取成功", map);
     }
 
