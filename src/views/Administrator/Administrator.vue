@@ -7,6 +7,7 @@
       </div>
       <div class="headerBox">
         <p class="name">协同办公平台·控制台</p>
+        <div class="logOutBox" @click="logOut"><img src="@/assets/header/logout.png" class="img" alt=""><span>退出登录</span></div>
       </div>
     </div>
     <div class="bottomBox">
@@ -25,6 +26,7 @@ import CheckLogs from './component/CheckLogs';
 import DataVisualization from './component/DataVisualization';
 import GiveRole from './component/GiveRole';
 import SystemInfo from './component/SystemInfo';
+import {mapState,mapMutations} from 'vuex';
   export default {
     components: {
       SystemInfo,
@@ -36,13 +38,30 @@ import SystemInfo from './component/SystemInfo';
       return {
       };
     },
-    computed: {},
+    computed: {
+      ...mapState([
+        'userAuthorityTemple',
+        'asideMenuTemple'
+      ])
+    },
     watch: {},
     methods: {
-      
+      ...mapMutations(['GET_TOKEN','RESET_PAGE_PERMISSIONS','RESET_ASIDE_MENU','GET_USERINFO']),
+      logOut(){
+        this.$confirm('确认要退出登录吗', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          this.GET_TOKEN(null);
+          this.GET_USERINFO({});
+          this.RESET_PAGE_PERMISSIONS(this.userAuthorityTemple);
+          this.RESET_ASIDE_MENU(this.asideMenuTemple);
+          this.$router.push('/login');
+        }).catch(() => {});
+      }
     },
     created() {
-      
     },
     mounted() {
       
@@ -84,6 +103,7 @@ import SystemInfo from './component/SystemInfo';
         min-width: 880px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding-right: 25px;
         box-sizing: border-box;
         position: relative;
@@ -95,6 +115,26 @@ import SystemInfo from './component/SystemInfo';
           line-height: 39px;
           color: #2C3059;
           user-select: none;
+        }
+        .logOutBox{
+          height: 40px;
+          width: 120px;
+          text-align: center;
+          line-height: 40px;
+          color: @dangerColor;
+          font-size: 0.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all .4s;
+          .img{
+            height: 20px;
+            width: 20px;
+          }
+        }
+        .logOutBox:hover{
+          background-color: @lighterBackground;
         }
       }
     }

@@ -2,13 +2,16 @@
 <template>
   <div class='header' @mousewheel.prevent>
     <div class="logoBox">
-      <img src="@/assets/logo.png" class="logo" alt="" @click="toHome">
+      <el-tooltip content="前往首页" placement="bottom-start" :open-delay="500" effect="light">
+        <img src="@/assets/logo.png" class="logo" alt="" @click="toHome">
+      </el-tooltip>
     </div>
     <div class="headerBox">
       <p class="name">协同办公平台</p>
       <div class="itemBox">
         <the-header-box>
           <img src="@/assets/message.png" class="userImg" alt="" @click="toMessage">
+          <div class="point" :class="{'point2':point}" v-show="message.length!=0"></div>
         </the-header-box>
         <el-dropdown @command="handleCommand">
           <the-header-box>
@@ -41,6 +44,7 @@
 <script>
   import TheHeaderBox from '@/components/control/TheHeaderBox';
   import {mapState,mapMutations} from 'vuex';
+  import messageApi from '@/service/Message';
   export default {
     components: {
       TheHeaderBox
@@ -66,7 +70,10 @@
             src:'logout',
             route:'/login'
           }
-        ]
+        ],
+        point:false,
+        timer:null,
+        message:[]
       };
     },
     computed: {
@@ -107,8 +114,25 @@
       }
     },
     created() {
+      messageApi.getMessageNotRead()
+      .then(res=>{
+        this.message = res.object;
+        if(this.message.length!=0){
+          this.timer = setInterval(()=>{
+            this.point = !this.point;
+          },1000)
+        }
+      })
+      .catch(err=>{
+        this.$message.error('消息获取失败');
+      })
     },
     mounted() {
+    },
+    beforeDestroy(){
+      if(this.timer!=null){
+        clearInterval(this.timer);
+      }
     }
   }
 </script>
@@ -162,6 +186,21 @@
       .userImg{
         height: 28px;
         width: 28px;
+        padding: 0 5px;
+      }
+      .point{
+        height: 7px;
+        width: 7px;
+        background-color: #f86b1d;
+        position: absolute;
+        top: 12px;
+        right: 90px;
+        border-radius: 50%;
+        transition: all .7s;
+        opacity: 0;
+      }
+      .point2{
+        opacity: 100;
       }
       .userImg2{
         height: 35px;

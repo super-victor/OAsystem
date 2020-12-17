@@ -1,20 +1,27 @@
 <!-- HomePage -->
 <template>
   <div class='HomePage' @click="mainBoxClick">
-    <div class="leftBox"></div>
+    <div class="leftBox">
+      <schedule></schedule>
+      <document></document>
+    </div>
     <message></message>
   </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex';
+  import Schedule from './component/Schedule';
+  import Document from './component/Document';
   import Message from './component/Message';
   export default {
     components: {
-      Message
+      Message,
+      Schedule,
+      Document
     },
     data() {
-      return {
+      return{
       };
     },
     computed: {},
@@ -47,8 +54,10 @@
     display: flex;
     .leftBox{
       height: 100%;
-      width: 13.5rem;
-      background-color: cornflowerblue;
+      width: 12.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 </style>

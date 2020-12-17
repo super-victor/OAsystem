@@ -9,7 +9,7 @@
       <p class="title">登录</p>
       <el-input class="input" v-model="userName" placeholder="请输入用户名"></el-input>
       <el-input class="input" v-model="passWord" placeholder="请输入密码" show-password @keyup.enter.native="login"></el-input>
-      <el-link class="forgetPwd" type="primary">忘记密码</el-link>
+      <!-- <el-link class="forgetPwd" type="primary">忘记密码</el-link> -->
       <el-button :disabled="!flag" class="submit" type="primary" round @click="login">提交</el-button>
     </div>
   </div>
@@ -55,13 +55,14 @@
         .then(res=>{
           this.GET_USERINFO(res.object);
           this.UPDATE_USERROLE(this.userInfo.userinfo.authorities.some(item=>item.roleId===1)?'administrator':(this.userInfo.userinfo.authorities.some(item=>item.roleId===2)?'normalAdministrator':'staff'));
+          let role = this.userInfo.userinfo.authorities.some(item=>item.roleId===1)?'administrator':(this.userInfo.userinfo.authorities.some(item=>item.roleId===2)?'normalAdministrator':'staff');
           this.$message({
             message: '登录成功',
             type: 'success'
           });
           this.pagePermissions(res.object.usershow);
           this.UPDATE_ASIDE_MENU();
-          this.$router.replace(this.userRole=='administrator'?'/administrator':this.$route.query.redirect || '/');
+          this.$router.replace(role=='administrator'?'/administrator':this.$route.query.redirect || '/');
         })
         .catch(err=>{
           this.$message.error('登录失败');
@@ -77,7 +78,9 @@
       }
     },
     created() {
-      
+      if(this.userRole==='administrator'){
+        this.UPDATE_USERROLE('');
+      }
     },
     mounted() {
     }
@@ -144,9 +147,9 @@
         width: 80%;
         margin-top: 40px;
       }
-      .forgetPwd{
-        margin: 30px 0 0 225px;
-      }
+      // .forgetPwd{
+      //   margin: 30px 0 0 225px;
+      // }
       .submit{
         margin-top: 84px;
         width: 130px;

@@ -46,13 +46,16 @@ const router = new VueRouter({
 
 //全局钩子函数，处理用户登录情况不同时的页面跳转
 router.beforeEach((to,from,next)=>{
-  if(to.path==='/administrator' && Store.state.userRole!='administrator'){
+  if(to.path==='/login' && Store.state.userRole=='administrator'){
+    next();
+  }
+  else if(to.path==='/administrator' && Store.state.userRole!='administrator'){
     next({path:'/'});
   }
-  if(to.path!=='/administrator' && Store.state.userRole=='administrator'){
+  else if(to.path!=='/administrator' && Store.state.userRole=='administrator'){
     next({path:'/administrator'});
   }
-  if(Store.state.userToken!==null){
+  else if(Store.state.userToken!==null){
     if(to.path==='/login'){
       next({path:'/'});
     }else{
