@@ -49,19 +49,20 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false ,isClick = []">取 消</el-button>
-          <el-button type="primary" @click="meetingComfirm()">确 定</el-button>
+          <el-button type="primary" v-loading="loading3" element-loading-spinner="el-icon-loading"
+     @click="meetingComfirm()">确 定</el-button>
         </div>
       </el-dialog>
     </div>
 
-    <div class="msgBox">
+    <div class="msgBox" >
       <!-- 会议室筛选 -->
 
 
-
+      <div class="content" v-if="getFlag2">
       <!-- 左侧树 -->
-      <div class="content">
-        <div class="tree">
+     
+        <div class="tree" v-if="getFlag3">
           <div class="title">
             <span @click="tableFilterData = tableData;isClick = []" style="cursor:pointer">
               楼层信息
@@ -79,10 +80,9 @@
         <div class="table" style="width:100%">
           <template>
             <div class="btn" v-loading="loading2">
-              <el-button  style="padding:50px"
+              <el-button  style="padding:50px" 
                 v-for='i in tableFilterData.length' :key="i" @click.stop="handleCurrentChange(i-1)">
-                <img :src="require(tableFilterData[i-1].meeting?'@/assets/MeetingRoomManagement/red.png':'@/assets/MeetingRoomManagement/green.png')" alt="" v-if="!isClick[i-1]">
-                <i class="el-icon-circle-plus-outline" v-show="isClick[i-1]"></i>
+                <img :src="require(tableFilterData[i-1].meeting?'@/assets/MeetingRoomManagement/red.png':'@/assets/MeetingRoomManagement/green.png')" alt="" >
                 <p style="padding-top:10px">{{tableFilterData[i-1].name}}</p>
               </el-button>
 
@@ -114,14 +114,9 @@
                 <p style="margin-top:20px" v-show='isShow'>
                   结束时间：{{this.currentRow.meeting?this.currentRow.meeting.endTime.substr(0,10)+' '+this.currentRow.meeting.endTime.substr(11,8):''}}
                 </p>
-                <div class="colorRemark">
-                  <div class="remarks">
-                    <div>注：</div>
-                    <div class="red"></div>
-                    <div>为会议中的会议室</div>
-                  </div>
-                </div>
-
+              </div>
+              <div class="addbtn">
+                <el-button style="float:right;" @click="addappointment()" v-if="(getFlag1 && addFlag)">预约会议</el-button>
               </div>
 
             </div>
@@ -154,7 +149,10 @@
   export default {
     data() {
       return {
-
+        getFlag1:false,
+        getFlag2:false,
+        getFlag3:false,
+        addFlag:false,
         form: {
           name: '',
           region: '',
@@ -171,6 +169,7 @@
         isClick: [],
         loading1: true,
         loading2: true,
+        loading3: false,
         RoomMessage: true,
         dateSelect: '',
         startTime: -1,
@@ -206,12 +205,7 @@
         this.getSelect = []
         if (val) {
           let newTime = ' 00:00:00';
-          console.log(val.toLocaleDateString().substr(9) ?
-              val.toLocaleDateString().replace(/\//g, "-") +
-              newTime : val.toLocaleDateString().replace(/\//g, "-").substr(0, 8) +
-              '0' +
-              val.toLocaleDateString().replace(/\//g, "-").substr(8) +
-              newTime,this.currentRow.meetingRoomId)
+
           addOrderMeetingAPI.getAllMeetingTimeByRoomAndTime({
             date: val.toLocaleDateString().substr(9) ?
               val.toLocaleDateString().replace(/\//g, "-") +
@@ -222,7 +216,6 @@
             meetingroomid: this.currentRow.meetingRoomId,
           }).then(res => {
             this.DateData = res.object
-            console.log(res.object)
             this.DateData.map((item, index) => {
               if (item.startTime) {
                 for (var i = 0; i < 24; i++) {
@@ -230,60 +223,46 @@
                     .push(i): '';
 
                 }
-                console.log(this.getSelect.filter(item => {
-                  if (item == 12) return item
-                }))
-
               }
             })
           }).catch(err => {
             this.$message.error('获取失败!')
-            console.log("getAllMeetingTimeByRoomAndTime", err)
           })
         }
 
       }
     },
     created() {
-      //获取预约成功的会议
-      // getMeetingsAPI.getAllMeetings()
-      // .then(res=>{
-      //   console.log(res.object)  
-      // }).catch(err=>{
-      //   this.$message.error('获取失败')
-      //   console.log('getAllMeetings:',err)
-      // }),
+       let role = this.$authority.getPageAuthority('meetingroommanagement','room').role;
+      if(role['0026'].own) this.getFlag1 = true; //获取某一天某一个会议室的会议预约
+      if(role['0032'].own) this.getFlag2 = true; //获取所有的会议室信息
+      if(role['0019'].own) this.getFlag3 = true; //按楼层获取会议室信息
+      if(role['0025'].own) this.addFlag = true; //预约会议
 
       //获取会议室信息
-      getMeetingsAPI.getAllMeetingRoom()
+      getMeetingsAPI.getAllMeetingRoomInfo()
         .then(res => {
           this.loading2 = false;
-          console.log(res)
           this.tableData = res.object;
           this.tableFilterData = this.tableData
           this.tableData.map((item, index) => {
-            console.log(item)
           })
 
         }).catch(err => {
           this.$message.error('获取失败')
-          console.log('getAllMeetingRoom', err)
         }),
         //获取左侧树的信息
         getMeetingsAPI.getAllMeetingRoomByStorey()
         .then(res => {
           this.loading1 = false;
-          console.log("storeyData:", res.object)
           this.storeyData = res.object;
         }).catch(err => {
           this.$message.error('获取失败')
-          console.log('getAllMeetingRoomByStorey', err)
         })
     },
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
       search() {
-        console.log("receive", this.userInfo)
       },
       //重选
       reselect() {
@@ -292,15 +271,7 @@
       },
       //选取会议室
       handleCurrentChange(res) {
-        // if(val !=null){
-        //   this.currentRow = val;
-        // }
-        // else val == null;
-        // if(this.currentRow.meeting) this.isShow = true;
-        // else this.isShow = false
-        //console.log(res)
-        console.log(this.currentRow)
-        if (this.isClick[res]) this.addappointment();
+        if (this.isClick[res] && (this.addFlag && this.getFlag1)) this.addappointment();
         for (var i = 0; i < this.tableFilterData.length; i++) {
           i == res ? this.isClick[i] = true : this.isClick[i] = false;
         }
@@ -309,7 +280,6 @@
         },500)
         this.currentRow = this.tableFilterData[res]
         this.currentRow2 = this.tableFilterData[res]
-        console.log(this.currentRow)
         if (this.currentRow.meeting) this.isShow = true;
         else this.isShow = false
 
@@ -322,17 +292,11 @@
       },
       //左侧筛选会议室
       handleNodeClick(data) {
-        //console.log(data.label);
-        // this.tableFilterData = [],
-        // console.log(this.tableData)
         this.isClick = []
         this.tableFilterData = this.tableData.filter((item, index) => {
           return (item.place == data.name || item.name == data.name)
         })
 
-      },
-      test() {
-        console.log("123")
       },
       getIndex(i) {
         if (this.startTime == -1) {
@@ -350,10 +314,10 @@
       },
       //会议预约
       meetingComfirm() {
-        this.dialogFormVisible = false;
+        if(this.dateSelect && this.form.name){
+          if(this.startTime!=-1){
+            this.loading3 = true,
         this.isClick = [];
-        console.log(this.currentRow.meetingRoomId, typeof (this.currentRow.meetingRoomId))
-        console.log(this.form.remark)
         addOrderMeetingAPI.addOrderMeeting({
           employeeid: this.userInfo.userinfo.employeeId,
           meetingroomid: this.currentRow.meetingRoomId,
@@ -367,11 +331,23 @@
             ':00:00',
           remark: this.form.remark ? this.form.remark : '',
         }).then(res => {
-          console.log('预约成功!');
+          this.loading3 =false,
+          this.dialogFormVisible = false;
+          this.$message({
+            type:'success',
+            message:'预约成功'
+          })
         }).catch(err => {
+          this.loading3 =false,
           this.$message.error("预约失败")
-          console.log('addOrderMeeting:', err)
         })
+          }else this.$message.error("请选择预约时间")
+        }else if (!this.dateSelect){
+          this.$message.error("请选择日期")
+        }
+        else if (!this.form.name){
+          this.$message.error("请填写会议名称")
+        }
       }
     },
     mounted() {
@@ -402,6 +378,9 @@
       ::v-deep .el-button {
         width: 98px;
         height: 40px;
+        .el-icon-loading{
+          margin-top:10px;
+        }
       }
 
       .red {
@@ -512,24 +491,11 @@
             border-radius: @baseBorderRadius;
             background: white;
 
-            .red {
-              background: #F56C6C;
-            }
 
-            .blue {
-              background: #5383EC;
-            }
-
-            .white {
-              background: #FFFFFF;
-            }
            
             ::v-deep .el-button {
-              margin:20px
-              
-            }
-            ::v-deep .el-icon-circle-plus-outline{
-              font-size:90px;
+              margin:20px;
+    
             }
           }
         }
@@ -546,31 +512,17 @@
 
             .text {
               font-size: 15px;
-
-              .colorRemark {
-                margin-top: 108%;
-
-                .remarks {
-                  display: flex;
-
-                  .red {
-                    margin: 3px;
-                    height: 15px;
-                    width: 15px;
-                    background-color: #F56C6C;
-                  }
-
-                  .white {
-                    margin: 3px;
-                    height: 13.5px;
-                    width: 13.5px;
-                    border: 0.5px solid black;
-                    background-color: #FFF;
-                  }
-                }
-
-              }
+              height:410px;
             }
+            .addbtn{
+                text-align: center;
+                ::v-deep .el-button{
+                  padding:10px 20px;
+                  border-radius: 5px;
+                  background-color: #5383EC;
+                  color:white;
+                }
+              }
           }
         }
         .roomMessage2 {

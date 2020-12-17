@@ -1,10 +1,10 @@
 <template>
-  <div class='equipment'>      
+  <div class='equipment' v-show="getFlag1">      
     <div class="alert">
       <!-- 添加弹框 -->
       <el-dialog class="dialog" title="添加设备" :visible.sync="addEquipment" > 
         <el-form class="form" ref="form" :model="form" label-width="90px" :rules="rules">
-          <el-form-item label="会议室号:" style="width:100%;padding-bottom:20px;" prop="roomId">
+          <el-form-item label="会议室号:" style="width:100%;padding-bottom:20px;" prop="roomId" >
               <el-select v-model.number="form.roomId" placeholder="请选择">
                 <el-option
                   v-for="item in MeetingroomData"
@@ -92,14 +92,14 @@
         <!-- 筛选 -->
         <div class="filter">
           <!-- 类别筛选 -->
-          <div class="category">
-            <el-select v-model="category" filterable placeholder="请选择类别" @change="getCategory()" >
+          <div class="category" v-show="getFlag3">
+            <el-select v-model="category" filterable placeholder="请选择设备类别" @change="getCategory()" >
               <el-option v-for="item in ClassifyData" :key="item.value" :label="item.name" :value="item.name" > 
               </el-option>
             </el-select>
           </div>
           <!-- 会议室筛选 -->
-          <div class="meetingroomnum">
+          <div class="meetingroomnum" v-show="getFlag2">
             <el-select v-model="meetingroomnum" filterable placeholder="请选择会议室号" @change="getRoomnum()">
               <el-option v-for="item in MeetingroomData" :key="item.value" :label="item.name" :value="item.name">
               </el-option>
@@ -119,7 +119,7 @@
             </el-input>
           </div>
           <!-- 添加设备 -->
-          <div class="add">
+          <div class="add" v-show="addFlag">
             <el-button type="primary" icon="el-icon-plus" @click="addEquipment = true">添加设备</el-button>
           </div>
         </div>
@@ -129,35 +129,33 @@
       <div class="table">
         <template>
           <el-table :data="tableFilterData" stripe style="height:550px;width: 100%;padding:0 25px" v-loading ="loading" > 
-            <el-table-column prop="meetingRoomName" label="会议室号" width="" sortable>
+            <el-table-column prop="meetingRoomName" label="会议室号" width="" sortable v-if="getFlag2">
             </el-table-column>
             <el-table-column prop="name" label="设备名称" width="" sortable>
             </el-table-column>
-            <el-table-column prop="equipmentClassifyName" label="类型" sortable>
+            <el-table-column prop="equipmentClassifyName" label="类型" sortable v-if="getFlag3"> 
             </el-table-column>
             <el-table-column prop="num" label="数量" sortable>
             </el-table-column>
             <el-table-column label="维护状态" width="" >
               <template slot-scope="scope">
                  <el-button :type="scope.row.isMaintain == 1?'success':'danger'" size="mini" :icon="scope.row.isMaintain ==1?'el-icon-check':'el-icon-close'" circle></el-button>
-          
-                 <!-- <el-button type="danger" size="mini" icon="el-icon-close" circle></el-button> -->
               </template>
             </el-table-column>
-            <el-table-column  label="操作" width="200" align="center">
+            <el-table-column  label="操作" width="200" align="center" v-if="updateFlag || deleteFlag">
               <template slot-scope="scope">
                 <el-popover
                   placement="top-start"
                   trigger="hover"
                   :open-delay="500"
-                  content="编辑">
+                  content="编辑" v-if="updateFlag">
                 <el-button type="primary" slot="reference" icon="el-icon-edit" circle size="mini" style="margin-right:5px" @click="getUpdateMessage(scope.row)"></el-button>
               </el-popover>
               <el-popover
                   placement="top-start"
                   trigger="hover"
                   :open-delay="500"
-                  content="删除">
+                  content="删除" v-if="deleteFlag">
                 <el-button type="danger" slot="reference" icon="el-icon-delete" circle size="mini" @click="deleteMessage(scope.row.equipmentId)"></el-button>
               </el-popover>
              
@@ -169,17 +167,6 @@
           </el-table>
         </template>
       </div>
-      <!-- 分页 -->
-      <!-- <div class="pagination">
-        <div class="block" style="">
-
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" background
-            :page-sizes="[1,5,10,15,20]" :current-page.sync="currentPage" :page-size="1"
-            layout="sizes, prev, pager, next, jumper" :total="total">
-          </el-pagination>
-
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -196,35 +183,35 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
   } from 'vuex'
   export default {
     created(){
+      let role = this.$authority.getPageAuthority('meetingroommanagement','equipment').role;
+      if(role['000Q'].own) this.getFlag1 = true; //获取所有的设备信息
+      if(role['000S'].own) this.getFlag2 = true; //获取所有的会议室信息
+      if(role['000K'].own) this.getFlag3 = true; //获取所有设备分类信息
+      if(role['000P'].own) this.deleteFlag = true; //删除设备
+      if(role['000N'].own) this.updateFlag = true; //修改设备 
+      if(role['000M'].own) this.addFlag = true; //增加设备
         equipmentAPI.getEquipmentRequest(
       ).then(res=>{
         this.loading = false
-        console.log(res)
         this.tableData = res.object ;
         this.tableFilterData = this.tableData;
-        console.log("filter:",this.tableFilterData)
           
         }).catch(err => {
           this.$message.error('读取失败');
-          console.log("equipmentAPI:",err)
         })
 
       meetingroomAPI.getAllMeetingRoom(
       ).then(res=>{
           this.MeetingroomData = res.object;
-          console.log("meetingroom",this.MeetingroomData)
         }).catch(err => {
         this.$message.error('读取失败');
-        console.log("getAllMeetingRoomAPI:",err)
       })
 
       ClassifyAPI.getAllEquipmentClassify(
       ).then(res=>{
         this.ClassifyData = res.object;
-        console.log(this.ClassifyData)
       }).catch(err => {
         this.$message.error('读取失败');
-        console.log("getAllEquipmentClassify:",err)
       })
     },
     data() {
@@ -234,6 +221,12 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         }else callback();
       }
       return {
+        getFlag1:false,
+        getFlag2:false,
+        getFlag3:false,
+        deleteFlag:false,
+        updateFlag:false,
+        addFlag:false,
         roomID:'',
         category: '',
         meetingroomnum: '',
@@ -298,7 +291,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
           &&(this.category == this.tableData[index].equipmentClassifyName||!this.category))
            {
             this.tableFilterData.push(item)
-          console.log(this.tableData[index].num === this.input)
           };
 
         })
@@ -307,7 +299,13 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
 
       //删除操作
       deleteMessage(Id){
-        this.loading = true
+
+    this.$confirm('此操作将永久删除该设备, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+               this.loading = true
          equipmentDeleteAPI.deleteEquipmentRequest({
            equipmentId:Id,
          }).then(
@@ -315,11 +313,18 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
            setTimeout(() => {
            
         this.getData()
+        this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
      }, 1000))
         .catch(err => {
         this.$message.error('删除失败');
-        console.log("equipmentDeleteAPI:",err)
       })
+          
+        }).catch(() => {
+         
+        });
       },
       //修改操作
       getUpdateMessage(mes){
@@ -327,7 +332,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.updateForm.equipmentId = mes.equipmentId;
         this.updateForm.types = mes.equipmentClassifyId;
         this.updateForm.roomId = mes.meetingRoomId;
-        console.log(this.updateForm.roomId)
         this.updateForm.isMaintain =String( mes.isMaintain);
         this.updateForm.name = mes.name;
         this.updateForm.remark = mes.remark;
@@ -337,15 +341,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
 
          this.$refs[formName].validate((valid)=>{
           if(!valid){
-            console.log(valid)
           }else{
-        console.log( this.updateForm.equipmentId,typeof(this.updateForm.equipmentId),
-          this.updateForm.types,typeof(this.updateForm.types),
-          this.updateForm.roomId,typeof(this.updateForm.roomId),
-          this.updateForm.name,typeof(this.updateForm.name),
-          this.updateForm.isMaintain,typeof(this.updateForm.isMaintain),
-          this.updateForm.remark,typeof(this.updateForm.remark),
-          this.updateForm.num,typeof(this.updateForm.num),);
         this.loading = true
         this.updateEquipment = false;
         equipmentUpdateAPI.updateEquipmentRequest({
@@ -364,7 +360,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
           )
         .catch(err => {
         this.$message.error('修改失败');
-        console.log("equipmentUpdateAPI:",err)
         })
            
           }
@@ -375,7 +370,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       //类别筛选
       getCategory(){
           this.tableFilterData = [];
-          console.log(this.category)
           this.tableData.map((item, index) => {
           if (this.category == this.tableData[index].equipmentClassifyName 
           && this.category 
@@ -393,7 +387,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       getRoomnum(){
     
           this.tableFilterData = [];
-          console.log(this.meetingroomnum)
           this.tableData.map((item, index) => {
           if (this.meetingroomnum == this.tableData[index].meetingRoomName 
           && this.meetingroomnum 
@@ -412,18 +405,10 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
   
         this.$refs[formName].validate((valid)=>{
           if(!valid){
-            console.log(valid)
+
           }else{
              this.loading = true
         this.addEquipment = false;
- 
-        console.log(this.form.types,typeof(this.form.types),
-          this.form.roomId,typeof(this.form.roomId),
-        this.form.name,typeof(this.form.name),
-          this.form.isMaintain,typeof(this.form.isMaintain),
-          this.form.remark,typeof(this.form.remark),
-          this.form.num,typeof(this.form.num),)
-        console.log("this.from.roomId:",this.form.roomId)
         equipmentInsertAPI.insertEquipmentRequest({
           equipmentClassifyId:this.form.types,
           meetingRoomId:this.form.roomId,
@@ -437,7 +422,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
      }, 1000))
         .catch(err => {
         this.$message.error('读取失败');
-        console.log("equipmentInsertAPI:",err)
       })
         
           }
@@ -446,7 +430,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         },
 
       getData(){
-        console.log("执行getData")
         equipmentAPI.getEquipmentRequest(
       ).then(res=>{
         this.loading = false;
@@ -454,7 +437,6 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.tableFilterData = this.tableData;
         }).catch(err => {
           this.$message.error('读取失败');
-          console.log("equipmentAPI:",err)
         })
       }
 
