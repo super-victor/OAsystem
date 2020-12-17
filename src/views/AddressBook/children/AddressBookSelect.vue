@@ -1,19 +1,16 @@
 <template>
-  <div class='addressBook'>
+  <div class='addressBook' v-show="getFlag1">
     <div class="msgBox">
-      <!--  筛选  column-key="sex"
-              :filters="[{text: '男', value: '男'}, {text: '女', value: '女'}]"
-            :filter-method="filterSexHandler" -->
       <div class="content">
         <div class="total">
           <!-- 部门筛选 -->
-          <div class="chooses">
+          <div class="chooses" v-show="getFlag2">
             <div class="choose">
               <el-input placeholder="请输入部门名称搜索" v-model="department" @input="filter()"
                 @blur="message()">
               </el-input>
             </div>
-            <el-card class="box-card">
+            <el-card class="box-card" v-loading="loading2">
               <p style="font-size:13px;padding-bottom:5px;border-bottom:1px dashed #EBEEF5;text-align:center">部门列表</p>
               <div v-for="(data,index) in departmentfilterres" :key="index" class="text item"
                 @click="handleClick(index)" :style="{'color':getcolor && getcolor === index+1?'#5383EC':'#000000'}"
@@ -26,8 +23,6 @@
 
           <!-- 表格 -->
           <div class="table">
-
-            <!-- <button @click="handleClick()">test</button> -->
             <div class="search">
               <!-- 搜索框 -->
               <el-input placeholder="请输入姓名搜索" v-model="input">
@@ -37,7 +32,7 @@
               <el-button type="info" icon="el-icon-edit" @click="reset">重置</el-button>
             </div>
             <!-- 表格内容 -->
-            <el-table class="el_table" style="width:100%;" :data="tablefilterData" stripe v-loading ="loading" >
+            <el-table class="el_table" style="width:100%;" :data="tablefilterData" stripe v-loading ="loading" v-show="getFlag3">
               <el-table-column prop="name" label="姓名" width="120px" min-width="80px" sortable>
               </el-table-column>
               <el-table-column prop="sex" label="性别" width="100px" min-width="80px" sortable>
@@ -101,47 +96,49 @@
         total: 1,
         getcolor: "",
         getpagesize: [],
-        loading:true
+        loading:true,
+        loading2:true,
+        getFlag1:false,
+        getFlag2:false,
+        getFlag3:false
       }
     },
     created() {
+      let role = this.$authority.getPageAuthority('addressbook').role;
+      if(role['000E'].own) this.getFlag1 = true; //获取所有员工的通讯录
+      if(role['000F'].own) this.getFlag2 = true; //获取所有部门的部门名称
+      if(role['000G'].own) this.getFlag3 = true; //分页获取员工通讯录
+  
       // 初始页面展示表格
       pageAPI.paginationRequest({
         currentPageNum: 1,
         pageSize: 5,
       }).then(res => {
-         
-        // this.tablefilterData = res.object.currentPageList;
          this.total = res.object.totalPageNum * this.pageSize;
-        // this.getpagesize[1] = this.tablefilterData;
-        // console.log(this.getpagesize[1]);
         this.tablefilterData = res.object.currentPageList;
-        console.log(this.tablefilterData)
         this.loading = false;
       }).catch(err => {
         this.$message.error('读取失败');
-        console.log("pageAPI:",err)
       })
       //获取总数据
       dataAPI.dataRequest()
         .then(res => {
-          // console.log(res.object);
            this.tableData = res.object;
         }).catch(err => {
           this.$message.error('读取失败');
-          console.log("dataAPI:",err)
         })
       //初始页面左侧部门展示数据
       departmentAPI.departmentRequest()
         .then(res => {
-          // console.log(res.object);
+          this.loading2 = false,
           this.departmentres = res.object;
           this.departmentfilterres = this.departmentres;
+
         })
         .catch(err => {
           this.$message.error('读取失败');
-          console.log("departmentAPI:",err)
         })
+      
     },
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
@@ -152,28 +149,11 @@
         this.MAIN_CLICK(false);
       },
      
-      //部门搜索栏失去焦点
-      message() {
-        // if (!this.department) {
-        //    this.loading = true;
-        //    pageAPI.paginationRequest({
-        //     currentPageNum: this.currentPage,
-        //     pageSize: this.pageSize,
-        //   }).then(res => {
-        //     // console.log(res.object)
-        //     // this.tablefilterData = res.object.currentPageList;
-        //     // this.total = res.object.totalPageNum;
-        //     // console.log(this.total)
-        //     this.loading = false;
-        //   }).catch(err => {
-        //     this.$message.error('读取失败');
-        //     console.log(err)
-        //   })
-        // }
-      },
+
       //搜索框
       search() {
-         this.tablefilterData = [];
+        if(this.input){
+           this.tablefilterData = [];
          this.tableData.map((item, index) => {
            if ((this.input == this.tableData[index].name || this.tableData[index].name.indexOf(this.input) > -1)
            && (this.department == this.tableData[index].department.name || !this.department) && this.tablefilterData.length < this.pageSize) 
@@ -191,7 +171,6 @@
               this.loading = false;
             }).catch(err => {
               this.$message.error('读取失败');
-              console.log("pageAPI:",err)
             })
            }
            else if(!this.input && this.department == this.tableData[index].department.name && this.tablefilterData.length < this.pageSize )
@@ -200,17 +179,28 @@
              this.tablefilterData.push(item);
            } 
            })
+        }
       },
       //重置
       reset() {
-         this.input = null;
+        if(this.input || this.department){
+           this.input = null;
          this.department = null;
-         this.tablefilterData = this.tableData
-        // this.tablefilterData = this.getpagesize[this.pageSize]
+         this.loading = true
+         pageAPI.paginationRequest({
+        currentPageNum: 1,
+        pageSize: 5,
+      }).then(res => {
+         this.total = res.object.totalPageNum * this.pageSize;
+        this.tablefilterData = res.object.currentPageList;
+        this.loading = false;
+      }).catch(err => {
+        this.$message.error('读取失败');
+      })
+        }
       },
       //点击左侧部门
       handleClick(idx) {
-        // console.log(this.departmentfilterres[index]);
         this.currentPage = 1;
          this.department = this.departmentfilterres[idx]; 
         this.tablefilterData = [];
@@ -228,49 +218,28 @@
       },
       //改变页面显示条数
       handleSizeChange(val) {
-        // this.department = '';
-        // console.log("文本框：", this.department)
          this.department = null;
          this.input = null;
          this.loading = true;
-        //  console.log(`每页 ${val} 条`);
          this.currentPage = 1;
          this.pageSize = val;
-        //  console.log(this.pageSize)
         pageAPI.paginationRequest({
           currentPageNum: this.currentPage,
           pageSize: this.pageSize,
         }).then(res => {
-          // console.log("res.object:",res.object)
-          // this.tableData = res.object.currentPageList;
            this.tablefilterData = res.object.currentPageList;
-          // this.total = res.object.totalPageNum;
-          // this.getpagesize[this.pageSize] = this.tablefilterData;
-          // console.log(this.total)
            this.loading = false;
         }).catch(err => {
           this.$message.error('读取失败');
-          console.log(err)
         })
       },
       //切换页码
       handleCurrentChange(val) {
-        // console.log(`当前页: ${val}`);
         this.tablefilterData = [];
         this.getpagesize = [];
         this.currentPage = val;
         this.tableData.map((item, index) => {
           if(!this.input && !this.department){
-          //   pageAPI.paginationRequest({
-          //   currentPageNum: this.currentPage,
-          //   pageSize: this.pageSize,
-          // }).then(res => {
-          //   this.tablefilterData = res.object.currentPageList;
-          //   this.loading = false;
-          // }).catch(err => {
-          //   this.$message.error('读取失败');
-          //   console.log(err)
-          // })
             this.getpagesize.push(item);
           }
           else if((this.input == this.tableData[index].name || this.tableData[index].name.indexOf(this.input) > -1) && !this.department){
@@ -289,7 +258,6 @@
             this.tablefilterData.push(this.getpagesize[(val-1)*this.pageSize+i])
             }
           }
-          // this.tablefilterData.push(this.getpagesize[(val-1)*this.pageSize+i-1])
         };
       },
     },
@@ -324,7 +292,7 @@
           display: flex;
           height: 600px;
           .chooses {
-            width: 5rem;
+            width: 4rem;
             box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
             border-radius: @baseBorderRadius;
             .choose {
@@ -350,7 +318,7 @@
             margin-right: 0.5rem;
           }
           .table {
-            width: 100%;
+            width: 12rem;
             display: flex;
             flex-direction: column;
             .search {
@@ -370,9 +338,6 @@
               box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
               border-radius: @baseBorderRadius;
             }
-            // .block {
-            //   align-self: flex-end;
-            // }
           }
         }
         .block {

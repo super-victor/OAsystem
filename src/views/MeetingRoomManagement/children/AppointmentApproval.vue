@@ -1,6 +1,6 @@
 <template>
   <div class='AppointmentApproval'>      
-    <div class="msgBox">
+    <div class="msgBox" v-if="getFlag1">
     
       <div class="title">
         <p class='ptitle'>待审批会议</p>
@@ -27,7 +27,7 @@
                 <el-form-item label="结束时间">
                   <span>{{ props.row.endTime.substr(0,10)+' '+props.row.endTime.substr(11,8) }}</span>
                 </el-form-item>
-                <el-form-item label="发起人">
+                <el-form-item label="发起人" v-if="getFlag2">
                   <span>{{employeeData.filter((item)=>{return item.employeeId == props.row.employeeId?'item.name':'';})[0].name}}</span>
                 </el-form-item>
                 <el-form-item label="参会人数">
@@ -37,22 +37,25 @@
                   <span>{{ props.row.remark }}</span>
                 </el-form-item>
                 <div class="button">
-                  <el-button type="danger" @click="accept = -1;meetingid =props.row.meetingId">驳回</el-button>
-                  <el-button type="primary" @click="accept = 1;meetingid =props.row.meetingId">同意</el-button>
+                  <el-button type="danger" @click="disagreed(props.row)" v-show="getFlag3">驳回</el-button>
+                  <el-button type="primary" @click="agreed(props.row)" v-show="getFlag3">同意</el-button>
                 </div>
               </el-form>
             </template>
           </el-table-column>
           <el-table-column
             label="会议室名"
-            prop="meetingRoomName">
+            prop="meetingRoomName"
+            width="300">
           </el-table-column>
           <el-table-column
             label="会议名称"
-            prop="name">
+            prop="name"
+            width="400">
           </el-table-column>
           <el-table-column
             label="预约日期"
+            width="500"
             >
             <template slot-scope="scope">{{scope.row.startTime.substr(0,10)}}</template>
           </el-table-column>
@@ -65,7 +68,6 @@
 <script>
 import getMeetingAPI from '@/service/MeetingRoomManagement';
 import SubMeetingAPI from '@/service/MeetingRoomManagement';
-import dataAPI from '@/service/AddressBook';
  import {
 
     mapMutations
@@ -77,32 +79,34 @@ export default {
          employeeData:[],
          accept:0,
          meetingid:0,
-         loading:true
+         loading:true,
+         getFlag1:false,
+        getFlag2:false,
+        getFlag3:false,
       }
     },
     created(){
+       let role = this.$authority.getPageAuthority('meetingroommanagement','appointmentapproval').role;
+      if(role['0024'].own) this.getFlag1 = true; //获取未被审批的会议
+      if(role['0033'].own) this.getFlag2 = true; //获取所有员工通讯录
+      if(role['0023'].own) this.getFlag3 = true; //审批会议
       getMeetingAPI.getNotApprovedMeeting()
       .then(res=>{
         this.loading=false
         this.tableData = res.object;
-        console.log(this.tableData)
         
       }).catch(err=>{
         this.$message.error('获取失败!')
-        console.log('getNotApprovedMeeting',err)
       }),
-      dataAPI.dataRequest()
+      getMeetingAPI.AddressbookInfo()
       .then(res=>{
         this.employeeData = res.object;
-       
       }).catch(err=>{
-        console.log('dataRequest:',err)
       })
     },
     watch:{
       accept(val){
         this.loading=true
-        console.log(this.meetingid)
         SubMeetingAPI.approveMeeting({
           appoinmentstatus:val,
           meetingid:this.meetingid
@@ -110,20 +114,45 @@ export default {
       .then(res=>{
         
         this.tableData = res.object;
-        console.log(this.tableData)
         this.loading=false
+        this.$message({
+            type: 'success',
+            message: '操作成功!'
+          });
       }).catch(err=>{
         this.$message.error('获取失败!')
-        console.log('getNotApprovedMeeting',err)
       }),)
         .catch(err=>{
           this.$message.error('操作失败')
-          console.log('approveMeeting:',err)
         })
      }
     },
     methods:{
        ...mapMutations(['UPDATE_BREAD']),
+       //驳回
+       disagreed(data){
+          this.$confirm('是否要驳回此会议预约?  一旦确定无法撤回', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.accept = -1;
+          this.meetingid =data.meetingId;
+          setTimeout(()=>{
+            this.$message({
+            type: 'success',
+            message: '操作成功!'
+          });
+          },1000)
+        }).catch(() => {
+             
+        });
+       },
+       //同意
+       agreed(data){
+         this.accept = 1;
+         this.meetingid =data.meetingId;
+       }
     },
     computed:{
      
@@ -148,14 +177,13 @@ export default {
       width: 100%;
       .title{
         .ptitle{
-          font-size:30px;
+          font-size:20px;
           color:black;
-          margin-left:8%;
           margin-bottom: 10px;
         }
       }
       .table{
-          width:80%;
+          width:100%;
           height: 100%;
           margin:0 auto;
           .el-table{
@@ -163,6 +191,9 @@ export default {
               box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
               border-radius: @baseBorderRadius;
           }
+          .el-table  ::-webkit-scrollbar{
+        display: none;
+      }
           .button {
             margin:auto;
             text-align: center;

@@ -102,6 +102,18 @@ export default{
    return res.data;
  },
 
+  /**
+  * 
+  *  @returns {Promise<Object>}
+  */
+ async getAllMeetingRoomInfo(){
+  const res = await NetworkRequest({
+    url:'/getAllMeetingRoomInfo',
+    method:'get'
+  })
+  return res.data;
+},
+
  /**
   * @param {Object} data 预约会议   employeeid 职工id
    *                               meetingroomId 会议室id
@@ -173,5 +185,18 @@ export default{
      data
    })
    return res.data;
- }
+ },
+
+ /**
+   * 
+   * @returns {Promise<Object>} 
+  */
+ async AddressbookInfo (){
+  const res = await NetworkRequest({
+    url:'/AddressbookInfo ',
+    method:'get',
+  })
+  return res.data;
+},
+
 }
