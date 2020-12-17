@@ -1,6 +1,6 @@
 !<!-- CheckLogs -->
 <template>
-  <div class='CheckLogs'>
+  <div class='CheckLogs' v-loading="loading">
     <div class='TheTitle'><i class="el-icon-document" style="margin-right:5px;"></i>日志管理</div>
     <div class="buttonBox">
       <el-radio-group v-model="checkboxGroup" size="small" @change="change">
@@ -9,7 +9,7 @@
         <el-radio-button label="系统日志"></el-radio-button>
       </el-radio-group>
     </div>
-    <div class="logBox" v-loading="loading">
+    <div class="logBox">
       <div 
       class="log"
       v-for="(item,index) in currentLogArr"

@@ -1,13 +1,12 @@
 !<!-- GiveRole -->
 <template>
-  <div class='GiveRole'>
+  <div class='GiveRole' v-loading="loading">
     <div class='TheTitle'><i class="el-icon-user" style="margin-right:5px;"></i>管理员管理</div>
     <div class="topBox">
       <el-button type="primary" class="button" icon="el-icon-setting" @click="openEditRole=true">设置管理员角色</el-button>
     </div>
     <div class="bottomBox">
       <el-table
-        v-loading="loading"
         :data="tableData"
         style="width: 100%;"
         max-height="450"

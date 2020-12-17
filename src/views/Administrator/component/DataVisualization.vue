@@ -1,6 +1,6 @@
 !<!-- DataVisualization -->
 <template>
-  <div class='DataVisualization'>
+  <div class='DataVisualization' v-loading="loading">
     <div class='TheTitle'><i class="el-icon-data-line" style="margin-right:5px;"></i>系统数据可视化</div>
     <div class="dataBox" id="myChart1" style="margin-top:20px;"></div>
     <div class="dataBox" id="myChart2"></div>
@@ -18,7 +18,8 @@
         scheduleInfo:{},
         meetingInfo:{},
         documentDraftInfo:{},
-        documentPublishInfo:{}
+        documentPublishInfo:{},
+        loading:true
       };
     },
     computed: {},
@@ -218,6 +219,7 @@
         this.initDocumentDraftInfo(res.object.document.depertmentDraftBoxDocument);
         this.initDocumentPublishInfo(res.object.document.depertmentPublishDocument);
         this.darwChart();
+        this.loading = false;
       })
       .catch(err=>{
         this.$message.error('获取系统信息失败');

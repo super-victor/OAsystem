@@ -1,6 +1,6 @@
 !<!-- SystemInfo -->
 <template>
-  <div class='SystemInfo'>
+  <div class='SystemInfo' v-loading="loading">
     <div class='TheTitle'><i class="el-icon-pie-chart" style="margin-right:5px;"></i>实时数据一览</div>
     <div class="infoBox">
       <div class="numberBox">
@@ -27,7 +27,8 @@
         dailyViews:0,
         totalViews:0,
         departmentArr:[],
-        dataArr:[]
+        dataArr:[],
+        loading:true
       };
     },
     computed: {},
@@ -72,24 +73,19 @@
     created() {
       administratorAPI.getSystemViews()
       .then(res=>{
-        let {dailyViews,totalViews} = res.object;
+        let {dailyViews,totalViews,department} = res.object;
         this.dailyViews = dailyViews;
         this.totalViews = totalViews;
-        administratorAPI.getSystemInfo()
-        .then(res=>{
-          let departmentInfo = res.object.department.eachDepartmentNum;
-          for(let item in departmentInfo){
-            this.departmentArr.push(item);
-            this.dataArr.push({
-              value:departmentInfo[item],
-              name:item
-            })
-          }
-          this.darwChart();
-        })
-        .catch(err=>{
-          this.$message.error('获取系统信息失败');
-        })
+        let departmentInfo = department.eachDepartmentNum;
+        for(let item in departmentInfo){
+          this.departmentArr.push(item);
+          this.dataArr.push({
+            value:departmentInfo[item],
+            name:item
+          })
+        }
+        this.darwChart();
+        this.loading = false;
       })
       .catch(err=>{
         this.$message.error('获取系统信息失败');

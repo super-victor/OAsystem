@@ -143,7 +143,7 @@
           display: flex;
           .smallTitle{
             height: 100%;
-            width: 26%;
+            width: 25%;
             font-size: 0.18rem;
             padding-left: 0.2rem;
             box-sizing: border-box;
@@ -151,10 +151,13 @@
             line-height: 30px;
             user-select: none;
             font-family:'jdzhonyuanjian2510280c4f22004';
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
           }
           .titleText{
             height: 100%;
-            width: 74%;
+            width: 75%;
             display: flex;
             align-items: center;
           }
@@ -184,6 +187,9 @@
           padding-left: 0.2rem;
           box-sizing: border-box;
           line-height: 25px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
           color: @regularText;
         }
       }

@@ -54,7 +54,7 @@
     display: flex;
     .leftBox{
       height: 100%;
-      width: 12.2rem;
+      width: 11.3rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;

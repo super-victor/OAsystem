@@ -56,8 +56,8 @@
             this.type="#67C23A";
         } else if (this.msg.type===2) {
             this.tagType ='info';
-            this.info = '信息';
-            this.type = '#909399';
+            this.info = '提示';
+            this.type = '#5383EC';
         } else if (this.msg.type===3) {
             this.tagType ='warning';
             this.info = '警告';
