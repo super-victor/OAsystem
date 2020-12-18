@@ -207,7 +207,7 @@ import ScheduleApi from '@/service/schedule';
       if(role['000Z'].own) this.deleteFlag=true;
     },
     mounted() {
-      this.UPDATE_BREAD(['日程安排','管理日程']);
+      this.UPDATE_BREAD(['日程安排','日程管理']);
     }
   }
 </script>

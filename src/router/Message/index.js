@@ -1,4 +1,4 @@
-import Message from '@/views/Message/Message'
+const Message = () => import('@/views/Message/Message')
 
   export default {
     path: '/message',

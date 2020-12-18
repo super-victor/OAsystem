@@ -1,8 +1,7 @@
-import MeetingRoomManagement from '@/views/MeetingRoomManagement/MeetingRoomManagement.vue'
-
-import equipment from "@/views/MeetingRoomManagement/children/equipment.vue";
-import room from "@/views/MeetingRoomManagement/children/room.vue";
-import AppointmentApproval from "@/views/MeetingRoomManagement/children/AppointmentApproval.vue";
+const MeetingRoomManagement = () => import('@/views/MeetingRoomManagement/MeetingRoomManagement.vue')
+const equipment = () => import("@/views/MeetingRoomManagement/children/equipment.vue")
+const room = () => import("@/views/MeetingRoomManagement/children/room.vue")
+const AppointmentApproval = () => import("@/views/MeetingRoomManagement/children/AppointmentApproval.vue")
 
 
   export default {

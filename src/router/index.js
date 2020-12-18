@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Store from '@/store/index'
 import VueRouter from 'vue-router'
-import UserLogin from '@/views/Login/UserLogin'
-import HomePage from '@/views/Home/HomePage'
-import Administrator from '@/views/Administrator/Administrator'
+const UserLogin = () => import('@/views/Login/UserLogin')
+const HomePage = () => import('@/views/Home/HomePage')
+const Administrator = () => import('@/views/Administrator/Administrator')
 
 Vue.use(VueRouter)
 

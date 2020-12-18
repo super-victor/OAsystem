@@ -1,8 +1,8 @@
-import Schedule from '@/views/Schedule/Schedule'
-import Mine from '@/views/Schedule/children/Mine'
-import CompanySchedule from '@/views/Schedule/children/CompanySchedule'
-import CreateSchedule from '@/views/Schedule/children/CreateSchedule'
-import ManagementSchedule from '@/views/Schedule/children/ManagementSchedule'
+const Schedule = () => import('@/views/Schedule/Schedule')
+const Mine = () => import('@/views/Schedule/children/Mine')
+const CompanySchedule = () => import('@/views/Schedule/children/CompanySchedule')
+const CreateSchedule = () => import('@/views/Schedule/children/CreateSchedule')
+const ManagementSchedule = () => import('@/views/Schedule/children/ManagementSchedule')
 
   export default {
     path: '/schedule',

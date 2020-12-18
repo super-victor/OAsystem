@@ -1,6 +1,5 @@
-import AddressBook from '@/views/AddressBook/AddressBook.vue'
-
-import AddressBookSelect from "@/views/AddressBook/children/AddressBookSelect.vue";
+const AddressBook = () => import('@/views/AddressBook/AddressBook.vue')
+const AddressBookSelect = () => import("@/views/AddressBook/children/AddressBookSelect.vue")
 
 
   export default {

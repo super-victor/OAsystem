@@ -1,15 +1,15 @@
-import DocumentCirculation from '@/views/DocumentCirculation/DocumentCirculation'
+const DocumentCirculation = () => import('@/views/DocumentCirculation/DocumentCirculation')
 
-import QueryDraft from '@/views/DocumentCirculation/children/QueryDraft'
-import CreateDraft from '@/views/DocumentCirculation/children/CreateDraft'
-import DraftBox from '@/views/DocumentCirculation/children/DraftBox'
-import ConfirmDraft from '@/views/DocumentCirculation/children/ConfirmDraft'
-import CheckPendingDraft from '@/views/DocumentCirculation/children/CheckPendingDraft'
-import CheckDraft from '@/views/DocumentCirculation/children/CheckDraft'
-import CheckDraftDetail from '@/views/DocumentCirculation/children/CheckDraftDetail'
-import RejectDraftDetail from '@/views/DocumentCirculation/children/RejectDraftDetail'
-import ViewDraftList from '@/views/DocumentCirculation/children/ViewDraftList'
-import DraftDetail from '@/views/DocumentCirculation/children/DraftDetail'
+const QueryDraft = () => import('@/views/DocumentCirculation/children/QueryDraft')
+const CreateDraft = () => import('@/views/DocumentCirculation/children/CreateDraft')
+const DraftBox = () => import('@/views/DocumentCirculation/children/DraftBox')
+const ConfirmDraft = () => import('@/views/DocumentCirculation/children/ConfirmDraft')
+const CheckPendingDraft = () => import('@/views/DocumentCirculation/children/CheckPendingDraft')
+const CheckDraft = () => import('@/views/DocumentCirculation/children/CheckDraft')
+const CheckDraftDetail = () => import('@/views/DocumentCirculation/children/CheckDraftDetail')
+const RejectDraftDetail = () => import('@/views/DocumentCirculation/children/RejectDraftDetail')
+const ViewDraftList = () => import('@/views/DocumentCirculation/children/ViewDraftList')
+const DraftDetail = () => import('@/views/DocumentCirculation/children/DraftDetail')
 
   export default {
     path: '/document-circulation',

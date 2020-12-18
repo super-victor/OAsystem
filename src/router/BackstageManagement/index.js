@@ -1,8 +1,8 @@
-import BackstageManagement from '@/views/BackstageManagement/BackstageManagement'
-import DepartmentManagement from '@/views/BackstageManagement/children/DepartmentManagement'
-import StaffManagement from '@/views/BackstageManagement/children/StaffManagement'
-import RoleManagement from '@/views/BackstageManagement/children/RoleManagement'
-import RoleAuthority from '@/views/BackstageManagement/children/RoleAuthority'
+const BackstageManagement = () => import('@/views/BackstageManagement/BackstageManagement')
+const DepartmentManagement = () => import('@/views/BackstageManagement/children/DepartmentManagement')
+const StaffManagement = () => import('@/views/BackstageManagement/children/StaffManagement')
+const RoleManagement = () => import('@/views/BackstageManagement/children/RoleManagement')
+const RoleAuthority = () => import('@/views/BackstageManagement/children/RoleAuthority')
 
   export default {
     path: '/backstage-management',

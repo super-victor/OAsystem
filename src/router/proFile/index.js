@@ -1,4 +1,4 @@
-import ProFile from '@/views/ProFile/ProFile'
+const ProFile = () => import('@/views/ProFile/ProFile')
 
   export default {
     path: '/profile',

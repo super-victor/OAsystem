@@ -1,6 +1,5 @@
-import CardFile from '@/views/CardFile/CardFile'
-
-import ShareCard from '@/views/CardFile/children/ShareCard'
+const CardFile = () => import('@/views/CardFile/CardFile')
+const ShareCard = () => import('@/views/CardFile/children/ShareCard')
 
   export default {
     path: '/business-card-holder',

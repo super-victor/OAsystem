@@ -1,6 +1,5 @@
-import MeetingManagement from '@/views/MeetingManagement/MeetingManagement.vue'
-
-import MeetingMessage from "@/views/MeetingManagement/children/MeetingMessage.vue";
+const MeetingManagement = () => import('@/views/MeetingManagement/MeetingManagement.vue')
+const MeetingMessage = () => import("@/views/MeetingManagement/children/MeetingMessage.vue")
 
 
   export default {
