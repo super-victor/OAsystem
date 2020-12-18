@@ -35,9 +35,6 @@ public class DocumentServiceImpl implements DocumentService {
     @Resource
     EmployeeMapper employeeMapper;
 
-    @Value("${document.path}")
-    private String path;
-
     @Resource
     LogUtil logUtil;
 
@@ -46,6 +43,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Resource
     DepartmentMapper departmentMapper;
+
+    @Resource
+    FileUtil fileUtil;
 
     /**
      * @MethodName getAllCensors
@@ -85,7 +85,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public BackFrontMessage deleteDocument(Integer sendfileId) {
         // 先删除附件文件夹
-        FileUtil.delete(path+"/"+sendfileId.toString());
+        fileUtil.deleteLocalFile("/"+sendfileId.toString());
         logUtil.deleteInfo("删除发文"+sendfileId+"成功");
         documentMapper.deleteSendFile(sendfileId);
         return new BackFrontMessage(200,"删除成功",null);
@@ -105,7 +105,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // 删除文件系统对应的文件
-        if (!FileUtil.delete(path+annexUrl)) {
+        if (!fileUtil.deleteLocalFile(annexUrl)) {
             return new BackFrontMessage(500,"删除失败7",null);
         }
 
@@ -140,7 +140,7 @@ public class DocumentServiceImpl implements DocumentService {
         // 限制文件大小为10M
         int maxSizeLimit = 1024*1024*10;
         try {
-            fileUrl = FileUtil.saveInNewDirectory(file,path,"/"+sendfileId.toString(), maxSizeLimit);
+            fileUrl = fileUtil.saveFileInNewDirectory(file,"/"+sendfileId.toString(), maxSizeLimit);
         } catch (IOException e) {
             e.printStackTrace();
             return new BackFrontMessage(500,"上传失败2",null);
@@ -281,7 +281,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         if (documentMapper.updateStatusInSendFile(sendfileId, 0) == 1) {
-            messageService.send(sendFile.getCensorId(),DataUtil.MESSAGE_TYPE_INFO,DataUtil.MESSAGE_TITLE_POSTREVIEW,"有一份新的发文等待审核");
+            messageService.send(sendFile.getCensorId(),DataUtil.MESSAGE_TYPE_INFO,DataUtil.MESSAGE_TITLE_POSTREVIEW,"有一份新的发文等待您审核");
             return new BackFrontMessage(200,"提交成功",null);
         }else {
             return new BackFrontMessage(500,"提交失败",null);
@@ -299,7 +299,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         Integer status;
         if (ispassed == 1) {
-            messageService.send(sendFile.getSenderId(),DataUtil.MESSAGE_TYPE_INFO,DataUtil.MESSAGE_TITLE_POSTREVIEW,"恭喜您,标题为: "+sendFile.getTitle()+" 的发文已通过审核,请前往发文详情查看！");
+            messageService.send(sendFile.getSenderId(),DataUtil.MESSAGE_TYPE_SUCCESS,DataUtil.MESSAGE_TITLE_POSTREVIEW,"恭喜您,标题为: "+sendFile.getTitle()+" 的发文已通过审核,请前往发文详情查看！");
             // 通知所有发布范围的人
             List<EmployeeLimitA> employeeLimitAList = documentMapper.findAccessEmployeesBySendfileId(sendfileId);
             if ( employeeLimitAList != null) {

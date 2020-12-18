@@ -1,7 +1,10 @@
 package com.sicnu.oasystem.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -14,22 +17,65 @@ import java.util.UUID;
  * @Version v1.0
  */
 
-public class FileUtil {
+@Component
+public class FileUtil{
 
-    public static String saveInNewDirectory(MultipartFile multipartFile, String localDafaulPath, String relativePath, int maxSizeLimit) throws IOException, OverMaxFileSizeLimitException {
+
+
+    // 最终的本地路径
+    private String localPath;
+
+    // 用户自定义的本地路径
+    @Value("${document.path}")
+    private String customPath;
+
+    @PostConstruct
+    private void init() {
+        File file = new File(customPath);
+        if (file.exists()) {
+            localPath = customPath;
+        } else {
+            localPath = System.getProperty("user.dir")+"/oasystem";
+        }
+    }
+
+    public String getLocalPath() {
+        return localPath;
+    }
+
+    /**
+     * @MethodName saveFileInNewDirectory
+     * @param multipartFile
+     * @param relativePath
+     * @param maxSizeLimit
+     * @Description 将文件保存在系统文件目录下的新路径relativePath
+     * @Author JohnTang
+     * @Return java.lang.String
+     * @LastChangeDate 2020/12/17
+     */
+    public String saveFileInNewDirectory(MultipartFile multipartFile, String relativePath, int maxSizeLimit) throws IOException, OverMaxFileSizeLimitException {
         if (multipartFile.getSize() > maxSizeLimit) {
             throw new OverMaxFileSizeLimitException("超出最大文件限制:此文件大小："+multipartFile.getSize()+"，限制大小"+maxSizeLimit);
         }
-        File directory = new File(localDafaulPath+relativePath);
+        File directory = new File(localPath+relativePath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        File newFile = new File(localDafaulPath+relativePath, multipartFile.getOriginalFilename());
+        File newFile = new File(localPath+relativePath, multipartFile.getOriginalFilename());
         multipartFile.transferTo(newFile);
         return relativePath+"/"+multipartFile.getOriginalFilename();
     }
 
-    public static String saveWithRandomName(MultipartFile multipartFile, String localDafaulPath, int maxSizeLimit) throws IOException, OverMaxFileSizeLimitException {
+    /**
+     * @MethodName saveWithRandomName
+     * @param multipartFile
+     * @param maxSizeLimit
+     * @Description 以随机的UUID为文件名保存文件
+     * @Author JohnTang
+     * @Return java.lang.String
+     * @LastChangeDate 2020/12/17
+     */
+    public String saveWithRandomName(MultipartFile multipartFile, int maxSizeLimit) throws IOException, OverMaxFileSizeLimitException {
         if (multipartFile.getSize() > maxSizeLimit) {
             throw  new OverMaxFileSizeLimitException("超出最大文件限制:此文件大小："+multipartFile.getSize()+"，限制大小"+maxSizeLimit);
         }
@@ -39,9 +85,13 @@ public class FileUtil {
 
         //生成新的文件名字
         String newFileName = UUID.randomUUID().toString() + "." + fileType;
-        File newFile = new File(localDafaulPath, newFileName);
+        File newFile = new File(localPath, newFileName);
         multipartFile.transferTo(newFile);
         return newFileName;
+    }
+
+    public boolean deleteLocalFile(String relativePath){
+        return delete(localPath+relativePath);
     }
 
     /**
@@ -52,7 +102,7 @@ public class FileUtil {
      * @Return boolean
      * @LastChangeDate 2020/12/11
      */
-    public static boolean delete(String path) {
+    private boolean delete(String path) {
         File file = new File(path);
         if (!file.exists()) {
             return false;
@@ -71,9 +121,5 @@ public class FileUtil {
                 return file.delete();
             }
         }
-
-
-
-
     }
 }

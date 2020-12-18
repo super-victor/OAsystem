@@ -1,5 +1,6 @@
 package com.sicnu.oasystem.config;
 
+import com.sicnu.oasystem.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
 import javax.servlet.MultipartConfigElement;
 import java.lang.reflect.Field;
 
@@ -20,14 +22,14 @@ import java.lang.reflect.Field;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Value("${document.path}")
-    private String localFilePath;
+    @Resource
+    FileUtil fileUtil;
 
     // 设置下载url映射的本地路径
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/download/**")
-                .addResourceLocations("file:"+localFilePath+"/");
+                .addResourceLocations("file:"+fileUtil.getLocalPath()+"/");
     }
 
     // 设定controller接收mutipartfile的最大值
