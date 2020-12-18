@@ -5,7 +5,7 @@
     <div class="message_box">
       <el-tabs type="border-card" v-model="theLabel">
         <el-tab-pane label="所有消息" name="所有消息">
-          <div class="center" v-loading="loading">
+          <div class="center flex flex-col" v-loading="loading">
             <message-item
             v-for="item in messageR.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             :key="item.messageId"
@@ -25,7 +25,7 @@
         </el-tab-pane>
         <el-tab-pane label="未读消息" name="未读消息">
           <div class="message_box">
-            <div class="center" v-loading="loading">
+            <div class="center flex flex-col" v-loading="loading">
               <message-item
               v-for="item in messageNoR.slice((currentPage2-1)*pageSize2,currentPage2*pageSize2)"
               :key="item.messageId"
@@ -158,6 +158,7 @@
       height: 500px;
       background-color: #fff;
       border-radius: 4px;
+      justify-content: space-between;
       overflow-y: scroll;
       .pagination {
         margin: 0 auto;

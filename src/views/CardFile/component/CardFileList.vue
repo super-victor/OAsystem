@@ -7,7 +7,6 @@
     :class="{active: select.id === item.id,normal: select.id !== item.id}"
     v-loading="loading"
      v-show="fileFlag">
-    <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
     <p>{{ item.name }}</p>
     </div>
     <div class="flex-col edit_row">
@@ -229,7 +228,7 @@
   .cardFileList{
     height: 100%;
     .row {
-    padding: 0.15rem;
+    padding: 0.15rem 0.2rem;
     font-size: 0.2rem;
     cursor: pointer;
     color: #606266;

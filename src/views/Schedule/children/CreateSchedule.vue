@@ -180,12 +180,12 @@ import BackApi from '@/service/BackstageManagement'
   .CreateSchedule{
     width: 100%;
     font-size: 0.2rem;
+    height: 100%;
     color: @regularText;
+    border-radius: @baseBorderRadius;
+    background-color: @white;
     .center {
-      height: 500px;
       padding: 50px;
-      border-radius: @baseBorderRadius;
-      background-color: @white;
       p.title {
         color: @primaryText;
         font-weight: bold;

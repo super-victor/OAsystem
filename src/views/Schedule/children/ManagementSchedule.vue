@@ -53,7 +53,7 @@
                 trigger="hover"
                 :open-delay="500"
                 content="删除">
-                  <el-button slot="reference" type="danger" icon="el-icon-delete" circle @click="deleteSchedule(scope.row)"></el-button>
+                  <el-button slot="reference" type="danger" icon="el-icon-delete" circle @click="Comfirm(scope.row)"></el-button>
               </el-popover>
             </template>
           </el-table-column>
@@ -167,6 +167,20 @@ import ScheduleApi from '@/service/schedule';
           this.$message.error('修改失败');
         })
       },
+    Comfirm (row) {
+      this.$confirm('此操作将永久删除该日程, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteSchedule(row);
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // });          
+      });
+    },
       // 删除公司日程
       deleteSchedule(row) {
         ScheduleApi.deleteCompanySchedule({
