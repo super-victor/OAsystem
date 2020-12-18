@@ -93,14 +93,14 @@
         <div class="filter">
           <!-- 类别筛选 -->
           <div class="category" v-show="getFlag3">
-            <el-select v-model="category" filterable placeholder="请选择设备类别" @change="getCategory()" >
+            <el-select v-model="category" filterable clearable placeholder="请选择设备类别" @change="getCategory()" >
               <el-option v-for="item in ClassifyData" :key="item.value" :label="item.name" :value="item.name" > 
               </el-option>
             </el-select>
           </div>
           <!-- 会议室筛选 -->
           <div class="meetingroomnum" v-show="getFlag2">
-            <el-select v-model="meetingroomnum" filterable placeholder="请选择会议室号" @change="getRoomnum()">
+            <el-select v-model="meetingroomnum" filterable clearable placeholder="请选择会议室号" @change="getRoomnum()">
               <el-option v-for="item in MeetingroomData" :key="item.value" :label="item.name" :value="item.name">
               </el-option>
             </el-select>
@@ -190,6 +190,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       if(role['000P'].own) this.deleteFlag = true; //删除设备
       if(role['000N'].own) this.updateFlag = true; //修改设备 
       if(role['000M'].own) this.addFlag = true; //增加设备
+      if(this.getFlag1){
         equipmentAPI.getEquipmentRequest(
       ).then(res=>{
         this.loading = false
@@ -197,22 +198,27 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.tableFilterData = this.tableData;
           
         }).catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         })
+      }
 
-      meetingroomAPI.getAllMeetingRoom(
+      if(this.getFlag2){
+        meetingroomAPI.getAllMeetingRoom(
       ).then(res=>{
           this.MeetingroomData = res.object;
         }).catch(err => {
-        this.$message.error('读取失败');
+        if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
       })
+      }
 
-      ClassifyAPI.getAllEquipmentClassify(
+     if(this.getFlag3){
+        ClassifyAPI.getAllEquipmentClassify(
       ).then(res=>{
         this.ClassifyData = res.object;
       }).catch(err => {
-        this.$message.error('读取失败');
+        if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
       })
+     }
     },
     data() {
       var checkNum = (rule,value,callback) =>{

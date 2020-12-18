@@ -22,14 +22,16 @@
             <el-date-picker v-model="dateSelect" type="date" placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="今日预约" :label-width="formLabelWidth" style="width:65%" v-if="dateSelect">
-            <el-button-group>
+          <el-form-item label="今日预约" :label-width="formLabelWidth"  v-if="dateSelect">
+            <div class="btngroup">
+              <el-button-group>
               <el-button
                 :class="(i == getSelect.filter(item=>{if(item == i) return item}))?'red':(((startTime <= i && i<= endTime)||startTime == i)?'blue':'white')"
                 v-for="i in 24" :key="i" @click="getIndex(i)"
                 :disabled="(i == getSelect.filter(item=>{if(item == i) return item}))?true:false" style='color:black'>
                 {{i}}</el-button>
             </el-button-group>
+            </div>
             <div class="colorRemark">
               <div class="remarks">
                 <div class="white"></div>
@@ -240,25 +242,26 @@
       if(role['0025'].own) this.addFlag = true; //预约会议
 
       //获取会议室信息
-      getMeetingsAPI.getAllMeetingRoomInfo()
+        if(this.getFlag2){
+          getMeetingsAPI.getAllMeetingRoomInfo()
         .then(res => {
           this.loading2 = false;
           this.tableData = res.object;
           this.tableFilterData = this.tableData
-          this.tableData.map((item, index) => {
-          })
-
         }).catch(err => {
-          this.$message.error('获取失败')
-        }),
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('获取失败')
+        })
+        }
         //获取左侧树的信息
-        getMeetingsAPI.getAllMeetingRoomByStorey()
+       if(this.getFlag3){
+          getMeetingsAPI.getAllMeetingRoomByStorey()
         .then(res => {
           this.loading1 = false;
           this.storeyData = res.object;
         }).catch(err => {
-          this.$message.error('获取失败')
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('获取失败')
         })
+       }
     },
     methods: {
       ...mapMutations(['UPDATE_BREAD']),
@@ -271,7 +274,7 @@
       },
       //选取会议室
       handleCurrentChange(res) {
-        if (this.isClick[res] && (this.addFlag && this.getFlag1)) this.addappointment();
+        if (this.isClick[res] && (this.addFlag && this.getFlag1)) this.form.name="",this.form.remark="",this.addappointment();
         for (var i = 0; i < this.tableFilterData.length; i++) {
           i == res ? this.isClick[i] = true : this.isClick[i] = false;
         }
@@ -366,6 +369,9 @@
     box-sizing: border-box;
 
     .alert {
+      ::v-deep .el-dialog{
+        width:9.5rem
+      }
       ::v-deep .el-dialog__header {
         padding: 0 30px;
         font-size: 50px;
@@ -373,6 +379,16 @@
 
       ::v-deep .el-dialog__body {
         padding: 0px;
+      }
+
+      .btngroup{
+        width:4.5rem;
+        ::v-deep .el-button-group {
+        // .el-button{
+        //   padding:0.1rem
+        // }
+
+      } 
       }
 
       ::v-deep .el-button {

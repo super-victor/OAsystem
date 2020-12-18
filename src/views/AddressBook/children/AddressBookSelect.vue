@@ -110,25 +110,31 @@
       if(role['000G'].own) this.getFlag3 = true; //分页获取员工通讯录
   
       // 初始页面展示表格
-      pageAPI.paginationRequest({
-        currentPageNum: 1,
-        pageSize: 5,
-      }).then(res => {
-         this.total = res.object.totalPageNum * this.pageSize;
-        this.tablefilterData = res.object.currentPageList;
-        this.loading = false;
-      }).catch(err => {
-        this.$message.error('读取失败');
-      })
+      if(this.getFlag3){
+          pageAPI.paginationRequest({
+          currentPageNum: 1,
+          pageSize: 5,
+        }).then(res => {
+          this.total = res.object.totalPageNum * this.pageSize;
+          this.tablefilterData = res.object.currentPageList;
+          this.loading = false;
+        }).catch(err => {
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
+        })
+      }
       //获取总数据
-      dataAPI.dataRequest()
+      if(this.getFlag1){
+        dataAPI.dataRequest()
         .then(res => {
            this.tableData = res.object;
         }).catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         })
+      }
+
       //初始页面左侧部门展示数据
-      departmentAPI.departmentRequest()
+      if(this.getFlag2){
+         departmentAPI.departmentRequest()
         .then(res => {
           this.loading2 = false,
           this.departmentres = res.object;
@@ -136,8 +142,10 @@
 
         })
         .catch(err => {
-          this.$message.error('读取失败');
-        })
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
+        }) 
+      }
+      
       
     },
     methods: {
@@ -272,7 +280,6 @@
   .addressBook {
     height:100%; //这里要使用百分比进行高度的设定，如果不会超出屏幕则设置为100%，并且保证内部msgBox高度不超过exampleBox高度，不然会出现bug
     width: 100%;
-    padding: 30px;
     box-sizing: border-box;
     .msgBox {
       height: 100%;

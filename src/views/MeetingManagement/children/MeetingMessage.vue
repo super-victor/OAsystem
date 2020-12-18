@@ -30,7 +30,7 @@
                   </p>
                  </div>
                 <div class="CollapsePending" >
-                  <el-collapse accordion @change="handleChange" v-model="activeNames1">
+                  <el-collapse accordion v-model="activeNames1">
                   <el-collapse-item v-for="i in CollapsePendingList.length" :key="i" style="padding-left:30px" :name = i>
                     <template slot="title">
                         {{CollapsePendingList[i-1]?CollapsePendingList[i-1].startTime.substr(0,10)+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+CollapsePendingList[i-1].name:''}}
@@ -50,7 +50,7 @@
                   </p>
                 </div>
                 <div class="CollapseRecord">
-                  <el-collapse accordion @change="handleChange" v-model="activeNames2">
+                  <el-collapse accordion v-model="activeNames2">
                   <el-collapse-item v-for="i in CollapseRecordList.length" :key="i" style="padding-left:30px" :name = i>
                     <template slot="title">
                         {{CollapseRecordList[i-1]?CollapseRecordList[i-1].startTime.substr(0,10)+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+CollapseRecordList[i-1].name:''}}
@@ -71,7 +71,7 @@
               待审批会议
             </div>
             <div class="content">
-               <el-collapse accordion @change="handleChange" v-model="activeNames3">
+               <el-collapse accordion  v-model="activeNames3">
                   <el-collapse-item v-for="i in CollapseAppointmentList.length" :key="i" style="padding-left:30px" :name = i>
                     <template slot="title">
                         {{CollapseAppointmentList[i-1]?CollapseAppointmentList[i-1].name:''}}
@@ -120,7 +120,9 @@ export default {
       let role = this.$authority.getPageAuthority('meetingmanagement').role;
       if(role['0020'].own) this.getFlag = true; //获取所有的会议
       if(role['0027'].own) this.deleteFlag = true; //删除未审批的预约会议
-      this.getAllMeeting();
+      if(this.getFlag){
+        this.getAllMeeting();
+      }
       
       
     },
@@ -144,7 +146,7 @@ export default {
             return item.appoinmentStatus == 2 && this.userInfo.userinfo.employeeId == item.employeeId?item:''
           })
         }).catch(err=>{
-          this.$message.error('请求失败')
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('请求失败');
         })
       },
       //删除还未审批的预约会议
@@ -281,7 +283,6 @@ export default {
                         font-size:20px;
                         padding-bottom:10px;
                         color: #3D60AD;
-                        //  align-self: flex-end;
                         .el-button{
                           display:block;
                           margin-left:90%;
