@@ -107,22 +107,24 @@ public interface EmployeeScheduleMapper {
     /**
      * @MethodName findEmployeeCompanyScheduleCount
      * @param employeeId 职工id
+     * @param nowTime 当前事件
      * @Description 获取员工公司日程数量
      * @Author Waynejwei
      * @Return int
      * @LastChangeDate 2020/12/16
      */
-    int findEmployeeCompanyScheduleCount(int employeeId);
+    int findEmployeeCompanyScheduleCount(int employeeId, Date nowTime);
 
     /**
      * @MethodName findEmployeeSelfScheduleCount
      * @param employeeId 职工id
+     * @param nowTime 当前事件
      * @Description 获取员工个人日程数量
      * @Author Waynejwei
      * @Return int
      * @LastChangeDate 2020/12/16
      */
-    int findEmployeeSelfScheduleCount(int employeeId);
+    int findEmployeeSelfScheduleCount(int employeeId, Date nowTime);
 
     /**
      * @MethodName findEmployeeCompanySchedule

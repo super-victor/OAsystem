@@ -90,11 +90,12 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
 
     @Override
     public BackFrontMessage findEmployeeScheduleCount() {
+        Date date = new Date();
         Employee currentEmployee = UserAuthenticationUtils.getCurrentUserFromSecurityContext();
         int companyScheduleCount = employeeScheduleMapper
-                .findEmployeeCompanyScheduleCount(currentEmployee.getEmployeeId());
+                .findEmployeeCompanyScheduleCount(currentEmployee.getEmployeeId(), date);
         int selfScheduleCount = employeeScheduleMapper
-                .findEmployeeSelfScheduleCount(currentEmployee.getEmployeeId());
+                .findEmployeeSelfScheduleCount(currentEmployee.getEmployeeId(), date);
         Map<String, Integer> map = new HashMap<>();
         map.put("companyScheduleCount", companyScheduleCount);
         map.put("selfScheduleCount", selfScheduleCount);
