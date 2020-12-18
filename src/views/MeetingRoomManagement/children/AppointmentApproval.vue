@@ -126,7 +126,7 @@ export default {
         this.loading=false;
       }).catch(err=>{
         if(err == "Error: 网络请求错误:没有待审批的会议") this.loading = false
-        else this.$message.error('获取失败!')
+        else if(err.toString() !='Error: 权限认证错误') this.$message.error('获取失败!')
       }),
       getMeetingAPI.AddressbookInfo()
       .then(res=>{

@@ -198,7 +198,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
         this.tableFilterData = this.tableData;
           
         }).catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         })
       }
 
@@ -207,7 +207,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       ).then(res=>{
           this.MeetingroomData = res.object;
         }).catch(err => {
-        this.$message.error('读取失败');
+        if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
       })
       }
 
@@ -216,7 +216,7 @@ import equipmentDeleteAPI from '@/service/MeetingRoomManagement';
       ).then(res=>{
         this.ClassifyData = res.object;
       }).catch(err => {
-        this.$message.error('读取失败');
+        if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
       })
      }
     },

@@ -249,7 +249,7 @@
           this.tableData = res.object;
           this.tableFilterData = this.tableData
         }).catch(err => {
-          this.$message.error('获取失败')
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('获取失败')
         })
         }
         //获取左侧树的信息
@@ -259,7 +259,7 @@
           this.loading1 = false;
           this.storeyData = res.object;
         }).catch(err => {
-          this.$message.error('获取失败')
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('获取失败')
         })
        }
     },

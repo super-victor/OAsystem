@@ -119,7 +119,7 @@
           this.tablefilterData = res.object.currentPageList;
           this.loading = false;
         }).catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         })
       }
       //获取总数据
@@ -128,7 +128,7 @@
         .then(res => {
            this.tableData = res.object;
         }).catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         })
       }
 
@@ -142,7 +142,7 @@
 
         })
         .catch(err => {
-          this.$message.error('读取失败');
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('读取失败');
         }) 
       }
       

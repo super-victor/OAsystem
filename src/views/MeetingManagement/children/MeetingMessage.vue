@@ -146,7 +146,7 @@ export default {
             return item.appoinmentStatus == 2 && this.userInfo.userinfo.employeeId == item.employeeId?item:''
           })
         }).catch(err=>{
-          this.$message.error('请求失败')
+          if(err.toString() !='Error: 权限认证错误') this.$message.error('请求失败');
         })
       },
       //删除还未审批的预约会议
