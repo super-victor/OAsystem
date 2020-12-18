@@ -43,13 +43,15 @@
     </select>
 
     <select id="findEmployeeCompanyScheduleCount" resultType="java.lang.Integer">
-        select count(*) from employeeschedule where employeeId = #{employeeId} and
-            scheduleId in (select scheduleId from schedule where isCompany=1)
+        select count(*) from employeeschedule
+        where employeeId = #{employeeId} and scheduleId in
+        (select scheduleId from schedule where isCompany = 1 and startTime> #{nowTime})
     </select>
 
     <select id="findEmployeeSelfScheduleCount" resultType="java.lang.Integer">
-        select count(*) from employeeschedule where employeeId = #{employeeId} and
-            scheduleId in (select scheduleId from schedule where isCompany=0)
+        select count(*) from employeeschedule
+        where employeeId = #{employeeId} and scheduleId in
+        (select scheduleId from schedule where isCompany = 0 and startTime> #{nowTime})
     </select>
 
     <select id="findEmployeeCompanySchedule" resultType="com.sicnu.oasystem.pojo.Schedule">

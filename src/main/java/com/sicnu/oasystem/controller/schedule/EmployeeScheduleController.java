@@ -125,7 +125,7 @@ public class EmployeeScheduleController {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/12/16
      */
-    @ApiOperation(value = "获取职工所有日程数目")
+    @ApiOperation(value = "获取职工未开始的日程数目")
     @GetMapping("/findScheduleCount")
     public BackFrontMessage findEmployeeScheduleCount(){
         return employeeScheduleService.findEmployeeScheduleCount();
