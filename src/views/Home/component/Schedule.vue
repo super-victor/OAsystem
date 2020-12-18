@@ -3,7 +3,11 @@
   <div class='Schedule'>
     <div class="dataBox" v-loading="loading">
       <p class="title">个人日程<el-tag style="margin-left:10px;padding:0 7px;">{{selfScheduleCount}}</el-tag></p>
+<<<<<<< HEAD
       <div class="noDataBox" v-if="selfSchedule==null">
+=======
+      <div class="noDataBox" v-if="selfScheduleCount==0">
+>>>>>>> lkx
         <img src="@/assets/noSchedule.png" alt="" class="img">
         <p class="text">暂无即将开始的日程</p>
       </div>
@@ -22,7 +26,11 @@
     </div>
     <div class="dataBox" v-loading="loading">
       <p class="title">公司日程<el-tag style="margin-left:10px;padding:0 7px;">{{companyScheduleCount}}</el-tag></p>
+<<<<<<< HEAD
       <div class="noDataBox" v-if="companySchedule==null">
+=======
+      <div class="noDataBox" v-if="companyScheduleCount==0">
+>>>>>>> lkx
         <img src="@/assets/noSchedule.png" alt="" class="img">
         <p class="text">暂无即将开始的日程</p>
       </div>
@@ -30,6 +38,7 @@
         <div class="titleBox">
           <p class="smallTitle"><span style="background-color:#9CB7F0;padding:3px;">即将开始</span></p>
           <p class="titleText">
+<<<<<<< HEAD
             <span style="font-size:0.23rem;height:0.4rem;line-height:0.41rem;color:#303133;">{{companySchedule.content}}</span>
           </p>
         </div>
@@ -37,6 +46,15 @@
         <p class="location"><i class="el-icon-location-information"></i> {{companySchedule.location}}</p>
         <p class="remark"><i class="el-icon-edit-outline"></i> {{companySchedule.remark}}</p>
         <p class="timeBox"><i class="el-icon-time"></i> {{companySchedule.startTime}} - {{companySchedule.endTime}}</p>
+=======
+            <span style="font-size:0.23rem;height:0.4rem;line-height:0.41rem;color:#303133;">{{companyScheule.content}}</span>
+          </p>
+        </div>
+        <div style="height:10%;width:100%;border-bottom: 1px solid #C0C4CC;"></div>
+        <p class="location"><i class="el-icon-location-information"></i> {{companyScheule.location}}</p>
+        <p class="remark"><i class="el-icon-edit-outline"></i> {{companyScheule.remark}}</p>
+        <p class="timeBox"><i class="el-icon-time"></i> {{companyScheule.startTime}} - {{companyScheule.endTime}}</p>
+>>>>>>> lkx
       </div>
     </div>
   </div>
@@ -50,8 +68,13 @@
       return {
         selfScheduleCount:0,
         companyScheduleCount:0,
+<<<<<<< HEAD
         selfSchedule:null,
         companySchedule:null,
+=======
+        selfSchedule:{},
+        companyScheule:{},
+>>>>>>> lkx
         loading:true
       };
     },
@@ -68,7 +91,11 @@
         homeApi.getSchedule()
         .then(res=>{
           this.selfSchedule = res.object.selfSchedule;
+<<<<<<< HEAD
           this.companySchedule = res.object.companyScheule;
+=======
+          this.companyScheule = res.object.companyScheule;
+>>>>>>> lkx
           this.loading = false;
         })
         .catch(err=>{
