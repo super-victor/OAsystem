@@ -28,7 +28,7 @@
       };
     },
     computed: {
-      ...mapState(['userInfo','userRole']),
+      ...mapState(['userInfo','userRole','userToken']),
       inputStatus(){
         return this.userName!='' && this.passWord!='';
       }
@@ -78,7 +78,7 @@
       }
     },
     created() {
-      if(this.userRole==='administrator'){
+      if(this.userRole==='administrator' && this.userToken===null){
         this.UPDATE_USERROLE('');
       }
     },

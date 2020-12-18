@@ -68,7 +68,7 @@
         homeApi.getSchedule()
         .then(res=>{
           this.selfSchedule = res.object.selfSchedule;
-          this.companySchedule = res.object.companyScheule;
+          this.companySchedule = res.object.companySchedule;
           this.loading = false;
         })
         .catch(err=>{
