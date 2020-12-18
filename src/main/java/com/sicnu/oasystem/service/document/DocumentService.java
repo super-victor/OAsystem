@@ -123,7 +123,7 @@ public interface DocumentService {
      * @Return com.sicnu.oasystem.json.BackFrontMessage
      * @LastChangeDate 2020/12/3
      */
-    BackFrontMessage updateUncheckDocument(Integer sendfileId,String type,String subject, String title, String content, String remark, Integer censorId, String urgent, Integer isPublic, List<Integer> accessEmployeeIdList);
+    BackFrontMessage updateUncheckDocument(Integer sendfileId,String type,String target,String subject, String title, String content, String remark, Integer censorId, String urgent, Integer isPublic, List<Integer> accessEmployeeIdList);
 
     /**
      * @MethodName commitDocument

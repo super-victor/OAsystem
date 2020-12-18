@@ -204,7 +204,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @LastChangeDate 2020/11/15
      */
     @Override
-    public BackFrontMessage updateUncheckDocument(Integer sendfileId,String type,String subject, String title, String content, String remark, Integer censorId, String urgent, Integer isPublic, List<Integer> accessEmployeeIdList) {
+    public BackFrontMessage updateUncheckDocument(Integer sendfileId,String type,String target,String subject, String title, String content, String remark, Integer censorId, String urgent, Integer isPublic, List<Integer> accessEmployeeIdList) {
         // 校验是否为本人的发文
         SendFile sendFile = documentMapper.findSendFileByEmployeeIdAndSendfileId(UserAuthenticationUtils.getCurrentUserFromSecurityContext().getEmployeeId(),sendfileId);
         if (sendFile == null ){
@@ -226,6 +226,7 @@ public class DocumentServiceImpl implements DocumentService {
         sendFile.setStatus(-1);
         sendFile.setSubject(subject);
         sendFile.setType(type);
+        sendFile.setTarget(target);
         sendFile.setIsPublic(isPublic);
         sendFile.setTitle(title);
         sendFile.setContent(content);

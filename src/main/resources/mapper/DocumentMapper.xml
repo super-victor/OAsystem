@@ -16,6 +16,7 @@
     <update id="updateSendFileBySendFile">
         update sendfile set senderId = #{senderId},
         type = #{type},
+        target = #{target},
         subject = #{subject},
         isPublic = #{isPublic},
         urgent = #{urgent},

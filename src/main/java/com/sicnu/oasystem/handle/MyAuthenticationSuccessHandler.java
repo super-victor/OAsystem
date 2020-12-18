@@ -39,6 +39,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         // response头中放值token
         response.setHeader("token",jwtTokenUtil.generateToken(currentEmployee.getUsername()));
         Map<String, Object> map = new HashMap<>(2);
+
         map.put("userinfo",currentEmployee);
         map.put("usershow",employeeMapper.findCodesByEmployeeId(currentEmployee.getEmployeeId()));
 

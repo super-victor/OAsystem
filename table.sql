@@ -198,6 +198,7 @@ create table Equipment (
 create table SendFile(
     sendFileId int not null auto_increment comment '发文id',
     type varchar(50) comment '发文类别',
+    target varchar(50) comment '行文类别',
     subject varchar(50) comment '主题词',
     isPublic int comment '是否公有',
     title varchar(20) comment '标题',

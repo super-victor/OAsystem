@@ -19,6 +19,7 @@ public class SendFile {
     private Integer sendfileId;   //发文ID
     private String type; //发文类型
     private String subject;
+    private String target;
     private int isPublic; //是否公开
     private String title;  //标题
     private String content;  //正文
