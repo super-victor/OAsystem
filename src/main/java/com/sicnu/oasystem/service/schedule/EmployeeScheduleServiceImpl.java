@@ -111,7 +111,7 @@ public class EmployeeScheduleServiceImpl implements EmployeeScheduleService {
         Schedule selfSchedule = employeeScheduleMapper
                 .findEmployeeSelfSchedule(currentEmployee.getEmployeeId(), date);
         Map<String, Schedule> map = new HashMap<>();
-        map.put("companyScheule", companySchedule);
+        map.put("companySchedule", companySchedule);
         map.put("selfSchedule", selfSchedule);
         return new BackFrontMessage(200, null, map);
     }
