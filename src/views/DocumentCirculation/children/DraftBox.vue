@@ -592,6 +592,9 @@
             if(this.formData.subjectList.length<3){
               this.inputAllVisible = true;
             }
+          }else{
+            this.formData.subjectList = [];
+            this.inputAllVisible = true;
           }
           editor.txt.html(content);//设置正文
           this.staffArr = accessEmployeeIdList;
@@ -618,11 +621,11 @@
           this.loading = false;
         })
         .catch(err=>{
-          this.$message.error('获取拟稿详情失败');
+          if(err.toString() != 'Error: 权限认证错误') this.$message.error('获取拟稿详情失败');
         })
       })
       .catch(err=>{
-        this.$message.error('获取审查人失败');
+        if(err.toString() != 'Error: 权限认证错误') this.$message.error('获取审查人失败');
       })
     },
     beforeDestroy() {

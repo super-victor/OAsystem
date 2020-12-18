@@ -108,7 +108,7 @@
         this.loading = false;
       })
       .catch(err=>{
-        this.$message.error('获取拟稿失败');
+        if(err.toString() != 'Error: 权限认证错误') this.$message.error('获取拟稿失败');
       })
     }
   }

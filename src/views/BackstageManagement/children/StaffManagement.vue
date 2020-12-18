@@ -20,6 +20,7 @@
       <div class="topBox">
         <div class="searchBox">
           <el-input
+            @input="search"
             placeholder="搜索"
             prefix-icon="el-icon-search"
             v-model="searchText">
@@ -327,8 +328,29 @@
         this.tableData = filterArr;
         this.currentTableData = filterArr;
       },
-      closeBatchAddtion(flag){
+      closeBatchAddtion(flag,update){
         this.batchAddtionDialogVisible = flag;
+        if(update) this.getStaff();
+      },
+      search(e){
+        if(e==''){
+          this.filterStaff();
+        }else{
+          this.filterStaff();
+          let arr = this.tableData.filter(item=>{
+            let {departmentName,email,employeeId,homeAddress,idCard,name,phone,position,sex,username} = item;
+            let obj = {departmentName,email,employeeId,homeAddress,idCard,name,phone,position,sex,username};
+            for(let item in obj){
+              let text = '';
+              if(item=='sex') text = (obj[item]=='m'?'男':'女');
+              else text = obj[item];
+              if(text.toString().includes(e)) return true;
+            }
+            return false;
+          })
+          this.tableData = arr;
+          this.currentTableData = arr;
+        }
       }
     },
     created() {
@@ -404,7 +426,7 @@
           background-color: @background;
         }
         .currentlistItem{
-          background-color: @correlateColor1 !important;
+          background-color: @correlateColor3 !important;
           color: @white;
         }
       }

@@ -19,7 +19,7 @@
         <p class="text">{{item.content}}</p></div>
       </div>
       <div class="buttonBox">
-        <el-button type="primary" style="width:90%;">前往查看</el-button>
+        <el-button type="primary" style="width:90%;" @click="toMessage">前往查看</el-button>
       </div>
     </div>
   </div>
@@ -39,6 +39,9 @@
     },
     watch: {},
     methods: {
+      toMessage(){
+        this.$router.push('/message');
+      }
     },
     created() {
       messageApi.getMessageNotRead()

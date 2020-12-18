@@ -58,7 +58,7 @@
     box-shadow: 1px 0 4px 0 #E7EBF2;
     left: 121px;
     top: 60px;
-    z-index: 999;
+    z-index: 2147483647;
     position: fixed;
     -moz-user-select: none;
     -webkit-user-select: none;

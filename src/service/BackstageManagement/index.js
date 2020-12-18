@@ -266,4 +266,20 @@ export default{
     })
     return res.data;
   },
+
+  /**
+   * 上传文件
+   * @param {Object} data 用户数据   multipartFile:文件
+   * @returns {Promise<Object>} 
+  */
+  async uploadFile(data){
+    const res = await NetworkRequest({
+      url:'/batchEmployeeByExcel',
+      method:'post',
+      data,
+      postHeaderType:'multipart/form-data',
+      fileType:true
+    })
+    return res.data;
+  },
 }

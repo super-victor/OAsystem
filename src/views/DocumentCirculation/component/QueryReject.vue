@@ -7,7 +7,7 @@
       v-else
       :data="tableData"
       style="width: 100%;"
-      height="340"
+      max-height="340"
       :default-sort = "{prop: 'employeeId'}"
       stripe
       >
@@ -79,7 +79,7 @@
         this.loading = false;
       })
       .catch(err=>{
-        this.$message.error('获取未过审拟稿失败');
+        if(err.toString() != 'Error: 权限认证错误') this.$message.error('获取未过审拟稿失败');
       })
     }
   }
