@@ -20,4 +20,5 @@ public class Message {
     private String content;
     private Integer isRead;
     private Date createtime;
+    private Date updatetime;
 }

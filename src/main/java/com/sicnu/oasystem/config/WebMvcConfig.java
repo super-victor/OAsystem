@@ -29,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/download/**")
-                .addResourceLocations("file:"+fileUtil.getLocalPath()+"/");
+                .addResourceLocations("file:"+fileUtil.getLocalPath());
     }
 
     // 设定controller接收mutipartfile的最大值

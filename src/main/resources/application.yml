@@ -15,8 +15,9 @@ spring:
 ## mybatis
 # sql语句控制台打印执行sql语句
 mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # mapper路径映射
   mapper-locations: classpath:mapper/*.xml
 
 ## token jwt

@@ -322,6 +322,8 @@ create table Message (
     content varchar(50) not null comment '消息内容',
     sendTime timestamp not null default current_timestamp comment '发送时间',
     isRead int not null comment '消息是否已读',
+    createTime timestamp default current_timestamp comment '创建时间',
+    updateTime timestamp on update current_timestamp comment '修改时间',
     constraint pk_Message_messageId primary key (messageId),
     constraint fk_Message_employeeId foreign key (employeeId) references Employee(employeeId)
 );

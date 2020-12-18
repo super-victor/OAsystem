@@ -20,8 +20,6 @@ import java.util.UUID;
 @Component
 public class FileUtil{
 
-
-
     // 最终的本地路径
     private String localPath;
 

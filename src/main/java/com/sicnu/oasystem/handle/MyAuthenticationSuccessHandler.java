@@ -5,6 +5,7 @@ import com.sicnu.oasystem.json.BackFrontMessage;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.Employee;
 import com.sicnu.oasystem.util.JwtTokenUtil;
+import com.sicnu.oasystem.util.LogUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Resource
     EmployeeMapper employeeMapper;
 
+    @Resource
+    LogUtil logUtil;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Employee currentEmployee = (Employee) authentication.getPrincipal();
@@ -42,6 +46,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
         map.put("userinfo",currentEmployee);
         map.put("usershow",employeeMapper.findCodesByEmployeeId(currentEmployee.getEmployeeId()));
+
+        logUtil.login("名字："+currentEmployee.getName()+"  登录成功");
 
         BackFrontMessage authMessage = new BackFrontMessage(200, "登录成功", map);
         ObjectMapper objectMapper = new ObjectMapper();

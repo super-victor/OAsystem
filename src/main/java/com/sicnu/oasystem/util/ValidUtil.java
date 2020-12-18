@@ -1,5 +1,11 @@
 package com.sicnu.oasystem.util;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,5 +52,17 @@ public class ValidUtil {
             flag = matcher.matches();
         }
         return flag;
+    }
+
+    public static <T> List<String> validate(T t) {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
+        if (constraintViolations == null) {
+            return null;
+        }
+        List<String> messageList = new ArrayList(constraintViolations.size());
+
+        constraintViolations.forEach(constraintViolation -> messageList.add(constraintViolation.getMessage()));
+        return messageList;
     }
 }

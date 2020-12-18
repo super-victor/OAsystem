@@ -5,10 +5,7 @@ import com.sicnu.oasystem.mapper.CardHolderMapper;
 import com.sicnu.oasystem.mapper.EmployeeMapper;
 import com.sicnu.oasystem.pojo.*;
 import com.sicnu.oasystem.service.message.MessageService;
-import com.sicnu.oasystem.util.DataUtil;
-import com.sicnu.oasystem.util.ListUtil;
-import com.sicnu.oasystem.util.LogUtil;
-import com.sicnu.oasystem.util.UserAuthenticationUtils;
+import com.sicnu.oasystem.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -73,12 +70,18 @@ public class AdminServiceImpl implements AdminService {
 
             XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
             List<Employee> employeeList = new ArrayList<>();
+
             for (Row row : xssfSheet) {
                 if (row.getRowNum() == 0) {
                     // 第一行忽略
                     continue;
                 }
+                if (row.getCell(0) == null) {
+                    // 读到数据空退出
+                    break;
+                }
                 Employee employee = new Employee();
+
                 employee.setName(row.getCell(0).toString());
                 employee.setPhone(row.getCell(1).toString());
                 employee.setEmail(row.getCell(2).toString());
@@ -87,6 +90,16 @@ public class AdminServiceImpl implements AdminService {
                 employee.setDepartmentName(row.getCell(5).toString());
                 employee.setPosition(row.getCell(6).toString());
                 employee.setHomeAddress(row.getCell(7).toString());
+
+                List<String> result =  ValidUtil.validate(employee);
+
+                employee.setUsername(employee.getEmail());
+                employee.setPassword("123456");
+
+                if (result != null && !result.isEmpty()) {
+                    return new BackFrontMessage(500,"第"+row.getRowNum()+"行的数据格式不正确,错误原因："+result.toString(),null);
+                }
+
                 employeeList.add(employee);
             }
 
@@ -96,11 +109,10 @@ public class AdminServiceImpl implements AdminService {
 
             return new BackFrontMessage(200,"添加成功",null);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return new BackFrontMessage(500,"格式不正确",null);
         }
-
-        return new BackFrontMessage(500,"添加失败",null);
     }
 
     @Override

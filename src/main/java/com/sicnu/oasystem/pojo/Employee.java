@@ -42,32 +42,32 @@ public class Employee implements UserDetails {
     @Size(max = 20,min = 5)
     private String password;
     @ApiModelProperty(required = true)
-    @Pattern(regexp = "^[0-9]*$")
+    @Pattern(regexp = "^[0-9]*$",message = "电话号码必须是数字")
     @NotNull(groups = Add.class)
     private String phone;
     @ApiModelProperty(required = true)
-    @Email
+    @Email(message = "邮箱格式不正确")
     @NotNull(groups = Add.class)
     private String email;
     @ApiModelProperty(required = true)
-    @Pattern(regexp = "^[0-9]*$")
+    @Pattern(regexp = "^[0-9]*$",message = "身份证格式不正确")
     @NotNull(groups = Add.class)
     private String idCard;
     @ApiModelProperty(required = true)
-    @Pattern(regexp = "m|f")
+    @Pattern(regexp = "m|f",message = "性别格式不正确")
     @NotNull(groups = Add.class)
     private String sex;
     private Date entryTime;
     @ApiModelProperty(required = true)
-    @Size(max = 10,min = 1)
+    @Size(max = 10,min = 1,message = "部门格式不正确")
     @NotNull(groups = Add.class)
     private String departmentName;
     @ApiModelProperty(required = true)
-    @Size(max = 10,min = 1)
+    @Size(max = 10,min = 1,message = "职位格式不正确")
     @NotNull(groups = Add.class)
     private String position;
     @ApiModelProperty(required = true)
-    @Size(max = 20,min = 1)
+    @Size(max = 20,min = 1,message = "地址格式不正确")
     @NotNull(groups = Add.class)
     private String homeAddress;
     private int isAccountLocked;
