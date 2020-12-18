@@ -37,7 +37,7 @@
       </div>
       <div class="right_i delete" title="删除" v-show="deleteFlag">
         <el-tooltip content="删除名片" placement="right" effect="light">
-          <img src="@/assets/Card/Delete.png" alt="" @click="deleteCard(msg.cardId)">
+          <img src="@/assets/Card/Delete.png" alt="" @click="Comfirm">
         </el-tooltip>
       </div>
     </div>
@@ -156,13 +156,29 @@
     computed: {},
     watch: {},
     methods: {
+      Comfirm () {
+        this.$confirm('此操作将永久删除该名片, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.deleteCard();
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });          
+        });
+      },
       // 删除card
-      deleteCard(id) {
+      deleteCard() {
         cardFileAPI.deleteCard({
-          cardId:id
+          cardId:this.msg.cardId
         })
         .then(res=>{
           this.dialogVisible1 = false;
+          this.$message.success('删除成功');
+          this.$router.go(0);
         })
         .catch(err=>{
           console.log(err);
@@ -218,7 +234,10 @@
       let role = this.$authority.getPageAuthority('businesscardholder').role;
       if (role['0008'].own) this.updateFlag = true;
       if (role['000A'].own) this.deleteFlag = true;
-      this.getFileName();
+      if (role['0003'].own){
+        this.fileFlag = true;
+        this.getFileName();
+      }
       // console.log(this.msg);
     },
     mounted() {

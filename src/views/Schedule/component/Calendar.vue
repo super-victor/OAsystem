@@ -28,7 +28,7 @@
       </div>
       <div slot="footer" class="dialog-footer" v-if="type==='mine'">
         <el-button type="primary" @click="dialogVisible2=true" v-show="updateFlag">修改</el-button>
-        <el-button type="danger" @click="deleteInfo()" v-show="deleteFlag">删除</el-button>
+        <el-button type="danger" @click="Comfirm()" v-show="deleteFlag">删除</el-button>
       </div>
     </el-dialog>
     <el-dialog title="日程信息" :visible.sync="dialogVisible2" class="dialog">
@@ -222,7 +222,7 @@ export default {
       })
       .then(res=>{
         this.dialogVisible1=this.dialogVisible2=false;
-        // this.$router.go(0);
+        this.$router.go(0);
         this.buttonLoading = false;
         this.$message.success('修改成功');
       })
@@ -230,6 +230,20 @@ export default {
         console.log(err);
         this.$message.error('修改失败');
       })
+    },
+    Comfirm () {
+      this.$confirm('此操作将永久删除该日程, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteInfo();
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // });          
+      });
     },
     // 删除个人日程
     deleteInfo() {

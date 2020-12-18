@@ -57,12 +57,11 @@ import scheduleAPI from '@/service/schedule'
 @import '../../../style/common.less';
   .mine{
     height: 600px;
-    width: 100%;
     overflow-y: scroll;
+    border-radius: @baseBorderRadius;
+    background-color: @white;
     .center {
       padding: 50px;
-      border-radius: @baseBorderRadius;
-      background-color: @white;
     }
   }
   .mine::-webkit-scrollbar{

@@ -7,7 +7,6 @@
     :class="{active: select.id === item.id,normal: select.id !== item.id}"
     v-loading="loading"
      v-show="fileFlag">
-    <img :src="(select.id === item.id)?require(`@/assets/Card/list_row_click.png`):require(`@/assets/Card/list_row.png`)" alt="">
     <p>{{ item.name }}</p>
     </div>
     <div class="flex-col edit_row">
@@ -213,11 +212,13 @@
     },
     created() {
       let role = this.$authority.getPageAuthority('businesscardholder').role;
-      if (role['0003'].own) this.fileFlag = true;
+      if (role['0003'].own){
+        this.fileFlag = true;
+        this.getFileName();
+      }
       if (role['0004'].own) this.deleteFlag = true;
       if (role['0005'].own) this.addFlag = true;
       if (role['0006'].own) this.updateFlag = true;
-      this.getFileName();
     },
     mounted() {
       
@@ -229,7 +230,7 @@
   .cardFileList{
     height: 100%;
     .row {
-    padding: 0.15rem;
+    padding: 0.15rem 0.2rem;
     font-size: 0.2rem;
     cursor: pointer;
     color: #606266;

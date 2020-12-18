@@ -5,11 +5,13 @@
     <div class="message_box">
       <el-tabs type="border-card" v-model="theLabel">
         <el-tab-pane label="所有消息" name="所有消息">
-          <div class="center" v-loading="loading">
-            <message-item
-            v-for="item in messageR.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            :key="item.messageId"
-            :msg="item"/>
+          <div class="center flex flex-col" v-loading="loading">
+            <div>
+              <message-item
+              v-for="item in messageR.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+              :key="item.messageId"
+              :msg="item"/>
+            </div>
             <el-pagination
               @size-change="handleSizeChangeO"
               @current-change="handleCurrentChangeO"
@@ -24,24 +26,22 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="未读消息" name="未读消息">
-          <div class="message_box">
-            <div class="center" v-loading="loading">
-              <message-item
-              v-for="item in messageNoR.slice((currentPage2-1)*pageSize2,currentPage2*pageSize2)"
-              :key="item.messageId"
-              :msg="item"/>
-              <el-pagination
-                @size-change="handleSizeChangeT"
-                @current-change="handleCurrentChangeT"
-                :current-page.sync="currentPage2"
-                :page-sizes="[5, 10, 20, 30]"
-                :page-size="pageSize2"
-                layout="sizes, prev, pager, next"
-                :total="totalCount2"
-                v-if="this.totalCount2 !== 0"
-                class="pagination">
-              </el-pagination>
-            </div>
+          <div class="center flex flex-col" v-loading="loading">
+            <message-item
+            v-for="item in messageNoR.slice((currentPage2-1)*pageSize2,currentPage2*pageSize2)"
+            :key="item.messageId"
+            :msg="item"/>
+            <el-pagination
+              @size-change="handleSizeChangeT"
+              @current-change="handleCurrentChangeT"
+              :current-page.sync="currentPage2"
+              :page-sizes="[5, 10, 20, 30]"
+              :page-size="pageSize2"
+              layout="sizes, prev, pager, next"
+              :total="totalCount2"
+              v-if="this.totalCount2 !== 0"
+              class="pagination">
+            </el-pagination>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -158,6 +158,7 @@
       height: 500px;
       background-color: #fff;
       border-radius: 4px;
+      justify-content: space-between;
       overflow-y: scroll;
       .pagination {
         margin: 0 auto;

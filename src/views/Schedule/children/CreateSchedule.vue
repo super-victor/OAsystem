@@ -5,7 +5,7 @@
       <p class="title">新建日程</p>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="日程类型" prop="type" style="height:70px;width:400px">
-          <el-select v-model="form.type" size="medium" style="height:70px;width:400px">
+          <el-select v-model="Stype" size="medium" style="height:70px;width:400px">
             <el-option label="个人日程" value="个人日程" v-show="selfFlag"></el-option>
             <el-option label="公司日程" value="公司日程" v-show="companyFlag"></el-option>
           </el-select>
@@ -65,8 +65,8 @@ import BackApi from '@/service/BackstageManagement'
     data() {
       return {
         form:{
-          type:'个人日程'
         },// 表单
+        Stype:'个人日程',
         rules:{
           type:[
             { required: true, message: '请选择日程类型', trigger: 'blur' }
@@ -98,7 +98,13 @@ import BackApi from '@/service/BackstageManagement'
         'userInfo'
       ])
     },
-    watch: {},
+    watch: {
+      Stype(val) {
+        if (val==='公司日程') {
+          this.getUser();
+        }
+      }
+    },
     methods: {
       ...mapMutations(['UPDATE_BREAD','MAIN_CLICK']),
       //提交表单
@@ -106,7 +112,7 @@ import BackApi from '@/service/BackstageManagement'
         console.log(this.form.joiner);
         this.$refs[formName].validate((valid) => {
           if(valid){
-            if (this.form.type==='个人日程') { // 新建个人日程
+            if (this.Stype==='个人日程') { // 新建个人日程
               ScheduleApi.addSelfSchedule({
                 content:this.form.content,
                 startTime:this.form.startTime,
@@ -124,6 +130,7 @@ import BackApi from '@/service/BackstageManagement'
                 this.$message.error('添加失败');
               })
             } else { // 添加公司日程
+              this.getUser();
               ScheduleApi.addCompanySchedule({
                 content:this.form.content,
                 startTime:this.form.startTime,
@@ -156,7 +163,8 @@ import BackApi from '@/service/BackstageManagement'
           // console.log(res);
         })
         .catch(err=>{
-          console.log(err);
+          console.log(err.toString());
+          if (err.toString() !='Error: 权限认证错误') this.$message.error('获取所有职工失败');
         })
       }
     },
@@ -168,7 +176,6 @@ import BackApi from '@/service/BackstageManagement'
         this.$message.error('无权限添加日程');
       }
       this.leader = this.userInfo.userinfo.employeeId;
-      this.getUser();
     },
     mounted() {
       this.UPDATE_BREAD(['日程安排','新建日常']);
@@ -180,12 +187,12 @@ import BackApi from '@/service/BackstageManagement'
   .CreateSchedule{
     width: 100%;
     font-size: 0.2rem;
+    height: 100%;
     color: @regularText;
+    border-radius: @baseBorderRadius;
+    background-color: @white;
     .center {
-      height: 500px;
       padding: 50px;
-      border-radius: @baseBorderRadius;
-      background-color: @white;
       p.title {
         color: @primaryText;
         font-weight: bold;

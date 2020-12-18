@@ -15,28 +15,29 @@
       <!-- 中间名片部分 -->
       <div
         v-if="cards.length !== 0"
-        class="center flex-col"
+        class="center flex flex-col"
         v-loading="loading"
         v-show="cardFlag">
-        <div class="card"
-        v-for="(item, index) in cards.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-        :key="item.position">
-          <Card :msg="cards[index]"></Card>
-        </div>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-sizes="[5, 10, 20, 30]"
-          :page-size="pageSize"
-          layout="sizes, prev, pager, next"
-          :total="totalCount"
-          v-if="this.totalCount !== 0"
-          class="pagination">
-        </el-pagination>
+          <div class="card"
+          v-for="(item, index) in cards.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          :key="item.position">
+            <Card :msg="cards[index]"></Card>
+          </div>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[5, 10, 20, 30]"
+            :page-size="pageSize"
+            layout="sizes, prev, pager, next"
+            :total="totalCount"
+            v-if="this.totalCount !== 0"
+            class="pagination">
+          </el-pagination>
       </div>
-      <div v-else v-show="cardFlag">
-        <p class="tip_info">该分类下暂无名片，请进行新建或导入名片操作！</p>
+      <div v-else v-show="cardFlag" class="noData">
+        <img src="@/assets/noData.png" alt="">
+        <p>暂无名片</p>
       </div>
     </div>
     <!-- 新建/导入名片 -->
@@ -200,8 +201,9 @@
             .then(res=>{
               this.innerVisible = false;
               this.dialogVisible2 = false;
-              this.$forceUpdate();
+              this.$router.go(0);
               this.buttonLoadng = false;
+              this.$message.success('新建名片成功');
             })
             .catch(err=>{
               this.$message.error('新建失败');
@@ -280,6 +282,7 @@
         background-color: white;
         border-radius: 4px;
         padding: 30px 0;
+        justify-content:space-between;
         overflow-y: scroll;
         .card{
           margin: 0 auto;
@@ -292,13 +295,22 @@
       .center::-webkit-scrollbar{
         display: none;
       }
-      .tip_info {
-        margin-left: 0.5rem;
-        padding: 0.5rem;
-        width: 9rem;
-        font-size: 0.3rem;
-        color: #E6A23C;
+      .noData {
+        height: 100%;
         background-color: white;
+        margin-left: 0.5rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        p {
+          height: 20px;
+          width: 100px;
+          font-size: 0.2rem;
+          text-align: center;
+          color: #C0C4CC;
+        }
       }
       .new_card {
         padding: 0.5rem;
