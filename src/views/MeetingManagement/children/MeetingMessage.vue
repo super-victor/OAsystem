@@ -120,7 +120,9 @@ export default {
       let role = this.$authority.getPageAuthority('meetingmanagement').role;
       if(role['0020'].own) this.getFlag = true; //获取所有的会议
       if(role['0027'].own) this.deleteFlag = true; //删除未审批的预约会议
-      this.getAllMeeting();
+      if(this.getFlag){
+        this.getAllMeeting();
+      }
       
       
     },

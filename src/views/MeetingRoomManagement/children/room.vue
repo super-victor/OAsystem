@@ -242,25 +242,26 @@
       if(role['0025'].own) this.addFlag = true; //预约会议
 
       //获取会议室信息
-      getMeetingsAPI.getAllMeetingRoomInfo()
+        if(this.getFlag2){
+          getMeetingsAPI.getAllMeetingRoomInfo()
         .then(res => {
           this.loading2 = false;
           this.tableData = res.object;
           this.tableFilterData = this.tableData
-          this.tableData.map((item, index) => {
-          })
-
         }).catch(err => {
           this.$message.error('获取失败')
-        }),
+        })
+        }
         //获取左侧树的信息
-        getMeetingsAPI.getAllMeetingRoomByStorey()
+       if(this.getFlag3){
+          getMeetingsAPI.getAllMeetingRoomByStorey()
         .then(res => {
           this.loading1 = false;
           this.storeyData = res.object;
         }).catch(err => {
           this.$message.error('获取失败')
         })
+       }
     },
     methods: {
       ...mapMutations(['UPDATE_BREAD']),

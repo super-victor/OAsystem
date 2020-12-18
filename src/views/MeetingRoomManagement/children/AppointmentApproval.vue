@@ -90,7 +90,9 @@ export default {
       if(role['0024'].own) this.getFlag1 = true; //获取未被审批的会议
       if(role['0033'].own) this.getFlag2 = true; //获取所有员工通讯录
       if(role['0023'].own) this.getFlag3 = true; //审批会议
-      this.getMeetings();
+      if(this.getFlag1){
+        this.getMeetings();
+      }
     },
     watch:{
       accept(val){
