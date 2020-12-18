@@ -1,0 +1,68 @@
+@designSize:1920;//设计尺寸
+
+@primaryColor:#5383EC;//主题色
+
+@correlateColor1:#9CB7F0;//相关色1
+@correlateColor2:#578BFA;//相关色2
+@correlateColor3:#4A76D4;//相关色3
+@correlateColor4:#3D60AD;//相关色4
+@correlateColor5:#263D6E;//相关色5
+
+@successColor:#67C23A;//成功通知
+@warningColor:#E6A23C;//警告通知
+@dangerColor:#F56C6C;//错误通知
+@primaryText:#303133;//重要文字
+@regularText:#606266;//常规文字
+@secondaryText:#909399;//次要文字
+@placeholderText:#C0C4CC;//未输入时的占位文字
+@baseBorder:#DCDFE6;//基础边框
+@lighterBorder:#EBEEF5;//浅色边框
+@white:#FFFFFF;//标准白色
+@black:#000000;//标准黑色
+@lighterBackground:#F5F7FA;//浅色背景
+@background:#EFEFEE;//深色背景
+
+@baseBorderRadius:4px;//大圆角
+@smallBorderRadius:2px;//小圆角
+
+//所有字体大小、图标大小、图片大小、div宽度等均使用rem为单位，div高度可用px为单位
+@media screen and (min-width: 0px){
+  html{
+    font-size: 1000px * 100 / @designSize;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+@media screen and (min-width: 1000px){
+  html{
+    font-size: 100vw * 100 / @designSize;//响应式尺寸
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+// flex布局-row
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+// flex布局-column
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+//清除ul li样式
+ul li {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
