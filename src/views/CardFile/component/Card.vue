@@ -234,7 +234,10 @@
       let role = this.$authority.getPageAuthority('businesscardholder').role;
       if (role['0008'].own) this.updateFlag = true;
       if (role['000A'].own) this.deleteFlag = true;
-      this.getFileName();
+      if (role['0003'].own){
+        this.fileFlag = true;
+        this.getFileName();
+      }
       // console.log(this.msg);
     },
     mounted() {

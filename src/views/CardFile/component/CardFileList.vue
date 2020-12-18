@@ -212,11 +212,13 @@
     },
     created() {
       let role = this.$authority.getPageAuthority('businesscardholder').role;
-      if (role['0003'].own) this.fileFlag = true;
+      if (role['0003'].own){
+        this.fileFlag = true;
+        this.getFileName();
+      }
       if (role['0004'].own) this.deleteFlag = true;
       if (role['0005'].own) this.addFlag = true;
       if (role['0006'].own) this.updateFlag = true;
-      this.getFileName();
     },
     mounted() {
       

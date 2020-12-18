@@ -6,6 +6,7 @@
             <p>{{this.msg.title}}</p>
             <el-badge :is-dot=isRead class="item"/>
             <p class="tag" :style="{backgroundColor:type}">{{ this.info }}</p>
+            <p class="time">{{this.msg.createtime}}</p>
         </div>
         <div class="content">
             <p>{{this.msg.content}}</p>
@@ -106,6 +107,11 @@
         color: @white;
         border-radius: @smallBorderRadius;
         // background-color: @dangerColor;
+    }
+    .time {
+        margin-left: 20px;
+        color: #909399;
+        font-size: 0.18rem;
     }
   }
   .messageItem :hover {

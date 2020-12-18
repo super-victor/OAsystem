@@ -222,7 +222,7 @@ export default {
       })
       .then(res=>{
         this.dialogVisible1=this.dialogVisible2=false;
-        // this.$router.go(0);
+        this.$router.go(0);
         this.buttonLoading = false;
         this.$message.success('修改成功');
       })
