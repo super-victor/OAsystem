@@ -22,14 +22,16 @@
             <el-date-picker v-model="dateSelect" type="date" placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="今日预约" :label-width="formLabelWidth" style="width:65%" v-if="dateSelect">
-            <el-button-group>
+          <el-form-item label="今日预约" :label-width="formLabelWidth"  v-if="dateSelect">
+            <div class="btngroup">
+              <el-button-group>
               <el-button
                 :class="(i == getSelect.filter(item=>{if(item == i) return item}))?'red':(((startTime <= i && i<= endTime)||startTime == i)?'blue':'white')"
                 v-for="i in 24" :key="i" @click="getIndex(i)"
                 :disabled="(i == getSelect.filter(item=>{if(item == i) return item}))?true:false" style='color:black'>
                 {{i}}</el-button>
             </el-button-group>
+            </div>
             <div class="colorRemark">
               <div class="remarks">
                 <div class="white"></div>
@@ -271,7 +273,7 @@
       },
       //选取会议室
       handleCurrentChange(res) {
-        if (this.isClick[res] && (this.addFlag && this.getFlag1)) this.addappointment();
+        if (this.isClick[res] && (this.addFlag && this.getFlag1)) this.form.name="",this.form.remark="",this.addappointment();
         for (var i = 0; i < this.tableFilterData.length; i++) {
           i == res ? this.isClick[i] = true : this.isClick[i] = false;
         }
@@ -366,6 +368,9 @@
     box-sizing: border-box;
 
     .alert {
+      ::v-deep .el-dialog{
+        width:9.5rem
+      }
       ::v-deep .el-dialog__header {
         padding: 0 30px;
         font-size: 50px;
@@ -373,6 +378,16 @@
 
       ::v-deep .el-dialog__body {
         padding: 0px;
+      }
+
+      .btngroup{
+        width:4.5rem;
+        ::v-deep .el-button-group {
+        // .el-button{
+        //   padding:0.1rem
+        // }
+
+      } 
       }
 
       ::v-deep .el-button {

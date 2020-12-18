@@ -90,23 +90,11 @@ export default {
       if(role['0024'].own) this.getFlag1 = true; //获取未被审批的会议
       if(role['0033'].own) this.getFlag2 = true; //获取所有员工通讯录
       if(role['0023'].own) this.getFlag3 = true; //审批会议
-      getMeetingAPI.getNotApprovedMeeting()
-      .then(res=>{
-        this.loading=false
-        this.tableData = res.object;
-        
-      }).catch(err=>{
-        this.$message.error('获取失败!')
-      }),
-      getMeetingAPI.AddressbookInfo()
-      .then(res=>{
-        this.employeeData = res.object;
-      }).catch(err=>{
-      })
+      this.getMeetings();
     },
     watch:{
       accept(val){
-        this.loading=true
+                 this.loading = true;
         SubMeetingAPI.approveMeeting({
           appoinmentstatus:val,
           meetingid:this.meetingid
@@ -114,7 +102,6 @@ export default {
       .then(res=>{
         
         this.tableData = res.object;
-        this.loading=false
         this.$message({
             type: 'success',
             message: '操作成功!'
@@ -129,6 +116,22 @@ export default {
     },
     methods:{
        ...mapMutations(['UPDATE_BREAD']),
+       //获取数据
+       getMeetings(){
+          getMeetingAPI.getNotApprovedMeeting()
+      .then(res=>{
+        this.tableData = res.object;
+        this.loading=false;
+      }).catch(err=>{
+        if(err == "Error: 网络请求错误:没有待审批的会议") this.loading = false
+        else this.$message.error('获取失败!')
+      }),
+      getMeetingAPI.AddressbookInfo()
+      .then(res=>{
+        this.employeeData = res.object;
+      }).catch(err=>{
+      })
+       },
        //驳回
        disagreed(data){
           this.$confirm('是否要驳回此会议预约?  一旦确定无法撤回', '提示', {
@@ -137,13 +140,9 @@ export default {
           type: 'warning'
         }).then(() => {
           this.accept = -1;
+
           this.meetingid =data.meetingId;
-          setTimeout(()=>{
-            this.$message({
-            type: 'success',
-            message: '操作成功!'
-          });
-          },1000)
+          this.getMeetings()
         }).catch(() => {
              
         });
@@ -152,6 +151,8 @@ export default {
        agreed(data){
          this.accept = 1;
          this.meetingid =data.meetingId;
+        this.getMeetings();
+        this.loading=false;
        }
     },
     computed:{

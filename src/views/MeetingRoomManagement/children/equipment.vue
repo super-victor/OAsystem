@@ -93,14 +93,14 @@
         <div class="filter">
           <!-- 类别筛选 -->
           <div class="category" v-show="getFlag3">
-            <el-select v-model="category" filterable placeholder="请选择设备类别" @change="getCategory()" >
+            <el-select v-model="category" filterable clearable placeholder="请选择设备类别" @change="getCategory()" >
               <el-option v-for="item in ClassifyData" :key="item.value" :label="item.name" :value="item.name" > 
               </el-option>
             </el-select>
           </div>
           <!-- 会议室筛选 -->
           <div class="meetingroomnum" v-show="getFlag2">
-            <el-select v-model="meetingroomnum" filterable placeholder="请选择会议室号" @change="getRoomnum()">
+            <el-select v-model="meetingroomnum" filterable clearable placeholder="请选择会议室号" @change="getRoomnum()">
               <el-option v-for="item in MeetingroomData" :key="item.value" :label="item.name" :value="item.name">
               </el-option>
             </el-select>
