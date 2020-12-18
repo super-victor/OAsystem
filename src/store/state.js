@@ -1,5 +1,10 @@
 export default{
   //****全局用户信息
+  // ip1 = '192.168.31.116';//局域网
+  // ip2 = '121.196.40.164';//服务器
+  // ip3 = '192.168.43.245';
+  // ip4 = '101.201.254.63';
+  currentIP:'192.168.31.116',
   userUploadProgress:0,
   userToken:null,
   userInfo:{},

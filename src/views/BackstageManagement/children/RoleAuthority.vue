@@ -14,7 +14,7 @@
         border
         :span-method="arraySpanMethod"
         :data="authorityArr"
-        max-height="600"
+        height="600"
         style="width: 100%;">
         <!-- <el-table-column label="路由" align="center"> -->
           <el-table-column

@@ -26,6 +26,8 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="8">
                 <el-form-item label="公文种类" prop="type" style="height:60px;width:5rem;">
                 <el-select v-model="formData.type" placeholder="请选择公文种类">
@@ -42,25 +44,44 @@
                 </el-form-item>
               </el-col>
               <el-col :span="16">
+                <el-form-item label="行文类别" prop="target" style="height:60px;width:10rem;">
+                  <el-select v-model="formData.target" placeholder="请选择行文类别">
+                    <el-option label="上行文 -- 董事会" value="上行文 -- 董事会"></el-option>
+                    <el-option label="上行文 -- 公司领导" value="上行文 -- 公司领导"></el-option>
+                    <el-option label="上行文 -- 企业管理委员会" value="上行文 -- 企业管理委员会"></el-option>
+                    <el-option label="平行文 -- 各单位" value="平行文 -- 各单位"></el-option>
+                    <el-option label="下行文 -- 司属各单位、各中心" value="下行文 -- 司属各单位、各中心"></el-option>
+                    <el-option label="下行文 -- 司属各部门" value="下行文 -- 各部门"></el-option>
+                  </el-select>
+                  <el-tooltip content="公文头模板预览" placement="right" v-show="formData.type!='' && formData.target!=''">
+                    <el-button type="info" icon="el-icon-view" circle style="margin-left:0.3rem;background-color:#9CB7F0;border:none;" @click="openTemplateDialog"></el-button>
+                  </el-tooltip>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="审查人" prop="censorId" style="height:60px;width:5rem;">
+                  <el-select @visible-change="censorChange" v-model="formData.censorId" placeholder="请选择审查者">
+                      <el-option
+                        v-for="item in censorList"
+                        :key="item.employeeId"
+                        :label="item.name"
+                        :value="item.employeeId"
+                        style="width:300px;height:50px;line-height:50px;">
+                        <img :src="item.sex=='m'?require('../../../assets/Document/m.png'):require('../../../assets/Document/f.png')" style="height:30px;width:30px;float:left;margin-top:10px;" alt="">
+                        <span style="float:left;margin-left:10px;font-size:12px;color:#303133;">{{item.name}}</span>
+                        <span style="float:right;font-size:12px;color:#3D60AD;">{{item.departmentName}} <span style="color:#578BFA;">{{item.position}}</span></span>
+                      </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="16">
                 <el-form-item label="标题" prop="title" style="height:60px;width:9.05rem;">
                   <el-input v-model="formData.title" placeholder="请填写公文标题"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="审查人" prop="censorId" style="height:60px;width:5rem;">
-              <el-select @visible-change="censorChange" v-model="formData.censorId" placeholder="请选择审查者">
-                  <el-option
-                    v-for="item in censorList"
-                    :key="item.employeeId"
-                    :label="item.name"
-                    :value="item.employeeId"
-                    style="width:300px;height:50px;line-height:50px;">
-                    <img :src="item.sex=='m'?require('../../../assets/Document/m.png'):require('../../../assets/Document/f.png')" style="height:30px;width:30px;float:left;margin-top:10px;" alt="">
-                    <span style="float:left;margin-left:10px;font-size:12px;color:#303133;">{{item.name}}</span>
-                    <span style="float:right;font-size:12px;color:#3D60AD;">{{item.departmentName}} <span style="color:#578BFA;">{{item.position}}</span></span>
-                  </el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item label="发布范围" prop="isPublic" style="height:auto;width:14.45rem;">
               <el-radio-group v-model="rangeLabel">
                 <el-radio-button label="全体"></el-radio-button>
@@ -162,6 +183,7 @@
         <p style="width:90%;margin:10px 0 0 5%;text-align:center;color:#3D60AD;">附件上传中...</p>
       </div>
     </el-dialog>
+    <draft-template :templateDialogVisible="templateDialogVisible" :templateInfo="templateInfo" @closeTemplateDialog="closeTemplateDialog"></draft-template>
   </div>
 </template>
 
@@ -170,9 +192,11 @@
   import wangEditor from 'wangeditor'
   import ChooseStaff from '../component/ChooseStaff';
   import sendFileAPI from '@/service/DocumentCirculation';
+  import DraftTemplate from '../component/DraftTemplate';
   export default {
     components: {
-      ChooseStaff
+      ChooseStaff,
+      DraftTemplate
     },
     data() {
       return {
@@ -186,6 +210,7 @@
         formData:{
           title:'',
           type:'',
+          target:'',
           urgent:'',
           accessEmployeeIdList:[],
           senderId:'',
@@ -202,6 +227,9 @@
           ],
           type:[
             { required: true, message: '请选择公文种类', trigger: 'change' }
+          ],
+          target:[
+            { required: true, message: '请选择行文类别', trigger: 'change' }
           ],
           urgent:[
             { required: true, message: '请选择紧急程度', trigger: 'change' }
@@ -281,7 +309,9 @@
         inputValue:'',
         viewFlag:false,
         uploadFlag:false,
-        deleteFileFlag:false
+        deleteFileFlag:false,
+        templateDialogVisible:false,
+        templateInfo:{}
       };
     },
     computed: {
@@ -505,8 +535,20 @@
           this.fileList.splice(0,this.fileList.length);
           this.$message.error('上传附件失败');
         })
-      }
+      },
       //文件上传
+      openTemplateDialog(){
+        let {type,target} = this.formData;
+        let obj = {
+          type,
+          target
+        }
+        this.templateInfo = obj;
+        this.templateDialogVisible = true;
+      },
+      closeTemplateDialog(flag){
+        this.templateDialogVisible = flag;
+      }
     },
     created() {
       let role = this.$authority.getPageAuthority('documentcirculation','createdraft').role;

@@ -9,7 +9,7 @@
       <el-table
         :data="tableData"
         style="width: 100%;"
-        max-height="450"
+        height="450"
         :default-sort = "{prop: 'employeeId'}"
         stripe
         >

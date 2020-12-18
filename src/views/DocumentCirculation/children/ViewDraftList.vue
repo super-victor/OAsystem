@@ -14,7 +14,7 @@
       <el-table
         :data="currentTableData"
         style="width: 100%;"
-        max-height="90%"
+        height="90%"
         :default-sort = "{prop: 'employeeId'}"
         stripe
         >

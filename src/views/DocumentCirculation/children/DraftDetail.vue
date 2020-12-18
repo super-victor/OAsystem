@@ -1,6 +1,9 @@
 !<!-- DraftDetail -->
 <template>
   <div class='DraftDetail' v-loading="loading">
+    <div class="backBox">
+      <p class="back" @click="goBack"><i class="el-icon-arrow-left" style="margin-right:5px;"></i>返回</p>
+    </div>
     <div class="documentBox">
       <the-draft :fileInfo="fileInfo"></the-draft>
     </div>
@@ -25,7 +28,10 @@
     },
     watch: {},
     methods: {
-      ...mapMutations(['UPDATE_BREAD'])
+      ...mapMutations(['UPDATE_BREAD']),
+      goBack(){
+        this.$router.push('/document-circulation/view-draft-list');
+      }
     },
     created() {
       
@@ -52,6 +58,21 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    .backBox{
+      height: 30px;
+      width: 1.4rem;
+      display: flex;
+      margin-top: 5px;
+      align-items: center;
+      .back{
+        height: 100%;
+        width: 70%;
+        font-size: 17px;
+        color:#606266;
+        cursor: pointer;
+        line-height: 30px;
+      }
+    }
     .documentBox{
       height: calc(100vh - 160px);
       width: 72%;

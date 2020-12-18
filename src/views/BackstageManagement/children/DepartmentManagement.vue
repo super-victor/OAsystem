@@ -25,7 +25,7 @@
           v-loading="loading"
           :data="tableData"
           style="width: 100%;"
-          max-height="600"
+          height="600"
           :default-sort = "{prop: 'employeeId'}"
           stripe
           >

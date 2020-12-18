@@ -12,7 +12,7 @@
     <div class="titleBox">
       <p class="title">{{fileInfo.title}}</p>
     </div>
-    <div class="contentBegin">司属各单位、各中心：</div>
+    <div class="contentBegin">{{fileInfo.target && fileInfo.target.split(" ")[2]}}：</div>
     <div class="content" v-html="fileInfo.content"></div>
     <div class="remark">附件：</div>
     <div class="remarkBox">
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex';
   export default {
     components: {},
     props:{
@@ -60,6 +61,7 @@
       };
     },
     computed: {
+      ...mapState(['currentIP']),
       getYear:function(){
         return this.fileInfo.updateTime && this.fileInfo.updateTime.substring(0,4);
       },
@@ -165,7 +167,7 @@
         }
       },
       download(item){
-        // window.open(`http://192.168.31.116:8080/download${item}`);
+        window.open(`http://${this.currentIP}:8080/download${item}`);
       }
     },
     created() {
@@ -212,7 +214,7 @@
           font-size: 0.3rem;
           line-height: 0.4rem;
           color: @black;
-          font-family:'klfangsong24d7088e3c22004';
+          font-family:'klfangsong2519f0898a22004';
         }
         .sender{
           height: 0.4rem;
@@ -220,7 +222,7 @@
           font-size: 0.3rem;
           line-height: 0.4rem;
           color: @black;
-          font-family:'klfangsong24d7088e3c22004';
+          font-family:'klfangsong2519f0898a22004';
           text-align: right;
           .s1{
             font-family:"Hiragino Sans GB";
@@ -235,7 +237,7 @@
       font-size: 0.25rem;
       line-height: 0.4rem;
       color: @black;
-      font-family:'klfangsong24d7088e3c22004';
+      font-family:'klfangsong2519f0898a22004';
       .s2{
         color:#EA3323;
         font-weight: bolder;
@@ -263,7 +265,7 @@
       font-size: 0.3rem;
       line-height: 0.5rem;
       color: @black;
-      font-family:'klfangsong24d7088e3c22004';
+      font-family:'klfangsong2519f0898a22004';
     }
     .content{
       padding: 0 0.5rem;
@@ -281,7 +283,7 @@
       font-size: 0.3rem;
       line-height: 0.5rem;
       color: @black;
-      font-family:'klfangsong24d7088e3c22004';
+      font-family:'klfangsong2519f0898a22004';
     }
     .remarkBox{
       margin-top: 0.2rem;
@@ -293,7 +295,7 @@
       .noRemark{
         height: 0.35rem;
         width: 100%;
-        font-family:"klfangsong24d7088e3c22004";
+        font-family:"klfangsong2519f0898a22004";
         color: @black;
         font-size: 0.23rem;
         line-height: 0.35rem;
@@ -350,7 +352,7 @@
           font-size: 0.35rem;
           line-height: 0.7rem;
           text-align: center;
-          font-family:"klfangsong24d7088e3c22004";
+          font-family:"klfangsong2519f0898a22004";
           .s3{
             font-family:"Hiragino Sans GB";
           }
@@ -362,7 +364,7 @@
           font-size: 0.35rem;
           line-height: 0.7rem;
           text-align: center;
-          font-family:"klfangsong24d7088e3c22004";
+          font-family:"klfangsong2519f0898a22004";
         }
       }
     }
@@ -389,7 +391,7 @@
       width: 100%;
       color: @black;
       font-size: 0.25rem;
-      font-family:'klfangsong24d7088e3c22004';
+      font-family:'klfangsong2519f0898a22004';
       word-break:break-all;
       box-sizing: border-box;
       padding-bottom: 0.25rem;
@@ -410,7 +412,7 @@
         line-height: 0.4rem;
         color: @black;
         font-size: 0.22rem;
-        font-family:"klfangsong24d7088e3c22004";
+        font-family:"klfangsong2519f0898a22004";
       }
       .bottom2{
         height: 0.4rem;
@@ -419,7 +421,7 @@
         text-align: right;
         color: @black;
         font-size: 0.22rem;
-        font-family:"klfangsong24d7088e3c22004";
+        font-family:"klfangsong2519f0898a22004";
       }
     }
   }

@@ -26,7 +26,7 @@
           </el-input>
         </div>
         <div class="importBox">
-            <el-button style="width:150px;height:40px;" icon="el-icon-folder-opened">批量添加用户</el-button>
+            <el-button style="width:150px;height:40px;" icon="el-icon-folder-opened" @click="batchAddtionDialogVisible=true;">批量添加用户</el-button>
             <el-button style="width:120px;height:40px;margin-left:20px;" type="primary" icon="el-icon-plus" @click="openAddStaff=true">添加用户</el-button>
         </div>
       </div>
@@ -36,7 +36,7 @@
             v-loading="loading"
             :data="currentTableData"
             style="width: 100%;"
-            max-height="480"
+            height="480"
             :default-sort = "{prop: 'employeeId'}"
             stripe
             >
@@ -157,18 +157,21 @@
     </div>
     <staff-role :userObj="userObj" :dialogVisible="openStaffRole" @closeStaffRole="closeStaffRole"></staff-role>
     <add-staff :departmentArr="departmentArr" :addStaffDialogVisible="openAddStaff" @closeAddStaff="closeAddStaff"></add-staff>
+    <batch-addtion :batchAddtionDialogVisible="batchAddtionDialogVisible" @closeBatchAddtion="closeBatchAddtion"></batch-addtion>
   </div>
 </template>
 
 <script>
-import StaffRole from '../component/StaffRole';
-import backstageAPI from '@/service/BackstageManagement';
-import AddStaff from '../component/AddStaff';
-import {mapMutations} from 'vuex';
+  import StaffRole from '../component/StaffRole';
+  import backstageAPI from '@/service/BackstageManagement';
+  import AddStaff from '../component/AddStaff';
+  import {mapMutations} from 'vuex';
+  import BatchAddtion from '../component/BatchAddtion';
   export default {
     components: {
       StaffRole,
-      AddStaff
+      AddStaff,
+      BatchAddtion
     },
     data() {
       return {
@@ -183,7 +186,8 @@ import {mapMutations} from 'vuex';
         tableData: [],
         loading:true,
         staffArr:[],
-        currentDepartmentName:''
+        currentDepartmentName:'',
+        batchAddtionDialogVisible:false
       };
     },
     computed: {
@@ -322,6 +326,9 @@ import {mapMutations} from 'vuex';
         let filterArr = this.currentDepartmentName=='all' ? this.staffArr : this.staffArr.filter(item=>item.departmentName==this.currentDepartmentName);
         this.tableData = filterArr;
         this.currentTableData = filterArr;
+      },
+      closeBatchAddtion(flag){
+        this.batchAddtionDialogVisible = flag;
       }
     },
     created() {

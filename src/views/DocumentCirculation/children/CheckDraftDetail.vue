@@ -8,6 +8,10 @@
     <div class="optionBox">
       <div class="optionBoxInner">
         <div class="stepBox">
+          <div class="remarkBox">
+            <p class="title">签发人备注：</p>
+            <div class="text">{{fileInfo.remark || '无'}}</div>
+          </div>
           <div class="checkBox">
             <p class="title">审稿结论：</p>
             <div class="button">
@@ -21,7 +25,7 @@
               <el-input
                 :maxlength="300"
                 :show-word-limit="true"
-                rows="16"
+                rows="10"
                 resize="none"
                 type="textarea"
                 :placeholder="ispassed===-1?'请选择审稿结论':(ispassed===1?'公文符合规定，审核通过':'请详细给出审稿未通过原因以及修改意见，以便于签发人自查修改')"
@@ -173,14 +177,35 @@
           height: calc(100vh - 240px);
           width:90%;
           margin:15px 0 0 5%;
+          .remarkBox{
+            height: 30%;
+            width: 100%;
+            .title{
+              height: 23%;
+              width: 100%;
+              color: @primaryText;
+              font-size: 0.25rem;
+            }
+            .text{
+              height: 60%;
+              width: 100%;
+              border: 1px solid #DDDFE5;
+              border-radius: @baseBorderRadius;
+              padding: 5px 15px;
+              box-sizing: border-box;
+              font-size: 0.12rem;
+              color: @regularText;
+              overflow-y: scroll;
+            }
+          }
           .checkBox{
-            height: 20%;
+            height: 18%;
             width: 100%;
             .title{
               height: 25%;
               width: 100%;
               color: @primaryText;
-              font-size: 0.26rem;
+              font-size: 0.25rem;
             }
             .button{
               height: 75%;
@@ -202,14 +227,14 @@
             }
           }
           .textBox{
-            height: 70%;
+            height: 52%;
             width: 100%;
             margin-top: 0.1rem;
             .title{
               height: 12%;
               width: 100%;
               color: @primaryText;
-              font-size: 0.26rem;
+              font-size: 0.25rem;
             }
             .text{
               height: 88%;

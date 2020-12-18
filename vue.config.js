@@ -28,11 +28,7 @@ module.exports = {
       https: false,
       proxy: {
           '/api': {//代理字段设置
-<<<<<<< HEAD
               target: `http://${ip1}:8080/`,//填写后台接口
-=======
-              target: `http://${ip4}:8080/`,//填写后台接口
->>>>>>> lkx
               ws: true,
               changOrigin: true,//设置允许跨域
               pathRewrite: {
