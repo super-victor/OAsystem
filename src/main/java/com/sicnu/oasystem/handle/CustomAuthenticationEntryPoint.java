@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  **/
 
 @Component
-public class    CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException {
         BackFrontMessage authMessage = new BackFrontMessage(500, "未登录", null);

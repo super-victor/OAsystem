@@ -106,7 +106,7 @@ public class JwtTokenUtil implements Serializable {
         Date createDate = new Date(expirationDate.getTime() - expiration * 1000);
 
         // 如果签发的token未过期并且token在最后一次密码之后签发
-        return expirationDate.before(new Date()) && createDate.after(passwordChangeDate);
+        return !(expirationDate.before(new Date()) && createDate.after(passwordChangeDate));
     }
 
     /**
