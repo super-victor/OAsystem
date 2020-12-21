@@ -101,12 +101,10 @@ public class JwtTokenUtil implements Serializable {
      * @Return java.lang.Boolean
      * @LastChangeDate 2020/12/15
      */
-    private Boolean isTokenExpired(Claims claims, Date passwordChangeDate) {
-        Date expirationDate = claims.getExpiration();
-        Date createDate = new Date(expirationDate.getTime() - expiration * 1000);
-
+    private Boolean isCreateAfterLastPasswordReset(Claims claims, Date passwordChangeDate) {
+        Date createDate = getCreateDate(claims);
         // 如果签发的token未过期并且token在最后一次密码之后签发
-        return !(expirationDate.before(new Date()) && createDate.after(passwordChangeDate));
+        return createDate.after(passwordChangeDate);
     }
 
     /**
@@ -135,7 +133,7 @@ public class JwtTokenUtil implements Serializable {
      * @MethodName validateToken
      * @param token
      * @param userDetails
-     * @Description 验证token根据自己的需求自定义，这里是token的格式和是否过期和是否是本人
+     * @Description 验证token根据自己的需求自定义，这里是token的格式和是否是本人和是否在最后一次密码修改后签发需要自己捕捉后两个异常处理
      * @Author JohnTang
      * @Return int
      * @LastChangeDate 2020/12/15
@@ -143,7 +141,11 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) throws ExpiredJwtException, SignatureException {
         Claims claims = parseToken(token);
         String username = claims.getSubject();
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(claims, ((Employee)userDetails).getPasswordChangeDate()));
+        return (username.equals(userDetails.getUsername()) && isCreateAfterLastPasswordReset(claims, ((Employee)userDetails).getPasswordChangeDate()));
+    }
+
+    public Date getCreateDate(Claims claims){
+        return new Date(claims.getExpiration().getTime() - expiration * 1000);
     }
 
 }

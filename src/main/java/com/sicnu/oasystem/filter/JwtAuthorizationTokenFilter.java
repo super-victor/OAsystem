@@ -6,6 +6,8 @@ import com.sicnu.oasystem.util.DataUtil;
 import com.sicnu.oasystem.util.DateUtil;
 import com.sicnu.oasystem.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -67,15 +69,18 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     Employee employeeDetail = (Employee)userDetailsService.loadUserByUsername(username);
                     if (jwtTokenUtil.validateToken(token, employeeDetail)) {
+                        // token完全合法加载个人信息到SecurityContext
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(employeeDetail, null, employeeDetail.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }
                 }
             // 捕捉过期异常
-            } catch (ExpiredJwtException e){
-                e.printStackTrace();
-            // 捕捉解析失败等异常
-            } catch (Exception e) {
+            } catch (ExpiredJwtException e) {
+                System.err.println("token已过期于" + e.getClaims().getExpiration());
+            // token缺少一部分
+            } catch (SignatureException e) {
+            // 捕捉其他jwt异常
+            } catch (JwtException e) {
                 e.printStackTrace();
             }
         }
