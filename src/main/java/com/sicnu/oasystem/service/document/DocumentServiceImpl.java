@@ -411,9 +411,10 @@ public class DocumentServiceImpl implements DocumentService {
         Date endDate = new Date();
         Date startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
+        int max = 0;
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                while (true) {
+                while (max < 20) {
                     if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                         resultSeeAbleList.add(dataSeeAbleA);
                         startDate = DateUtil.addDay(startDate,1);
@@ -421,14 +422,17 @@ public class DocumentServiceImpl implements DocumentService {
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             }
-            while (true) {
+
+            while (max < 20) {
                 if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                     break;
                 }
                 resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                 startDate = DateUtil.addDay(startDate,1);
+                max++;
             }
         } else {
             // 如果查出来的数据为空
@@ -448,9 +452,10 @@ public class DocumentServiceImpl implements DocumentService {
             resultSeeAbleList = new ArrayList<>();
             startDate = DateUtil.subDay(endDate,14);
             // 如果查出来的数据不为空
+            max = 0;
             if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
                 for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                    while (true) {
+                    while (max < 20) {
                         if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                             resultSeeAbleList.add(dataSeeAbleA);
                             startDate = DateUtil.addDay(startDate,1);
@@ -458,14 +463,16 @@ public class DocumentServiceImpl implements DocumentService {
                         }
                         resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                         startDate = DateUtil.addDay(startDate,1);
+                        max++;
                     }
                 }
-                while (true) {
+                while (max < 20) {
                     if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                         break;
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             } else {
                 // 如果查出来的数据为空
@@ -487,8 +494,9 @@ public class DocumentServiceImpl implements DocumentService {
         startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            max = 0;
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                while (true) {
+                while (max < 20) {
                     if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                         resultSeeAbleList.add(dataSeeAbleA);
                         startDate = DateUtil.addDay(startDate,1);
@@ -496,14 +504,16 @@ public class DocumentServiceImpl implements DocumentService {
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             }
-            while (true) {
+            while (max < 20) {
                 if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                     break;
                 }
                 resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                 startDate = DateUtil.addDay(startDate,1);
+                max++;
             }
         } else {
             // 如果查出来的数据为空
@@ -524,8 +534,9 @@ public class DocumentServiceImpl implements DocumentService {
             startDate = DateUtil.subDay(endDate,14);
             // 如果查出来的数据不为空
             if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+                max = 0;
                 for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                    while (true) {
+                    while (max < 20) {
                         if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                             resultSeeAbleList.add(dataSeeAbleA);
                             startDate = DateUtil.addDay(startDate,1);
@@ -534,13 +545,15 @@ public class DocumentServiceImpl implements DocumentService {
                         resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                         startDate = DateUtil.addDay(startDate,1);
                     }
+                    max++;
                 }
-                while (true) {
+                while (max <20) {
                     if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                         break;
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             } else {
                 // 如果查出来的数据为空
@@ -567,9 +580,10 @@ public class DocumentServiceImpl implements DocumentService {
         Date endDate = new Date();
         Date startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
+        int max = 0;
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                while (true) {
+                while (max < 20) {
                     if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                         resultSeeAbleList.add(dataSeeAbleA);
                         startDate = DateUtil.addDay(startDate,1);
@@ -577,14 +591,16 @@ public class DocumentServiceImpl implements DocumentService {
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             }
-            while (true) {
+            while (max < 20) {
                 if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                     break;
                 }
                 resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                 startDate = DateUtil.addDay(startDate,1);
+                max++;
             }
         } else {
             // 如果查出来的数据为空
@@ -602,8 +618,9 @@ public class DocumentServiceImpl implements DocumentService {
         startDate = DateUtil.subDay(endDate,14);
         // 如果查出来的数据不为空
         if (dataSeeAbleAList != null && !dataSeeAbleAList.isEmpty()) {
+            max = 0;
             for (DataSeeAbleA dataSeeAbleA : dataSeeAbleAList) {
-                while (true) {
+                while (max < 20) {
                     if (DateUtil.isSameDay(startDate, dataSeeAbleA.getRecordDate())) {
                         resultSeeAbleList.add(dataSeeAbleA);
                         startDate = DateUtil.addDay(startDate,1);
@@ -611,14 +628,16 @@ public class DocumentServiceImpl implements DocumentService {
                     }
                     resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                     startDate = DateUtil.addDay(startDate,1);
+                    max++;
                 }
             }
-            while (true) {
+            while (max < 20) {
                 if(DateUtil.isSameDay(resultSeeAbleList.get(resultSeeAbleList.size() - 1).getRecordDate(),endDate)) {
                     break;
                 }
                 resultSeeAbleList.add(new DataSeeAbleA(startDate, 0));
                 startDate = DateUtil.addDay(startDate,1);
+                max++;
             }
         } else {
             // 如果查出来的数据为空
